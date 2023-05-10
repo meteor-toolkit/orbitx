@@ -47,6 +47,7 @@ cache:
     - git config --global user.email "test@example.com"
     # Make a virtual environment to install deps into (this will be cached for each step)
     - conda init
+    - source ~/.bashrc
     - conda create -n test_env python=3.9
     - conda activate test_env
     - pip install .[dev]
