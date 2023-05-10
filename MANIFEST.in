@@ -1,0 +1,2 @@
+include versioneer.py
+include orbitx/_version.py
