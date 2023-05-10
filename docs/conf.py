@@ -12,7 +12,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-#import orbitx
+import orbitx
 
 project_title = "orbitx".replace("_", " ").title()
 
