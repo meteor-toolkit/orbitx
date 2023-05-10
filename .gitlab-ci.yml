@@ -46,10 +46,8 @@ cache:
     - git config --global user.name "Gitlabs CI Testing"
     - git config --global user.email "test@example.com"
     # Make a virtual environment to install deps into (this will be cached for each step)
-    - python --version
-    - pip install virtualenv
-    - virtualenv venv
-    - source venv/bin/activate
+    - conda create -n test_env python=3.9
+    - conda activate test_env
     - pip install .[dev]
 
 ### Linting ###
@@ -98,23 +96,16 @@ mypy:
       junit: cov_report.xml
     expire_in: 1 hour
 
-tox-3.6:
+tox-3.9:
   extends: ".tox"
   stage: "Test"
-  image: "python:3.6"
-  rules:
-    - if: '$CI_COMMIT_TAG'
-      when: always
-
-tox-3.7:
-  extends: ".tox"
-  stage: "Test"
-  image: "python:3.7"
 
 tox-3.8:
   extends: ".tox"
+  script:
+    - conda create -n test38_env python=3.8
+    - conda activate test38_env
   stage: "Test"
-  image: "python:3.8"
   rules:
     - if: '$CI_COMMIT_TAG'
       when: always
@@ -169,7 +160,7 @@ test_report:
 # Upload the documentation to pages if it's a tagged commit
 pages:
   extends: .py_venv
-  stage: Readthedocs Documentation
+  stage: Build HTML Documentation
   needs: []
   script:
     - sphinx-build docs public -b html
