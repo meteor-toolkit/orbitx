@@ -3,7 +3,7 @@ image: "continuumio/anaconda3"
 
 stages:
   - Static Analysis
-  - Readthedocs Documentation
+  - Build HTML Documentation
   - Build latex Documentation
   - Publish latex Documentation
   - Test
