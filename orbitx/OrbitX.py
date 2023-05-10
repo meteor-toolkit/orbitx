@@ -1,11 +1,11 @@
 import numpy as np
 import datetime as datetime
-from get_2LEs import get_2LEs
-from form_smpl_space import form_smpl_space
-from breakup_smpl_space import breakup_smpl_space
-from propagate_orbit import propagate_orbit
+from orbitx.get_2LEs import get_2LEs
+from orbitx.form_smpl_space import form_smpl_space
+from orbitx.breakup_smpl_space import breakup_smpl_space
+from orbitx.propagate_orbit import propagate_orbit
 from scipy.interpolate import interp1d
-from cal_dist_d2m import cal_dist_d2m
+from orbitx.cal_dist_d2m import cal_dist_d2m
 import matplotlib.pyplot as plt
 
 
