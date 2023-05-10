@@ -16,7 +16,7 @@ For more information visit our [documentation](https://eco.gitlab-docs.npl.co.uk
 
 ## Acknowledgements
 
-`orbitx` has been developed by [Sajedeh Behnia](mailto: sajedeh.behnia@npl.co.uk).
+`orbitx` has been developed by [Sajedeh Behnia](mailto:sajedeh.behnia@npl.co.uk).
 
 ## Project status
 
