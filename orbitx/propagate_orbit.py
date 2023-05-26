@@ -1,7 +1,3 @@
-import orekit
-vm = orekit.initVM()
-from orekit.pyhelpers import setup_orekit_curdir
-setup_orekit_curdir()
 from org.orekit.frames import FramesFactory, TopocentricFrame
 from org.orekit.bodies import OneAxisEllipsoid, GeodeticPoint, CelestialBodyFactory
 from org.orekit.time import TimeScalesFactory, AbsoluteDate

@@ -78,6 +78,9 @@ setup(
     description="Propagate satellite orbits to identify matchups.",
     long_description=read("README.md"),
     packages=find_packages(exclude=("tests",)),
+    package_data={
+        "orbitx": [os.path.join("data", "orekit-data.zip")]
+    },
     install_requires=[
         "numpy",
         "scipy",
