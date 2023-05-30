@@ -79,7 +79,10 @@ setup(
     long_description=read("README.md"),
     packages=find_packages(exclude=("tests",)),
     package_data={
-        "orbitx": [os.path.join("data", "orekit-data.zip")]
+        "orbitx": [
+            os.path.join("data", "orekit-data.zip"),
+            os.path.join("data", "tle", "*")
+        ]
     },
     install_requires=[
         "numpy",
