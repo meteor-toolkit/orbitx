@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import datetime as datetime
 from orbitx.get_2LEs import get_2LEs
@@ -113,11 +114,11 @@ def return_matchups(
     orbit1 = [sat1_secsince, sat1_lat_sim, sat1_lon_sim]
     orbit2 = [sat2_secsince, sat2_lat_sim, sat2_lon_sim]
 
-    with open(output_path_sim_orbits + fname1, 'w') as file:
+    with open(os.path.join(output_path_sim_orbits, fname1), 'w') as file:
         for x in zip(*orbit1):
             file.write("{0}\t{1}\t{2}\n".format(*x))
 
-    with open(output_path_sim_orbits + fname2, 'w') as file:
+    with open(os.path.join(output_path_sim_orbits, fname2), 'w') as file:
         for x in zip(*orbit2):
             file.write("{0}\t{1}\t{2}\n".format(*x))
 
@@ -147,10 +148,10 @@ def return_matchups(
 
     # region Search for match-ups
 
-    latmin = 40
-    latmax = 50
-    lonmin = 40
-    lonmax = 50
+    # latmin = 40
+    # latmax = 50
+    # lonmin = 40
+    # lonmax = 50
 
     sat1_inROI_idx = (sat1_lat_sim_interp > latmin) & (sat1_lat_sim_interp < latmax) & (sat1_lon_sim_interp > lonmin) & (sat1_lon_sim_interp < lonmax)
     sat2_inROI_idx = (sat2_lat_sim_interp > latmin) & (sat2_lat_sim_interp < latmax) & (sat2_lon_sim_interp > lonmin) & (sat2_lon_sim_interp < lonmax)
@@ -231,7 +232,7 @@ def return_matchups(
                     sat1_sat2_tmpdist]
 
 
-    with open(output_path_matchups + fname, 'w') as file:
+    with open(os.path.join(output_path_matchups, fname), 'w') as file:
         file.write("sat1, starttime, stoptime, startlat, stoplat, startlon, stoplon, sat2, starttime, stoptime, startlat, stoplat, startlon, stoplon, temporal_distance\n")
         for x in zip(*matchup_info):
             file.write("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}\n".format(*x))

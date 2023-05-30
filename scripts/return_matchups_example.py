@@ -12,24 +12,26 @@ def main():
     Runs test example of orbitx.return_matchups
     """
 
-    sat_1 = 'S3A'
+    sat_1 = 'S2A'
     sat_2 = 'LS8'
 
-    start_time = datetime.datetime(2022, 1, 10, 0, 0, 0)
-    end_time = datetime.datetime(2022, 2, 10, 0, 0, 0)
+    start_time = datetime.datetime(2021, 6, 1, 0, 0, 0)
+    end_time = datetime.datetime(2022, 9, 1, 0, 0, 0)
 
     propagation_sampling_interval = 1 * 60  # time in seconds
     interpolation_sampling_interval = 5  # time in second
 
     cntr2cntr_dist = 500  # distance in meter
-    time_diff_threshold = 1*60*60 # time difference in seconds
+    time_diff_threshold = 1*60*60  # time difference in seconds
 
-    output_path_sim_orbits = 'T:/ECO/EOServer/data/satellite_simulated_orbits/'
-    output_path_matchups = 'T:/ECO/EOServer/data/satellite_matchups/'
-    latmin = 40
-    latmax = 50
-    lonmin = 40
-    lonmax = 50
+    output_path_sim_orbits = r"C:\Users\mg13\Documents\Projects\data\satellite_simulated_orbits"
+    # 'T:/ECO/EOServer/data/satellite_simulated_orbits/'
+    output_path_matchups = r"C:\Users\mg13\Documents\Projects\data\satellite_matchups"
+    # 'T:/ECO/EOServer/data/satellite_matchups/'
+    lonmin = -3
+    lonmax = -0.2
+    latmin = 50
+    latmax = 53
 
     return_matchups(
         sat_1=sat_1,
@@ -50,6 +52,9 @@ def main():
 
 
 if __name__ == "__main__":
+    import faulthandler
+
+    faulthandler.enable()
     main()
 
 
