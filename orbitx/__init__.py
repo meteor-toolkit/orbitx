@@ -1,13 +1,14 @@
 """orbitx - Propagate satellite orbits to identify matchups."""
 
 __author__ = "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>"
-__all__ = ["TLE_PATH", "add_to_tle_path", "setup_orekit"]
+__all__ = ["TLE_PATH", "add_to_tle_path", "setup_orekit", "return_matchups"]
 
 from ._version import get_versions
 import os
 from typing import Optional
 import orekit
 from orekit.pyhelpers import setup_orekit_curdir
+from orbitx.OrbitX import return_matchups
 
 
 __version__ = get_versions()["version"]
