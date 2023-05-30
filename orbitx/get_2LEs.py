@@ -2,29 +2,28 @@
 
 import numpy as np
 import os
-from typing import List
 import datetime
 from operator import add
-from orbitx import TLE_PATH
 
 
 __author__ = ["Sajedeh Behnia <sajedeh.behnia@npl.co.uk>", "Sam Hunt <sam.hunt@npl.co.uk>"]
 __all__ = ["return_tle_path", "get_2LEs"]
 
 
-def return_tle_path(satellite_name: str, tle_dirs: List[str] = TLE_PATH) -> str:
+def return_tle_path(satellite_name: str) -> str:
     """
     Returns path for TLE file for defined satellite
 
     :param satellite_name: satellite short name as included in TLE file name ``TLEset_XXX``,
     where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
-    :param tle_dirs: list of directories to check for required TLE file
 
     :return: satellite TLE file path
     """
+    from orbitx import TLE_PATH
+
     path = None
 
-    for tle_dir in tle_dirs:
+    for tle_dir in TLE_PATH:
         path = os.path.abspath(os.path.join(tle_dir, 'TLEset_' + satellite_name + '.txt'))
         if os.path.isfile(path):
             break
