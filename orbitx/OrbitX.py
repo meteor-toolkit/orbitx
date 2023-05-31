@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import datetime as datetime
-from orbitx.get_tle import get_tle
+from orbitx.tle import TLE
 from orbitx.form_smpl_space import form_smpl_space
 from orbitx.breakup_smpl_space import breakup_smpl_space
 from orbitx.propagate_orbit import propagate_orbit
@@ -45,9 +45,9 @@ def return_matchups(
     """
 
     # region Get relevant TLE lines (and times)
-
-    tle1_line1, tle1_line2, tle1_secs_since_2000 = get_tle(start_time, end_time, sat_1)
-    tle2_line1, tle2_line2, tle2_secs_since_2000 = get_tle(start_time, end_time, sat_2)
+    tle = TLE()
+    tle1_line1, tle1_line2, tle1_secs_since_2000 = tle.get_tle(start_time, end_time, sat_1)
+    tle2_line1, tle2_line2, tle2_secs_since_2000 = tle.get_tle(start_time, end_time, sat_2)
 
     # endregion
 
