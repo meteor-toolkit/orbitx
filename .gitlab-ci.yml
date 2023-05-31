@@ -50,7 +50,7 @@ cache:
     - source ~/.bashrc
     - conda create -n test_env python=3.9
     - conda activate test_env
-    - pip install .[dev]
+    - pip install -e ".[dev]"
 
 ### Linting ###
 
