@@ -4,10 +4,11 @@ import numpy as np
 import os
 import datetime
 from operator import add
+from typing import Tuple, List
 
 
 __author__ = ["Sajedeh Behnia <sajedeh.behnia@npl.co.uk>", "Sam Hunt <sam.hunt@npl.co.uk>"]
-__all__ = ["return_tle_path", "get_2LEs"]
+__all__ = ["return_tle_path", "get_tle"]
 
 
 def return_tle_path(satellite_name: str) -> str:
@@ -31,10 +32,25 @@ def return_tle_path(satellite_name: str) -> str:
     return path
 
 
-def get_2LEs(start_time, end_time, sat):
+def get_tle(
+        start_time: datetime.datetime,
+        end_time: datetime.datetime,
+        satellite_name: str
+) -> Tuple[List[str], List[str], List[float]]:
+    """
+    Returns two-line elements within defined time window, with seconds since 2000
+
+    :param start_time: start of time window
+    :param end_time: end of time window
+    :param satellite_name: satellite short name as included in TLE file name ``TLEset_XXX``,
+    where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
+
+    :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 2000
+    """
+
     # region Read TLE file.
 
-    tle_path = return_tle_path(sat)
+    tle_path = return_tle_path(satellite_name)
     with open(tle_path, 'r') as f:
         lines = f.readlines()
     lines = np.array(lines)
