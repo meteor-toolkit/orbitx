@@ -148,11 +148,6 @@ def return_matchups(
 
     # region Search for match-ups
 
-    # latmin = 40
-    # latmax = 50
-    # lonmin = 40
-    # lonmax = 50
-
     sat1_inROI_idx = (sat1_lat_sim_interp > latmin) & (sat1_lat_sim_interp < latmax) & (sat1_lon_sim_interp > lonmin) & (sat1_lon_sim_interp < lonmax)
     sat2_inROI_idx = (sat2_lat_sim_interp > latmin) & (sat2_lat_sim_interp < latmax) & (sat2_lon_sim_interp > lonmin) & (sat2_lon_sim_interp < lonmax)
 
@@ -199,9 +194,11 @@ def return_matchups(
 
     # region Save matchup information
 
-    fname = 'matchup_' + sat_1 + '_' + sat_2 + '_starttime' + str(start_time)[0:4] + str(start_time)[5:7] + \
-            str(start_time)[8:10] + '_endtime' + str(end_time)[0:4] + str(end_time)[5:7] + str(end_time)[8:10] + \
-            '_samplinginterval' + str(propagation_sampling_interval) + '_tmptol' + str(time_diff_threshold) + '.txt'
+    fname = 'matchup_' + sat_1 + '_' + sat_2 + '_T' + str(start_time)[0:4] + str(start_time)[5:7] + \
+            str(start_time)[8:10] + '_' + str(end_time)[0:4] + str(end_time)[5:7] + str(end_time)[8:10] + \
+            '_deltaT' + str(propagation_sampling_interval) + '_lat[' + str(int(latmin)) + '][' + \
+            str(int(latmax)) + ']lon[' + str(int(lonmin)) + '][' + str(int(lonmax)) + ']_tmptol' + \
+            str(time_diff_threshold) + '.txt'
 
     # Change time format before saving
     sat1_match_event_idx = [i[0] for i in match_event_idx]
