@@ -98,7 +98,7 @@ setup(
             "sphinx_design",
             "ipython",
             "pytest",
-            "pytest-html"
+            "pytest-html",
             "pytest-cov"
         ]
     },

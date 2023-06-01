@@ -87,7 +87,8 @@ mypy:
     - python -c "import sys;print(sys.path)"
     - pip install tox
     - mkdir test_report
-    - pytest
+    - pytest --html=test_report/report.html
+    - pytest --cov-report html:test_report/cov_report --cov=orbitx
   coverage: '/^TOTAL.+?(\d+\%)$/'
   needs: []
   artifacts:
