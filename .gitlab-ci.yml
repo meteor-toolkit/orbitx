@@ -29,7 +29,6 @@ cache:
   key: ${CI_JOB_NAME}
   paths:
     - .cache/pip
-    - .tox/
     - venv/
 
 # Make a template for steps that use a python virtual env
@@ -84,7 +83,6 @@ mypy:
     - conda activate test_env
     - ls -l
     - python -c "import sys;print(sys.path)"
-    - pip install tox
     - mkdir test_report
     - pytest --html=test_report/report.html
     - pytest --cov-report html:test_report/cov_report --cov=orbitx
@@ -103,34 +101,8 @@ test-3.9:
   extends: ".test_env"
   stage: "Test"
 
-# tox_slowtests:
-#     extends: .py_venv
-#     stage: "Full test"
-#     rules:
-#       # Run for scheduled or triggered builds
-#       - if: '$CI_PIPELINE_SOURCE == "trigger"'
-#         when: always
-#       - if: '$CI_PIPELINE_SOURCE == "schedule"'
-#         when: always        
-#       # Run for tags
-#       - if: '$CI_COMMIT_TAG'
-#         when: always
-#       # And allow manual runs
-#       - if: '$CI_COMMIT_BRANCH'
-#         when: manual
-#         allow_failure: true
-#     script:
-#       - pwd
-#       - ls -l
-#       - export PYTHONPATH="$PYTHONPATH:."
-#       - python -c "import sys;print(sys.path)"
-#       - pip install tox
-#       - tox -- --runslow
-#     coverage: '/^TOTAL.+?(\d+\%)$/'
-#     needs: []
-
 test_report:
-  needs: ["tox-3.9"]
+  needs: ["test-3.9"]
   stage: Publish test report
   image: 
      name: oberonamsterdam/wkhtmltopdf
