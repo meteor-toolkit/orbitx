@@ -10,18 +10,27 @@ class TestInit(unittest.TestCase):
     def test_TLE_path(self):
         from orbitx import TLE_PATH
 
-        self.assertCountEqual(TLE_PATH, [os.path.abspath("../data/tle")])
+        self.assertCountEqual(
+            TLE_PATH,
+            [os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "tle"))]
+        )
 
     def test_add_to_tle_path(self):
         add_to_tle_path("test")
         from orbitx import TLE_PATH
 
-        self.assertCountEqual(TLE_PATH, ["test", os.path.abspath("../data/tle")])
+        self.assertCountEqual(
+            TLE_PATH,
+            ["test", os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "tle"))]
+        )
 
         add_to_tle_path("test", prepend=False)
         from orbitx import TLE_PATH
 
-        self.assertCountEqual(TLE_PATH, ["test", os.path.abspath("../data/tle"), "test"])
+        self.assertCountEqual(
+            TLE_PATH,
+            ["test", os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "tle")), "test"]
+        )
 
     def test_setup_orekit_curdir(self):
         setup_orekit_curdir()
