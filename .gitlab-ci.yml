@@ -51,7 +51,6 @@ cache:
     - conda create -n test_env python=3.9
     - conda activate test_env
     - pip install -e ".[dev]"
-    - conda install -c conda-forge orekit
 
 ### Linting ###
 
