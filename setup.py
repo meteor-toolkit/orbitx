@@ -97,6 +97,9 @@ setup(
             "sphinx_book_theme",
             "sphinx_design",
             "ipython",
+            "pytest",
+            "pytest-html"
+            "pytest-cov"
         ]
     },
     classifiers=[
