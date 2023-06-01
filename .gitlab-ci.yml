@@ -78,7 +78,7 @@ mypy:
 
 
 ### Tests ###
-.tox:
+.test_env:
   extends: .py_venv
   script:
     - pwd
@@ -101,19 +101,9 @@ mypy:
     expire_in: 1 hour
 
 tox-3.9:
-  extends: ".tox"
+  extends: ".test_env"
   stage: "Test"
 
-tox-3.8:
-  extends: ".tox"
-  script:
-    - conda create -n test38_env python=3.8
-    - conda activate test38_env
-  stage: "Test"
-  rules:
-    - if: '$CI_COMMIT_TAG'
-      when: always
-  
 # tox_slowtests:
 #     extends: .py_venv
 #     stage: "Full test"
