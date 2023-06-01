@@ -100,7 +100,7 @@ mypy:
       junit: cov_report.xml
     expire_in: 1 hour
 
-tox-3.9:
+test-3.9:
   extends: ".test_env"
   stage: "Test"
 
