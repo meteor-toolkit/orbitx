@@ -21,7 +21,9 @@ class TestInit(unittest.TestCase):
         add_to_tle_path("test", prepend=False)
         from orbitx import TLE_PATH
 
-        self.assertCountEqual(TLE_PATH, ["test", os.path.abspath("../data/tle"), "test"])
+        self.assertCountEqual(
+            TLE_PATH, ["test", os.path.abspath("../data/tle"), "test"]
+        )
 
     def test_setup_orekit_curdir(self):
         setup_orekit_curdir()

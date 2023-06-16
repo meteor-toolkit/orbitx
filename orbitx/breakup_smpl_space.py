@@ -1,12 +1,12 @@
 import numpy as np
 
-def breakup_smpl_space(sim_time, tle_time):
-    '''
-    This function receive the samplinzg space (a vector of time containing all the instances when we want to
+
+def breakup_smpl_space(sim_time: np.array, tle_time: np.array):
+    """
+    This function receive the sampling space (a vector of time containing all the instances when we want to
     simulate the orbit) as well as the selected TLEs which are the references for orbit propagation. The idea is to
-    locate instances
-    of time in the sampling space, where we need to update the reference TLE.
-    '''
+    locate instances of time in the sampling space, where we need to update the reference TLE.
+    """
 
     idx_tle = []
     idx_sim = []
@@ -32,9 +32,4 @@ def breakup_smpl_space(sim_time, tle_time):
         del idx_tle[i]
         del idx_sim[i]
 
-    return(idx_sim, idx_tle)
-
-
-
-
-
+    return idx_sim, idx_tle

@@ -6,11 +6,38 @@ import datetime
 from typing import Tuple, List
 
 
-__author__ = ["Sajedeh Behnia <sajedeh.behnia@npl.co.uk>", "Sam Hunt <sam.hunt@npl.co.uk>"]
+__author__ = [
+    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
+    "Sam Hunt <sam.hunt@npl.co.uk>",
+]
 __all__ = ["TLE"]
 
 
 class TLE:
+    """
+    TLE information retrieval class
+
+    :param start_time: start of time window
+    :param end_time: end of time window
+    :param satellite: satellite short name as included in TLE file name ``TLEset_XXX``,
+    where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
+
+    """
+
+    def __init__(
+        self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
+    ):
+        """
+        Initialise class
+        """
+        self.satellite_name = satellite
+        self.start_time = start_time
+        self.end_time = end_time
+
+        # empty attributes
+        self.line1 = None
+        self.line2 = None
+        self.seconds_since_2000 = None
 
     @staticmethod
     def return_tle_path(satellite_name: str) -> str:
@@ -27,16 +54,16 @@ class TLE:
         path = None
 
         for tle_dir in TLE_PATH:
-            path = os.path.abspath(os.path.join(tle_dir, 'TLEset_' + satellite_name + '.txt'))
+            path = os.path.abspath(
+                os.path.join(tle_dir, "TLEset_" + satellite_name + ".txt")
+            )
             if os.path.isfile(path):
                 break
 
         return path
 
     @staticmethod
-    def return_date_from_tle(
-            tle_line_1: str
-    ) -> datetime.datetime:
+    def return_date_from_tle(tle_line_1: str) -> datetime.datetime:
         """
         Returns date time from TLE first line
 
@@ -52,14 +79,12 @@ class TLE:
         date = datetime.datetime(year=2000 + year_tens_and_units, month=1, day=1)
 
         # Add the necessary number of days to get TLE
-        date += datetime.timedelta(days=decimal_day-1)
+        date += datetime.timedelta(days=decimal_day - 1)
 
         return date
 
     @staticmethod
-    def return_seconds_since_2000(
-            date_time: datetime
-    ) -> float:
+    def return_seconds_since_2000(date_time: datetime) -> float:
         """
         Returns seconds since 2000 to defined date time
 
@@ -69,27 +94,18 @@ class TLE:
 
         return (date_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds()
 
-
-    def get_tle(
-            self,
-            start_time: datetime.datetime,
-            end_time: datetime.datetime,
-            satellite_name: str
+    def set_tle(
+        self,
     ) -> Tuple[List[str], List[str], List[float]]:
         """
-        Returns two-line elements within defined time window, with seconds since 2000
-
-        :param start_time: start of time window
-        :param end_time: end of time window
-        :param satellite_name: satellite short name as included in TLE file name ``TLEset_XXX``,
-        where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
+        Set two-line elements within defined time window, with seconds since 2000
 
         :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 2000
         """
 
         # region Read TLE file.
-        tle_path = TLE.return_tle_path(satellite_name)
-        with open(tle_path, 'r') as f:
+        tle_path = self.return_tle_path(self.satellite_name)
+        with open(tle_path, "r") as f:
             lines = f.readlines()
         lines = np.array(lines)
         # endregion
@@ -105,7 +121,7 @@ class TLE:
             line_1_indexes = 2 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 0
             line_2_indexes = 2 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 1
         else:
-            print('Error message')
+            print("Error message")
         f = np.vectorize(int)
         line_1_indexes = f(line_1_indexes)
         line_2_indexes = f(line_2_indexes)
@@ -114,20 +130,28 @@ class TLE:
         # endregion
 
         # Get date times
-        tle_time = np.array([TLE.return_date_from_tle(tle_line_1_i) for tle_line_1_i in tle_line_1])
-        tle_time_s2000 = np.array([TLE.return_seconds_since_2000(d) for d in tle_time])
-        start_time_s2000 = TLE.return_seconds_since_2000(start_time)
-        end_time_s2000 = TLE.return_seconds_since_2000(end_time)
+        tle_time = np.array(
+            [self.return_date_from_tle(tle_line_1_i) for tle_line_1_i in tle_line_1]
+        )
+        tle_time_s2000 = np.array([self.return_seconds_since_2000(d) for d in tle_time])
+        start_time_s2000 = self.return_seconds_since_2000(self.start_time)
+        end_time_s2000 = self.return_seconds_since_2000(self.end_time)
 
         # Filter time
-        idx = [i for i, t_i in enumerate(tle_time_s2000) if (t_i >= start_time_s2000) and (t_i < end_time_s2000)]
+        idx = [
+            i
+            for i, t_i in enumerate(tle_time_s2000)
+            if (t_i >= start_time_s2000) and (t_i < end_time_s2000)
+        ]
 
         # Filter TLE set
         tle_line_1 = tle_line_1[idx]
         tle_line_2 = tle_line_2[idx]
         tle_time_s2000 = tle_time_s2000[idx]
 
-        return (tle_line_1, tle_line_2, tle_time_s2000)
+        self.line1 = tle_line_1
+        self.line2 = tle_line_2
+        self.seconds_since_2000 = tle_time_s2000
 
 
 if __name__ == "__main__":
