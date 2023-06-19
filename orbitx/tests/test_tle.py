@@ -5,7 +5,7 @@ import random
 import string
 import shutil
 import unittest
-from orbitx.tle import TLE
+from orbitx.tle import TLEInfo
 from orbitx import add_to_tle_path
 from pathlib import Path
 from datetime import datetime as dt
@@ -58,7 +58,7 @@ class TestTLE(unittest.TestCase):
         shutil.rmtree(self.tmp_tle_path2)
 
     def test_return_tle_path(self):
-        tle = TLE()
+        tle = TLEInfo()
         self.assertEqual(
             tle.return_tle_path("S2A"), os.path.abspath("../data/tle/TLEset_S2A.txt")
         )
@@ -67,7 +67,7 @@ class TestTLE(unittest.TestCase):
         add_to_tle_path(self.tmp_tle_path1, prepend=True)
         add_to_tle_path(self.tmp_tle_path2, prepend=False)
 
-        tle = TLE()
+        tle = TLEInfo()
         self.assertEqual(
             tle.return_tle_path("S2A"),
             os.path.abspath(os.path.join(self.tmp_tle_path1, "TLEset_S2A.txt")),
@@ -82,7 +82,7 @@ class TestTLE(unittest.TestCase):
             "1 40697U 15028A   15174.15999288 -.00000044  00000+0  00000+0 0  9998"
         )
 
-        tle = TLE()
+        tle = TLEInfo()
         date = tle.return_date_from_tle(tle_line_1)
 
         exp_date = dt(2015, 6, 23, 3, 50, 23, 384832)
@@ -95,7 +95,7 @@ class TestTLE(unittest.TestCase):
         self.assertEqual(date.second, exp_date.second)
 
     def test_return_seconds_since_2000(self):
-        tle = TLE()
+        tle = TLEInfo()
         self.assertEqual(tle.return_seconds_since_2000(dt(2000, 1, 1, 0, 0, 1)), 1.0)
 
     def test_get_tle(self):
@@ -105,9 +105,9 @@ class TestTLE(unittest.TestCase):
         satellite_name = "S2A"
 
         # run code under test
-        tle = TLE()
+        tle = TLEInfo()
         tles = tle.get_tle(
-            start_time=start_time, end_time=end_time, satellite_name=satellite_name
+            start_time=start_time, end_time=end_time, satellite=satellite_name
         )
 
         # define expected output

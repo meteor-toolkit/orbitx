@@ -10,35 +10,10 @@ __author__ = [
     "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
     "Sam Hunt <sam.hunt@npl.co.uk>",
 ]
-__all__ = ["TLE"]
+__all__ = ["TLEInfo"]
 
 
-class TLE:
-    """
-    TLE information retrieval class
-
-    :param start_time: start of time window
-    :param end_time: end of time window
-    :param satellite: satellite short name as included in TLE file name ``TLEset_XXX``,
-    where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
-
-    """
-
-    def __init__(
-        self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
-    ):
-        """
-        Initialise class
-        """
-        self.satellite_name = satellite
-        self.start_time = start_time
-        self.end_time = end_time
-
-        # empty attributes
-        self.line1 = None
-        self.line2 = None
-        self.seconds_since_2000 = None
-
+class TLEInfo:
     @staticmethod
     def return_tle_path(satellite_name: str) -> str:
         """
@@ -94,17 +69,22 @@ class TLE:
 
         return (date_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds()
 
-    def set_tle(
-        self,
+    def get_tle(
+            self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
     ) -> Tuple[List[str], List[str], List[float]]:
         """
         Set two-line elements within defined time window, with seconds since 2000
+
+        :param start_time: start of time window
+        :param end_time: end of time window
+        :param satellite: satellite short name as included in TLE file name ``TLEset_XXX``,
+                where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
 
         :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 2000
         """
 
         # region Read TLE file.
-        tle_path = self.return_tle_path(self.satellite_name)
+        tle_path = self.return_tle_path(satellite)
         with open(tle_path, "r") as f:
             lines = f.readlines()
         lines = np.array(lines)
@@ -134,8 +114,8 @@ class TLE:
             [self.return_date_from_tle(tle_line_1_i) for tle_line_1_i in tle_line_1]
         )
         tle_time_s2000 = np.array([self.return_seconds_since_2000(d) for d in tle_time])
-        start_time_s2000 = self.return_seconds_since_2000(self.start_time)
-        end_time_s2000 = self.return_seconds_since_2000(self.end_time)
+        start_time_s2000 = self.return_seconds_since_2000(start_time)
+        end_time_s2000 = self.return_seconds_since_2000(end_time)
 
         # Filter time
         idx = [
@@ -149,9 +129,7 @@ class TLE:
         tle_line_2 = tle_line_2[idx]
         tle_time_s2000 = tle_time_s2000[idx]
 
-        self.line1 = tle_line_1
-        self.line2 = tle_line_2
-        self.seconds_since_2000 = tle_time_s2000
+        return tle_line_1, tle_line_2, tle_time_s2000
 
 
 if __name__ == "__main__":
