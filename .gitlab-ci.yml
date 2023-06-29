@@ -29,7 +29,6 @@ cache:
   key: ${CI_JOB_NAME}
   paths:
     - .cache/pip
-    - test_env
 
 # Make a template for steps that use a python virtual env
 .py_venv:
