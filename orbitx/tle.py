@@ -107,9 +107,9 @@ class TLE:
             line_2_indexes = 2 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 1
         else:
             print("Error message")
-        f = np.vectorize(int)
-        line_1_indexes = f(line_1_indexes)
-        line_2_indexes = f(line_2_indexes)
+        func = np.vectorize(int)
+        line_1_indexes = func(line_1_indexes)
+        line_2_indexes = func(line_2_indexes)
         tle_line_1 = lines[line_1_indexes]
         tle_line_2 = lines[line_2_indexes]
         # endregion
