@@ -58,15 +58,20 @@ class TestTLE(unittest.TestCase):
         shutil.rmtree(self.tmp_tle_path2)
 
     def test_return_tle_path(self):
-
         tle = TLE()
         self.assertEqual(
             tle.return_tle_path("S2A"),
-            os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "tle", "TLEset_S2A.txt"))
+            os.path.abspath(
+                os.path.join(
+                    os.path.dirname(os.path.dirname(__file__)),
+                    "data",
+                    "tle",
+                    "TLEset_S2A.txt",
+                )
+            ),
         )
 
     def test_return_tle_path_first(self):
-
         add_to_tle_path(self.tmp_tle_path1, prepend=True)
         add_to_tle_path(self.tmp_tle_path2, prepend=False)
 
@@ -81,7 +86,9 @@ class TestTLE(unittest.TestCase):
         )
 
     def test_date_from_TLE(self):
-        tle_line_1 = "1 40697U 15028A   15174.15999288 -.00000044  00000+0  00000+0 0  9998"
+        tle_line_1 = (
+            "1 40697U 15028A   15174.15999288 -.00000044  00000+0  00000+0 0  9998"
+        )
 
         tle = TLE()
         date = tle.return_date_from_tle(tle_line_1)
@@ -97,13 +104,9 @@ class TestTLE(unittest.TestCase):
 
     def test_return_seconds_since_2000(self):
         tle = TLE()
-        self.assertEqual(
-            tle.return_seconds_since_2000(dt(2000, 1, 1, 0, 0, 1)),
-            1.0
-        )
+        self.assertEqual(tle.return_seconds_since_2000(dt(2000, 1, 1, 0, 0, 1)), 1.0)
 
     def test_get_tle(self):
-
         # define input parameters
         start_time = dt(2015, 6, 24, 0, 0, 0)
         end_time = dt(2015, 6, 26, 0, 0, 0)
@@ -112,19 +115,17 @@ class TestTLE(unittest.TestCase):
         # run code under test
         tle = TLE()
         tles = tle.get_tle(
-            start_time=start_time,
-            end_time=end_time,
-            satellite_name=satellite_name
+            start_time=start_time, end_time=end_time, satellite_name=satellite_name
         )
 
         # define expected output
         exp_first_lines = [
             "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994\n",
-            "1 40697U 15028A   15176.80399346 -.00024242  00000+0 -91643-2 0  9994\n"
+            "1 40697U 15028A   15176.80399346 -.00024242  00000+0 -91643-2 0  9994\n",
         ]
         exp_second_lines = [
             "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266\n",
-            "2 40697  98.5705 251.1120 0002131 229.6310 131.1858 14.31372223   391\n"
+            "2 40697  98.5705 251.1120 0002131 229.6310 131.1858 14.31372223   391\n",
         ]
         exp_times = [488496528.156384, 488575065.034944]
 

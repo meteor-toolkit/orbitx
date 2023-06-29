@@ -36,13 +36,8 @@ def add_to_tle_path(new_tle_path: str, prepend: bool = True) -> None:
 
 
 def setup_orekit(orekit_data_path: Optional[str] = None) -> None:
-
     vm = orekit.initVM()
     setup_orekit_curdir(filename=orekit_data_path)
 
 
 setup_orekit(os.path.join(data_directory, "orekit-data.zip"))
-
-
-
-
