@@ -1,7 +1,8 @@
 """orbitx.test.test___init__ - tests for orbitx.__init__"""
 import os.path
 import unittest
-from orbitx import add_to_tle_path, setup_orekit_curdir
+import unittest.mock as mock
+from orbitx import add_to_tle_path, setup_orekit
 
 __author__ = "Sam Hunt <sam.hunt@npl.co.uk>"
 
@@ -53,8 +54,15 @@ class TestInit(unittest.TestCase):
             ],
         )
 
-    def test_setup_orekit_curdir(self):
-        setup_orekit_curdir()
+    @mock.patch("orbitx.setup_orekit_curdir")
+    def test_setup_orekit_none(self, mock_setup):
+        setup_orekit()
+        mock_setup.assert_called_with()
+
+    @mock.patch("orbitx.setup_orekit_curdir")
+    def test_setup_orekit_path(self, mock_setup):
+        setup_orekit("path_to_file")
+        mock_setup.assert_called_with(filename="path_to_file")
 
 
 if __name__ == "__main__":
