@@ -207,8 +207,8 @@ def return_matchups(
     sat2_inROI_lon = sat2_lon_sim_interp[sat2_inROI_idx]
 
     sat1_time_dif = (
-        sat1_inROI_time[1 : len(sat1_inROI_time)]
-        - sat1_inROI_time[0 : len(sat1_inROI_time) - 1]
+        sat1_inROI_time[1: len(sat1_inROI_time)]
+        - sat1_inROI_time[0: len(sat1_inROI_time) - 1]
     )
     sat1_jump_boolean = sat1_time_dif != interpolation_sampling_interval
     sat1_jump_stop_idx = [i for i, val in enumerate(sat1_jump_boolean) if val]
@@ -231,13 +231,11 @@ def return_matchups(
     match_event_idx = []
     if len(sat1_jump_start_idx) <= len(sat2_jump_start_idx):
         for i in range(len(sat1_jump_start_idx)):
-            timevec1 = []
-            timevec1 = sat1_inROI_time[sat1_jump_start_idx[i] : sat1_jump_stop_idx[i]]
+            timevec1 = sat1_inROI_time[sat1_jump_start_idx[i]: sat1_jump_stop_idx[i]]
 
             for j in range(len(sat2_jump_start_idx)):
-                timevec2 = []
                 timevec2 = sat2_inROI_time[
-                    sat2_jump_start_idx[j] : sat2_jump_stop_idx[j]
+                    sat2_jump_start_idx[j]: sat2_jump_stop_idx[j]
                 ]
 
                 if np.abs(np.mean(timevec2) - np.mean(timevec1)) <= time_diff_threshold:

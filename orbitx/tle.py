@@ -3,7 +3,7 @@
 import numpy as np
 import os
 import datetime
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 
 
 __author__ = [
@@ -15,7 +15,7 @@ __all__ = ["TLE"]
 
 class TLE:
     @staticmethod
-    def return_tle_path(satellite_name: str) -> str:
+    def return_tle_path(satellite_name: str) -> Optional[str]:
         """
         Returns path for TLE file for defined satellite
 
@@ -59,11 +59,11 @@ class TLE:
         return date
 
     @staticmethod
-    def return_seconds_since_2000(date_time: datetime) -> float:
+    def return_seconds_since_2000(date_time: datetime.datetime) -> float:
         """
         Returns seconds since 2000 to defined date time
 
-        :param data_time: time of interest
+        :param date_time: time of interest
         :returns: seconds since 2000
         """
 
