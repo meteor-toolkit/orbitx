@@ -88,6 +88,8 @@ class TLE:
 
         # region Read TLE file.
         tle_path = TLE.return_tle_path(satellite_name)
+        if not tle_path:
+            raise ValueError(f"Unable to return TLE path for '{satellite_name}'")
         with open(tle_path, "r") as f:
             lines = f.readlines()
         lines = np.array(lines)
