@@ -19,6 +19,7 @@ def read(filename):
     with io.open(filename, mode="r", encoding="utf-8") as fd:
         return re.sub(text_type(r":[a-z]+:`~?(.*?)`"), text_type(r"``\1``"), fd.read())
 
+
 # installs orekit via conda
 def post_install_commands():
     on_windows = platform.system() == "Windows"
@@ -49,6 +50,7 @@ def post_install_commands():
 
 class PostDevelopCommand(develop):
     """Post-installation for development mode."""
+
     def run(self):
         develop.run(self)
         post_install_commands()
@@ -56,14 +58,13 @@ class PostDevelopCommand(develop):
 
 class PostInstallCommand(install):
     """Post-installation for installation mode."""
+
     def run(self):
         install.run(self)
         post_install_commands()
 
-cmdclass={
-    "develop": PostDevelopCommand,
-    "install": PostInstallCommand
-}
+
+cmdclass = {"develop": PostDevelopCommand, "install": PostInstallCommand}
 
 cmdclass = versioneer.get_cmdclass(cmdclass=cmdclass)
 
@@ -78,6 +79,12 @@ setup(
     description="Propagate satellite orbits to identify matchups.",
     long_description=read("README.md"),
     packages=find_packages(exclude=("tests",)),
+    package_data={
+        "orbitx": [
+            os.path.join("data", "orekit-data.zip"),
+            os.path.join("data", "tle", "*"),
+        ]
+    },
     install_requires=[
         "numpy",
         "scipy",
@@ -86,11 +93,13 @@ setup(
     extras_require={
         "dev": [
             "pre-commit",
-            "tox",
             "sphinx",
             "sphinx_book_theme",
             "sphinx_design",
             "ipython",
+            "pytest",
+            "pytest-html",
+            "pytest-cov",
         ]
     },
     classifiers=[
