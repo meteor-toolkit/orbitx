@@ -89,6 +89,7 @@ setup(
         "numpy",
         "scipy",
         "matplotlib",
+        "netcdf4",
     ],
     extras_require={
         "dev": [
