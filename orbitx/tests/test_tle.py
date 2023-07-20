@@ -60,7 +60,15 @@ class TestTLE(unittest.TestCase):
     def test_return_tle_path(self):
         tle = TLEInfo()
         self.assertEqual(
-            tle.return_tle_path("S2A"), os.path.abspath("../data/tle/TLEset_S2A.txt")
+            tle.return_tle_path("S2A"),
+            os.path.abspath(
+                os.path.join(
+                    os.path.dirname(os.path.dirname(__file__)),
+                    "data",
+                    "tle",
+                    "TLEset_S2A.txt",
+                )
+            ),
         )
 
     def test_return_tle_path_first(self):
