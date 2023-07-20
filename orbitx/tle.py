@@ -70,7 +70,7 @@ class TLEInfo:
         return (date_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds()
 
     def get_tle(
-            self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
+        self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
     ) -> Tuple[List[str], List[str], List[float]]:
         """
         Set two-line elements within defined time window, with seconds since 2000
