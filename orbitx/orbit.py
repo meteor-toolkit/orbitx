@@ -93,6 +93,7 @@ class Orbit:
         Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and
         return the matching pointers/indices.
 
+
         :param sim_time: a vector of time containing all the instances when we want to simulate the orbit
         :param tle_time: a vector of time containing all tle instances
         :return: tuple of lists containing corresponding indices between simulation space and tle references
@@ -102,10 +103,11 @@ class Orbit:
         idx_sim = []
         idx_redundant = []
 
+
         # Find corresponding indices of tle and simulation time vectors
         for i in range(len(tle_time)):
             idx_tle.append(i)
-            idx_sim.append(np.argmax(sim_time > tle_time[i]))
+            idx_sim.append(np.argmax(sim_time >= tle_time[i]))
 
         # Find redundant tle time references
         idx_sim_unique = np.unique(idx_sim)
@@ -273,23 +275,42 @@ class Orbit:
         sat_lat_sim = []
         sat_lon_sim = []
         sat_sec_since = []
-        for i in range(len(tle_ref_lines) - 1):
+
+        if len(tle_ref_lines) == 1:
             secsince1, lat1, lon1, alt1, el1, az1 = self.propagate_orbit(
-                line1[tle_ref_lines[i]],
-                line2[tle_ref_lines[i]],
-                smpl_space[sat_smpl_breakup_idx[i]],
-                smpl_space[sat_smpl_breakup_idx[i + 1] - 1],
+                line1[tle_ref_lines[0]],
+                line2[tle_ref_lines[0]],
+                self.start_time,
+                self.end_time,
                 propagation_sampling_interval,
             )
-            sat_lat_sim.append(lat1)
-            sat_lon_sim.append(lon1)
-            sat_sec_since.append(secsince1)
-        # flatten the inhomogeneous list of lists
+            sat_lat_sim = lat1
+            sat_lon_sim = lon1
+            sat_sec_since = secsince1
+
+        else:
+            for i in range(len(tle_ref_lines) - 1):
+                secsince1, lat1, lon1, alt1, el1, az1 = self.propagate_orbit(
+                    line1[tle_ref_lines[i]],
+                    line2[tle_ref_lines[i]],
+                    smpl_space[sat_smpl_breakup_idx[i]],
+                    smpl_space[sat_smpl_breakup_idx[i + 1] - 1],
+                    propagation_sampling_interval,
+                )
+                sat_lat_sim.append(lat1)
+                sat_lon_sim.append(lon1)
+                sat_sec_since.append(secsince1)
+            # flatten the inhomogeneous list of lists
+            sat_sec_since = np.hstack(sat_sec_since)
+            sat_lat_sim = np.hstack(sat_lat_sim)
+            sat_lon_sim = np.hstack(sat_lon_sim)
+
         return (
-            np.hstack(sat_sec_since),
-            np.hstack(sat_lat_sim),
-            np.hstack(sat_lon_sim),
+            sat_sec_since,
+            sat_lat_sim,
+            sat_lon_sim,
         )
+
 
     def interpolate_orbit(self, sat_sec_since, sat_lat_sim, sat_lon_sim, interpolation_sampling_interval):
         """

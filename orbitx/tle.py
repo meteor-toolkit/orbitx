@@ -91,6 +91,7 @@ class TLEInfo:
         # endregion
 
         # region Access indexes of line-1 and line-2
+        # TODO: change the if condition to deal with multiplicatives of 6
         length = len(lines)
         if length % 3 == 0:
             number_of_TLEs = int(length / 3)
@@ -124,10 +125,21 @@ class TLEInfo:
             if (t_i >= start_time_s2000) and (t_i < end_time_s2000)
         ]
 
-        # Filter TLE set
-        tle_line_1 = tle_line_1[idx]
-        tle_line_2 = tle_line_2[idx]
-        tle_time_s2000 = tle_time_s2000[idx]
+
+
+        if idx == []:
+            # If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time
+            closest_TLE = np.argmin(np.abs(tle_time_s2000 - start_time_s2000))
+
+            tle_line_1 = [tle_line_1[closest_TLE]]
+            tle_line_2 = [tle_line_2[closest_TLE]]
+            tle_time_s2000 = [tle_time_s2000[closest_TLE]]
+
+        else:
+            # Filter TLE set
+            tle_line_1 = tle_line_1[idx]
+            tle_line_2 = tle_line_2[idx]
+            tle_time_s2000 = tle_time_s2000[idx]
 
         return tle_line_1, tle_line_2, tle_time_s2000
 

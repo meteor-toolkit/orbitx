@@ -18,6 +18,7 @@ del get_versions
 this_directory = os.path.dirname(__file__)
 data_directory = os.path.join(this_directory, "data")
 TLE_PATH = [os.path.join(data_directory, "tle")]
+S6_ORBIT_PATH = [os.path.join(data_directory, "Sentinel6_sample_orbit", "S6A_P4_2__LR_STD__NT_050_155_20220324T131606_20220324T141219_F05_unvalidated.nc")]
 
 
 def add_to_tle_path(new_tle_path: str, prepend: bool = True) -> None:

@@ -68,7 +68,6 @@ if __name__ == "__main__":
         latmax=50,
         lonmin=40,
         lonmax=50,
-        output_path_sim_orbits=r"C:\Users\mg13\Documents\Projects\data\satellite_simulated_orbits",
-        output_path_matchups=r"C:\Users\mg13\Documents\Projects\data\satellite_matchups",
+        output_path_sim_orbits=r"T:\ECO\EOServer\data\satellite_simulated_orbits",
+        output_path_matchups=r"T:\ECO\EOServer\data\satellite_matchups",
     )
-    # main()
