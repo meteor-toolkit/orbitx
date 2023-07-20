@@ -1,4 +1,4 @@
-"""orbitx.test.test___init__ - tests for orbitx.__init__"""
+"""orbitx.tests.test___init__ - tests for orbitx.__init__"""
 import os.path
 import unittest
 import unittest.mock as mock

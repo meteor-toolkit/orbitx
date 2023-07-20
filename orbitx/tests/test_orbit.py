@@ -1,10 +1,11 @@
-"""orbitx.test.test_get_2LEs - tests for orbitx.get_2LEs"""
+"""orbitx.tests.test_get_2LEs - tests for orbitx.get_2LEs"""
 import numpy as np
 import os.path
 import random
 import string
 import shutil
 import unittest
+import unittest.mock as mock
 import datetime
 from orbitx.tle import TLEInfo
 from orbitx import add_to_tle_path
@@ -86,7 +87,7 @@ class TestORBIT(unittest.TestCase):
         self.assertEqual(exp_idx_tle, idx_tle)
         self.assertEqual(exp_idx_sim, idx_sim)
 
-    def test_simulate_orbit(self):
+    def test_valid_simulate_orbit(self):
         # Read sample Sentinel-6 file
         ds = nc.Dataset(S6_ORBIT_PATH[0], mode="r")
         exp_time = ds.groups["data_01"].variables["time"][:]
@@ -120,6 +121,32 @@ class TestORBIT(unittest.TestCase):
         ]
         # Make sure that at all instances, the distance is less than 1 km (which is an acceptable deviation for S6)
         self.assertTrue((np.array(distance) < 1).all())
+
+    @mock.patch(
+        "orbitx.orbit.Orbit.propagate_orbit",
+        return_value=([12], [13], [14], [], [], []),
+    )
+    @mock.patch("orbitx.orbit.Orbit.get_matching_indices", return_value=([7], [0]))
+    @mock.patch("orbitx.orbit.Orbit.form_sample_space", return_value=([], [9]))
+    def test_simulate_orbit_1_tle_ref(self, mock_form_ss, mock_match_idx, mock_prop):
+        orbit = Orbit()
+        orbit.start_time = ""
+        orbit.end_time = ""
+
+        self.assertEqual(
+            orbit.simulate_orbit(["12"], ["23"], [32], 2), ([12], [13], [14])
+        )
+        mock_form_ss.assert_called_with("", "", 2)
+        mock_match_idx.assert_called_with([9], [32])
+        mock_prop.assert_called_with("12", "23", "", "", 2)
+
+    @mock.patch(
+        "orbitx.orbit.Orbit.propagate_orbit", return_value=([], [1], [], [], [], [])
+    )
+    @mock.patch("orbitx.orbit.Orbit.get_matching_indices", return_value=([], [1, 2]))
+    @mock.patch("orbitx.orbit.Orbit.form_sample_space", return_value=([], []))
+    def test_simulate_orbit_2_tle_ref(self, mock_form_ss, mock_martch_idx, mock_prop):
+        pass
 
     def test_interpolate_orbit(self):
         sat_sec_since = [0, 86400]
