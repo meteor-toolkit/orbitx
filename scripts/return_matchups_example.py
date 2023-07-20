@@ -53,6 +53,7 @@ __author__ = "Sajedeh Behnia"
 if __name__ == "__main__":
     import faulthandler
     import datetime
+
     faulthandler.enable()
     from orbitx.interface import return_matchups
 

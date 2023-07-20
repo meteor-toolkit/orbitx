@@ -17,19 +17,19 @@ __all__ = ["return_matchups"]
 
 
 def return_matchups(
-        sats: List[str],
-        start_time: datetime.datetime,
-        end_time: datetime.datetime,
-        propagation_sampling_interval: float,
-        interpolation_sampling_interval: float,
-        cntr2cntr_dist: float,
-        time_diff_threshold: float,
-        latmin: float,
-        latmax: float,
-        lonmin: float,
-        lonmax: float,
-        output_path_sim_orbits: str,
-        output_path_matchups: str,
+    sats: List[str],
+    start_time: datetime.datetime,
+    end_time: datetime.datetime,
+    propagation_sampling_interval: float,
+    interpolation_sampling_interval: float,
+    cntr2cntr_dist: float,
+    time_diff_threshold: float,
+    latmin: float,
+    latmax: float,
+    lonmin: float,
+    lonmax: float,
+    output_path_sim_orbits: str,
+    output_path_matchups: str,
 ) -> None:
     """
     Save
@@ -51,7 +51,11 @@ def return_matchups(
     # simulate desired orbits
     orbit = Orbit()
     orbit_output = orbit.run(
-        sats, start_time, end_time, propagation_sampling_interval, interpolation_sampling_interval
+        sats,
+        start_time,
+        end_time,
+        propagation_sampling_interval,
+        interpolation_sampling_interval,
     )
 
     # save orbital data
@@ -60,10 +64,16 @@ def return_matchups(
     # find matchups between orbits
     matchups = MatchUp()
     matchup_output = matchups.search(
-        orbit_output, latmin, latmax, lonmin, lonmax, interpolation_sampling_interval, time_diff_threshold)
+        orbit_output,
+        latmin,
+        latmax,
+        lonmin,
+        lonmax,
+        interpolation_sampling_interval,
+        time_diff_threshold,
+    )
 
     # save matchup data
     fname = f"matchup_{'_'.join(list(orbit_output.keys()))}_starttime_{start_time.strftime('%Y%m%d')}_endtime_{end_time.strftime('%Y%m%d')}_samplinginterval_{propagation_sampling_interval}_tmptol_{time_diff_threshold}.txt"
 
     matchups.save(matchup_output, output_path_matchups, fname)
-

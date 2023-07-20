@@ -70,7 +70,7 @@ class TLEInfo:
         return (date_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds()
 
     def get_tle(
-            self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
+        self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
     ) -> Tuple[List[str], List[str], List[float]]:
         """
         Returns two-line elements within defined time window, with seconds since 2000
@@ -124,8 +124,6 @@ class TLEInfo:
             for i, t_i in enumerate(tle_time_s2000)
             if (t_i >= start_time_s2000) and (t_i < end_time_s2000)
         ]
-
-
 
         if idx == []:
             # If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time

@@ -55,9 +55,9 @@ class Orbit:
 
     @staticmethod
     def form_sample_space(
-            start_time: datetime.datetime,
-            end_time: datetime.datetime,
-            prop_smpl_interval: Union[float, int],
+        start_time: datetime.datetime,
+        end_time: datetime.datetime,
+        prop_smpl_interval: Union[float, int],
     ) -> Tuple[list, np.array]:
         """
         Return a time vector containing desired orbit simulation timestamps
@@ -87,7 +87,7 @@ class Orbit:
 
     @staticmethod
     def get_matching_indices(
-            sim_time: np.array, tle_time: np.array
+        sim_time: np.array, tle_time: np.array
     ) -> Tuple[list, list]:
         """
         Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and
@@ -102,7 +102,6 @@ class Orbit:
         idx_tle = []
         idx_sim = []
         idx_redundant = []
-
 
         # Find corresponding indices of tle and simulation time vectors
         for i in range(len(tle_time)):
@@ -128,11 +127,11 @@ class Orbit:
 
     @staticmethod
     def propagate_orbit(
-            tle_line1: str,
-            tle_line2: str,
-            start_time: datetime.datetime,
-            end_time: datetime.datetime,
-            propagation_sampling_interval: Union[float, int],
+        tle_line1: str,
+        tle_line2: str,
+        start_time: datetime.datetime,
+        end_time: datetime.datetime,
+        propagation_sampling_interval: Union[float, int],
     ) -> Tuple[
         List[float], List[float], List[float], List[float], List[float], List[float]
     ]:
@@ -207,7 +206,7 @@ class Orbit:
         julian_date = []
 
         while (
-                extrapDate.compareTo(finalDate) <= 0.0
+            extrapDate.compareTo(finalDate) <= 0.0
         ):  # propagate orbit until it reaches it reaches the final date
             pv0 = propagator0.getPVCoordinates(extrapDate, inertialFrame)
             psun = sun.getPVCoordinates(extrapDate, inertialFrame)
@@ -233,14 +232,14 @@ class Orbit:
             station_frame = TopocentricFrame(earth, station, "Esrange")
 
             saz_tmp = (
-                    station_frame.getAzimuth(pos_sun, inertialFrame, extrapDate)
-                    * 180.0
-                    / pi
+                station_frame.getAzimuth(pos_sun, inertialFrame, extrapDate)
+                * 180.0
+                / pi
             )
             sel_tmp = (
-                    station_frame.getElevation(pos_sun, inertialFrame, extrapDate)
-                    * 180.0
-                    / pi
+                station_frame.getElevation(pos_sun, inertialFrame, extrapDate)
+                * 180.0
+                / pi
             )
 
             sel.append(sel_tmp)
@@ -249,8 +248,8 @@ class Orbit:
             date.append(absolutedate_to_datetime(extrapDate))
             julian_date.append(
                 (
-                        absolutedate_to_datetime(extrapDate)
-                        - datetime.datetime(2000, 1, 1, 0, 0, 0)
+                    absolutedate_to_datetime(extrapDate)
+                    - datetime.datetime(2000, 1, 1, 0, 0, 0)
                 ).total_seconds()
             )
             extrapDate = extrapDate.shiftedBy(propagation_sampling_interval)
@@ -260,8 +259,11 @@ class Orbit:
         return julian_date, pos_s0_lat, pos_s0_lon, pos_s0_alt, sel, saz
 
     def simulate_orbit(
-            self, line1: list[str], line2: list[str], seconds_since_2000: List[float],
-            propagation_sampling_interval: Union[float, int]
+        self,
+        line1: list[str],
+        line2: list[str],
+        seconds_since_2000: List[float],
+        propagation_sampling_interval: Union[float, int],
     ):
         """
         Return latitude, longitude and time arrays for full simulated orbit
@@ -311,11 +313,10 @@ class Orbit:
             sat_lon_sim,
         )
 
-
-    def interpolate_orbit(self, sat_sec_since, sat_lat_sim, sat_lon_sim, interpolation_sampling_interval):
-        """
-
-        """
+    def interpolate_orbit(
+        self, sat_sec_since, sat_lat_sim, sat_lon_sim, interpolation_sampling_interval
+    ):
+        """ """
         f1_lat_linear = interp1d(sat_sec_since, sat_lat_sim, fill_value="extrapolate")
         f1_lon_linear = interp1d(sat_sec_since, sat_lon_sim, fill_value="extrapolate")
 
@@ -325,15 +326,19 @@ class Orbit:
             interpolation_sampling_interval,
         )
 
-        return f1_lat_linear(prop_smpl_space), f1_lon_linear(prop_smpl_space), prop_smpl_space
+        return (
+            f1_lat_linear(prop_smpl_space),
+            f1_lon_linear(prop_smpl_space),
+            prop_smpl_space,
+        )
 
     def run(
-            self,
-            satellites: List[str],
-            start_time: datetime.datetime,
-            end_time: datetime.datetime,
-            propagation_sampling_interval: Union[float, int],
-            interpolation_sampling_interval: Union[float, int]
+        self,
+        satellites: List[str],
+        start_time: datetime.datetime,
+        end_time: datetime.datetime,
+        propagation_sampling_interval: Union[float, int],
+        interpolation_sampling_interval: Union[float, int],
     ) -> dict:
         """
         Calculate the interpolated satellite orbits
@@ -350,13 +355,10 @@ class Orbit:
         tle = TLEInfo()
         sat_interp_dict = {}
         for sat in satellites:
-            tle_info = tle.get_tle(
-                sat, start_time, end_time
+            tle_info = tle.get_tle(sat, start_time, end_time)
+            orbit = self.simulate_orbit(*tle_info, propagation_sampling_interval)
+            lat, lon, time = self.interpolate_orbit(
+                *orbit, interpolation_sampling_interval
             )
-            orbit = self.simulate_orbit(
-                *tle_info, propagation_sampling_interval
-            )
-            lat, lon, time = self.interpolate_orbit(*orbit, interpolation_sampling_interval)
             sat_interp_dict.update({sat: {"lat": lat, "lon": lon, "time": time}})
         return sat_interp_dict
-
