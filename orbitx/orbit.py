@@ -356,9 +356,14 @@ class Orbit:
         sat_interp_dict = {}
         for sat in satellites:
             line1, line2, secs_since = tle.get_tle(sat, start_time, end_time)
-            orbit = self.simulate_orbit(line1, line2, secs_since, propagation_sampling_interval)
+            sat_secs_since, sat_lat_sim, sat_lon_sim = self.simulate_orbit(
+                line1, line2, secs_since, propagation_sampling_interval
+            )
             lat, lon, time = self.interpolate_orbit(
-                *orbit, interpolation_sampling_interval
+                sat_secs_since,
+                sat_lat_sim,
+                sat_lon_sim,
+                interpolation_sampling_interval,
             )
             sat_interp_dict.update({sat: {"lat": lat, "lon": lon, "time": time}})
         return sat_interp_dict
