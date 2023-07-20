@@ -79,7 +79,7 @@ class Orbit:
         )
 
         smpl_space = [
-            datetime.timedelta(seconds=i) + datetime.datetime(2000, 1, 1, 0, 0, 0)
+            datetime.datetime(2000, 1, 1, 0, 0, 0) + datetime.timedelta(seconds=i)
             for i in smpl_space_secs_since_2000
         ]
 

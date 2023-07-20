@@ -85,6 +85,8 @@ class TLEInfo:
 
         # region Read TLE file.
         tle_path = self.return_tle_path(satellite)
+        if tle_path is None:
+            raise ValueError(f"No TLE file found for '{satellite}'")
         with open(tle_path, "r") as f:
             lines = f.readlines()
         lines = np.array(lines)
