@@ -193,9 +193,9 @@ class Orbit:
 
         sel = []
         saz = []
-        sze = []
+        sze: list = []
 
-        pos = []
+        pos: list = []
         pos_lat = []
         pos_lon = []
         pos_alt = []
@@ -260,8 +260,8 @@ class Orbit:
 
     def simulate_orbit(
         self,
-        line1: list[str],
-        line2: list[str],
+        line1: List[str],
+        line2: List[str],
         seconds_since_2000: List[float],
         propagation_sampling_interval: Union[float, int],
     ):
@@ -274,9 +274,9 @@ class Orbit:
         sat_smpl_breakup_idx, tle_ref_lines = self.get_matching_indices(
             smpl_space_secs_since_2000, seconds_since_2000
         )
-        sat_lat_sim = []
-        sat_lon_sim = []
-        sat_sec_since = []
+        sat_lat_sim: list = []
+        sat_lon_sim: list = []
+        sat_sec_since: list = []
 
         if len(tle_ref_lines) == 1:
             secsince1, lat1, lon1, alt1, el1, az1 = self.propagate_orbit(
@@ -355,8 +355,8 @@ class Orbit:
         tle = TLEInfo()
         sat_interp_dict = {}
         for sat in satellites:
-            tle_info = tle.get_tle(sat, start_time, end_time)
-            orbit = self.simulate_orbit(*tle_info, propagation_sampling_interval)
+            line1, line2, secs_since = tle.get_tle(sat, start_time, end_time)
+            orbit = self.simulate_orbit(line1, line2, secs_since, propagation_sampling_interval)
             lat, lon, time = self.interpolate_orbit(
                 *orbit, interpolation_sampling_interval
             )
