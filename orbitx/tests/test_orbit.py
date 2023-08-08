@@ -1,22 +1,39 @@
-"""orbitx.tests.test_get_2LEs - tests for orbitx.get_2LEs"""
+"""orbitx.tests.test_orbit - tests for orbitx.orbit"""
+
 import numpy as np
-import os.path
-import random
-import string
-import shutil
 import unittest
 import unittest.mock as mock
 import datetime
 from orbitx.tle import TLEInfo
-from orbitx import add_to_tle_path
-from pathlib import Path
-from datetime import datetime as dt
-from orbitx.orbit import Orbit
+from orbitx.orbit import Orbit, AbsoluteDate
 from orbitx import S6_ORBIT_PATH
 import netCDF4 as nc
 from math import pi
 
 __author__ = "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>"
+
+
+def cal_dist_d2m(lat1, lon1, lat2, lon2):
+    """
+    Get lat and lon pairs in degree and return distance in kilometer
+    :param lat1:
+    :param lon1:
+    :param lat2:
+    :param lon2:
+    :return:
+    """
+    lon1 = lon1 * pi / 180.0
+    lat1 = lat1 * pi / 180.0
+    lon2 = lon2 * pi / 180.0
+    lat2 = lat2 * pi / 180.0
+
+    R = 6373.0  # radius of the Earth [kms] meaning that the result will also be in kms
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = np.sin(dlat / 2) ** 2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2) ** 2
+    c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
+    distance = R * c  # Haversine formula
+    return distance
 
 
 class TestORBIT(unittest.TestCase):
@@ -122,6 +139,83 @@ class TestORBIT(unittest.TestCase):
         # Make sure that at all instances, the distance is less than 1 km (which is an acceptable deviation for S6)
         self.assertTrue((np.array(distance) < 1).all())
 
+    #
+    @mock.patch(
+        "orbitx.orbit.absolutedate_to_datetime",
+        return_value=datetime.datetime(2000, 1, 1),
+    )
+    @mock.patch("orbitx.orbit.TopocentricFrame")
+    @mock.patch("orbitx.orbit.GeodeticPoint")
+    @mock.patch("orbitx.orbit.TLEPropagator.selectExtrapolator")
+    @mock.patch("orbitx.orbit.TLE", return_value=([3]))
+    @mock.patch("orbitx.orbit.FramesFactory.getEME2000")
+    @mock.patch("orbitx.orbit.OneAxisEllipsoid")
+    @mock.patch("orbitx.orbit.FramesFactory.getITRF")
+    @mock.patch("orbitx.orbit.TimeScalesFactory.getUTC")
+    @mock.patch("orbitx.orbit.PVCoordinatesProvider.cast_")
+    @mock.patch("orbitx.orbit.CelestialBodyFactory.getSun")
+    @mock.patch("orbitx.orbit.AbsoluteDate")
+    def test_propagate_orbit(
+        self,
+        mock_AbsoluteDate,
+        mock_CBF_getSun,
+        mock_PVCP_cast_,
+        mock_TSF_getUTC,
+        mock_FF_getITRF,
+        mock_OneAxisEllipsoid,
+        mock_FF_getEME2000,
+        mock_TLE,
+        mock_TLEP_selectExtrapolator,
+        mock_GeodeticPoint,
+        mock_TopocentricFrame,
+        mock_absolutedate_to_datetime,
+    ):
+        mock_AbsoluteDate_1 = mock.MagicMock(spec=AbsoluteDate)
+        mock_AbsoluteDate_1.compareTo.side_effect = [-7, -6, -5, -4, -3, -2, -1, 0, 1]
+        mock_AbsoluteDate_1.shiftedBy.return_value = mock_AbsoluteDate_1
+
+        mock_AbsoluteDate_2 = mock.MagicMock(spec=AbsoluteDate)
+        mock_AbsoluteDate_2.compareTo.side_effect = [-7, -6, -5, -4, -3, -2, -1, 0, 1]
+        mock_AbsoluteDate_2.shiftedBy.return_value = mock_AbsoluteDate_2
+
+        mock_AbsoluteDate.side_effect = [mock_AbsoluteDate_1, mock_AbsoluteDate_2]
+
+        mock_OneAxisEllipsoid().transform().getLatitude.return_value = 0
+        mock_OneAxisEllipsoid().transform().getLongitude.return_value = 0
+        mock_OneAxisEllipsoid().transform().getAltitude.return_value = []
+
+        mock_TopocentricFrame().getAzimuth.return_value = 0
+        mock_TopocentricFrame().getElevation.return_value = 0
+
+        orbit = Orbit()
+        self.assertEqual(
+            orbit.propagate_orbit(
+                "", "", datetime.datetime(2000, 1, 1), datetime.datetime(2000, 1, 2), 1
+            ),
+            (
+                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [[], [], [], [], [], [], [], []],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+            ),
+        )
+        mock_AbsoluteDate.assert_called()
+        mock_CBF_getSun.assert_called()
+        mock_PVCP_cast_.assert_called()
+        mock_TSF_getUTC.assert_called()
+        mock_FF_getITRF.assert_called()
+        mock_OneAxisEllipsoid.assert_called()
+        mock_FF_getEME2000.assert_called_with()
+        mock_TLE.assert_called_with("", "")
+        mock_TLEP_selectExtrapolator.assert_called_with([3])
+        mock_GeodeticPoint.assert_called()
+        mock_TopocentricFrame.assert_called()
+        mock_absolutedate_to_datetime.assert_called()
+
+        pass
+
     @mock.patch(
         "orbitx.orbit.Orbit.propagate_orbit",
         return_value=([12], [13], [14], [], [], []),
@@ -141,12 +235,30 @@ class TestORBIT(unittest.TestCase):
         mock_prop.assert_called_with("12", "23", "", "", 2)
 
     @mock.patch(
-        "orbitx.orbit.Orbit.propagate_orbit", return_value=([], [1], [], [], [], [])
+        "orbitx.orbit.Orbit.propagate_orbit", return_value=([1], [1], [1], [], [], [])
     )
-    @mock.patch("orbitx.orbit.Orbit.get_matching_indices", return_value=([], [1, 2]))
-    @mock.patch("orbitx.orbit.Orbit.form_sample_space", return_value=([], []))
-    def test_simulate_orbit_2_tle_ref(self, mock_form_ss, mock_martch_idx, mock_prop):
-        pass
+    @mock.patch(
+        "orbitx.orbit.Orbit.get_matching_indices", return_value=([1, 2], [1, 2])
+    )
+    @mock.patch(
+        "orbitx.orbit.Orbit.form_sample_space", return_value=([1, 2, 3, 5, 6], [])
+    )
+    def test_simulate_orbit_2_tle_ref(
+        self, mock_form_smpl, mock_get_mtch_idx, mock_prop_orb
+    ):
+        orbit = Orbit()
+        orbit.start_time = ""
+        orbit.end_time = ""
+
+        self.assertEqual(
+            orbit.simulate_orbit(["1", "2"], ["2", "3"], [2], 1), ([1], [1], [1])
+        )
+        mock_form_smpl.assert_called_with("", "", 1)
+        mock_form_smpl.assert_called_once()
+        mock_get_mtch_idx.assert_called_with([], [2])
+        mock_get_mtch_idx.assert_called_once()
+        mock_prop_orb.assert_called_with("2", "3", 2, 2, 1)
+        mock_prop_orb.assert_called_once()
 
     def test_interpolate_orbit(self):
         sat_sec_since = [0, 86400]
@@ -173,30 +285,22 @@ class TestORBIT(unittest.TestCase):
         self.assertTrue((exp_lon == lon).all())
         self.assertTrue((exp_time == time).all())
 
+    @mock.patch("orbitx.orbit.Orbit.interpolate_orbit", return_value=([2], ["B"], []))
+    @mock.patch("orbitx.orbit.Orbit.simulate_orbit", return_value=([2], ["b"], []))
+    @mock.patch("orbitx.tle.TLEInfo.get_tle", return_value=([1], [], [""]))
+    def test_run(self, mock_get_tle, mock_sim_orb, mock_interp_orb):
+        orbit = Orbit()
+        self.assertEqual(
+            orbit.run([""], 1, 2, [3], [4]),
+            {"": {"lat": [2], "lon": ["B"], "time": []}},
+        )
+        mock_get_tle.assert_called_with("", 1, 2)
+        mock_get_tle.assert_called_once()
+        mock_sim_orb.assert_called_with([1], [], [""], [3])
+        mock_sim_orb.assert_called_once()
+        mock_interp_orb.assert_called_with([2], ["b"], [], [4])
+        mock_interp_orb.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main()
-
-
-# TODO - Ask whether you can simply use a new function inside your test_X.
-def cal_dist_d2m(lat1, lon1, lat2, lon2):
-    """
-    Get lat and lon pairs in degree and return distance in kilometer
-    :param lat1:
-    :param lon1:
-    :param lat2:
-    :param lon2:
-    :return:
-    """
-    lon1 = lon1 * pi / 180.0
-    lat1 = lat1 * pi / 180.0
-    lon2 = lon2 * pi / 180.0
-    lat2 = lat2 * pi / 180.0
-
-    R = 6373.0  # radius of the Earth [kms] meaning that the result will also be in kms
-    dlon = lon2 - lon1
-    dlat = lat2 - lat1
-    a = np.sin(dlat / 2) ** 2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2) ** 2
-    c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
-    distance = R * c  # Haversine formula
-    return distance

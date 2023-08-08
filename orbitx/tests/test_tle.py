@@ -1,4 +1,4 @@
-"""orbitx.tests.test_get_2LEs - tests for orbitx.get_2LEs"""
+"""orbitx.tests.test_tle - tests for orbitx.tle"""
 import numpy as np
 import os.path
 import random

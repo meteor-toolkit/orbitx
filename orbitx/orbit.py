@@ -219,12 +219,12 @@ class Orbit:
                 pos_tmp0, inertialFrame, extrapDate
             )  # position of the satellite on the earth surface
 
-            pos_s0_lat.append((poss0.getLatitude()))  # satellite nadir position
-            pos_s0_lon.append((poss0.getLongitude()))  # satellite nadir position
-            pos_s0_alt.append((poss0.getAltitude()))  # satellite nadir position
-            pos_lat.append((pos0.getLatitude()))  # sun nadir position
-            pos_lon.append((pos0.getLongitude()))  # sun nadir position
-            pos_alt.append((pos0.getAltitude()))  # sun nadir position
+            pos_s0_lat.append(poss0.getLatitude())  # satellite nadir position
+            pos_s0_lon.append(poss0.getLongitude())  # satellite nadir position
+            pos_s0_alt.append(poss0.getAltitude())  # satellite nadir position
+            pos_lat.append(pos0.getLatitude())  # sun nadir position
+            pos_lon.append(pos0.getLongitude())  # sun nadir position
+            pos_alt.append(pos0.getAltitude())  # sun nadir position
             station = GeodeticPoint(
                 poss0.getLatitude(), poss0.getLongitude(), 0.0
             )  # set the satellite Nadir position as the reference from which to obtain the
