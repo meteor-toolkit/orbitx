@@ -3,7 +3,7 @@
 import numpy as np
 import os
 import datetime
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 
 
 __author__ = [
@@ -15,7 +15,7 @@ __all__ = ["TLEInfo"]
 
 class TLEInfo:
     @staticmethod
-    def return_tle_path(satellite_name: str) -> str:
+    def return_tle_path(satellite_name: str) -> Optional[str]:
         """
         Returns path for TLE file for defined satellite
 
@@ -59,11 +59,11 @@ class TLEInfo:
         return date
 
     @staticmethod
-    def return_seconds_since_2000(date_time: datetime) -> float:
+    def return_seconds_since_2000(date_time: datetime.datetime) -> float:
         """
         Returns seconds since 2000 to defined date time
 
-        :param data_time: time of interest
+        :param date_time: time of interest
         :returns: seconds since 2000
         """
 
@@ -73,7 +73,7 @@ class TLEInfo:
         self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
     ) -> Tuple[List[str], List[str], List[float]]:
         """
-        Set two-line elements within defined time window, with seconds since 2000
+        Returns two-line elements within defined time window, with seconds since 2000
 
         :param start_time: start of time window
         :param end_time: end of time window
@@ -85,12 +85,15 @@ class TLEInfo:
 
         # region Read TLE file.
         tle_path = self.return_tle_path(satellite)
+        if tle_path is None:
+            raise ValueError(f"No TLE file found for '{satellite}'")
         with open(tle_path, "r") as f:
             lines = f.readlines()
         lines = np.array(lines)
         # endregion
 
         # region Access indexes of line-1 and line-2
+        # TODO: change the if condition to deal with multiplicatives of 6
         length = len(lines)
         if length % 3 == 0:
             number_of_TLEs = int(length / 3)
@@ -102,9 +105,9 @@ class TLEInfo:
             line_2_indexes = 2 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 1
         else:
             print("Error message")
-        f = np.vectorize(int)
-        line_1_indexes = f(line_1_indexes)
-        line_2_indexes = f(line_2_indexes)
+        func = np.vectorize(int)
+        line_1_indexes = func(line_1_indexes)
+        line_2_indexes = func(line_2_indexes)
         tle_line_1 = lines[line_1_indexes]
         tle_line_2 = lines[line_2_indexes]
         # endregion
@@ -124,10 +127,19 @@ class TLEInfo:
             if (t_i >= start_time_s2000) and (t_i < end_time_s2000)
         ]
 
-        # Filter TLE set
-        tle_line_1 = tle_line_1[idx]
-        tle_line_2 = tle_line_2[idx]
-        tle_time_s2000 = tle_time_s2000[idx]
+        if idx == []:
+            # If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time
+            closest_TLE = np.argmin(np.abs(tle_time_s2000 - start_time_s2000))
+
+            tle_line_1 = [tle_line_1[closest_TLE]]
+            tle_line_2 = [tle_line_2[closest_TLE]]
+            tle_time_s2000 = [tle_time_s2000[closest_TLE]]
+
+        else:
+            # Filter TLE set
+            tle_line_1 = tle_line_1[idx]
+            tle_line_2 = tle_line_2[idx]
+            tle_time_s2000 = tle_time_s2000[idx]
 
         return tle_line_1, tle_line_2, tle_time_s2000
 

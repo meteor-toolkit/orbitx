@@ -79,7 +79,7 @@ class Orbit:
         )
 
         smpl_space = [
-            datetime.timedelta(seconds=i) + datetime.datetime(2000, 1, 1, 0, 0, 0)
+            datetime.datetime(2000, 1, 1, 0, 0, 0) + datetime.timedelta(seconds=i)
             for i in smpl_space_secs_since_2000
         ]
 
@@ -105,7 +105,7 @@ class Orbit:
         # Find corresponding indices of tle and simulation time vectors
         for i in range(len(tle_time)):
             idx_tle.append(i)
-            idx_sim.append(np.argmax(sim_time > tle_time[i]))
+            idx_sim.append(np.argmax(sim_time >= tle_time[i]))
 
         # Find redundant tle time references
         idx_sim_unique = np.unique(idx_sim)
@@ -192,9 +192,9 @@ class Orbit:
 
         sel = []
         saz = []
-        sze = []
+        sze: list = []
 
-        pos = []
+        pos: list = []
         pos_lat = []
         pos_lon = []
         pos_alt = []
@@ -218,12 +218,12 @@ class Orbit:
                 pos_tmp0, inertialFrame, extrapDate
             )  # position of the satellite on the earth surface
 
-            pos_s0_lat.append((poss0.getLatitude()))  # satellite nadir position
-            pos_s0_lon.append((poss0.getLongitude()))  # satellite nadir position
-            pos_s0_alt.append((poss0.getAltitude()))  # satellite nadir position
-            pos_lat.append((pos0.getLatitude()))  # sun nadir position
-            pos_lon.append((pos0.getLongitude()))  # sun nadir position
-            pos_alt.append((pos0.getAltitude()))  # sun nadir position
+            pos_s0_lat.append(poss0.getLatitude())  # satellite nadir position
+            pos_s0_lon.append(poss0.getLongitude())  # satellite nadir position
+            pos_s0_alt.append(poss0.getAltitude())  # satellite nadir position
+            pos_lat.append(pos0.getLatitude())  # sun nadir position
+            pos_lon.append(pos0.getLongitude())  # sun nadir position
+            pos_alt.append(pos0.getAltitude())  # sun nadir position
             station = GeodeticPoint(
                 poss0.getLatitude(), poss0.getLongitude(), 0.0
             )  # set the satellite Nadir position as the reference from which to obtain the
@@ -259,8 +259,8 @@ class Orbit:
 
     def simulate_orbit(
         self,
-        line1: list[str],
-        line2: list[str],
+        line1: List[str],
+        line2: List[str],
         seconds_since_2000: List[float],
         propagation_sampling_interval: Union[float, int],
     ):
@@ -273,33 +273,51 @@ class Orbit:
         sat_smpl_breakup_idx, tle_ref_lines = self.get_matching_indices(
             smpl_space_secs_since_2000, seconds_since_2000
         )
-        sat_lat_sim = []
-        sat_lon_sim = []
-        sat_sec_since = []
-        for i in range(len(tle_ref_lines) - 1):
+        sat_lat_sim: list = []
+        sat_lon_sim: list = []
+        sat_sec_since: list = []
+
+        if len(tle_ref_lines) == 1:
             secsince1, lat1, lon1, alt1, el1, az1 = self.propagate_orbit(
-                line1[tle_ref_lines[i]],
-                line2[tle_ref_lines[i]],
-                smpl_space[sat_smpl_breakup_idx[i]],
-                smpl_space[sat_smpl_breakup_idx[i + 1] - 1],
+                line1[tle_ref_lines[0]],
+                line2[tle_ref_lines[0]],
+                self.start_time,
+                self.end_time,
                 propagation_sampling_interval,
             )
-            sat_lat_sim.append(lat1)
-            sat_lon_sim.append(lon1)
-            sat_sec_since.append(secsince1)
-        # flatten the inhomogeneous list of lists
+            sat_lat_sim = lat1
+            sat_lon_sim = lon1
+            sat_sec_since = secsince1
+
+        else:
+            for i in range(len(tle_ref_lines) - 1):
+                secsince1, lat1, lon1, alt1, el1, az1 = self.propagate_orbit(
+                    line1[tle_ref_lines[i]],
+                    line2[tle_ref_lines[i]],
+                    smpl_space[sat_smpl_breakup_idx[i]],
+                    smpl_space[sat_smpl_breakup_idx[i + 1] - 1],
+                    propagation_sampling_interval,
+                )
+                sat_lat_sim.append(lat1)
+                sat_lon_sim.append(lon1)
+                sat_sec_since.append(secsince1)
+            # flatten the inhomogeneous list of lists
+            sat_sec_since = np.hstack(sat_sec_since)
+            sat_lat_sim = np.hstack(sat_lat_sim)
+            sat_lon_sim = np.hstack(sat_lon_sim)
+
         return (
-            np.hstack(sat_sec_since),
-            np.hstack(sat_lat_sim),
-            np.hstack(sat_lon_sim),
+            sat_sec_since,
+            sat_lat_sim,
+            sat_lon_sim,
         )
 
     def interpolate_orbit(
         self, sat_sec_since, sat_lat_sim, sat_lon_sim, interpolation_sampling_interval
     ):
         """ """
-        f1_lat_linear = interp1d(sat_sec_since, sat_lat_sim, bounds_error=False)
-        f1_lon_linear = interp1d(sat_sec_since, sat_lon_sim, bounds_error=False)
+        f1_lat_linear = interp1d(sat_sec_since, sat_lat_sim, fill_value="extrapolate")
+        f1_lon_linear = interp1d(sat_sec_since, sat_lon_sim, fill_value="extrapolate")
 
         prop_smpl_space = np.arange(
             (self.start_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds(),
@@ -336,10 +354,15 @@ class Orbit:
         tle = TLEInfo()
         sat_interp_dict = {}
         for sat in satellites:
-            tle_info = tle.get_tle(sat, start_time, end_time)
-            orbit = self.simulate_orbit(*tle_info, propagation_sampling_interval)
+            line1, line2, secs_since = tle.get_tle(sat, start_time, end_time)
+            sat_secs_since, sat_lat_sim, sat_lon_sim = self.simulate_orbit(
+                line1, line2, secs_since, propagation_sampling_interval
+            )
             lat, lon, time = self.interpolate_orbit(
-                *orbit, interpolation_sampling_interval
+                sat_secs_since,
+                sat_lat_sim,
+                sat_lon_sim,
+                interpolation_sampling_interval,
             )
             sat_interp_dict.update({sat: {"lat": lat, "lon": lon, "time": time}})
         return sat_interp_dict

@@ -89,15 +89,18 @@ setup(
         "numpy",
         "scipy",
         "matplotlib",
+        "netcdf4",
     ],
     extras_require={
         "dev": [
             "pre-commit",
-            "tox",
             "sphinx",
             "sphinx_book_theme",
             "sphinx_design",
             "ipython",
+            "pytest",
+            "pytest-html",
+            "pytest-cov",
         ]
     },
     classifiers=[

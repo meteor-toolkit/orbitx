@@ -71,6 +71,11 @@ def return_matchups(
     # save orbital data
     # orbit.save(orbit_output, output_path_sim_orbits)
 
+    # find matchups between orbits
+    matchups = MatchUp()
+    matchup_output = matchups.search(
+        orbit_output, latmin, latmax, lonmin, lonmax, interpolation_sampling_interval, time_diff_threshold)
+
     # save matchup data
     # fname = f"matchup_{'_'.join(list(orbit_output.keys()))}_starttime_{start_time.strftime('%Y%m%d')}_endtime_{end_time.strftime('%Y%m%d')}_samplinginterval_{propagation_sampling_interval}_tmptol_{time_diff_threshold}.txt"
 

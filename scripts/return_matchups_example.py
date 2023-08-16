@@ -4,7 +4,7 @@
 # import datetime
 #
 #
-# __author__ = "Sajedeh Behnia"
+__author__ = "Sajedeh Behnia"
 #
 #
 # def main():
@@ -64,12 +64,11 @@ if __name__ == "__main__":
         propagation_sampling_interval=60,
         interpolation_sampling_interval=5,
         cntr2cntr_dist=500,
-        time_diff_threshold=300,
-        latmin=-90,
-        latmax=90,
-        lonmin=-90,
-        lonmax=90,
-        output_path_sim_orbits=r"C:\Users\mg13\Documents\Projects\data\satellite_simulated_orbits",
-        output_path_matchups=r"C:\Users\mg13\Documents\Projects\data\satellite_matchups",
+        time_diff_threshold=3600,
+        latmin=40,
+        latmax=50,
+        lonmin=40,
+        lonmax=50,
+        output_path_sim_orbits=r"T:\ECO\EOServer\data\satellite_simulated_orbits",
+        output_path_matchups=r"T:\ECO\EOServer\data\satellite_matchups",
     )
-    # main()
