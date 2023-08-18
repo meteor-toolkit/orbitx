@@ -43,13 +43,14 @@ class TestORBIT(unittest.TestCase):
         end_time = datetime.datetime(2000, 1, 2, 1)
         prop_smpl_interval = 12 * 60 * 60
 
-        # We are expecting 3 samples:
+        # We are expecting 4 samples:
         exp_smpl_space = [
             datetime.datetime(2000, 1, 1, 0, 0),
             datetime.datetime(2000, 1, 1, 12, 0),
             datetime.datetime(2000, 1, 2, 0, 0),
+            datetime.datetime(2000, 1, 2, 12, 0),
         ]
-        exp_smpl_space_secs_since_2000 = np.array([0.0, 43200.0, 86400.0])
+        exp_smpl_space_secs_since_2000 = np.array([0.0, 43200.0, 86400.0, 129600.0])
 
         smpl_space, smpl_space_secs_since_2000 = Orbit.form_sample_space(
             start_time, end_time, prop_smpl_interval
@@ -266,9 +267,9 @@ class TestORBIT(unittest.TestCase):
         sat_lon_sim = [0, 24]
         interpolation_sampling_interval = 60 * 60  # interpolate to every one hour
 
-        exp_time = np.arange(0, 86400, 3600)
-        exp_lat = [i for i in range(0, 24)]
-        exp_lon = [i for i in range(0, 24)]
+        exp_time = np.arange(0, 86400 + 60 * 60, 3600)
+        exp_lat = [i for i in range(0, 25)]
+        exp_lon = [i for i in range(0, 25)]
 
         orbit = Orbit()
         orbit.start_time = datetime.datetime(2000, 1, 1)
