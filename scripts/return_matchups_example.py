@@ -58,17 +58,13 @@ if __name__ == "__main__":
     from orbitx.interface import return_matchups
 
     return_matchups(
-        sats=["S3A", "LS8"],
+        sats=["S3A", "LS8", "S2A"],
         start_time=datetime.datetime(2022, 7, 10, 0, 0, 0),
-        end_time=datetime.datetime(2022, 7, 12, 0, 0, 0),
+        end_time=datetime.datetime(2022, 7, 20, 0, 0, 0),
         propagation_sampling_interval=60,
         interpolation_sampling_interval=5,
         cntr2cntr_dist=500,
-        time_diff_threshold=3600,
-        latmin=40,
-        latmax=50,
-        lonmin=40,
-        lonmax=50,
+        time_diff_threshold=900,
         output_path_sim_orbits=r"T:\ECO\EOServer\data\satellite_simulated_orbits",
-        output_path_matchups=r"T:\ECO\EOServer\data\satellite_matchups",
+        output_path_matchups=r"C:\Users\mg13\Documents\Projects",
     )

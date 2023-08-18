@@ -9,8 +9,7 @@ from scipy.signal import find_peaks
 from typing import List
 
 from orbitx.orbit import Orbit
-from orbitx.matchup import MatchUp
-from orbitx.matchup_test import matchup
+from orbitx.matchup import Matchups
 
 __author__ = [
     "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
@@ -29,10 +28,6 @@ def return_matchups(
     interpolation_sampling_interval: float,
     cntr2cntr_dist: float,
     time_diff_threshold: float,
-    latmin: float,
-    latmax: float,
-    lonmin: float,
-    lonmax: float,
     output_path_sim_orbits: str,
     output_path_matchups: str,
 ) -> None:
@@ -46,10 +41,6 @@ def return_matchups(
     :param interpolation_sampling_interval: subsampling rate of orbit propagation per sensor by interpolation
     :param cntr2cntr_dist: matchup threshold for distance between the nadir position of the two satellites
     :param time_diff_threshold: matchup threshold for time difference between the two satellites
-    :param latmin: minimum latitude for region of interest
-    :param latmax: maximum latitude for region of interest
-    :param lonmin: minimum longitude for region of interest
-    :param lonmax: maximum longitude for region of interest
     :param output_path_sim_orbits: path to write evaluated propagated orbits to
     :param output_path_matchups: path to write matchups to
     """
@@ -64,19 +55,13 @@ def return_matchups(
     )
 
     # find matchups between orbits
-    match_ups = matchup(orbit_output, time_diff_threshold,
-                    interpolation_sampling_interval,
-                    cntr2cntr_dist)
+    matchup = Matchups()
+    matchup_output = matchup.matchup(orbit_output, time_diff_threshold, cntr2cntr_dist)
 
     # save orbital data
     # orbit.save(orbit_output, output_path_sim_orbits)
 
-    # find matchups between orbits
-    matchups = MatchUp()
-    matchup_output = matchups.search(
-        orbit_output, latmin, latmax, lonmin, lonmax, interpolation_sampling_interval, time_diff_threshold)
-
     # save matchup data
-    # fname = f"matchup_{'_'.join(list(orbit_output.keys()))}_starttime_{start_time.strftime('%Y%m%d')}_endtime_{end_time.strftime('%Y%m%d')}_samplinginterval_{propagation_sampling_interval}_tmptol_{time_diff_threshold}.txt"
+    fname = f"matchup_{'_'.join(list(orbit_output.keys()))}_starttime_{start_time.strftime('%Y%m%d')}_endtime_{end_time.strftime('%Y%m%d')}_samplinginterval_{propagation_sampling_interval}_tmptol_{time_diff_threshold}.nc"
 
-    # matchups.save(matchup_output, output_path_matchups, fname)
+    matchup.save(matchup_output, output_path_matchups, fname)
