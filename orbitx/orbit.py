@@ -75,8 +75,11 @@ class Orbit:
         end_time_secs_since_2000 = time_since.total_seconds()
 
         smpl_space_secs_since_2000 = np.arange(
-            start_time_secs_since_2000, end_time_secs_since_2000, prop_smpl_interval
-        )
+            start_time_secs_since_2000,
+            end_time_secs_since_2000 + prop_smpl_interval,
+            prop_smpl_interval,
+        )  # 'prop_smpl_interval' has been added to the second element to make the 'smpl_space_secs_since_2000' vector
+        # long enough to contain 'end_time'.
 
         smpl_space = [
             datetime.datetime(2000, 1, 1, 0, 0, 0) + datetime.timedelta(seconds=i)
@@ -92,6 +95,7 @@ class Orbit:
         """
         Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and
         return the matching pointers/indices.
+
 
         :param sim_time: a vector of time containing all the instances when we want to simulate the orbit
         :param tle_time: a vector of time containing all tle instances
@@ -121,6 +125,10 @@ class Orbit:
         for i in idx_redundant:
             del idx_tle[i]
             del idx_sim[i]
+
+        # Force the idx_sim to include the start_time and end_time stamps
+        idx_sim[0] = 0
+        idx_sim[-1] = len(sim_time) - 1
 
         return idx_sim, idx_tle
 
@@ -290,6 +298,9 @@ class Orbit:
             sat_sec_since = secsince1
 
         else:
+            # Change the second-to-last timestamp of the sampling step, to the last one (the end_time). This is to
+            # simulate orbit for the exact end-time without handling exceptions in the loop for a single time stamp.
+            smpl_space[-2] = smpl_space[-1]
             for i in range(len(tle_ref_lines) - 1):
                 secsince1, lat1, lon1, alt1, el1, az1 = self.propagate_orbit(
                     line1[tle_ref_lines[i]],
@@ -316,19 +327,20 @@ class Orbit:
         self, sat_sec_since, sat_lat_sim, sat_lon_sim, interpolation_sampling_interval
     ):
         """ """
-        f1_lat_linear = interp1d(sat_sec_since, sat_lat_sim, fill_value="extrapolate")
-        f1_lon_linear = interp1d(sat_sec_since, sat_lon_sim, fill_value="extrapolate")
+        f1_lat_linear = interp1d(sat_sec_since, sat_lat_sim)
+        f1_lon_linear = interp1d(sat_sec_since, sat_lon_sim)
 
-        prop_smpl_space = np.arange(
+        interp_smpl_space = np.arange(
             (self.start_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds(),
-            (self.end_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds(),
+            (self.end_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds()
+            + interpolation_sampling_interval,
             interpolation_sampling_interval,
         )
 
         return (
-            f1_lat_linear(prop_smpl_space),
-            f1_lon_linear(prop_smpl_space),
-            prop_smpl_space,
+            f1_lat_linear(interp_smpl_space),
+            f1_lon_linear(interp_smpl_space),
+            interp_smpl_space,
         )
 
     def run(
