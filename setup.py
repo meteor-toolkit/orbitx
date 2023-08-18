@@ -90,6 +90,7 @@ setup(
         "scipy",
         "matplotlib",
         "netcdf4",
+        "xarray",
     ],
     extras_require={
         "dev": [
