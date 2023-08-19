@@ -1,12 +1,10 @@
 """orbitx.interface - file containing all interface functions"""
 
+import os
 import datetime
-import math
+import xarray as xr
 
-import numpy as np
-
-from scipy.signal import find_peaks
-from typing import List
+from typing import List, Optional
 
 from orbitx.orbit import Orbit
 from orbitx.matchup import Matchups
@@ -28,11 +26,24 @@ def return_matchups(
     interpolation_sampling_interval: float,
     cntr2cntr_dist: float,
     time_diff_threshold: float,
-    output_path_sim_orbits: str,
-    output_path_matchups: str,
-) -> None:
+    output_path_sim_orbits: Optional[str] = None,
+    output_path_matchups: Optional[str] = None,
+    output: bool = False,
+) -> Optional[xr.Dataset]:
     """
-    Save
+    Matchup event identification between multiple satellites. Creates an xr.Dataset
+    containing position and time information for satellite matchups.
+
+    If no output paths are specified, the dataset will be returned.
+    If output paths are specified the data will be saved.
+    If `output` is set to `True` the dataset will be returned regardless of whether or not it has been saved.
+
+    Currently accepted satellites:
+        * LS8 (Landsat-8)
+        * S2A (Sentinel-2A)
+        * S2B (Sentinel-2B)
+        * S3A (Sentinel-3A)
+        * S6 (Sentinel-6)
 
     :param sats: list of satellites
     :param start_time: start of time period of interest
@@ -43,6 +54,7 @@ def return_matchups(
     :param time_diff_threshold: matchup threshold for time difference between the two satellites
     :param output_path_sim_orbits: path to write evaluated propagated orbits to
     :param output_path_matchups: path to write matchups to
+    :param output: whether or not to output the matchup dataset, if no output_path defined defaults to True else False
     """
     # simulate desired orbits
     orbit = Orbit()
@@ -58,10 +70,18 @@ def return_matchups(
     matchup = Matchups()
     matchup_output = matchup.matchup(orbit_output, time_diff_threshold, cntr2cntr_dist)
 
-    # save orbital data
-    # orbit.save(orbit_output, output_path_sim_orbits)
+    if output_path_sim_orbits is not None:
+        # save orbital data
+        # orbit.save(orbit_output, output_path_sim_orbits)
+        pass
 
-    # save matchup data
-    fname = f"matchup_{'_'.join(list(orbit_output.keys()))}_starttime_{start_time.strftime('%Y%m%d')}_endtime_{end_time.strftime('%Y%m%d')}_samplinginterval_{propagation_sampling_interval}_tmptol_{time_diff_threshold}.nc"
+    if output_path_matchups is not None:
+        # save matchup data
+        fname = f"matchup_{'_'.join(list(orbit_output.keys()))}_starttime_{start_time.strftime('%Y%m%d')}_endtime_{end_time.strftime('%Y%m%d')}_samplinginterval_{propagation_sampling_interval}_tmptol_{time_diff_threshold}.nc"
 
-    matchup.save(matchup_output, output_path_matchups, fname)
+        matchup_output.to_netcdf(os.path.join(output_path_matchups, fname))
+    else:
+        output = True
+
+    if output is True:
+        return matchup_output

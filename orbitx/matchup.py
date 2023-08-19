@@ -3,8 +3,9 @@
 import os
 import numpy as np
 import xarray as xr
-import math
 import datetime
+
+from math import radians, cos, sin, asin, sqrt
 
 from typing import Optional
 from scipy.signal import find_peaks
@@ -13,26 +14,31 @@ __author__ = [
     "Mattea Goalen <mattea.goalen@npl.co.uk>",
 ]
 
-__all__ = ["Matchups"]
+__all__ = ["Matchups", "get_range", "get_distance", "get_dist"]
+
+# function to get range for each element in a set of arrays
+get_range = np.vectorize(lambda *delay: max(delay) - min(delay))
+
+
+def get_dist(lon1, lat1, lon2, lat2):
+    """
+    Calculate the great circle distance in kilometers between two points
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+
+    # haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * asin(sqrt(a))
+    r = 6371  # Radius of earth in kilometers. Use 3956 for miles. Determines return value units.
+    return c * r
+
 
 # function to get distance between two lon lat points
-get_distance = np.vectorize(
-    lambda lon1, lat1, lon2, lat2: 6373
-    * 2
-    * np.arctan2(
-        np.sqrt(
-            np.sin((lat2 - lat1) / 2) ** 2
-            + np.cos(lat1) * np.cos(lat2) * np.sin((lon2 - lon1) / 2) ** 2
-        ),
-        np.sqrt(
-            1
-            - np.sqrt(
-                np.sin((lat2 - lat1) / 2) ** 2
-                + np.cos(lat1) * np.cos(lat2) * np.sin((lon2 - lon1) / 2) ** 2
-            )
-        ),
-    )
-)
+get_distance = np.vectorize(get_dist)
 
 
 class Matchups:
@@ -69,16 +75,16 @@ class Matchups:
                 (
                     f"{sat1}_{s}",
                     {
-                        "lat1": -1 * np.ones(len(orbit_output[sat1]["lat"])),
-                        "lon1": -1 * np.ones(len(orbit_output[sat1]["lat"])),
-                        "lat2": -1 * np.ones(len(orbit_output[sat1]["lat"])),
-                        "lon2": -1 * np.ones(len(orbit_output[sat1]["lat"])),
-                        "delay": -1 * np.ones(len(orbit_output[sat1]["lat"])),
+                        "lat1": -68787 * np.ones(len(orbit_output[sat1]["lat"])),
+                        "lon1": -68787 * np.ones(len(orbit_output[sat1]["lat"])),
+                        "lat2": -68787 * np.ones(len(orbit_output[sat1]["lat"])),
+                        "lon2": -68787 * np.ones(len(orbit_output[sat1]["lat"])),
+                        "delay": -68787 * np.ones(len(orbit_output[sat1]["lat"])),
                         "time": np.array(
                             [datetime.datetime(1, 1, 1)]
                             * len(orbit_output[sat1]["lat"])
                         ),
-                        "distance": -1 * np.ones(len(orbit_output[sat1]["lat"])),
+                        "distance": -68787 * np.ones(len(orbit_output[sat1]["lat"])),
                     },
                 )
                 for s in other_sats
@@ -102,20 +108,16 @@ class Matchups:
                     -(difflat + difflon)
                 )  # local minima peaks of latlon difference (max of negative val)
                 # check distance is within the c2c_dist (centre to centre)
-                position = (
-                    np.array([s1_lon, s1_lat, s2_lon, s2_lat])[
-                        :, [j for j in np.arange(len(s1_lon)) if j in match_peak]
-                    ]
-                    * math.pi
-                    / 180
-                )
+                position = np.array([s1_lon, s1_lat, s2_lon, s2_lat])[
+                    :, [j for j in np.arange(len(s1_lon)) if j in match_peak]
+                ]
                 distance = get_distance(*tuple(position))
                 match_peak = list(match_peak[np.where(distance <= cntr2cntr_dist)])
                 max_distance = list(distance[np.where(distance <= cntr2cntr_dist)])
 
                 for idx, item in enumerate(match_peak):
                     if (
-                        match[f"{sat1}_{s}"]["delay"][item] == -1
+                        match[f"{sat1}_{s}"]["delay"][item] == -68787
                         or match[f"{sat1}_{s}"]["delay"][item]
                         > i * interpolation_sampling_interval
                     ):
@@ -133,7 +135,7 @@ class Matchups:
             for key in match[f"{sat1}_{s}"].keys():
                 if key != "time":
                     match[f"{sat1}_{s}"][key] = match[f"{sat1}_{s}"][key][
-                        match[f"{sat1}_{s}"][key] != -1
+                        match[f"{sat1}_{s}"][key] != -68787
                     ]
                 else:
                     match[f"{sat1}_{s}"][key] = match[f"{sat1}_{s}"][key][
@@ -179,22 +181,22 @@ class Matchups:
             times = list(set(ds_list[i + 1].time.data).intersection(times))
             ds_list[i + 1] = ds_list[i + 1].rename(
                 {
-                    "lat2": f"lat{i+3}",
-                    "lon2": f"lon{i+3}",
-                    "delay": f"delay{i+2}",
-                    "distance": f"distance{i+2}",
+                    "lat2": f"lat{i + 3}",
+                    "lon2": f"lon{i + 3}",
+                    "delay": f"delay{i + 2}",
+                    "distance": f"distance{i + 2}",
                 }
             )
-            ds_list[i + 1].assign_attrs({f"sat{i+3}": ds_list[i + 1].attrs.pop("sat2")})
+            ds_list[i + 1].assign_attrs(
+                {f"sat{i + 3}": ds_list[i + 1].attrs.pop("sat2")}
+            )
         merged_ds = xr.merge(
             [ds.sel(time=times) for ds in ds_list], combine_attrs="no_conflicts"
         )
 
-        return merged_ds
-
-    @staticmethod
-    def save(ds, path, fname):
-        """
-        Save matchup information
-        """
-        ds.to_netcdf(os.path.join(path, fname))
+        return merged_ds.isel(
+            time=np.where(
+                get_range(*[merged_ds[i] for i in merged_ds if "delay" in i])
+                < attrs["time_threshold"]
+            )[0]
+        )
