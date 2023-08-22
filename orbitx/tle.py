@@ -50,8 +50,14 @@ class TLEInfo:
         year_tens_and_units = int(tle_line_1[18:20])
         decimal_day = float(tle_line_1[20:32])
 
-        # Create date time object at start of relevant year
-        date = datetime.datetime(year=2000 + year_tens_and_units, month=1, day=1)
+        # TODO: Test the code with any TLE dated before 2000.
+        # Create date time object at start of relevant year.
+        # Notice that the reference year here has to do with the TLE conventions as explained in
+        # 'celestrak.org/NORAD/documentation/tle-fmt.php' and not the reference year for OrbitX which is 1970.
+        if tle_line_1[18] == "0" or tle_line_1[18] == "1" or tle_line_1[18] == "2":
+            date = datetime.datetime(year=2000 + year_tens_and_units, month=1, day=1)
+        else:
+            date = datetime.datetime(year=1900 + year_tens_and_units, month=1, day=1)
 
         # Add the necessary number of days to get TLE
         date += datetime.timedelta(days=decimal_day - 1)
@@ -59,28 +65,28 @@ class TLEInfo:
         return date
 
     @staticmethod
-    def return_seconds_since_2000(date_time: datetime.datetime) -> float:
+    def return_seconds_since_1970(date_time: datetime.datetime) -> float:
         """
-        Returns seconds since 2000 to defined date time
+        Returns seconds since 1970 to defined date time
 
         :param date_time: time of interest
-        :returns: seconds since 2000
+        :returns: seconds since 1970
         """
 
-        return (date_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds()
+        return (date_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds()
 
     def get_tle(
         self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
     ) -> Tuple[List[str], List[str], List[float]]:
         """
-        Returns two-line elements within defined time window, with seconds since 2000
+        Returns two-line elements within defined time window, with seconds since 1970
 
         :param start_time: start of time window
         :param end_time: end of time window
         :param satellite: satellite short name as included in TLE file name ``TLEset_XXX``,
                 where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
 
-        :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 2000
+        :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 1970
         """
 
         # region Read TLE file.
@@ -116,32 +122,32 @@ class TLEInfo:
         tle_time = np.array(
             [self.return_date_from_tle(tle_line_1_i) for tle_line_1_i in tle_line_1]
         )
-        tle_time_s2000 = np.array([self.return_seconds_since_2000(d) for d in tle_time])
-        start_time_s2000 = self.return_seconds_since_2000(start_time)
-        end_time_s2000 = self.return_seconds_since_2000(end_time)
+        tle_time_s1970 = np.array([self.return_seconds_since_1970(d) for d in tle_time])
+        start_time_s1970 = self.return_seconds_since_1970(start_time)
+        end_time_s1970 = self.return_seconds_since_1970(end_time)
 
         # Filter time
         idx = [
             i
-            for i, t_i in enumerate(tle_time_s2000)
-            if (t_i >= start_time_s2000) and (t_i < end_time_s2000)
+            for i, t_i in enumerate(tle_time_s1970)
+            if (t_i >= start_time_s1970) and (t_i < end_time_s1970)
         ]
 
         if idx == []:
             # If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time
-            closest_TLE = np.argmin(np.abs(tle_time_s2000 - start_time_s2000))
+            closest_TLE = np.argmin(np.abs(tle_time_s1970 - start_time_s1970))
 
             tle_line_1 = [tle_line_1[closest_TLE]]
             tle_line_2 = [tle_line_2[closest_TLE]]
-            tle_time_s2000 = [tle_time_s2000[closest_TLE]]
+            tle_time_s1970 = [tle_time_s1970[closest_TLE]]
 
         else:
             # Filter TLE set
             tle_line_1 = tle_line_1[idx]
             tle_line_2 = tle_line_2[idx]
-            tle_time_s2000 = tle_time_s2000[idx]
+            tle_time_s1970 = tle_time_s1970[idx]
 
-        return tle_line_1, tle_line_2, tle_time_s2000
+        return tle_line_1, tle_line_2, tle_time_s1970
 
 
 if __name__ == "__main__":

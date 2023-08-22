@@ -79,7 +79,7 @@ class TestMatchups(unittest.TestCase):
                     "lat2": np.array([7.0]),
                     "lon2": np.array([0.0]),
                     "delay": np.array([-1.0]),
-                    "time": np.array([dt.datetime(2000, 1, 1, 0, 0, 2)], dtype=object),
+                    "time": np.array([dt.datetime(1970, 1, 1, 0, 0, 2)], dtype=object),
                     "distance": np.array([4.0]),
                 }
             },

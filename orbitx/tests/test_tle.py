@@ -102,9 +102,9 @@ class TestTLE(unittest.TestCase):
         self.assertEqual(date.minute, exp_date.minute)
         self.assertEqual(date.second, exp_date.second)
 
-    def test_return_seconds_since_2000(self):
+    def test_return_seconds_since_1970(self):
         tle = TLEInfo()
-        self.assertEqual(tle.return_seconds_since_2000(dt(2000, 1, 1, 0, 0, 1)), 1.0)
+        self.assertEqual(tle.return_seconds_since_1970(dt(1970, 1, 1, 0, 0, 1)), 1.0)
 
     def test_get_tle(self):
         # define input parameters
@@ -127,7 +127,14 @@ class TestTLE(unittest.TestCase):
             "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266\n",
             "2 40697  98.5705 251.1120 0002131 229.6310 131.1858 14.31372223   391\n",
         ]
-        exp_times = [488496528.156384, 488575065.034944]
+
+        # The expected time since 1970 for each relevant TLE cab be calculated as follows. Take line 1 of
+        # "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994\n" for instance;
+        # Day 175 of year 2015 is June 24. The decimal days .89500181 equals hour 21, minute 28 and second 48.156384 of
+        # same day. Below the decimal seconds are added up separately.
+        # 1435181328.156384 = (dt(2015, 6, 24, 21, 28, 48) - dt(1970, 1, 1, 0, 0, 0)).total_seconds() + .156384
+        # 1435259865.034944 = (dt(2015, 6, 25, 19, 17, 45) - dt(1970, 1, 1, 0, 0, 0)).total_seconds() + .034943999999996
+        exp_times = [1435181328.156384, 1435259865.034944]
 
         # compare expected and actual output
         for l1, exp_l1 in zip(tles[0], exp_first_lines):

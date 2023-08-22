@@ -68,25 +68,25 @@ class Orbit:
         :return:
         """
 
-        time_since = start_time - datetime.datetime(2000, 1, 1, 0, 0, 0)
-        start_time_secs_since_2000 = time_since.total_seconds()
+        time_since = start_time - datetime.datetime(1970, 1, 1, 0, 0, 0)
+        start_time_secs_since_1970 = time_since.total_seconds()
 
-        time_since = end_time - datetime.datetime(2000, 1, 1, 0, 0, 0)
-        end_time_secs_since_2000 = time_since.total_seconds()
+        time_since = end_time - datetime.datetime(1970, 1, 1, 0, 0, 0)
+        end_time_secs_since_1970 = time_since.total_seconds()
 
-        smpl_space_secs_since_2000 = np.arange(
-            start_time_secs_since_2000,
-            end_time_secs_since_2000 + prop_smpl_interval,
+        smpl_space_secs_since_1970 = np.arange(
+            start_time_secs_since_1970,
+            end_time_secs_since_1970 + prop_smpl_interval,
             prop_smpl_interval,
-        )  # 'prop_smpl_interval' has been added to the second element to make the 'smpl_space_secs_since_2000' vector
+        )  # 'prop_smpl_interval' has been added to the second element to make the 'smpl_space_secs_since_1970' vector
         # long enough to contain 'end_time'.
 
         smpl_space = [
-            datetime.datetime(2000, 1, 1, 0, 0, 0) + datetime.timedelta(seconds=i)
-            for i in smpl_space_secs_since_2000
+            datetime.datetime(1970, 1, 1, 0, 0, 0) + datetime.timedelta(seconds=i)
+            for i in smpl_space_secs_since_1970
         ]
 
-        return smpl_space, smpl_space_secs_since_2000
+        return smpl_space, smpl_space_secs_since_1970
 
     @staticmethod
     def get_matching_indices(
@@ -256,7 +256,7 @@ class Orbit:
             julian_date.append(
                 (
                     absolutedate_to_datetime(extrapDate)
-                    - datetime.datetime(2000, 1, 1, 0, 0, 0)
+                    - datetime.datetime(1970, 1, 1, 0, 0, 0)
                 ).total_seconds()
             )
             extrapDate = extrapDate.shiftedBy(propagation_sampling_interval)
@@ -269,17 +269,17 @@ class Orbit:
         self,
         line1: List[str],
         line2: List[str],
-        seconds_since_2000: List[float],
+        seconds_since_1970: List[float],
         propagation_sampling_interval: Union[float, int],
     ):
         """
         Return latitude, longitude and time arrays for full simulated orbit
         """
-        smpl_space, smpl_space_secs_since_2000 = self.form_sample_space(
+        smpl_space, smpl_space_secs_since_1970 = self.form_sample_space(
             self.start_time, self.end_time, propagation_sampling_interval
         )
         sat_smpl_breakup_idx, tle_ref_lines = self.get_matching_indices(
-            smpl_space_secs_since_2000, seconds_since_2000
+            smpl_space_secs_since_1970, seconds_since_1970
         )
         sat_lat_sim: list = []
         sat_lon_sim: list = []
@@ -331,8 +331,8 @@ class Orbit:
         f1_lon_linear = interp1d(sat_sec_since, sat_lon_sim)
 
         interp_smpl_space = np.arange(
-            (self.start_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds(),
-            (self.end_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds()
+            (self.start_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds(),
+            (self.end_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds()
             + interpolation_sampling_interval,
             interpolation_sampling_interval,
         )

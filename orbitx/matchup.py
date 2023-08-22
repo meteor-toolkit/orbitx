@@ -129,7 +129,7 @@ class Matchups:
                             i * interpolation_sampling_interval
                         )
                         match[f"{sat1}_{s}"]["time"][item] = datetime.datetime(
-                            2000, 1, 1
+                            1970, 1, 1
                         ) + datetime.timedelta(seconds=s1_time[item])
                         match[f"{sat1}_{s}"]["distance"][item] = max_distance[idx]
             for key in match[f"{sat1}_{s}"].keys():

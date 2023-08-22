@@ -38,27 +38,27 @@ def cal_dist_d2m(lat1, lon1, lat2, lon2):
 
 class TestORBIT(unittest.TestCase):
     def test_form_sample_space(self):
-        # Start at 1st of Jan. 2000, and sample every 12 hours until 2nd of Jan. 2000, one o'clock am.
-        start_time = datetime.datetime(2000, 1, 1)
-        end_time = datetime.datetime(2000, 1, 2, 1)
+        # Start at 1st of Jan. 1970, and sample every 12 hours until 2nd of Jan. 1970, one o'clock am.
+        start_time = datetime.datetime(1970, 1, 1)
+        end_time = datetime.datetime(1970, 1, 2, 1)
         prop_smpl_interval = 12 * 60 * 60
 
         # We are expecting 4 samples:
         exp_smpl_space = [
-            datetime.datetime(2000, 1, 1, 0, 0),
-            datetime.datetime(2000, 1, 1, 12, 0),
-            datetime.datetime(2000, 1, 2, 0, 0),
-            datetime.datetime(2000, 1, 2, 12, 0),
+            datetime.datetime(1970, 1, 1, 0, 0),
+            datetime.datetime(1970, 1, 1, 12, 0),
+            datetime.datetime(1970, 1, 2, 0, 0),
+            datetime.datetime(1970, 1, 2, 12, 0),
         ]
-        exp_smpl_space_secs_since_2000 = np.array([0.0, 43200.0, 86400.0, 129600.0])
+        exp_smpl_space_secs_since_1970 = np.array([0.0, 43200.0, 86400.0, 129600.0])
 
-        smpl_space, smpl_space_secs_since_2000 = Orbit.form_sample_space(
+        smpl_space, smpl_space_secs_since_1970 = Orbit.form_sample_space(
             start_time, end_time, prop_smpl_interval
         )
 
         self.assertEqual(exp_smpl_space, smpl_space)
         self.assertTrue(
-            (exp_smpl_space_secs_since_2000 == smpl_space_secs_since_2000).all()
+            (exp_smpl_space_secs_since_1970 == smpl_space_secs_since_1970).all()
         )
 
     def test_get_matching_indices(self):
@@ -112,7 +112,9 @@ class TestORBIT(unittest.TestCase):
         exp_lat = ds.groups["data_01"].variables["latitude"][:]
         exp_lon = ds.groups["data_01"].variables["longitude"][:]
 
-        # Convert start-time and end-time of S6 track to datetime
+        # Convert start-time and end-time of S6 track to datetime. Notice that altimetry satellites (in this case
+        # Sentinel-6MF) do report time as seconds since 2000. This is not to be mistaken with OrbitX's reference time
+        # which is 1970.
         S6_start_time = datetime.timedelta(seconds=exp_time[0]) + datetime.datetime(
             2000, 1, 1, 0, 0, 0
         )
@@ -143,7 +145,7 @@ class TestORBIT(unittest.TestCase):
     #
     @mock.patch(
         "orbitx.orbit.absolutedate_to_datetime",
-        return_value=datetime.datetime(2000, 1, 1),
+        return_value=datetime.datetime(1970, 1, 1),
     )
     @mock.patch("orbitx.orbit.TopocentricFrame")
     @mock.patch("orbitx.orbit.GeodeticPoint")
@@ -191,7 +193,7 @@ class TestORBIT(unittest.TestCase):
         orbit = Orbit()
         self.assertEqual(
             orbit.propagate_orbit(
-                "", "", datetime.datetime(2000, 1, 1), datetime.datetime(2000, 1, 2), 1
+                "", "", datetime.datetime(1970, 1, 1), datetime.datetime(1970, 1, 2), 1
             ),
             (
                 [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
@@ -272,8 +274,8 @@ class TestORBIT(unittest.TestCase):
         exp_lon = [i for i in range(0, 25)]
 
         orbit = Orbit()
-        orbit.start_time = datetime.datetime(2000, 1, 1)
-        orbit.end_time = datetime.datetime(2000, 1, 2)
+        orbit.start_time = datetime.datetime(1970, 1, 1)
+        orbit.end_time = datetime.datetime(1970, 1, 2)
 
         lat, lon, time = orbit.interpolate_orbit(
             np.array(sat_sec_since),
