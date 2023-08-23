@@ -5,11 +5,11 @@ import os
 import datetime
 from typing import Tuple, List, Optional
 
-
 __author__ = [
     "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
     "Sam Hunt <sam.hunt@npl.co.uk>",
 ]
+
 __all__ = ["TLEInfo"]
 
 
@@ -99,21 +99,14 @@ class TLEInfo:
         # endregion
 
         # region Access indexes of line-1 and line-2
-        # TODO: change the if condition to deal with multiplicatives of 6
         length = len(lines)
-        if length % 3 == 0:
-            number_of_TLEs = int(length / 3)
-            line_1_indexes = 3 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 1
-            line_2_indexes = 3 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 2
-        elif length % 2 == 0:
-            number_of_TLEs = int(length / 2)
-            line_1_indexes = 2 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 0
-            line_2_indexes = 2 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 1
+        if len(lines[0]) < 69:
+            line_1_indexes = np.arange(1, length, 3)
+            line_2_indexes = np.arange(2, length, 3)
         else:
-            print("Error message")
-        func = np.vectorize(int)
-        line_1_indexes = func(line_1_indexes)
-        line_2_indexes = func(line_2_indexes)
+            line_1_indexes = np.arange(0, length, 2)
+            line_2_indexes = np.arange(1, length, 2)
+
         tle_line_1 = lines[line_1_indexes]
         tle_line_2 = lines[line_2_indexes]
         # endregion
@@ -133,13 +126,13 @@ class TLEInfo:
             if (t_i >= start_time_s1970) and (t_i < end_time_s1970)
         ]
 
-        if idx == []:
+        if not idx:
             # If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time
-            closest_TLE = np.argmin(np.abs(tle_time_s1970 - start_time_s1970))
+            closest_tle = np.argmin(np.abs(tle_time_s1970 - start_time_s1970))
 
-            tle_line_1 = [tle_line_1[closest_TLE]]
-            tle_line_2 = [tle_line_2[closest_TLE]]
-            tle_time_s1970 = [tle_time_s1970[closest_TLE]]
+            tle_line_1 = [tle_line_1[closest_tle]]
+            tle_line_2 = [tle_line_2[closest_tle]]
+            tle_time_s1970 = [tle_time_s1970[closest_tle]]
 
         else:
             # Filter TLE set
