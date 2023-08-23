@@ -94,8 +94,7 @@ class TLEInfo:
         if tle_path is None:
             raise ValueError(f"No TLE file found for '{satellite}'")
         with open(tle_path, "r") as f:
-            lines = f.readlines()
-        lines = np.array(lines)
+            lines = np.array(f.read().splitlines())
         # endregion
 
         # region Access indexes of line-1 and line-2
@@ -130,9 +129,9 @@ class TLEInfo:
             # If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time
             closest_tle = np.argmin(np.abs(tle_time_s1970 - start_time_s1970))
 
-            tle_line_1 = [tle_line_1[closest_tle]]
-            tle_line_2 = [tle_line_2[closest_tle]]
-            tle_time_s1970 = [tle_time_s1970[closest_tle]]
+            tle_line_1 = tle_line_1[closest_tle]
+            tle_line_2 = tle_line_2[closest_tle]
+            tle_time_s1970 = tle_time_s1970[closest_tle]
 
         else:
             # Filter TLE set
@@ -140,7 +139,7 @@ class TLEInfo:
             tle_line_2 = tle_line_2[idx]
             tle_time_s1970 = tle_time_s1970[idx]
 
-        return tle_line_1, tle_line_2, tle_time_s1970
+        return list(tle_line_1), list(tle_line_2), list(tle_time_s1970)
 
 
 if __name__ == "__main__":
