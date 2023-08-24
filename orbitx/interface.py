@@ -85,3 +85,5 @@ def return_matchups(
 
     if output is True:
         return matchup_output
+    else:
+        return None
