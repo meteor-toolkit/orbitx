@@ -129,8 +129,6 @@ class Orbit:
         # Force the idx_sim to include the start_time and end_time stamps
         idx_sim[0] = 0
         idx_sim[-1] = len(sim_time) - 1
-
-
         return idx_sim, idx_tle
 
     @staticmethod
@@ -155,7 +153,7 @@ class Orbit:
         *** Modified from Bernardo's code ***
         """
 
-        extrapDate = AbsoluteDate(
+        extrap_date = AbsoluteDate(
             start_time.year,
             start_time.month,
             start_time.day,
@@ -164,7 +162,7 @@ class Orbit:
             float(start_time.second),
             TimeScalesFactory.getUTC(),
         )  # when you want to start tracking
-        finalDate = AbsoluteDate(
+        final_date = AbsoluteDate(
             end_time.year,
             end_time.month,
             end_time.day,
@@ -179,31 +177,21 @@ class Orbit:
         sun = CelestialBodyFactory.getSun()
         sun = PVCoordinatesProvider.cast_(sun)
 
-        # IMPORTANT CONSTANTS
-        ae = Constants.WGS84_EARTH_EQUATORIAL_RADIUS
-        fl = Constants.WGS84_EARTH_FLATTENING
-        mu = Constants.WGS84_EARTH_MU
-        utc = TimeScalesFactory.getUTC()
-
         # Preparing the Coordinate systems
-        ITRF = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
+        itrf = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
         earth = OneAxisEllipsoid(
             Constants.WGS84_EARTH_EQUATORIAL_RADIUS,
             Constants.WGS84_EARTH_FLATTENING,
-            ITRF,
+            itrf,
         )
-        inertialFrame = FramesFactory.getEME2000()
+        inertial_frame = FramesFactory.getEME2000()
 
-        ### OPERATIONAL SATELLITE ###
+        # OPERATIONAL SATELLITE
         mytle = TLE(tle_line1, tle_line2)
-        prop_Optsat = TLEPropagator.selectExtrapolator(mytle)
-        propagator0 = prop_Optsat
+        propagator0 = TLEPropagator.selectExtrapolator(mytle)
 
         sel = []
         saz = []
-        sze: list = []
-
-        pos: list = []
         pos_lat = []
         pos_lon = []
         pos_alt = []
@@ -214,17 +202,17 @@ class Orbit:
         julian_date = []
 
         while (
-            extrapDate.compareTo(finalDate) <= 0.0
+            extrap_date.compareTo(final_date) <= 0.0
         ):  # propagate orbit until it reaches it reaches the final date
-            pv0 = propagator0.getPVCoordinates(extrapDate, inertialFrame)
-            psun = sun.getPVCoordinates(extrapDate, inertialFrame)
+            pv0 = propagator0.getPVCoordinates(extrap_date, inertial_frame)
+            psun = sun.getPVCoordinates(extrap_date, inertial_frame)
             pos_tmp0 = pv0.getPosition()
             pos_sun = psun.getPosition()
             pos0 = earth.transform(
-                pos_sun, inertialFrame, extrapDate
+                pos_sun, inertial_frame, extrap_date
             )  # position of the sun on the earth surface
             poss0 = earth.transform(
-                pos_tmp0, inertialFrame, extrapDate
+                pos_tmp0, inertial_frame, extrap_date
             )  # position of the satellite on the earth surface
 
             pos_s0_lat.append(poss0.getLatitude())  # satellite nadir position
@@ -240,12 +228,12 @@ class Orbit:
             station_frame = TopocentricFrame(earth, station, "Esrange")
 
             saz_tmp = (
-                station_frame.getAzimuth(pos_sun, inertialFrame, extrapDate)
+                station_frame.getAzimuth(pos_sun, inertial_frame, extrap_date)
                 * 180.0
                 / pi
             )
             sel_tmp = (
-                station_frame.getElevation(pos_sun, inertialFrame, extrapDate)
+                station_frame.getElevation(pos_sun, inertial_frame, extrap_date)
                 * 180.0
                 / pi
             )
@@ -253,14 +241,14 @@ class Orbit:
             sel.append(sel_tmp)
             saz.append(saz_tmp)
 
-            date.append(absolutedate_to_datetime(extrapDate))
+            date.append(absolutedate_to_datetime(extrap_date))
             julian_date.append(
                 (
-                    absolutedate_to_datetime(extrapDate)
+                    absolutedate_to_datetime(extrap_date)
                     - datetime.datetime(1970, 1, 1, 0, 0, 0)
                 ).total_seconds()
             )
-            extrapDate = extrapDate.shiftedBy(propagation_sampling_interval)
+            extrap_date = extrap_date.shiftedBy(propagation_sampling_interval)
 
         pos_s0_lat = [i * 180.0 / pi for i in pos_s0_lat]
         pos_s0_lon = [i * 180.0 / pi for i in pos_s0_lon]
