@@ -129,9 +129,6 @@ class Orbit:
         # Force the idx_sim to include the start_time and end_time stamps
         idx_sim[0] = 0
         idx_sim[-1] = len(sim_time) - 1
-        # idx_sim_ = [0] # Set the first index to 0 to include start time
-        # idx_sim_.extend(idx_sim[1:len(idx_sim)-1])
-        # idx_sim_.extend([len(sim_time)-1])
 
 
         return idx_sim, idx_tle
