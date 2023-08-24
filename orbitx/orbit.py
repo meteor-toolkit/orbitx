@@ -58,7 +58,7 @@ class Orbit:
         start_time: datetime.datetime,
         end_time: datetime.datetime,
         prop_smpl_interval: Union[float, int],
-    ) -> Tuple[list, np.array]:
+    ) -> Tuple[list, np.ndarray]:
         """
         Return a time vector containing desired orbit simulation timestamps
 
@@ -90,7 +90,7 @@ class Orbit:
 
     @staticmethod
     def get_matching_indices(
-        sim_time: np.array, tle_time: np.array
+        sim_time: np.ndarray, tle_time: np.ndarray
     ) -> Tuple[list, list]:
         """
         Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and
@@ -129,6 +129,10 @@ class Orbit:
         # Force the idx_sim to include the start_time and end_time stamps
         idx_sim[0] = 0
         idx_sim[-1] = len(sim_time) - 1
+        # idx_sim_ = [0] # Set the first index to 0 to include start time
+        # idx_sim_.extend(idx_sim[1:len(idx_sim)-1])
+        # idx_sim_.extend([len(sim_time)-1])
+
 
         return idx_sim, idx_tle
 
@@ -162,7 +166,7 @@ class Orbit:
             start_time.minute,
             float(start_time.second),
             TimeScalesFactory.getUTC(),
-        )  # when you want to strat tracking
+        )  # when you want to start tracking
         finalDate = AbsoluteDate(
             end_time.year,
             end_time.month,
@@ -269,7 +273,7 @@ class Orbit:
         self,
         line1: List[str],
         line2: List[str],
-        seconds_since_1970: List[float],
+        seconds_since_1970: np.ndarray,
         propagation_sampling_interval: Union[float, int],
     ):
         """
@@ -299,7 +303,8 @@ class Orbit:
 
         else:
             # Change the second-to-last timestamp of the sampling step, to the last one (the end_time). This is to
-            # simulate orbit for the exact end-time without handling exceptions in the loop for a single time stamp.
+            # simulate orbit for the exact end-time without handling exceptions outside the loop for a single time
+            # stamp.
             smpl_space[-2] = smpl_space[-1]
             for i in range(len(tle_ref_lines) - 1):
                 secsince1, lat1, lon1, alt1, el1, az1 = self.propagate_orbit(
@@ -309,13 +314,9 @@ class Orbit:
                     smpl_space[sat_smpl_breakup_idx[i + 1] - 1],
                     propagation_sampling_interval,
                 )
-                sat_lat_sim.append(lat1)
-                sat_lon_sim.append(lon1)
-                sat_sec_since.append(secsince1)
-            # flatten the inhomogeneous list of lists
-            sat_sec_since = np.hstack(sat_sec_since)
-            sat_lat_sim = np.hstack(sat_lat_sim)
-            sat_lon_sim = np.hstack(sat_lon_sim)
+                sat_lat_sim.extend(lat1)
+                sat_lon_sim.extend(lon1)
+                sat_sec_since.extend(secsince1)
 
         return (
             sat_sec_since,
