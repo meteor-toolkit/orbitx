@@ -4,13 +4,23 @@ import datetime
 import numpy as np
 
 from math import pi
-from typing import Tuple, List, Union
+from typing import Tuple, List, Union, Any
 
 from scipy.interpolate import interp1d
 from org.orekit.frames import FramesFactory, TopocentricFrame
-from org.orekit.bodies import OneAxisEllipsoid, GeodeticPoint, CelestialBodyFactory
+from org.orekit.bodies import (
+    OneAxisEllipsoid,
+    GeodeticPoint,
+    CelestialBodyFactory,
+    FieldGeodeticPoint,
+)
 from org.orekit.time import TimeScalesFactory, AbsoluteDate
-from org.orekit.utils import IERSConventions, Constants, PVCoordinatesProvider
+from org.orekit.utils import (
+    IERSConventions,
+    Constants,
+    PVCoordinatesProvider,
+    TimeStampedFieldPVCoordinates,
+)
 from org.orekit.propagation.analytical.tle import TLE, TLEPropagator
 from orekit.pyhelpers import absolutedate_to_datetime
 
@@ -103,7 +113,7 @@ class Orbit:
         """
 
         idx_tle = []
-        idx_sim = []
+        idx_sim: List[Any] = []
         idx_redundant = []
 
         # Find corresponding indices of tle and simulation time vectors
@@ -205,13 +215,15 @@ class Orbit:
             extrap_date.compareTo(final_date) <= 0.0
         ):  # propagate orbit until it reaches it reaches the final date
             pv0 = propagator0.getPVCoordinates(extrap_date, inertial_frame)
-            psun = sun.getPVCoordinates(extrap_date, inertial_frame)
+            psun: TimeStampedFieldPVCoordinates = sun.getPVCoordinates(
+                extrap_date, inertial_frame
+            )
             pos_tmp0 = pv0.getPosition()
             pos_sun = psun.getPosition()
             pos0 = earth.transform(
                 pos_sun, inertial_frame, extrap_date
             )  # position of the sun on the earth surface
-            poss0 = earth.transform(
+            poss0: FieldGeodeticPoint = earth.transform(
                 pos_tmp0, inertial_frame, extrap_date
             )  # position of the satellite on the earth surface
 

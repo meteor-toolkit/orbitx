@@ -196,7 +196,7 @@ class Matchups:
 
         return merged_ds.isel(
             time=np.where(
-                get_range(*[merged_ds[i] for i in merged_ds if "delay" in i])
+                get_range(*[merged_ds[i] for i in merged_ds if "delay" in str(i)])
                 < attrs["time_threshold"]
             )[0]
         )
