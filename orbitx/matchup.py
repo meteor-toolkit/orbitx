@@ -105,12 +105,14 @@ class Matchups:
                 difflat = np.abs(s1_lat - s2_lat)
                 difflon = np.abs(s1_lon - s2_lon)
                 match_peak, _ = find_peaks(
-                    -(difflat + difflon)
+                    -np.sqrt(difflat**2 + difflon**2)
                 )  # local minima peaks of latlon difference (max of negative val)
                 # check distance is within the c2c_dist (centre to centre)
                 position = np.array([s1_lon, s1_lat, s2_lon, s2_lat])[
                     :, [j for j in np.arange(len(s1_lon)) if j in match_peak]
                 ]
+                if len(position[0]) == 0:
+                    continue
                 distance = get_distance(*tuple(position))
                 match_peak = list(match_peak[np.where(distance <= cntr2cntr_dist)])
                 max_distance = list(distance[np.where(distance <= cntr2cntr_dist)])

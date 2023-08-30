@@ -76,11 +76,11 @@ class TestMatchups(unittest.TestCase):
                 "S3A_LS8": {
                     "lat1": np.array([3.0]),
                     "lon1": np.array([0.0]),
-                    "lat2": np.array([7.0]),
-                    "lon2": np.array([0.0]),
-                    "delay": np.array([-1.0]),
+                    "lat2": np.array([5.0]),
+                    "lon2": np.array([-1.0]),
+                    "delay": np.array([0.0]),
                     "time": np.array([dt.datetime(1970, 1, 1, 0, 0, 2)], dtype=object),
-                    "distance": np.array([4.0]),
+                    "distance": np.array([3.0]),
                 }
             },
             {
