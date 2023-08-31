@@ -7,7 +7,7 @@ import datetime
 
 from math import radians, cos, sin, asin, sqrt
 
-from typing import Optional
+from typing import Optional, Dict, List
 from scipy.signal import find_peaks
 
 __author__ = [
@@ -44,16 +44,21 @@ get_distance = np.vectorize(get_dist)
 class Matchups:
     def matchup(
         self,
-        orbit_output: dict,
+        orbit_output: Dict[str, Dict[str, list]],
         time_diff_threshold: float,
         cntr2cntr_dist: float,
     ):
         """
         Return information relating to matchup instances between satellites
 
+        orbit_output = {"S3A":
+                            {"lon":
+                                [0, 12, 234, 64, 458934],
+                                }}
+
         :param orbit_output: dictionary containing the satellites and their lon, lat and time arrays
-        :param time_diff_threshold:
-        :param cntr2cntr_dist:
+        :param time_diff_threshold: seconds
+        :param cntr2cntr_dist: km
         """
         # choose one satellite to remain stable and loop through the rest with respect to it
         sat1 = list(orbit_output.keys())[0]

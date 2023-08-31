@@ -37,31 +37,12 @@ __all__ = ["Orbit"]
 
 class Orbit:
     """
-
-    NB call the TLE class in here
-
-    inputs:
-        list of satellite names
-        start and end time
-        propagation interval
-
-    attributes:
-
-
-    methods:
-        form_sample_space
-        get_matching_indices # previously breakup_smpl_space
-        propagate_orbit
-        sim_orbit
-        interpolate_orbit
-        run
-        save_orbits
+    Simulate the satellite orbit
     """
 
     def __init__(self):
         self.start_time = None
         self.end_time = None
-        pass
 
     @staticmethod
     def form_sample_space(
