@@ -145,6 +145,41 @@ class TestTLE(unittest.TestCase):
 
         np.testing.assert_array_almost_equal(tles[2], exp_times)
 
+    def test_get_tle_(self):
+        """
+        This is to test a situation when there is no TLE within the [start_time, end_time]
+        """
+
+        # define input parameters
+        start_time = dt(2015, 6, 24, 22, 0, 0)
+        end_time = dt(2015, 6, 24, 23, 0, 0)
+        satellite_name = "S2A"
+
+        # run code under test
+        tle = TLEInfo()
+        tles = tle.get_tle(
+            start_time=start_time, end_time=end_time, satellite=satellite_name
+        )
+
+        # define expected output
+        exp_first_lines = [
+            "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994",
+        ]
+        exp_second_lines = [
+            "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266",
+        ]
+
+        exp_times = [1435181328.156384]
+
+        # compare expected and actual output
+        for l1, exp_l1 in zip(tles[0], exp_first_lines):
+            self.assertEqual(l1, exp_l1)
+
+        for l2, exp_l2 in zip(tles[1], exp_second_lines):
+            self.assertEqual(l2, exp_l2)
+
+        np.testing.assert_array_almost_equal(tles[2], exp_times)
+
 
 if __name__ == "__main__":
     unittest.main()

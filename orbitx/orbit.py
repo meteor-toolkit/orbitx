@@ -37,7 +37,7 @@ __all__ = ["Orbit"]
 
 class Orbit:
     """
-    Simulate the satellite orbit
+    Simulate the satellite orbit.
     """
 
     def __init__(self):
@@ -53,10 +53,11 @@ class Orbit:
         """
         Return a time vector containing desired orbit simulation timestamps
 
-        :param start_time:
-        :param end_time:
-        :param prop_smpl_interval:
-        :return:
+        :param start_time: start of time window
+        :param end_time: end of time window
+        :param prop_smpl_interval: propagation sampling interval in seconds
+        :return: tuple containing elements - list of temporal sampling space in datetime, and list of temporal sampling
+        space in 'seconds since 1970'
         """
 
         time_since = start_time - datetime.datetime(1970, 1, 1, 0, 0, 0)
@@ -86,7 +87,6 @@ class Orbit:
         """
         Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and
         return the matching pointers/indices.
-
 
         :param sim_time: a vector of time containing all the instances when we want to simulate the orbit
         :param tle_time: a vector of time containing all tle instances
@@ -253,9 +253,15 @@ class Orbit:
         line2: List[str],
         seconds_since_1970: np.ndarray,
         propagation_sampling_interval: Union[float, int],
-    ):
+    ) -> Tuple[List[float], List[float], List[float]]:
         """
         Return latitude, longitude and time arrays for full simulated orbit
+
+        :param line1: first lines of TLE set
+        :param line2: second lines of TLE set
+        :param seconds_since_1970: timing of TLE set in seconds since 1970
+        :param: propagation_sampling_interval: propagation sampling interval in seconds
+        :return: tuple containing elements - time of simulation, simulated latitude, simulated longitude
         """
         smpl_space, smpl_space_secs_since_1970 = self.form_sample_space(
             self.start_time, self.end_time, propagation_sampling_interval
@@ -304,8 +310,16 @@ class Orbit:
 
     def interpolate_orbit(
         self, sat_sec_since, sat_lat_sim, sat_lon_sim, interpolation_sampling_interval
-    ):
-        """ """
+    ) -> Tuple[Any, Any, np.ndarray]:
+        """
+        Interpolate the propagated orbit for a higher spatiotemporal sampling rate.
+
+        :param sat_sec_since: time of simulated/propagated orbit
+        :param sat_lat_sim: latitude of simulated/propagated orbit
+        :param sat_lon_sim: longitude of simulated/propagated orbit
+        :param interpolation_sampling_interval: interpolation sampling interval
+        :return: tuple containing latitude, longitude, and time of the simulated/interpolated orbit
+        """
         f1_lat_linear = interp1d(sat_sec_since, sat_lat_sim)
         f1_lon_linear = interp1d(sat_sec_since, sat_lon_sim)
 
@@ -333,12 +347,12 @@ class Orbit:
         """
         Calculate the interpolated satellite orbits
 
-        :param satellites:
-        :param start_time:
-        :param end_time:
-        :param propagation_sampling_interval:
-        :param interpolation_sampling_interval:
-        :return:
+        :param satellites: short name of satellites, e.g., S3A, LS8, etc.
+        :param start_time: start time of simulation
+        :param end_time: end time of simulation
+        :param propagation_sampling_interval: propagation sampling interval in seconds
+        :param interpolation_sampling_interval: interpolation sampling interval in seconds
+        :return: dictionary containing lat, lon, and time of simulated orbit for the satellite of interest
         """
         self.start_time = start_time
         self.end_time = end_time
