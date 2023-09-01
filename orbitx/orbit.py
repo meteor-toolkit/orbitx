@@ -37,7 +37,7 @@ __all__ = ["Orbit"]
 
 class Orbit:
     """
-    Simulate the satellite orbit.
+    Class to simulate satellite orbits
     """
 
     def __init__(self):
@@ -260,7 +260,7 @@ class Orbit:
         :param line1: first lines of TLE set
         :param line2: second lines of TLE set
         :param seconds_since_1970: timing of TLE set in seconds since 1970
-        :param: propagation_sampling_interval: propagation sampling interval in seconds
+        :param propagation_sampling_interval: propagation sampling interval in seconds
         :return: tuple containing elements - time of simulation, simulated latitude, simulated longitude
         """
         smpl_space, smpl_space_secs_since_1970 = self.form_sample_space(
