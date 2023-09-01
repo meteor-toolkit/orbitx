@@ -14,6 +14,10 @@ __all__ = ["TLEInfo"]
 
 
 class TLEInfo:
+    """
+    Class to retrieve satellite TLEs
+    """
+
     @staticmethod
     def return_tle_path(satellite_name: str) -> Optional[str]:
         """
