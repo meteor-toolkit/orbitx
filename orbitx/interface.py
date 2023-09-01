@@ -3,11 +3,14 @@
 import os
 import datetime
 import xarray as xr
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
 
 from typing import List, Optional
 
 from orbitx.orbit import Orbit
-from orbitx.matchup import Matchups
+from orbitx.matchup import Matchups, get_range
 
 __author__ = [
     "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
@@ -15,7 +18,17 @@ __author__ = [
     "Mattea Goalen <mattea.goalen@npl.co.uk>",
 ]
 
-__all__ = ["return_matchups"]
+__all__ = ["return_matchups", "plot_matchups"]
+
+
+SATELLITE_DICT = {
+    "LS8": "Landsat-8",
+    "LS9": "Landsat-9",
+    "S2A": "Sentinel-2A",
+    "S2B": "Sentinel-2B",
+    "S3A": "Sentinel-3A",
+    "S3B": "Sentinel-3B",
+}
 
 
 def return_matchups(
@@ -50,10 +63,10 @@ def return_matchups(
     :param end_time: end of time period of interest
     :param propagation_sampling_interval: sampling rate of orbit propagation per sensor
     :param interpolation_sampling_interval: subsampling rate of orbit propagation per sensor by interpolation
-    :param cntr2cntr_dist: matchup threshold for distance between the nadir position of the two satellites
-    :param time_diff_threshold: matchup threshold for time difference between the two satellites
+    :param cntr2cntr_dist: matchup threshold for distance between the nadir position of the two satellites (kilometres)
+    :param time_diff_threshold: matchup threshold for time difference between the two satellites (seconds)
     :param output_path_sim_orbits: path to write evaluated propagated orbits to
-    :param output_path_matchups: path to write matchups to
+    :param output_path_matchups: path to write matchups to (as a netcdf file)
     :param output: whether or not to output the matchup dataset, if no output_path defined defaults to True else False
     """
     # simulate desired orbits
@@ -87,3 +100,32 @@ def return_matchups(
         return matchup_output
     else:
         return None
+
+
+def plot_matchups(ds: xr.Dataset, projection=ccrs.PlateCarree()) -> None:
+    """
+    Plot the matchup dataset generated from orbitx.interface.return_matchups
+
+    :param ds: matchup dataset containing latitude, latitude and time information for matchup events
+    :param projection: cartopy.crs projection to use to plot, defaults to cartopy.crs.PlateCarree()
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1, projection=projection)
+    ax.coastlines()
+    ax.add_feature(cfeature.LAND)
+    sat_no = len([i for i in ds if "lat" in i])
+    if sat_no == 2:
+        delay = ds["delay"]
+    else:
+        delay = get_range(*[ds[i] for i in ds if "delay" in str(i)])
+    for i in range(sat_no):
+        ax.scatter(
+            ds[f"lon{i + 1}"],
+            ds[f"lat{i + 1}"],
+            s=(ds.attrs["time_threshold"] - delay) ** 2
+            / (ds.attrs["time_threshold"] / 2) ** 2,
+            label=SATELLITE_DICT[ds.attrs[f"sat{i + 1}"]],
+            transform=ccrs.PlateCarree(),
+        )
+    ax.legend(loc="lower right")
+    plt.show()
