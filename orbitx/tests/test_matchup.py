@@ -49,7 +49,7 @@ class TestMatchups(unittest.TestCase):
         input_orbits = {
             "S3A": {
                 "lat": np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-                "lon": np.array([2, 1, 0, 3, 6, 5, 8, 6, 10, 11]),
+                "lon": np.array([3, 2, 0, 3, 6, 5, 8, 6, 10, 11]),
                 "time": [float(i) for i in np.arange(10)],
             },
             "LS8": {
@@ -60,14 +60,14 @@ class TestMatchups(unittest.TestCase):
         }
         time_diff_threshold = 3
         cntr2cntr_dist = 4
-        np.array(
-            [
-                1,
-                np.sqrt(2),
-                np.sqrt(13),
-                np.sqrt(34),
-            ]
-        )
+        # np.array(
+        #     [
+        #         1,
+        #         np.sqrt(2),
+        #         np.sqrt(13),
+        #         np.sqrt(34),
+        #     ]
+        # )
         matchup = Matchups()
         matchup.matchup(input_orbits, time_diff_threshold, cntr2cntr_dist)
 
@@ -76,11 +76,11 @@ class TestMatchups(unittest.TestCase):
                 "S3A_LS8": {
                     "lat1": np.array([3.0]),
                     "lon1": np.array([0.0]),
-                    "lat2": np.array([5.0]),
-                    "lon2": np.array([-1.0]),
-                    "delay": np.array([0.0]),
+                    "lat2": np.array([7.0]),
+                    "lon2": np.array([0.0]),
+                    "delay": np.array([-1.0]),
                     "time": np.array([dt.datetime(1970, 1, 1, 0, 0, 2)], dtype=object),
-                    "distance": np.array([3.0]),
+                    "distance": np.array([4.0]),
                 }
             },
             {
