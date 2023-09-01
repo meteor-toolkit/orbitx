@@ -60,14 +60,6 @@ class TestMatchups(unittest.TestCase):
         }
         time_diff_threshold = 3
         cntr2cntr_dist = 4
-        # np.array(
-        #     [
-        #         1,
-        #         np.sqrt(2),
-        #         np.sqrt(13),
-        #         np.sqrt(34),
-        #     ]
-        # )
         matchup = Matchups()
         matchup.matchup(input_orbits, time_diff_threshold, cntr2cntr_dist)
 
