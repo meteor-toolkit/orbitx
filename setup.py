@@ -88,7 +88,10 @@ setup(
     install_requires=[
         "numpy",
         "scipy",
+        "cartopy",
         "matplotlib",
+        "netcdf4",
+        "xarray",
     ],
     extras_require={
         "dev": [

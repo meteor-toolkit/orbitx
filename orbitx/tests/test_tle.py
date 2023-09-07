@@ -1,11 +1,11 @@
-"""orbitx.test.test_get_2LEs - tests for orbitx.get_2LEs"""
+"""orbitx.tests.test_tle - tests for orbitx.tle"""
 import numpy as np
 import os.path
 import random
 import string
 import shutil
 import unittest
-from orbitx.tle import TLE
+from orbitx.tle import TLEInfo
 from orbitx import add_to_tle_path
 from pathlib import Path
 from datetime import datetime as dt
@@ -58,7 +58,7 @@ class TestTLE(unittest.TestCase):
         shutil.rmtree(self.tmp_tle_path2)
 
     def test_return_tle_path(self):
-        tle = TLE()
+        tle = TLEInfo()
         self.assertEqual(
             tle.return_tle_path("S2A"),
             os.path.abspath(
@@ -75,7 +75,7 @@ class TestTLE(unittest.TestCase):
         add_to_tle_path(self.tmp_tle_path1, prepend=True)
         add_to_tle_path(self.tmp_tle_path2, prepend=False)
 
-        tle = TLE()
+        tle = TLEInfo()
         self.assertEqual(
             tle.return_tle_path("S2A"),
             os.path.abspath(os.path.join(self.tmp_tle_path1, "TLEset_S2A.txt")),
@@ -90,7 +90,7 @@ class TestTLE(unittest.TestCase):
             "1 40697U 15028A   15174.15999288 -.00000044  00000+0  00000+0 0  9998"
         )
 
-        tle = TLE()
+        tle = TLEInfo()
         date = tle.return_date_from_tle(tle_line_1)
 
         exp_date = dt(2015, 6, 23, 3, 50, 23, 384832)
@@ -102,9 +102,9 @@ class TestTLE(unittest.TestCase):
         self.assertEqual(date.minute, exp_date.minute)
         self.assertEqual(date.second, exp_date.second)
 
-    def test_return_seconds_since_2000(self):
-        tle = TLE()
-        self.assertEqual(tle.return_seconds_since_2000(dt(2000, 1, 1, 0, 0, 1)), 1.0)
+    def test_return_seconds_since_1970(self):
+        tle = TLEInfo()
+        self.assertEqual(tle.return_seconds_since_1970(dt(1970, 1, 1, 0, 0, 1)), 1.0)
 
     def test_get_tle(self):
         # define input parameters
@@ -113,21 +113,63 @@ class TestTLE(unittest.TestCase):
         satellite_name = "S2A"
 
         # run code under test
-        tle = TLE()
+        tle = TLEInfo()
         tles = tle.get_tle(
-            start_time=start_time, end_time=end_time, satellite_name=satellite_name
+            start_time=start_time, end_time=end_time, satellite=satellite_name
         )
 
         # define expected output
         exp_first_lines = [
-            "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994\n",
-            "1 40697U 15028A   15176.80399346 -.00024242  00000+0 -91643-2 0  9994\n",
+            "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994",
+            "1 40697U 15028A   15176.80399346 -.00024242  00000+0 -91643-2 0  9994",
         ]
         exp_second_lines = [
-            "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266\n",
-            "2 40697  98.5705 251.1120 0002131 229.6310 131.1858 14.31372223   391\n",
+            "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266",
+            "2 40697  98.5705 251.1120 0002131 229.6310 131.1858 14.31372223   391",
         ]
-        exp_times = [488496528.156384, 488575065.034944]
+
+        # The expected time since 1970 for each relevant TLE cab be calculated as follows. Take line 1 of
+        # "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994\n" for instance;
+        # Day 175 of year 2015 is June 24. The decimal days .89500181 equals hour 21, minute 28 and second 48.156384 of
+        # same day. Below the decimal seconds are added up separately.
+        # 1435181328.156384 = (dt(2015, 6, 24, 21, 28, 48) - dt(1970, 1, 1, 0, 0, 0)).total_seconds() + .156384
+        # 1435259865.034944 = (dt(2015, 6, 25, 19, 17, 45) - dt(1970, 1, 1, 0, 0, 0)).total_seconds() + .034943999999996
+        exp_times = [1435181328.156384, 1435259865.034944]
+
+        # compare expected and actual output
+        for l1, exp_l1 in zip(tles[0], exp_first_lines):
+            self.assertEqual(l1, exp_l1)
+
+        for l2, exp_l2 in zip(tles[1], exp_second_lines):
+            self.assertEqual(l2, exp_l2)
+
+        np.testing.assert_array_almost_equal(tles[2], exp_times)
+
+    def test_get_tle_(self):
+        """
+        This is to test a situation when there is no TLE within the [start_time, end_time]
+        """
+
+        # define input parameters
+        start_time = dt(2015, 6, 24, 22, 0, 0)
+        end_time = dt(2015, 6, 24, 23, 0, 0)
+        satellite_name = "S2A"
+
+        # run code under test
+        tle = TLEInfo()
+        tles = tle.get_tle(
+            start_time=start_time, end_time=end_time, satellite=satellite_name
+        )
+
+        # define expected output
+        exp_first_lines = [
+            "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994",
+        ]
+        exp_second_lines = [
+            "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266",
+        ]
+
+        exp_times = [1435181328.156384]
 
         # compare expected and actual output
         for l1, exp_l1 in zip(tles[0], exp_first_lines):

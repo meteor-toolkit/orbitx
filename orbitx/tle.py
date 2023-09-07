@@ -5,15 +5,19 @@ import os
 import datetime
 from typing import Tuple, List, Optional
 
-
 __author__ = [
     "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
     "Sam Hunt <sam.hunt@npl.co.uk>",
 ]
-__all__ = ["TLE"]
+
+__all__ = ["TLEInfo"]
 
 
-class TLE:
+class TLEInfo:
+    """
+    Class to retrieve satellite TLEs
+    """
+
     @staticmethod
     def return_tle_path(satellite_name: str) -> Optional[str]:
         """
@@ -50,8 +54,14 @@ class TLE:
         year_tens_and_units = int(tle_line_1[18:20])
         decimal_day = float(tle_line_1[20:32])
 
-        # Create date time object at start of relevant year
-        date = datetime.datetime(year=2000 + year_tens_and_units, month=1, day=1)
+        # TODO: Test the code with any TLE dated before 2000.
+        # Create date time object at start of relevant year.
+        # Notice that the reference year here has to do with the TLE conventions as explained in
+        # 'celestrak.org/NORAD/documentation/tle-fmt.php' and not the reference year for OrbitX which is 1970.
+        if tle_line_1[18] == "0" or tle_line_1[18] == "1" or tle_line_1[18] == "2":
+            date = datetime.datetime(year=2000 + year_tens_and_units, month=1, day=1)
+        else:
+            date = datetime.datetime(year=1900 + year_tens_and_units, month=1, day=1)
 
         # Add the necessary number of days to get TLE
         date += datetime.timedelta(days=decimal_day - 1)
@@ -59,82 +69,81 @@ class TLE:
         return date
 
     @staticmethod
-    def return_seconds_since_2000(date_time: datetime.datetime) -> float:
+    def return_seconds_since_1970(date_time: datetime.datetime) -> float:
         """
-        Returns seconds since 2000 to defined date time
+        Returns seconds since 1970 to defined date time
 
         :param date_time: time of interest
-        :returns: seconds since 2000
+        :returns: seconds since 1970
         """
 
-        return (date_time - datetime.datetime(2000, 1, 1, 0, 0, 0)).total_seconds()
+        return (date_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds()
 
     def get_tle(
-        self,
-        start_time: datetime.datetime,
-        end_time: datetime.datetime,
-        satellite_name: str,
-    ) -> Tuple[List[str], List[str], List[float]]:
+        self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
+    ) -> Tuple[List[str], List[str], np.ndarray]:
         """
-        Returns two-line elements within defined time window, with seconds since 2000
+        Returns two-line elements within defined time window, with seconds since 1970
 
         :param start_time: start of time window
         :param end_time: end of time window
-        :param satellite_name: satellite short name as included in TLE file name ``TLEset_XXX``,
-        where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
+        :param satellite: satellite short name as included in TLE file name ``TLEset_XXX``,
+                where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
 
-        :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 2000
+        :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 1970
         """
 
         # region Read TLE file.
-        tle_path = TLE.return_tle_path(satellite_name)
-        if not tle_path:
-            raise ValueError(f"Unable to return TLE path for '{satellite_name}'")
+        tle_path = self.return_tle_path(satellite)
+        if tle_path is None:
+            raise ValueError(f"No TLE file found for '{satellite}'")
         with open(tle_path, "r") as f:
-            lines = f.readlines()
-        lines = np.array(lines)
+            lines = np.array(f.read().splitlines())
         # endregion
 
         # region Access indexes of line-1 and line-2
         length = len(lines)
-        if length % 3 == 0:
-            number_of_TLEs = int(length / 3)
-            line_1_indexes = 3 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 1
-            line_2_indexes = 3 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 2
-        elif length % 2 == 0:
-            number_of_TLEs = int(length / 2)
-            line_1_indexes = 2 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 0
-            line_2_indexes = 2 * np.linspace(0, number_of_TLEs - 1, number_of_TLEs) + 1
+        if len(lines[0]) < 69:
+            line_1_indexes = np.arange(1, length, 3)
+            line_2_indexes = np.arange(2, length, 3)
         else:
-            print("Error message")
-        func = np.vectorize(int)
-        line_1_indexes = func(line_1_indexes)
-        line_2_indexes = func(line_2_indexes)
+            line_1_indexes = np.arange(0, length, 2)
+            line_2_indexes = np.arange(1, length, 2)
+
         tle_line_1 = lines[line_1_indexes]
         tle_line_2 = lines[line_2_indexes]
         # endregion
 
         # Get date times
         tle_time = np.array(
-            [TLE.return_date_from_tle(tle_line_1_i) for tle_line_1_i in tle_line_1]
+            [self.return_date_from_tle(tle_line_1_i) for tle_line_1_i in tle_line_1]
         )
-        tle_time_s2000 = np.array([TLE.return_seconds_since_2000(d) for d in tle_time])
-        start_time_s2000 = TLE.return_seconds_since_2000(start_time)
-        end_time_s2000 = TLE.return_seconds_since_2000(end_time)
+        tle_time_s1970 = np.array([self.return_seconds_since_1970(d) for d in tle_time])
+        start_time_s1970 = self.return_seconds_since_1970(start_time)
+        end_time_s1970 = self.return_seconds_since_1970(end_time)
 
         # Filter time
         idx = [
             i
-            for i, t_i in enumerate(tle_time_s2000)
-            if (t_i >= start_time_s2000) and (t_i < end_time_s2000)
+            for i, t_i in enumerate(tle_time_s1970)
+            if (t_i >= start_time_s1970) and (t_i < end_time_s1970)
         ]
 
-        # Filter TLE set
-        tle_line_1 = tle_line_1[idx]
-        tle_line_2 = tle_line_2[idx]
-        tle_time_s2000 = tle_time_s2000[idx]
+        if not idx:
+            # If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time
+            closest_tle = np.argmin(np.abs(tle_time_s1970 - start_time_s1970))
 
-        return (tle_line_1, tle_line_2, tle_time_s2000)
+            tle_line_1 = [tle_line_1[closest_tle]]
+            tle_line_2 = [tle_line_2[closest_tle]]
+            tle_time_s1970 = np.array([tle_time_s1970[closest_tle]])
+
+        else:
+            # Filter TLE set
+            tle_line_1 = tle_line_1[idx]
+            tle_line_2 = tle_line_2[idx]
+            tle_time_s1970 = tle_time_s1970[idx]
+
+        return list(tle_line_1), list(tle_line_2), tle_time_s1970
 
 
 if __name__ == "__main__":
