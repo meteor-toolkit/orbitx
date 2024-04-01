@@ -25,7 +25,7 @@ def post_install_commands():
     on_windows = platform.system() == "Windows"
 
     commands = [
-        "conda install -c conda-forge orekit",
+       "conda install -k -c conda-forge orekit",
     ]
     commands = [shlex.split(c, posix=(not on_windows)) for c in commands]
 
