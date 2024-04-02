@@ -21,7 +21,7 @@ ds = return_matchups(
     # output_path_matchups=r"T:\ECO\EOServer\data\satellite_matchups",
 )
 
-plot_matchups(ds, ccrs.Mollweide())
+# plot_matchups(ds, ccrs.Mollweide())
 
 print(ds)
 
