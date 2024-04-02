@@ -10,7 +10,7 @@ from orbitx.interface import return_matchups, plot_matchups
 __author__ = "Sajedeh Behnia"
 
 ds = return_matchups(
-    sats=["LS8", "S2A", "S3A"],
+    sats=["LS8", "S2A"],
     start_time=datetime.datetime(2022, 1, 1, 0, 0, 0),
     end_time=datetime.datetime(2022, 2, 1, 0, 0, 0),
     propagation_sampling_interval=60,
@@ -24,6 +24,8 @@ ds = return_matchups(
 plot_matchups(ds, ccrs.Mollweide())
 
 print(ds)
+
+ds.to_netcdf("test.nc")
 
 if __name__ == "__main__":
     pass
