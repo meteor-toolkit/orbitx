@@ -92,6 +92,7 @@ mypy:
     paths:
       - test_report/
       - test_report/cov_report
+      - test_report/cov_report/index.html
     expire_in: 1 hour
 
 
