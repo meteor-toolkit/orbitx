@@ -25,7 +25,7 @@ def post_install_commands():
     on_windows = platform.system() == "Windows"
 
     commands = [
-       "conda install -k -c conda-forge orekit",
+       "conda install -k -c conda-forge orekit==12.0.1",
     ]
     commands = [shlex.split(c, posix=(not on_windows)) for c in commands]
 
@@ -86,12 +86,12 @@ setup(
         ]
     },
     install_requires=[
-        "numpy",
-        "scipy",
-        "cartopy",
-        "matplotlib",
-        "netcdf4",
-        "xarray",
+        "numpy==1.26.4",
+        "scipy==1.13.0",
+        "Cartopy==0.22.0",
+        "matplotlib==3.8.4",
+        "netCDF4==1.6.5",
+        "xarray==2024.3.0",
     ],
     extras_require={
         "dev": [

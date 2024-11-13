@@ -85,14 +85,18 @@ mypy:
     - mkdir test_report
     - pytest --html=test_report/report.html
     - pytest --cov-report html:test_report/cov_report --cov=orbitx
-  coverage: '/^TOTAL.+?(\d+\%)$/'
+    - coverage report -m
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   needs: []
   artifacts:
     when: always
     paths:
       - test_report/
       - test_report/cov_report
+      - test_report/cov_report/index.html
     expire_in: 1 hour
+
+
 
 test-3.9:
   extends: ".test_env"
