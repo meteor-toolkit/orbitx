@@ -180,7 +180,7 @@ class Orbit:
         # OPERATIONAL SATELLITE
         mytle = TLE(tle_line1, tle_line2)
         propagator0 = TLEPropagator.selectExtrapolator(mytle)
-
+        propagator0 = PVCoordinatesProvider.cast_(propagator0)
         sel = []
         saz = []
         pos_lat = []
