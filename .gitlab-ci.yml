@@ -85,7 +85,7 @@ mypy:
     - mkdir test_report
     - pytest --html=test_report/report.html
     - pytest --cov-report html:test_report/cov_report --cov=orbitx
-    - coverage report -m --omit=tests/*
+    - coverage report -m --omit=orbitx/tests/*
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   needs: []
   artifacts:
