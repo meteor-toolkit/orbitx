@@ -84,8 +84,8 @@ mypy:
     - python -c "import sys;print(sys.path)"
     - mkdir test_report
     - pytest --html=test_report/report.html
-    - pytest --cov-report html:test_report/cov_report --cov=orbitx --cov-exclude=test_*
-    - coverage report -m
+    - pytest --cov-report html:test_report/cov_report --cov=orbitx
+    - coverage report -m --omit=tests/*
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   needs: []
   artifacts:
