@@ -28,6 +28,7 @@ SATELLITE_DICT = {
     "S2B": "Sentinel-2B",
     "S3A": "Sentinel-3A",
     "S3B": "Sentinel-3B",
+    "EMIT": "EMIT"
 }
 
 
@@ -57,6 +58,7 @@ def return_matchups(
         * S2B (Sentinel-2B)
         * S3A (Sentinel-3A)
         * S6 (Sentinel-6)
+        * EMIT
 
     :param sats: list of satellites
     :param start_time: start of time period of interest
