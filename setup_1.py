@@ -1,10 +1,17 @@
 import io
 import os
 import re
-
+import logging
+import platform
+import shlex
+import subprocess as sp
+import sys
 from setuptools import find_packages
 from setuptools import setup
+from setuptools.command.develop import develop
+from setuptools.command.install import install
 import versioneer
+
 
 def read(filename):
     filename = os.path.join(os.path.dirname(__file__), filename)
@@ -12,11 +19,60 @@ def read(filename):
     with io.open(filename, mode="r", encoding="utf-8") as fd:
         return re.sub(text_type(r":[a-z]+:`~?(.*?)`"), text_type(r"``\1``"), fd.read())
 
+
+# installs orekit via conda
+def post_install_commands():
+    on_windows = platform.system() == "Windows"
+
+    commands = [
+       "conda install -k -c conda-forge orekit==12.0.1",
+    ]
+    commands = [shlex.split(c, posix=(not on_windows)) for c in commands]
+
+    logging.debug(platform.system())
+    logging.debug(commands)
+
+    for cmd in commands:
+        logging.debug(cmd)
+        process = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.STDOUT)
+
+        for c in iter(lambda: process.stdout.read(1), b""):
+            c_decoded = c.decode()
+            sys.stdout.write(c_decoded)
+            sys.stdout.flush()
+
+        process.wait()
+        if process.returncode != 0:
+            err = "Command '{}' failed: aborting install".format(cmd)
+            logging.error(err)
+            raise RuntimeError(err)
+
+
+class PostDevelopCommand(develop):
+    """Post-installation for development mode."""
+
+    def run(self):
+        develop.run(self)
+        post_install_commands()
+
+
+class PostInstallCommand(install):
+    """Post-installation for installation mode."""
+
+    def run(self):
+        install.run(self)
+        post_install_commands()
+
+
+cmdclass = {"develop": PostDevelopCommand, "install": PostInstallCommand}
+
+cmdclass = versioneer.get_cmdclass(cmdclass=cmdclass)
+
 setup(
     version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
+    cmdclass=cmdclass,
     name="orbitx",
-    url="https://gitlab.npl.co.uk/altimetry/orbitx",
+    url="https://gitlab.npl.co.uk/eco/tools/orbitx",
     license="None",
     author="Sajedeh Behnia",
     author_email="sajedeh.behnia@npl.co.uk",

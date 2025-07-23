@@ -17,8 +17,8 @@ ds = return_matchups(
     interpolation_sampling_interval=5,
     cntr2cntr_dist=290,
     time_diff_threshold=900,
-    # output_path_sim_orbits=r"T:\ECO\EOServer\data\satellite_simulated_orbits",
-    # output_path_matchups=r"T:\ECO\EOServer\data\satellite_matchups",
+    output_path_sim_orbits=r"..\..\satellite_simulated_orbits",
+    output_path_matchups=r"..\..\satellite_matchups",
 )
 
 # plot_matchups(ds, ccrs.Mollweide())
