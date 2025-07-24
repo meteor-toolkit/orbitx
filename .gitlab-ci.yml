@@ -1,5 +1,5 @@
 # Default image, if not specified
-image: "miniforge"
+image: "condaforge/miniforge3"
 
 stages:
   - Static Analysis
