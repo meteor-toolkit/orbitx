@@ -41,6 +41,7 @@ setup(
     ],
     extras_require={
         "dev": [
+            "mypy",
             "black",
             "pre-commit",
             "sphinx",

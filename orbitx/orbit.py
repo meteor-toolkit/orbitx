@@ -113,7 +113,6 @@ class Orbit:
         # Delete redundant tle time references
         idx_tle = np.delete(idx_tle, idx_redundant)
         idx_sim = np.delete(idx_sim, idx_redundant)
-            
 
         # Force the idx_sim to include the start_time and end_time stamps
         idx_sim[0] = 0

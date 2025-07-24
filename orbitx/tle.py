@@ -127,16 +127,28 @@ class TLEInfo:
 
         lower_bound_tle_time = [t for t in tle_time_s1970 if t <= start_time_s1970]
         if len(lower_bound_tle_time) == 0:
-            warnings.warn("The oldest TLE file is more recent than the start time requested.\n Oldest TLE file: {}\n Start time requested: {}".format(
-                np.min(tle_time), start_time
-            ))
-        lower_bound_tle_time = start_time_s1970 if len(lower_bound_tle_time) == 0 else np.max(lower_bound_tle_time)
+            warnings.warn(
+                "The oldest TLE file is more recent than the start time requested.\n Oldest TLE file: {}\n Start time requested: {}".format(
+                    np.min(tle_time), start_time
+                )
+            )
+        lower_bound_tle_time = (
+            start_time_s1970
+            if len(lower_bound_tle_time) == 0
+            else np.max(lower_bound_tle_time)
+        )
         upper_bound_tle_time = [t for t in tle_time_s1970 if t >= end_time_s1970]
         if len(upper_bound_tle_time) == 0:
-            warnings.warn("The most recent TLE file is older than the end time requested.\n Oldest TLE file: {}\n Start time requested: {}".format(
-                np.max(tle_time), end_time
-            ))
-        upper_bound_tle_time = end_time_s1970 if len(upper_bound_tle_time) == 0 else np.max(upper_bound_tle_time)
+            warnings.warn(
+                "The most recent TLE file is older than the end time requested.\n Oldest TLE file: {}\n Start time requested: {}".format(
+                    np.max(tle_time), end_time
+                )
+            )
+        upper_bound_tle_time = (
+            end_time_s1970
+            if len(upper_bound_tle_time) == 0
+            else np.max(upper_bound_tle_time)
+        )
         idx = [
             i
             for i, t_i in enumerate(tle_time_s1970)

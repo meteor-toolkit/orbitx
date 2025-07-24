@@ -53,7 +53,7 @@ cache:
     - conda create -n test_env python=3.12
     - conda init bash
     - source ~/.bashrc
-    - conda activate test_env
+    - source activate test_env
     - conda install Cartopy=0.24.1
     - conda install orekit
     - pip install -e ".[dev]"
