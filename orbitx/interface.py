@@ -83,7 +83,10 @@ def return_matchups(
 
     # find matchups between orbits
     matchup = Matchups()
-    matchup_output = matchup.matchup(orbit_output, time_diff_threshold, cntr2cntr_dist)
+    matchup_output = matchup.matchup(
+        orbit_output,
+        time_diff_threshold,
+        cntr2cntr_dist)
 
     if output_path_sim_orbits is not None:
         # save orbital data
