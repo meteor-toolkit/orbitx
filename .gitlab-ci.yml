@@ -50,14 +50,13 @@ cache:
     - git config --global user.name "Gitlabs CI Testing"
     - git config --global user.email "test@example.com"
     # Make a virtual environment to install deps into (this will be cached for each step)
-    - conda init
-    - source ~/.bashrc
     - conda create -n test_env python=3.12
+    - conda init bash
+    - source ~/.bashrc
     - conda activate test_env
     - conda install Cartopy=0.24.1
     - conda install orekit
     - pip install -e ".[dev]"
-
 ### Linting ###
 
 black:
