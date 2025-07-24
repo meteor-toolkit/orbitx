@@ -29,7 +29,7 @@ SATELLITE_DICT = {
     "S3A": "Sentinel-3A",
     "S3B": "Sentinel-3B",
     "S6": "Sentinel-6",
-    "J3": "JASON-3"
+    "J3": "JASON-3",
 }
 
 

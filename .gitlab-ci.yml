@@ -1,5 +1,5 @@
 # Default image, if not specified
-image: "python:3.12"
+image: "miniforge"
 
 stages:
   - Static Analysis

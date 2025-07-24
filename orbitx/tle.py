@@ -4,6 +4,7 @@ import numpy as np
 import os
 import datetime
 from typing import Tuple, List, Optional
+import warnings
 
 __author__ = [
     "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
@@ -123,10 +124,23 @@ class TLEInfo:
         end_time_s1970 = self.return_seconds_since_1970(end_time)
 
         # Filter time
+
+        lower_bound_tle_time = [t for t in tle_time_s1970 if t <= start_time_s1970]
+        if len(lower_bound_tle_time) == 0:
+            warnings.warn("The oldest TLE file is more recent than the start time requested.\n Oldest TLE file: {}\n Start time requested: {}".format(
+                np.min(tle_time), start_time
+            ))
+        lower_bound_tle_time = start_time_s1970 if len(lower_bound_tle_time) == 0 else np.max(lower_bound_tle_time)
+        upper_bound_tle_time = [t for t in tle_time_s1970 if t >= end_time_s1970]
+        if len(upper_bound_tle_time) == 0:
+            warnings.warn("The most recent TLE file is older than the end time requested.\n Oldest TLE file: {}\n Start time requested: {}".format(
+                np.max(tle_time), end_time
+            ))
+        upper_bound_tle_time = end_time_s1970 if len(upper_bound_tle_time) == 0 else np.max(upper_bound_tle_time)
         idx = [
             i
             for i, t_i in enumerate(tle_time_s1970)
-            if (t_i >= start_time_s1970) and (t_i < end_time_s1970)
+            if (t_i >= lower_bound_tle_time) and (t_i < upper_bound_tle_time)
         ]
 
         if not idx:

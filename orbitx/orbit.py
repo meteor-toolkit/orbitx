@@ -93,14 +93,13 @@ class Orbit:
         :return: tuple of lists containing corresponding indices between simulation space and tle references
         """
 
-        idx_tle = []
-        idx_sim: List[Any] = []
+        idx_tle = np.array(range(len(tle_time)))
+        idx_sim = np.empty(idx_tle.shape, int)
         idx_redundant = []
 
         # Find corresponding indices of tle and simulation time vectors
-        for i in range(len(tle_time)):
-            idx_tle.append(i)
-            idx_sim.append(np.argmax(sim_time >= tle_time[i]))
+        for i in idx_tle:
+            idx_sim[i] = np.argmax(sim_time >= tle_time[i])
 
         # Find redundant tle time references
         idx_sim_unique = np.unique(idx_sim)
@@ -112,10 +111,9 @@ class Orbit:
                     idx_redundant.append(loc[k])
 
         # Delete redundant tle time references
-        idx_redundant.reverse()
-        for i in idx_redundant:
-            del idx_tle[i]
-            del idx_sim[i]
+        idx_tle = np.delete(idx_tle, idx_redundant)
+        idx_sim = np.delete(idx_sim, idx_redundant)
+            
 
         # Force the idx_sim to include the start_time and end_time stamps
         idx_sim[0] = 0
@@ -181,20 +179,24 @@ class Orbit:
         mytle = TLE(tle_line1, tle_line2)
         propagator0 = TLEPropagator.selectExtrapolator(mytle)
         propagator0 = PVCoordinatesProvider.cast_(propagator0)
-        sel = []
-        saz = []
-        pos_lat = []
-        pos_lon = []
-        pos_alt = []
-        pos_s0_lat = []
-        pos_s0_lon = []
-        pos_s0_alt = []
-        date = []
-        julian_date = []
 
-        while (
-            extrap_date.compareTo(final_date) <= 0.0
-        ):  # propagate orbit until it reaches it reaches the final date
+        extrap_date_list = []
+        while extrap_date.compareTo(final_date) <= 0.0:
+            extrap_date_list.append(extrap_date)
+            extrap_date = extrap_date.shiftedBy(propagation_sampling_interval)
+        extrap_date_list = np.array(extrap_date_list)
+        sel = np.empty(extrap_date_list.shape, dtype=float)
+        saz = np.empty(extrap_date_list.shape, dtype=float)
+        pos_lat = np.empty(extrap_date_list.shape, dtype=float)
+        pos_lon = np.empty(extrap_date_list.shape, dtype=float)
+        pos_alt = np.empty(extrap_date_list.shape, dtype=float)
+        pos_s0_lat = np.empty(extrap_date_list.shape, dtype=float)
+        pos_s0_lon = np.empty(extrap_date_list.shape, dtype=float)
+        pos_s0_alt = np.empty(extrap_date_list.shape, dtype=float)
+        date = np.empty(extrap_date_list.shape, dtype=datetime.datetime)
+        julian_date = np.empty(extrap_date_list.shape, dtype=float)
+
+        for extrap_date_ind, extrap_date in enumerate(extrap_date_list):
             pv0 = propagator0.getPVCoordinates(extrap_date, inertial_frame)
             psun: TimeStampedFieldPVCoordinates = sun.getPVCoordinates(
                 extrap_date, inertial_frame
@@ -208,12 +210,18 @@ class Orbit:
                 pos_tmp0, inertial_frame, extrap_date
             )  # position of the satellite on the earth surface
 
-            pos_s0_lat.append(poss0.getLatitude())  # satellite nadir position
-            pos_s0_lon.append(poss0.getLongitude())  # satellite nadir position
-            pos_s0_alt.append(poss0.getAltitude())  # satellite nadir position
-            pos_lat.append(pos0.getLatitude())  # sun nadir position
-            pos_lon.append(pos0.getLongitude())  # sun nadir position
-            pos_alt.append(pos0.getAltitude())  # sun nadir position
+            pos_s0_lat[extrap_date_ind] = (
+                poss0.getLatitude()
+            )  # satellite nadir position
+            pos_s0_lon[extrap_date_ind] = (
+                poss0.getLongitude()
+            )  # satellite nadir position
+            pos_s0_alt[extrap_date_ind] = (
+                poss0.getAltitude()
+            )  # satellite nadir position
+            pos_lat[extrap_date_ind] = pos0.getLatitude()  # sun nadir position
+            pos_lon[extrap_date_ind] = pos0.getLongitude()  # sun nadir position
+            pos_alt[extrap_date_ind] = pos0.getAltitude()  # sun nadir position
             station = GeodeticPoint(
                 poss0.getLatitude(), poss0.getLongitude(), 0.0
             )  # set the satellite Nadir position as the reference from which to obtain the
@@ -231,17 +239,14 @@ class Orbit:
                 / pi
             )
 
-            sel.append(sel_tmp)
-            saz.append(saz_tmp)
+            sel[extrap_date_ind] = sel_tmp
+            saz[extrap_date_ind] = saz_tmp
 
-            date.append(absolutedate_to_datetime(extrap_date))
-            julian_date.append(
-                (
-                    absolutedate_to_datetime(extrap_date)
-                    - datetime.datetime(1970, 1, 1, 0, 0, 0)
-                ).total_seconds()
-            )
-            extrap_date = extrap_date.shiftedBy(propagation_sampling_interval)
+            date[extrap_date_ind] = absolutedate_to_datetime(extrap_date)
+            julian_date[extrap_date_ind] = (
+                absolutedate_to_datetime(extrap_date)
+                - datetime.datetime(1970, 1, 1, 0, 0, 0)
+            ).total_seconds()
 
         pos_s0_lat = [i * 180.0 / pi for i in pos_s0_lat]
         pos_s0_lon = [i * 180.0 / pi for i in pos_s0_lon]

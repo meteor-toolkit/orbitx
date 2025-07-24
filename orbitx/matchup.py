@@ -60,27 +60,32 @@ class Matchups:
         time_diff_threshold: float,
         cntr2cntr_dist: float,
     ):
-        """
-        Return information relating to matchup instances between satellites
+        """matchup Return information relating to matchup instances between satellites
 
-        orbit_output = {"S3A":
-                            {"lon": [ -98.71854066,   61.60710602, -138.93439662, ..., 14.49443229,  168.04845583],
-                             "lat": [-71.11043521,  81.69396844, -70.91783791, ..., 81.03528723,  66.59527834],
-                             "time": List[float]
-                            },
-                         "LS8":
-                            {"lon": [ -97.3285552 ,   46.20308181, -142.9947944 , ..., 2.37331828,  171.198296  ],
-                             "lat": [-68.67058448,  80.91129054, -72.89258064, ..., 79.45075576,  64.39909769],
-                             "time": List[float],
-                            },
-                        }
+        .. code-block:: bash
+
+            orbit_output = {"S3A":
+                                {"lon": [ -98.71854066,   61.60710602, -138.93439662, ..., 14.49443229,  168.04845583],
+                                "lat": [-71.11043521,  81.69396844, -70.91783791, ..., 81.03528723,  66.59527834],
+                                "time": List[float]
+                                },
+                            "LS8":
+                                {"lon": [ -97.3285552 ,   46.20308181, -142.9947944 , ..., 2.37331828,  171.198296  ],
+                                "lat": [-68.67058448,  80.91129054, -72.89258064, ..., 79.45075576,  64.39909769],
+                                "time": List[float],
+                                },
+                            }
 
         NB
         Time is given in seconds since 1970 in the orbit_output dictionary
-
         :param orbit_output: dictionary containing the satellites and their lon, lat and time arrays
+        :type orbit_output: Dict[str, Dict[str, list]]
         :param time_diff_threshold: max accepted time difference (in seconds) between satellites to qualify as a matchup
+        :type time_diff_threshold: float
         :param cntr2cntr_dist: max accepted distance (in km) between satellites to qualify as a matchup
+        :type cntr2cntr_dist: float
+        :return: _description_
+        :rtype: _type_
         """
         # choose one satellite to remain stable and loop through the rest with respect to it
         sat1 = list(orbit_output.keys())[0]
@@ -172,7 +177,9 @@ class Matchups:
         Convert matchup dictionary to xarray dataset. For matchup events between more than two satellites, matchups
         are filtered to only those where all satellites are within the desired time threshold (specified in attrs).
 
-        The input matchup information dictionary is generated in Matchups.matchup and is of form::
+        The input matchup information dictionary is generated in Matchups.matchup and is of form:
+
+        .. code-block:: bash
 
             matchup_info = {"S2A_LS8":
                                 {"lat1": list,
@@ -186,7 +193,9 @@ class Matchups:
                             }
 
         where in this case "S2A" is the first satellite used for the comparison and "LS8" is the second
-        satellite. Matchups between multiple satellites would have matchup_info dictionaries that look like::
+        satellite. Matchups between multiple satellites would have matchup_info dictionaries that look like:
+
+        .. code-block:: bash
 
             matchup_info = {"S2A_LS8":
                                 {...},
@@ -196,7 +205,9 @@ class Matchups:
 
         where the ellipse (...) contains the same keys as the example above.
 
-        The input attrs dictionary generated in Matchups.matchup is of the form::
+        The input attrs dictionary generated in Matchups.matchup is of the form:
+
+        .. code-block:: bash
 
             attrs = {
                         "time_threshold": time_diff_threshold,
