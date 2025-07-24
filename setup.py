@@ -30,12 +30,12 @@ setup(
         ]
     },
     install_requires=[
-        "numpy==1.26.4",
-        "scipy==1.13.0",
-        "Cartopy==0.22.0",
-        "matplotlib==3.8.4",
-        "netCDF4==1.6.5",
-        "xarray==2024.3.0",
+        "numpy==2.3.1",
+        "scipy==1.16.0",
+        "Cartopy==0.24.1",
+        "matplotlib==3.10.3",
+        "netCDF4==1.7.2",
+        "xarray==2025.7.1",
     ],
     extras_require={
         "dev": [
