@@ -54,7 +54,8 @@ cache:
     - conda init bash
     - source ~/.bashrc
     - source activate test_env
-    - conda install Cartopy=0.24.1
+    - conda config --show channels
+    - conda install Cartopy
     - conda install orekit
     - pip install -e ".[dev]"
 ### Linting ###
