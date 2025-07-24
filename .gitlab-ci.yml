@@ -90,7 +90,7 @@ mypy:
     - ls -l
     - export PYTHONPATH="$PYTHONPATH:."
     - python -c "import sys;print(sys.path)"
-    - pip install tox
+    - conda install tox
     - mkdir test_report
     - tox
   coverage: '/^TOTAL.+?(\d+\%)$/'
@@ -107,7 +107,6 @@ mypy:
 tox-3.10:
   extends: ".tox"
   stage: "Test"
-  image: "python:3.10"
 
 test_report:
   needs: ["tox-3.10"]
