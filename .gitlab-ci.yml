@@ -1,15 +1,17 @@
 # Default image, if not specified
-image: "continuumio/anaconda3"
+image: "python:3.12"
 
 stages:
   - Static Analysis
-  - Build HTML Documentation
+  - Sphinx Documentation
   - Build latex Documentation
   - Publish latex Documentation
   - Test
   #- Full test
   - Publish test report
   - Combine quality documentation
+  - build-package
+  - publish
 
 
 ### Setup cache ###
@@ -19,6 +21,8 @@ stages:
 # only cache local items.
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  SSH_KNOWN_HOSTS: "gitlab.npl.co.uk ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtpDv/tZXs51XdnIC/DvOWNsr/+rh4MdX6RzGiEJcZfWPUr3Xik8u2WaElT9ihXGuELKNaY1P/Au+YHY4lZiP7skQ3XwdE0b2lWCBNQjsVwVAxSl+oT29fWnWcnoXIl0xJ845p8ITz6kYgKf/SEFHkVdO3qF27sddnM/iO74jgdCAL7JmKF08U/NNTOYQ6MCxRXuE/bWSZ7A1Hy4JEE5FLTsNiwa0ym5EiwSv8iC2gY+crv5xocdEoJ/LBPDmMKtLQYSnJs607mpw/lHj9JvxAPrP+5llkEL4M4pji/tCllHOpZkbddkLcUG0RpsxWw2nQ8X5sqq4MudvhWPxy1LLD"
+
 
 # Pip's cache doesn't store the python packages
 # https://pip.pypa.io/en/stable/reference/pip_install/#caching
@@ -29,6 +33,8 @@ cache:
   key: ${CI_JOB_NAME}
   paths:
     - .cache/pip
+    - .tox/
+    - venv/
 
 # Make a template for steps that use a python virtual env
 .py_venv:
@@ -46,8 +52,10 @@ cache:
     # Make a virtual environment to install deps into (this will be cached for each step)
     - conda init
     - source ~/.bashrc
-    - conda create -n test_env python=3.9
+    - conda create -n test_env python=3.12
     - conda activate test_env
+    - conda install Cartopy=0.24.1
+    - conda install orekit
     - pip install -e ".[dev]"
 
 ### Linting ###
@@ -79,31 +87,31 @@ mypy:
   extends: .py_venv
   script:
     - pwd
-    - conda activate test_env
     - ls -l
+    - export PYTHONPATH="$PYTHONPATH:."
     - python -c "import sys;print(sys.path)"
+    - pip install tox
     - mkdir test_report
-    - pytest --html=test_report/report.html
-    - pytest --cov-report html:test_report/cov_report --cov=orbitx
-    - coverage report -m --omit=orbitx/tests/*
-  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+    - tox
+  coverage: '/^TOTAL.+?(\d+\%)$/'
   needs: []
   artifacts:
     when: always
     paths:
       - test_report/
       - test_report/cov_report
-      - test_report/cov_report/index.html
+    reports:
+      junit: cov_report.xml
     expire_in: 1 hour
 
 
 
-test-3.9:
+test-3.12:
   extends: ".test_env"
   stage: "Test"
 
 test_report:
-  needs: ["test-3.9"]
+  needs: ["test-3.12"]
   stage: Publish test report
   image: 
      name: oberonamsterdam/wkhtmltopdf
@@ -117,16 +125,13 @@ test_report:
     paths:
     - quality_documentation
     expire_in: 1 hour
-  rules:
-    - if: '$CI_COMMIT_TAG'
-      when: always
       
 ### Documentation ###
 
 # Upload the documentation to pages if it's a tagged commit
 pages:
   extends: .py_venv
-  stage: Build HTML Documentation
+  stage: Sphinx Documentation
   needs: []
   script:
     - sphinx-build docs public -b html
@@ -135,12 +140,6 @@ pages:
     - public
     expire_in: 1 hour
 
-  rules:
-    - if: '$CI_COMMIT_TAG'
-      when: always
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: always
-  
 pdf_make:  
   extends: .py_venv
   stage: Build latex Documentation
@@ -152,9 +151,6 @@ pdf_make:
     paths:
     - quality_documentation/latex
     expire_in: 1 hour
-  rules:
-    - if: '$CI_COMMIT_TAG'
-      when: always
 
 pdf_compile:
   needs: ["pdf_make"]
@@ -170,9 +166,6 @@ pdf_compile:
     - cd quality_documentation/latex
     - make
     - cp user_manual.pdf ../../user_manual.pdf
-  rules:
-    - if: '$CI_COMMIT_TAG'
-      when: always
 
 pdf_compile_all:
   needs: ["pdf_make","test_report"]
@@ -192,9 +185,6 @@ pdf_compile_all:
     - cd ..
     - latexmk -e '$pdflatex=q/pdflatex %O -shell-escape %S/' -pdf
     - cp QualityDocumentation.pdf ../.
-  rules:
-    - if: '$CI_COMMIT_TAG'
-      when: always
 # Copied contents of Gitlab's Code-Quality.gitlab-ci.yml so I can edit the rules
 
 code_quality:
@@ -226,7 +216,23 @@ code_quality:
       codequality: gl-code-quality-report.json
     expire_in: 1 week
   dependencies: []
-  
+
+build-package:
+  extends: .py_venv
+  stage: build-package
+  image: "python:3.12"
+  script:
+    - python -m build
+  artifacts:
+    paths:
+      - dist/
+
+publish:
+  stage: publish
+  image: "python:3.12"
+  extends: .py_venv
+  script:
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
   rules:
-    - if: '$CI_PROJECT_URL =~ /^.*gitlab.com.*/'
-      when: always
+    - if: $CI_COMMIT_TAG
+    - if: '$CI_COMMIT_BRANCH == "main"'
