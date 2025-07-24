@@ -83,7 +83,7 @@ mypy:
 
 
 ### Tests ###
-.test_env:
+.tox:
   extends: .py_venv
   script:
     - pwd
@@ -104,14 +104,13 @@ mypy:
       junit: cov_report.xml
     expire_in: 1 hour
 
-
-
-test-3.12:
-  extends: ".test_env"
+tox-3.10:
+  extends: ".tox"
   stage: "Test"
+  image: "python:3.10"
 
 test_report:
-  needs: ["test-3.12"]
+  needs: ["tox-3.10"]
   stage: Publish test report
   image: 
      name: oberonamsterdam/wkhtmltopdf

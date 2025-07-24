@@ -1,0 +1,51 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.5 Chrome/134.0.6998.205 Electron/35.3.0 Safari/537.36" version="27.0.5" pages="2">
+  <diagram name="user-interface" id="Rb8Ka45R4ML32k2zsIB5">
+    <mxGraphModel dx="1426" dy="875" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="qanbFfzoWFsNK_wHR9R6-2" value="&lt;h1&gt;End&lt;/h1&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="650" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qanbFfzoWFsNK_wHR9R6-3" value="&lt;h1&gt;Start&lt;/h1&gt;" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="30" y="50" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qanbFfzoWFsNK_wHR9R6-4" value="&lt;h4&gt;&lt;font style=&quot;font-weight: normal; font-size: 14px; line-height: 100%;&quot;&gt;Satellite of interest&lt;br&gt;Period of interest&lt;br&gt;Time interval between orbit propagation steps&lt;br&gt;Time interval between orbit interpolation steps&lt;br&gt;Max distance between satellites to be considered a matchup&lt;br&gt;Maximum time difference to be considered a matchup&lt;/font&gt;&lt;/h4&gt;&lt;div&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;Optionals&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Where to write simulated orbits&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;where to write found matchups&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;whether to return the matchups as an xarray&lt;/span&gt;&lt;/div&gt;" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;align=left;" vertex="1" parent="1">
+          <mxGeometry x="150" y="10" width="380" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="qanbFfzoWFsNK_wHR9R6-5" value="&lt;h2&gt;User inputs&lt;/h2&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="210" y="200" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="qanbFfzoWFsNK_wHR9R6-6" value="&lt;h3&gt;orbitx.interface.return_matchups&lt;/h3&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="60" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="qrghjatZicK2hVQg0L6t-1" value="User asked to save orbit?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="840" y="47.5" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="qrghjatZicK2hVQg0L6t-2" value="Write orbits to file" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="970" y="57.5" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qrghjatZicK2hVQg0L6t-3" value="Write matchups to file" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="187.5" width="80" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="qrghjatZicK2hVQg0L6t-4" value="Has user asked to return matchups in xarray" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="985" y="310" width="130" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="qrghjatZicK2hVQg0L6t-5" value="Has user asked to save matchups?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="810" y="175" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="qrghjatZicK2hVQg0L6t-6" value="xarray containing all matchups as:&lt;div&gt;time of matchup&lt;/div&gt;&lt;div&gt;lattitude of&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="820" y="450" width="220" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="qNu_I2DvxpyIvlphh47_" name="return-matchups">
+    <mxGraphModel dx="1426" dy="875" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

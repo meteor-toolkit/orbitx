@@ -179,9 +179,9 @@ class Orbit:
         propagator0 = TLEPropagator.selectExtrapolator(mytle)
         propagator0 = PVCoordinatesProvider.cast_(propagator0)
 
-        extrap_date_list = []
+        extrap_date_list = np.empty((0,), datetime.datetime)
         while extrap_date.compareTo(final_date) <= 0.0:
-            extrap_date_list.append(extrap_date)
+            extrap_date_list = np.append(extrap_date_list, extrap_date)
             extrap_date = extrap_date.shiftedBy(propagation_sampling_interval)
         extrap_date_list = np.array(extrap_date_list)
         sel = np.empty(extrap_date_list.shape, dtype=float)
