@@ -34,7 +34,7 @@
         <mxCell id="qrghjatZicK2hVQg0L6t-5" value="Has user asked to save matchups?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="810" y="175" width="150" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="qrghjatZicK2hVQg0L6t-6" value="xarray containing all matchups as:&lt;div&gt;time of matchup&lt;/div&gt;&lt;div&gt;lattitude of&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+        <mxCell id="qrghjatZicK2hVQg0L6t-6" value="" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
           <mxGeometry x="820" y="450" width="220" height="100" as="geometry" />
         </mxCell>
       </root>

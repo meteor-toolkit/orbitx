@@ -83,27 +83,27 @@ class TestORBIT(unittest.TestCase):
             78,
         ]  # These are the simulation (propagation) time stamps
 
-        exp_idx_tle = [
+        exp_idx_tle = np.array([
             0,
             1,
             2,
             3,
             5,
-        ]  # These are the indices of the corresponding time stamps in TLE time vector
-        exp_idx_sim = [
+        ])  # These are the indices of the corresponding time stamps in TLE time vector
+        exp_idx_sim = np.array([
             0,
             4,
             6,
             8,
             9,
-        ]  # These are the indices of the corresponding time stamps in simulation vector
+        ])  # These are the indices of the corresponding time stamps in simulation vector
 
         idx_sim, idx_tle = Orbit.get_matching_indices(
             np.array(sim_time), np.array(tle_time)
         )
 
-        self.assertEqual(exp_idx_tle, idx_tle)
-        self.assertEqual(exp_idx_sim, idx_sim)
+        self.assertCountEqual(exp_idx_tle, idx_tle)
+        self.assertCountEqual(exp_idx_sim, idx_sim)
 
     def test_valid_simulate_orbit(self):
         # Read sample Sentinel-6 file

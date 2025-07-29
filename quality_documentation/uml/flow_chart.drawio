@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.5 Chrome/134.0.6998.205 Electron/35.3.0 Safari/537.36" version="27.0.5" pages="2">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.5 Chrome/134.0.6998.205 Electron/35.3.0 Safari/537.36" version="27.0.5" pages="4">
   <diagram name="user-interface" id="Rb8Ka45R4ML32k2zsIB5">
     <mxGraphModel dx="1426" dy="875" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
       <root>
@@ -34,13 +34,125 @@
         <mxCell id="qrghjatZicK2hVQg0L6t-5" value="Has user asked to save matchups?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="810" y="175" width="150" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="qrghjatZicK2hVQg0L6t-6" value="" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+        <mxCell id="qrghjatZicK2hVQg0L6t-6" value="xarray containing all matchups as:&lt;div&gt;time of matchup&lt;/div&gt;&lt;div&gt;lattitude of&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
           <mxGeometry x="820" y="450" width="220" height="100" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="qNu_I2DvxpyIvlphh47_" name="return-matchups">
+    <mxGraphModel dx="1426" dy="875" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-1" value="End" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="540" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Hcuwhl1PKeMfT98H0q-m-2" target="Hcuwhl1PKeMfT98H0q-m-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-2" value="Start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="10" y="290" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Hcuwhl1PKeMfT98H0q-m-3" target="Hcuwhl1PKeMfT98H0q-m-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-3" value="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; white-space: pre; line-height: 100%;&quot;&gt;&lt;p&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Name of satellites,&lt;br&gt;&lt;/font&gt;&lt;/span&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;start time of interest date,&lt;br&gt;&lt;/font&gt;&lt;/span&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;end time of interest date,&lt;br&gt;&lt;/font&gt;&lt;/span&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;resolution satellite orbit simulation,&lt;br&gt;&lt;/font&gt;&lt;/span&gt;resolution satellite orbit interpolation&lt;/p&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="290" width="410" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Hcuwhl1PKeMfT98H0q-m-4" target="Hcuwhl1PKeMfT98H0q-m-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-4" value="Compute orbits" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="585" y="307.5" width="120" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Hcuwhl1PKeMfT98H0q-m-5" target="Hcuwhl1PKeMfT98H0q-m-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-5" value="Orbit of each satellite" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="730" y="300" width="110" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Hcuwhl1PKeMfT98H0q-m-6" target="Hcuwhl1PKeMfT98H0q-m-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-6" value="Find matchups" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="870" y="300" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Hcuwhl1PKeMfT98H0q-m-7" target="Hcuwhl1PKeMfT98H0q-m-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-7" value="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px; white-space: pre;&quot;&gt;&lt;pre style=&quot;&quot;&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Optional: path where to save simul orbit,&lt;br&gt;Optional: path where to save matchups,&lt;br&gt;Optional: should the matchups object be returned&lt;/font&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="420" width="410" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Hcuwhl1PKeMfT98H0q-m-8" target="Hcuwhl1PKeMfT98H0q-m-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-8" value="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px; white-space: pre;&quot;&gt;&lt;pre style=&quot;&quot;&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;max distance between sats for matchup,&lt;br&gt;max time difference for matchup&lt;br&gt;&lt;/font&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="220" width="340" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Hcuwhl1PKeMfT98H0q-m-9" target="Hcuwhl1PKeMfT98H0q-m-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-9" value="Matchups" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="300" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Hcuwhl1PKeMfT98H0q-m-16" target="Hcuwhl1PKeMfT98H0q-m-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Hcuwhl1PKeMfT98H0q-m-16" value="Provide outputs" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="425" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="6C6_Aeil7MCNxE-qbvdo-1" value="User input" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="270" y="260" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="6C6_Aeil7MCNxE-qbvdo-2" value="User input" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="680" y="490" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="6C6_Aeil7MCNxE-qbvdo-3" value="User input" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="845" y="190" width="170" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="i7MdFfTZOMu7dM0515PT" name="Compute orbits">
+    <mxGraphModel dx="1426" dy="875" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Wmx8rtqJ35btXmZ7btHl-1" value="End" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="670" y="160" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Wmx8rtqJ35btXmZ7btHl-2" value="Start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="10" y="20" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="DPi_8FRH7774oabhKPkP-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="DPi_8FRH7774oabhKPkP-1" target="DPi_8FRH7774oabhKPkP-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DPi_8FRH7774oabhKPkP-1" value="&lt;div style=&quot;font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; white-space: pre; line-height: 100%;&quot;&gt;&lt;p&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Name of satellites,&lt;br&gt;&lt;/font&gt;&lt;/span&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;start time of interest date,&lt;br&gt;&lt;/font&gt;&lt;/span&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;end time of interest date,&lt;br&gt;&lt;/font&gt;&lt;/span&gt;&lt;span&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;resolution satellite orbit simulation,&lt;br&gt;&lt;/font&gt;&lt;/span&gt;resolution satellite orbit interpolation&lt;/p&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="20" width="410" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="DPi_8FRH7774oabhKPkP-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="DPi_8FRH7774oabhKPkP-2" target="Wmx8rtqJ35btXmZ7btHl-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DPi_8FRH7774oabhKPkP-2" value="Simulated all satellites?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="245" y="160" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="DPi_8FRH7774oabhKPkP-4" value="Yes" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="570" y="170" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DPi_8FRH7774oabhKPkP-6" value="Start new satellite" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="295" y="260" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DPi_8FRH7774oabhKPkP-7" value="get two line element for ongoing satellite during considered dates" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="295" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="DPi_8FRH7774oabhKPkP-8" value="First line of TLE&lt;div&gt;Second line of TLE&lt;/div&gt;&lt;div&gt;date and time of TLE&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="430" width="150" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="b6vNd09c2c4hL4L7jJgE" name="find_matchups">
     <mxGraphModel dx="1426" dy="875" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
       <root>
         <mxCell id="0" />
