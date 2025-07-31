@@ -10,9 +10,9 @@ from orbitx.interface import return_matchups, plot_matchups
 __author__ = "Sajedeh Behnia"
 
 ds = return_matchups(
-    sats=["LS8", "S2A"],
+    sats=["LS8", "EMIT"],
     start_time=datetime.datetime(2022, 1, 1, 0, 0, 0),
-    end_time=datetime.datetime(2024, 1, 1, 0, 0, 0),
+    end_time=datetime.datetime(2022, 2, 1, 0, 0, 0),
     propagation_sampling_interval=60,
     interpolation_sampling_interval=5,
     cntr2cntr_dist=290,
@@ -25,7 +25,7 @@ ds = return_matchups(
 
 print(ds)
 
-ds.to_netcdf("test.nc")
+ds.to_netcdf("/mnt/t/joe/misc/test.nc")
 
 if __name__ == "__main__":
     pass
