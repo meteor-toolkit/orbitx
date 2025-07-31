@@ -1,10 +1,12 @@
 """orbitx.orbit - class to simulate satellite orbits"""
-
+from orbitx.utils.interp_circ import interp_circ
 import datetime
 import numpy as np
 
 from math import pi
 from typing import Tuple, List, Union, Any
+import warnings
+import numbers
 
 from scipy.interpolate import interp1d
 from org.orekit.frames import FramesFactory, TopocentricFrame
@@ -73,16 +75,17 @@ class Orbit:
         )  # 'prop_smpl_interval' has been added to the second element to make the 'smpl_space_secs_since_1970' vector
         # long enough to contain 'end_time'.
 
-        smpl_space = [
+        smpl_space = np.array([
             datetime.datetime(1970, 1, 1, 0, 0, 0) + datetime.timedelta(seconds=i)
             for i in smpl_space_secs_since_1970
-        ]
+        ])
 
         return smpl_space, smpl_space_secs_since_1970
 
     @staticmethod
     def get_matching_indices(
-        sim_time: np.ndarray, tle_time: np.ndarray
+        sim_time: np.ndarray,
+        tle_time: np.ndarray
     ) -> Tuple[list, list]:
         """
         Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and
@@ -99,7 +102,8 @@ class Orbit:
 
         # Find corresponding indices of tle and simulation time vectors
         for i in idx_tle:
-            idx_sim[i] = np.argmax(sim_time >= tle_time[i])
+            idx_sim[i] = np.argmax(sim_time >= tle_time[i]) # idx_sim[i] contains the index of the smallest simulation time that is larger than tle_time[i]
+                                                            # If no such simulation time exists, it is set to 0
 
         # Find redundant tle time references
         idx_sim_unique = np.unique(idx_sim)
@@ -137,7 +141,7 @@ class Orbit:
         :param start_time: start time of orbit propagation
         :param end_time: end time of orbit propagation
         :param propagation_sampling_interval: sampling interval in seconds
-        :return: vector of orbit latitude, longitude, altitude, elevation, and azimuth angles
+        :return: vector of orbit latitude, longitude, altitude, elevation angle, and azimuth angle
         *** Modified from Bernardo's code ***
         """
 
@@ -158,7 +162,7 @@ class Orbit:
             end_time.minute,
             float(end_time.second),
             TimeScalesFactory.getUTC(),
-        )  # when you want to strat tracking
+        )  # when you want to stop tracking
         propagation_sampling_interval = float(propagation_sampling_interval)
 
         # CELLESTIAL BODIES
@@ -179,10 +183,12 @@ class Orbit:
         propagator0 = TLEPropagator.selectExtrapolator(mytle)
         propagator0 = PVCoordinatesProvider.cast_(propagator0)
 
-        extrap_date_list = np.empty((0,), datetime.datetime)
-        while extrap_date.compareTo(final_date) <= 0.0:
-            extrap_date_list = np.append(extrap_date_list, extrap_date)
+        extrap_date_list = np.empty((1,), datetime.datetime)
+        extrap_date_list[0] = extrap_date
+        while extrap_date.compareTo(final_date) < 0.0:
             extrap_date = extrap_date.shiftedBy(propagation_sampling_interval)
+            extrap_date_list = np.append(extrap_date_list, extrap_date)
+
         extrap_date_list = np.array(extrap_date_list)
         sel = np.empty(extrap_date_list.shape, dtype=float)
         saz = np.empty(extrap_date_list.shape, dtype=float)
@@ -209,18 +215,24 @@ class Orbit:
                 pos_tmp0, inertial_frame, extrap_date
             )  # position of the satellite on the earth surface
 
-            pos_s0_lat[extrap_date_ind] = (
-                poss0.getLatitude()
-            )  # satellite nadir position
-            pos_s0_lon[extrap_date_ind] = (
-                poss0.getLongitude()
-            )  # satellite nadir position
-            pos_s0_alt[extrap_date_ind] = (
-                poss0.getAltitude()
-            )  # satellite nadir position
-            pos_lat[extrap_date_ind] = pos0.getLatitude()  # sun nadir position
-            pos_lon[extrap_date_ind] = pos0.getLongitude()  # sun nadir position
-            pos_alt[extrap_date_ind] = pos0.getAltitude()  # sun nadir position
+            pos_s0_lat[extrap_date_ind] = poss0.getLatitude() # satellite nadir lattitude
+            pos_s0_lon[extrap_date_ind] = poss0.getLongitude() # satellite nadir longitude
+            alt_sat = poss0.getAltitude()
+            if not isinstance(alt_sat, numbers.Number):
+                warnings.warn("Satellite altitude is not a number: {}".format(alt_sat))
+                pos_s0_alt[extrap_date_ind] = np.nan
+            else:
+                pos_s0_alt[extrap_date_ind] = alt_sat # satellite nadir altitude
+            
+            pos_lat[extrap_date_ind] = pos0.getLatitude()  # sun nadir Lattitude
+            pos_lon[extrap_date_ind] = pos0.getLongitude()  # sun nadir Longitude
+            alt_sun = pos0.getAltitude()  
+            if not isinstance(alt_sun, numbers.Number):
+                warnings.warn("Satellite altitude is not a number: {}".format(alt_sun))
+                pos_alt[extrap_date_ind] = np.nan
+            else:
+                pos_alt[extrap_date_ind] = alt_sun # Sun Nadir altitude
+                
             station = GeodeticPoint(
                 poss0.getLatitude(), poss0.getLongitude(), 0.0
             )  # set the satellite Nadir position as the reference from which to obtain the
@@ -247,8 +259,8 @@ class Orbit:
                 - datetime.datetime(1970, 1, 1, 0, 0, 0)
             ).total_seconds()
 
-        pos_s0_lat = [i * 180.0 / pi for i in pos_s0_lat]
-        pos_s0_lon = [i * 180.0 / pi for i in pos_s0_lon]
+        pos_s0_lat = np.array([i * 180.0 / pi for i in pos_s0_lat])
+        pos_s0_lon = np.array([i * 180.0 / pi for i in pos_s0_lon])
         return julian_date, pos_s0_lat, pos_s0_lon, pos_s0_alt, sel, saz
 
     def simulate_orbit(
@@ -273,9 +285,9 @@ class Orbit:
         sat_smpl_breakup_idx, tle_ref_lines = self.get_matching_indices(
             smpl_space_secs_since_1970, seconds_since_1970
         )
-        sat_lat_sim: list = []
-        sat_lon_sim: list = []
-        sat_sec_since: list = []
+        sat_lat_sim: np.ndarray = np.empty((0,), dtype = float)
+        sat_lon_sim: np.ndarray = np.empty((0,), dtype = float)
+        sat_sec_since: np.ndarray = np.empty((0,), dtype = float)
 
         if len(tle_ref_lines) == 1:
             secsince1, lat1, lon1, alt1, el1, az1 = self.propagate_orbit(
@@ -302,9 +314,9 @@ class Orbit:
                     smpl_space[sat_smpl_breakup_idx[i + 1] - 1],
                     propagation_sampling_interval,
                 )
-                sat_lat_sim.extend(lat1)
-                sat_lon_sim.extend(lon1)
-                sat_sec_since.extend(secsince1)
+                sat_lat_sim = np.append(sat_lat_sim, lat1)
+                sat_lon_sim = np.append(sat_lon_sim, lon1)
+                sat_sec_since = np.append(sat_sec_since, secsince1)
 
         return (
             sat_sec_since,
@@ -325,7 +337,7 @@ class Orbit:
         :return: tuple containing latitude, longitude, and time of the simulated/interpolated orbit
         """
         f1_lat_linear = interp1d(sat_sec_since, sat_lat_sim)
-        f1_lon_linear = interp1d(sat_sec_since, sat_lon_sim)
+        f1_lon_linear = interp_circ(sat_sec_since, sat_lon_sim)
 
         interp_smpl_space = np.arange(
             (self.start_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds(),

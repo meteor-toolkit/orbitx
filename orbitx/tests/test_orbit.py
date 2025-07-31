@@ -56,10 +56,8 @@ class TestORBIT(unittest.TestCase):
             start_time, end_time, prop_smpl_interval
         )
 
-        self.assertEqual(exp_smpl_space, smpl_space)
-        self.assertTrue(
-            (exp_smpl_space_secs_since_1970 == smpl_space_secs_since_1970).all()
-        )
+        self.assertCountEqual(exp_smpl_space, smpl_space)
+        self.assertCountEqual(exp_smpl_space_secs_since_1970, smpl_space_secs_since_1970)
 
     def test_get_matching_indices(self):
         # attention:
@@ -119,7 +117,7 @@ class TestORBIT(unittest.TestCase):
             2000, 1, 1, 0, 0, 0
         )
         S6_end_time = datetime.timedelta(
-            seconds=exp_time[len(exp_time) - 1]
+            seconds=exp_time[-1]
         ) + datetime.datetime(2000, 1, 1, 0, 0, 0)
 
         # Simulate S6 orbit at 1 Hz
@@ -134,6 +132,7 @@ class TestORBIT(unittest.TestCase):
         tle_info = tle.get_tle(sat, S6_start_time, S6_end_time)
         time, lat, lon = orbit.simulate_orbit(*tle_info, propagation_sampling_interval)
 
+        time_diff = [np.abs(time[i] - exp_time[i]) for i in range(len(lat))]
         # Calculate the Haversine distance between simulated and real orbit at 1 Hz sampling rate
         distance = [
             cal_dist_d2m(lat[i], lon[i], exp_lat[i], exp_lon[i])
@@ -191,19 +190,16 @@ class TestORBIT(unittest.TestCase):
         mock_TopocentricFrame().getElevation.return_value = 0
 
         orbit = Orbit()
-        self.assertEqual(
-            orbit.propagate_orbit(
+        julian_date, pos_s0_lat, pos_s0_lon, pos_s0_alt, sel, saz = orbit.propagate_orbit(
                 "", "", datetime.datetime(1970, 1, 1), datetime.datetime(1970, 1, 2), 1
-            ),
-            (
-                [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-                [0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0],
-                [[], [], [], [], [], [], [], []],
-                [0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0],
-            ),
-        )
+            )
+        self.assertCountEqual(julian_date, np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], dtype = float))
+        self.assertCountEqual(pos_s0_lat,  np.array([0, 0, 0, 0, 0, 0, 0, 0], dtype = float))
+        self.assertCountEqual(pos_s0_lon,  np.array([0, 0, 0, 0, 0, 0, 0, 0], dtype = float))
+        np.testing.assert_equal(pos_s0_alt, np.array([np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan], dtype=float))
+        self.assertCountEqual(sel, np.array([0, 0, 0, 0, 0, 0, 0, 0], dtype = float))
+        self.assertCountEqual(saz, np.array([0, 0, 0, 0, 0, 0, 0, 0], dtype = float))
+
         mock_AbsoluteDate.assert_called()
         mock_CBF_getSun.assert_called()
         mock_PVCP_cast_.assert_called()
@@ -223,19 +219,28 @@ class TestORBIT(unittest.TestCase):
         "orbitx.orbit.Orbit.propagate_orbit",
         return_value=([12], [13], [14], [], [], []),
     )
-    @mock.patch("orbitx.orbit.Orbit.get_matching_indices", return_value=([7], [0]))
-    @mock.patch("orbitx.orbit.Orbit.form_sample_space", return_value=([], [9]))
+    @mock.patch("orbitx.orbit.Orbit.get_matching_indices", return_value=([3], [0]))
+    @mock.patch("orbitx.orbit.Orbit.form_sample_space",
+                return_value=(
+                    [
+                        datetime.datetime(1970, 1, 1, 0, 0, 0),
+                        datetime.datetime(1970, 1, 1, 0, 0, 2),
+                        datetime.datetime(1970, 1, 1, 0, 0, 4),
+                        datetime.datetime(1970, 1, 1, 0, 0, 6)
+                    ],
+                    [0., 2., 4., 6.]
+                ))
     def test_simulate_orbit_1_tle_ref(self, mock_form_ss, mock_match_idx, mock_prop):
         orbit = Orbit()
-        orbit.start_time = ""
-        orbit.end_time = ""
+        orbit.start_time = datetime.datetime(1970, 1, 1, 0, 0, 0)
+        orbit.end_time = datetime.datetime(1970, 1, 1, 0, 0, 5)
 
         self.assertEqual(
             orbit.simulate_orbit(["12"], ["23"], [32], 2), ([12], [13], [14])
         )
-        mock_form_ss.assert_called_with("", "", 2)
-        mock_match_idx.assert_called_with([9], [32])
-        mock_prop.assert_called_with("12", "23", "", "", 2)
+        mock_form_ss.assert_called_with(datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 1, 0, 0, 5), 2)
+        mock_match_idx.assert_called_with([0., 2., 4., 6.], [32])
+        mock_prop.assert_called_with("12", "23", datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 1, 0, 0, 5), 2)
 
     @mock.patch(
         "orbitx.orbit.Orbit.propagate_orbit", return_value=([1], [1], [1], [], [], [])

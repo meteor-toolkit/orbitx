@@ -118,13 +118,14 @@ class TestTLE(unittest.TestCase):
         tles = tle.get_tle(
             start_time=start_time, end_time=end_time, satellite=satellite_name
         )
-
         # define expected output
         exp_first_lines = [
+            '1 40697U 15028A   15174.84616994 -.00000044  00000+0  00000+0 0  9994',
             "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994",
             "1 40697U 15028A   15176.80399346 -.00024242  00000+0 -91643-2 0  9994",
         ]
         exp_second_lines = [
+            '2 40697  98.5727 249.1811 0001221 155.7341 204.3855 14.30973291   112',
             "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266",
             "2 40697  98.5705 251.1120 0002131 229.6310 131.1858 14.31372223   391",
         ]
@@ -135,7 +136,7 @@ class TestTLE(unittest.TestCase):
         # same day. Below the decimal seconds are added up separately.
         # 1435181328.156384 = (dt(2015, 6, 24, 21, 28, 48) - dt(1970, 1, 1, 0, 0, 0)).total_seconds() + .156384
         # 1435259865.034944 = (dt(2015, 6, 25, 19, 17, 45) - dt(1970, 1, 1, 0, 0, 0)).total_seconds() + .034943999999996
-        exp_times = [1435181328.156384, 1435259865.034944]
+        exp_times = [1435090709.082816, 1435181328.156384, 1435259865.034944]
 
         # compare expected and actual output
         for l1, exp_l1 in zip(tles[0], exp_first_lines):

@@ -30,6 +30,7 @@ SATELLITE_DICT = {
     "S3B": "Sentinel-3B",
     "S6": "Sentinel-6",
     "J3": "JASON-3",
+    "SA": "Saral-AltiKa",
 }
 
 
@@ -81,6 +82,28 @@ def return_matchups(
         interpolation_sampling_interval,
     )
 
+    if not output_path_sim_orbits is None:
+        keys = list(orbit_output.keys())
+        for i in range(len(keys)):
+
+            # Construct filename
+            sat = keys[i]
+            date_part = f"{start_time:%Y%m%d}_{end_time:%Y%m%d}"
+            sampling_part = f"psi{propagation_sampling_interval}_isi{interpolation_sampling_interval}"
+            filename = f"{date_part}_{sampling_part}_orbit_{sat}.nc"
+
+            # Save orbit as xr
+            orbit_of_sat = xr.Dataset({
+                'lat': orbit_output[sat]['lat'],
+                'lon': orbit_output[sat]['lon'],
+                'time': orbit_output[sat]['time'],
+            #     Add time
+            })
+            orbit_of_sat.attrs['sat'] = sat
+
+            # Save as netCDF4
+            orbit_of_sat.to_netcdf(os.path.join(output_path_sim_orbits, filename))
+
     # find matchups between orbits
     matchup = Matchups()
     matchup_output = matchup.matchup(
@@ -95,9 +118,17 @@ def return_matchups(
 
     if output_path_matchups is not None:
         # save matchup data
-        fname = f"matchup_{'_'.join(list(orbit_output.keys()))}_starttime_{start_time.strftime('%Y%m%d')}_endtime_{end_time.strftime('%Y%m%d')}_samplinginterval_{propagation_sampling_interval}_tmptol_{time_diff_threshold}.nc"
+        # fname = f"matchup_{'_'.join(list(orbit_output.keys()))}_starttime_{start_time.strftime('%Y%m%d')}_endtime_{end_time.strftime('%Y%m%d')}_samplinginterval_{propagation_sampling_interval}_tmptol_{time_diff_threshold}.nc"
 
-        matchup_output.to_netcdf(os.path.join(output_path_matchups, fname))
+        # Construct filename
+        sat_part = "_".join(sats)
+        date_part = f"{start_time:%Y%m%d}_{end_time:%Y%m%d}"
+        sampling_part = f"psi{propagation_sampling_interval}_isi{interpolation_sampling_interval}"
+        matchup_part = f"c2c{cntr2cntr_dist}_tdt{time_diff_threshold}"
+        filename = f"{date_part}_{sampling_part}_matchups_{sat_part}_{matchup_part}.nc"
+     
+        # Save as netCDF4
+        matchup_output.to_netcdf(os.path.join(output_path_matchups, filename))
     else:
         output = True
 

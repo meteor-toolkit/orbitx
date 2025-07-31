@@ -15,8 +15,9 @@ __all__ = ["TLEInfo"]
 
 
 class TLEInfo:
-    """
-    Class to retrieve satellite TLEs
+    r"""
+    Class to retrieve satellite TLEs.
+    For more information on Two line elements, see the [Wikipedia page](https://en.wikipedia.org/wiki/Two-line_element_set)
     """
 
     @staticmethod
@@ -81,15 +82,18 @@ class TLEInfo:
         return (date_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds()
 
     def get_tle(
-        self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
+        self,
+        satellite: str,
+        start_time: datetime.datetime,
+        end_time: datetime.datetime
     ) -> Tuple[List[str], List[str], np.ndarray]:
         """
         Returns two-line elements within defined time window, with seconds since 1970
 
-        :param start_time: start of time window
-        :param end_time: end of time window
         :param satellite: satellite short name as included in TLE file name ``TLEset_XXX``,
                 where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
+        :param start_time: start of time window
+        :param end_time: end of time window
 
         :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 1970
         """
@@ -104,15 +108,15 @@ class TLEInfo:
 
         # region Access indexes of line-1 and line-2
         length = len(lines)
-        if len(lines[0]) < 69:
-            line_1_indexes = np.arange(1, length, 3)
-            line_2_indexes = np.arange(2, length, 3)
-        else:
-            line_1_indexes = np.arange(0, length, 2)
-            line_2_indexes = np.arange(1, length, 2)
+        if len(lines[0]) < 69: # If the file includes the name of the mission at the beginning of each TLE, the name is at position 0, 3, ... (and we do not care about it)
+            line_1_indexes = np.arange(1, length, 3) # Line 1's are at position 1, 4, ...
+            line_2_indexes = np.arange(2, length, 3) # Line 2's are at position 2, 5, ...
+        else: # If the name is not included
+            line_1_indexes = np.arange(0, length, 2) # Line 1's are at position 0, 2, ...
+            line_2_indexes = np.arange(1, length, 2) # Line 2's are at position 1, 3, ...
 
-        tle_line_1 = lines[line_1_indexes]
-        tle_line_2 = lines[line_2_indexes]
+        tle_line_1 = lines[line_1_indexes] # list of all line 1s
+        tle_line_2 = lines[line_2_indexes] # list of all line 2s
         # endregion
 
         # Get date times
@@ -124,7 +128,6 @@ class TLEInfo:
         end_time_s1970 = self.return_seconds_since_1970(end_time)
 
         # Filter time
-
         lower_bound_tle_time = [t for t in tle_time_s1970 if t <= start_time_s1970]
         if len(lower_bound_tle_time) == 0:
             warnings.warn(
@@ -147,7 +150,7 @@ class TLEInfo:
         upper_bound_tle_time = (
             end_time_s1970
             if len(upper_bound_tle_time) == 0
-            else np.max(upper_bound_tle_time)
+            else np.min(upper_bound_tle_time)
         )
         idx = [
             i
@@ -168,8 +171,8 @@ class TLEInfo:
             tle_line_1 = tle_line_1[idx]
             tle_line_2 = tle_line_2[idx]
             tle_time_s1970 = tle_time_s1970[idx]
-
-        return list(tle_line_1), list(tle_line_2), tle_time_s1970
+        
+        return tle_line_1, tle_line_2, tle_time_s1970
 
 
 if __name__ == "__main__":
