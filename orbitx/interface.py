@@ -44,7 +44,7 @@ def return_matchups(
     time_diff_threshold: float,
     output_path_sim_orbits: Optional[str] = None,
     output_path_matchups: Optional[str] = None,
-    output: bool = False,
+    output: bool = False
 ) -> Optional[xr.Dataset]:
     """
     Matchup event identification between multiple satellites. Creates an xr.Dataset
