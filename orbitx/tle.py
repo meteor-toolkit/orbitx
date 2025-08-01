@@ -82,10 +82,7 @@ class TLEInfo:
         return (date_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds()
 
     def get_tle(
-        self,
-        satellite: str,
-        start_time: datetime.datetime,
-        end_time: datetime.datetime
+        self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
     ) -> Tuple[List[str], List[str], np.ndarray]:
         """
         Returns two-line elements within defined time window, with seconds since 1970
@@ -108,15 +105,25 @@ class TLEInfo:
 
         # region Access indexes of line-1 and line-2
         length = len(lines)
-        if len(lines[0]) < 69: # If the file includes the name of the mission at the beginning of each TLE, the name is at position 0, 3, ... (and we do not care about it)
-            line_1_indexes = np.arange(1, length, 3) # Line 1's are at position 1, 4, ...
-            line_2_indexes = np.arange(2, length, 3) # Line 2's are at position 2, 5, ...
-        else: # If the name is not included
-            line_1_indexes = np.arange(0, length, 2) # Line 1's are at position 0, 2, ...
-            line_2_indexes = np.arange(1, length, 2) # Line 2's are at position 1, 3, ...
+        if (
+            len(lines[0]) < 69
+        ):  # If the file includes the name of the mission at the beginning of each TLE, the name is at position 0, 3, ... (and we do not care about it)
+            line_1_indexes = np.arange(
+                1, length, 3
+            )  # Line 1's are at position 1, 4, ...
+            line_2_indexes = np.arange(
+                2, length, 3
+            )  # Line 2's are at position 2, 5, ...
+        else:  # If the name is not included
+            line_1_indexes = np.arange(
+                0, length, 2
+            )  # Line 1's are at position 0, 2, ...
+            line_2_indexes = np.arange(
+                1, length, 2
+            )  # Line 2's are at position 1, 3, ...
 
-        tle_line_1 = lines[line_1_indexes] # list of all line 1s
-        tle_line_2 = lines[line_2_indexes] # list of all line 2s
+        tle_line_1 = lines[line_1_indexes]  # list of all line 1s
+        tle_line_2 = lines[line_2_indexes]  # list of all line 2s
         # endregion
 
         # Get date times
@@ -171,7 +178,7 @@ class TLEInfo:
             tle_line_1 = tle_line_1[idx]
             tle_line_2 = tle_line_2[idx]
             tle_time_s1970 = tle_time_s1970[idx]
-        
+
         return tle_line_1, tle_line_2, tle_time_s1970
 
 

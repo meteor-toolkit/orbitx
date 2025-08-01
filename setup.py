@@ -51,7 +51,7 @@ setup(
             "pytest",
             "pytest-html",
             "pytest-cov",
-            "tox"
+            "tox",
         ]
     },
     classifiers=[

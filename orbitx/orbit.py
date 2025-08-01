@@ -1,4 +1,5 @@
 """orbitx.orbit - class to simulate satellite orbits"""
+
 from orbitx.utils.interp_circ import interp_circ
 import datetime
 import numpy as np
@@ -75,17 +76,18 @@ class Orbit:
         )  # 'prop_smpl_interval' has been added to the second element to make the 'smpl_space_secs_since_1970' vector
         # long enough to contain 'end_time'.
 
-        smpl_space = np.array([
-            datetime.datetime(1970, 1, 1, 0, 0, 0) + datetime.timedelta(seconds=i)
-            for i in smpl_space_secs_since_1970
-        ])
+        smpl_space = np.array(
+            [
+                datetime.datetime(1970, 1, 1, 0, 0, 0) + datetime.timedelta(seconds=i)
+                for i in smpl_space_secs_since_1970
+            ]
+        )
 
         return smpl_space, smpl_space_secs_since_1970
 
     @staticmethod
     def get_matching_indices(
-        sim_time: np.ndarray,
-        tle_time: np.ndarray
+        sim_time: np.ndarray, tle_time: np.ndarray
     ) -> Tuple[list, list]:
         """
         Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and
@@ -102,8 +104,10 @@ class Orbit:
 
         # Find corresponding indices of tle and simulation time vectors
         for i in idx_tle:
-            idx_sim[i] = np.argmax(sim_time >= tle_time[i]) # idx_sim[i] contains the index of the smallest simulation time that is larger than tle_time[i]
-                                                            # If no such simulation time exists, it is set to 0
+            idx_sim[i] = np.argmax(
+                sim_time >= tle_time[i]
+            )  # idx_sim[i] contains the index of the smallest simulation time that is larger than tle_time[i]
+            # If no such simulation time exists, it is set to 0
 
         # Find redundant tle time references
         idx_sim_unique = np.unique(idx_sim)
@@ -215,24 +219,28 @@ class Orbit:
                 pos_tmp0, inertial_frame, extrap_date
             )  # position of the satellite on the earth surface
 
-            pos_s0_lat[extrap_date_ind] = poss0.getLatitude() # satellite nadir lattitude
-            pos_s0_lon[extrap_date_ind] = poss0.getLongitude() # satellite nadir longitude
+            pos_s0_lat[extrap_date_ind] = (
+                poss0.getLatitude()
+            )  # satellite nadir lattitude
+            pos_s0_lon[extrap_date_ind] = (
+                poss0.getLongitude()
+            )  # satellite nadir longitude
             alt_sat = poss0.getAltitude()
             if not isinstance(alt_sat, numbers.Number):
                 warnings.warn("Satellite altitude is not a number: {}".format(alt_sat))
                 pos_s0_alt[extrap_date_ind] = np.nan
             else:
-                pos_s0_alt[extrap_date_ind] = alt_sat # satellite nadir altitude
-            
+                pos_s0_alt[extrap_date_ind] = alt_sat  # satellite nadir altitude
+
             pos_lat[extrap_date_ind] = pos0.getLatitude()  # sun nadir Lattitude
             pos_lon[extrap_date_ind] = pos0.getLongitude()  # sun nadir Longitude
-            alt_sun = pos0.getAltitude()  
+            alt_sun = pos0.getAltitude()
             if not isinstance(alt_sun, numbers.Number):
                 warnings.warn("Satellite altitude is not a number: {}".format(alt_sun))
                 pos_alt[extrap_date_ind] = np.nan
             else:
-                pos_alt[extrap_date_ind] = alt_sun # Sun Nadir altitude
-                
+                pos_alt[extrap_date_ind] = alt_sun  # Sun Nadir altitude
+
             station = GeodeticPoint(
                 poss0.getLatitude(), poss0.getLongitude(), 0.0
             )  # set the satellite Nadir position as the reference from which to obtain the
@@ -285,9 +293,9 @@ class Orbit:
         sat_smpl_breakup_idx, tle_ref_lines = self.get_matching_indices(
             smpl_space_secs_since_1970, seconds_since_1970
         )
-        sat_lat_sim: np.ndarray = np.empty((0,), dtype = float)
-        sat_lon_sim: np.ndarray = np.empty((0,), dtype = float)
-        sat_sec_since: np.ndarray = np.empty((0,), dtype = float)
+        sat_lat_sim: np.ndarray = np.empty((0,), dtype=float)
+        sat_lon_sim: np.ndarray = np.empty((0,), dtype=float)
+        sat_sec_since: np.ndarray = np.empty((0,), dtype=float)
 
         if len(tle_ref_lines) == 1:
             secsince1, lat1, lon1, alt1, el1, az1 = self.propagate_orbit(

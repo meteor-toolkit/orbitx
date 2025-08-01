@@ -44,7 +44,7 @@ def return_matchups(
     time_diff_threshold: float,
     output_path_sim_orbits: Optional[str] = None,
     output_path_matchups: Optional[str] = None,
-    output: bool = False
+    output: bool = False,
 ) -> Optional[xr.Dataset]:
     """
     Matchup event identification between multiple satellites. Creates an xr.Dataset
@@ -93,23 +93,22 @@ def return_matchups(
             filename = f"{date_part}_{sampling_part}_orbit_{sat}.nc"
 
             # Save orbit as xr
-            orbit_of_sat = xr.Dataset({
-                'lat': orbit_output[sat]['lat'],
-                'lon': orbit_output[sat]['lon'],
-                'time': orbit_output[sat]['time'],
-            #     Add time
-            })
-            orbit_of_sat.attrs['sat'] = sat
+            orbit_of_sat = xr.Dataset(
+                {
+                    "lat": orbit_output[sat]["lat"],
+                    "lon": orbit_output[sat]["lon"],
+                    "time": orbit_output[sat]["time"],
+                    #     Add time
+                }
+            )
+            orbit_of_sat.attrs["sat"] = sat
 
             # Save as netCDF4
             orbit_of_sat.to_netcdf(os.path.join(output_path_sim_orbits, filename))
 
     # find matchups between orbits
     matchup = Matchups()
-    matchup_output = matchup.matchup(
-        orbit_output,
-        time_diff_threshold,
-        cntr2cntr_dist)
+    matchup_output = matchup.matchup(orbit_output, time_diff_threshold, cntr2cntr_dist)
 
     if output_path_sim_orbits is not None:
         # save orbital data
@@ -123,10 +122,12 @@ def return_matchups(
         # Construct filename
         sat_part = "_".join(sats)
         date_part = f"{start_time:%Y%m%d}_{end_time:%Y%m%d}"
-        sampling_part = f"psi{propagation_sampling_interval}_isi{interpolation_sampling_interval}"
+        sampling_part = (
+            f"psi{propagation_sampling_interval}_isi{interpolation_sampling_interval}"
+        )
         matchup_part = f"c2c{cntr2cntr_dist}_tdt{time_diff_threshold}"
         filename = f"{date_part}_{sampling_part}_matchups_{sat_part}_{matchup_part}.nc"
-     
+
         # Save as netCDF4
         matchup_output.to_netcdf(os.path.join(output_path_matchups, filename))
     else:

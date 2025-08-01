@@ -19,7 +19,10 @@ __maintainer__ = "Zhav Loizeau"
 __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
-def interp_circ(x:np.ndarray, y:np.ndarray, period:float = 360.)->Callable[npt.NDArray, npt.NDArray]:
+
+def interp_circ(
+    x: np.ndarray, y: np.ndarray, period: float = 360.0
+) -> Callable[npt.NDArray, npt.NDArray]:
     """interp_circ interpolation for periodic-valued data
 
     Creates a function to interpolate data valued on a circle (for period = 360, a datapoint with value 359 is at distance 2 of a datapoint with value 1)
@@ -33,12 +36,15 @@ def interp_circ(x:np.ndarray, y:np.ndarray, period:float = 360.)->Callable[npt.N
     """
     if np.any(y > period / 2):
         warnings.warn("Some of the values in y are larger than the indicated period.")
-    if np.any(y < - period / 2):
+    if np.any(y < -period / 2):
         warnings.warn("Some of the values in y are smaller than 0.")
-    complement_period = np.unwrap(y + period / 2, period = period)
-    return partial(interp_circ_, x = x, y = complement_period, period = period)
+    complement_period = np.unwrap(y + period / 2, period=period)
+    return partial(interp_circ_, x=x, y=complement_period, period=period)
 
-def interp_circ_(x_new:np.ndarray, x:np.ndarray, y:np.ndarray, period:float = 360.)->np.ndarray:
+
+def interp_circ_(
+    x_new: np.ndarray, x: np.ndarray, y: np.ndarray, period: float = 360.0
+) -> np.ndarray:
     """interp_circ_ _summary_
 
     _extended_summary_
@@ -54,6 +60,6 @@ def interp_circ_(x_new:np.ndarray, x:np.ndarray, y:np.ndarray, period:float = 36
     :return: The estimated values of y at the requested values of x
     :rtype: np.ndarray
     """
-    f = interpolate.interp1d(x, y, kind='linear', bounds_error=False, fill_value=None)
+    f = interpolate.interp1d(x, y, kind="linear", bounds_error=False, fill_value=None)
     complement_interp = f(x_new)
     return (complement_interp % period) - (period / 2)
