@@ -56,10 +56,14 @@ def return_matchups(
 
     Currently accepted satellites:
         * LS8 (Landsat-8)
+        * LS9 (Landsat-9)
         * S2A (Sentinel-2A)
         * S2B (Sentinel-2B)
         * S3A (Sentinel-3A)
+        * S3B (Sentinel-3B)
         * S6 (Sentinel-6)
+        * J3 (Jason-3)
+        * SA (Saral-Altika)
 
     :param sats: list of satellites
     :param start_time: start of time period of interest
