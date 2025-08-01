@@ -6,6 +6,7 @@ import datetime
 
 from math import radians, cos, sin, asin, sqrt
 
+import numpy.typing as npt
 from typing import Dict, Union
 
 __author__ = [
@@ -172,7 +173,7 @@ class Matchups:
         return self.to_ds(match, attrs)
 
     @staticmethod
-    def to_ds(matchup_info: Dict[str, Dict[str, list]], attrs: dict) -> xr.Dataset:
+    def to_ds(matchup_info: Dict[str, Dict[str, npt.NDArray]], attrs: dict) -> xr.Dataset:
         """
         Convert matchup dictionary to xarray dataset. For matchup events between more than two satellites, matchups
         are filtered to only those where all satellites are within the desired time threshold (specified in attrs).
@@ -182,13 +183,13 @@ class Matchups:
         .. code-block:: bash
 
             matchup_info = {"S2A_LS8":
-                                {"lat1": list,
-                                 "lon1": list,
-                                 "lat2": list,
-                                 "lon2": list,
-                                 "delay": list,
-                                 "time": list,
-                                 "distance": list,
+                                {"lat1": npt.NDArray,
+                                 "lon1": npt.NDArray,
+                                 "lat2": npt.NDArray,
+                                 "lon2": npt.NDArray,
+                                 "delay": npt.NDArray,
+                                 "time": npt.NDArray,
+                                 "distance": npt.NDArray,
                                 },
                             }
 

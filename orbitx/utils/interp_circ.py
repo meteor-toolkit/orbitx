@@ -22,7 +22,7 @@ __status__ = "Development"
 
 def interp_circ(
     x: np.ndarray, y: np.ndarray, period: float = 360.0
-) -> Callable[npt.NDArray, npt.NDArray]:
+) -> Callable[[npt.NDArray], npt.NDArray]:
     """interp_circ interpolation for periodic-valued data
 
     Creates a function to interpolate data valued on a circle (for period = 360, a datapoint with value 359 is at distance 2 of a datapoint with value 1)
@@ -32,7 +32,7 @@ def interp_circ(
     :param y: The values to interpolate (periodic)
     :type y: np.ndarray
     :return: A function which takes time axis values as input and returns the interpolated values
-    :rtype: Callable[npt.NDArray, npt.NDArray]
+    :rtype: Callable[[npt.NDArray], npt.NDArray]
     """
     if np.any(y > period / 2):
         warnings.warn("Some of the values in y are larger than the indicated period.")
