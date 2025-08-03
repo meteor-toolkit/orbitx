@@ -43,6 +43,7 @@ setup(
         "dev": [
             "mypy",
             "black",
+            "build",
             "pre-commit",
             "sphinx",
             "sphinx_book_theme",
