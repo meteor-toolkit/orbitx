@@ -2,13 +2,17 @@
 
 
 """__Built-In Modules__"""
-from orbitx.interface import return_matchups, plot_matchups
+from orbitx.interface import return_matchups
 
 """___Third-Party Modules___"""
 import faulthandler
 import datetime
 import cartopy.crs as ccrs
-
+from functools import partial
+import multiprocessing
+from multiprocessing import Pool
+import numpy as np
+import calendar
 """___NPL Modules___"""
 
 """___Authorship___"""
@@ -21,23 +25,62 @@ __status__ = "Development"
 
 faulthandler.enable()
 
-ds = return_matchups(
-    sats=["S3A", "SA"],
-    start_time=datetime.datetime(2016, 1, 1, 0, 0, 0),
-    end_time=datetime.datetime(2025, 1, 1, 0, 0, 0),
-    propagation_sampling_interval=60,
-    interpolation_sampling_interval=5,
-    cntr2cntr_dist=290,
-    time_diff_threshold=900,
-    output_path_sim_orbits=r"..\..\satellite_simulated_orbits",
-    output_path_matchups=r"..\..\satellite_matchups",
-)
+sats = ["S3A", "SA"]
+years = range(2016, 2026)
+months = range(1, 13)
 
-# plot_matchups(ds, ccrs.Mollweide())
+arguments = np.empty((len(years) * 12, 4), dtype = object)
 
-# print(ds)
+for year in years:
+    idx_year = (year - np.min(years)) * 12
+    for month in months:
+        idx_month = idx_year + month - 1
+        month_end_day = int(calendar.monthrange(year, month)[1])
+        start_date = datetime.datetime(year, month, 1, 0, 0, 0)
+        end_date = datetime.datetime(year, month, month_end_day, 0, 0, 0)
+        output_path_sim = "orbits_S3A_J3_{}_{}".format(year, month)
+        output_path_matchups = "matchups_S3A_J3_{}_{}".format(year, month)
+        arguments[idx_month, :] = [
+            start_date,
+            end_date,
+            output_path_sim,
+            output_path_matchups
+            ]
 
-ds.to_netcdf("test.nc")
+
+def return_matchups_(
+    start_time,
+    end_time,
+    output_path_sim_orbits,
+    output_path_matchups,
+    sats,
+    propagation_sampling_interval,
+    interpolation_sampling_interval,
+    cntr2cntr_dist,
+    time_diff_threshold):
+    return return_matchups(
+        sats,
+        start_time,
+        end_time,
+        propagation_sampling_interval,
+        interpolation_sampling_interval,
+        cntr2cntr_dist,
+        time_diff_threshold,
+        output_path_sim_orbits,
+        output_path_matchups)
+
+partial_matchup = partial(return_matchups_,
+                          sats = sats,
+                          propagation_sampling_interval = 60,
+                          interpolation_sampling_interval = 5,
+                          cntr2cntr_dist = 290,
+                          time_diff_threshold = 900)
+
+
+n_cores = multiprocessing.cpu_count()
+with Pool(n_cores) as pool:
+    pool.starmap(partial_matchup,arguments)
+
 
 if __name__ == "__main__":
     pass
