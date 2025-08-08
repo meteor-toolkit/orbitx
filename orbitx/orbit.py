@@ -10,6 +10,7 @@ import warnings
 import numbers
 
 from scipy.interpolate import interp1d
+import orekit
 from org.orekit.frames import FramesFactory, TopocentricFrame
 from org.orekit.bodies import (
     OneAxisEllipsoid,
@@ -148,7 +149,7 @@ class Orbit:
         :return: vector of orbit latitude, longitude, altitude, elevation angle, and azimuth angle
         *** Modified from Bernardo's code ***
         """
-
+        orekit.getVMEnv().attachCurrentThread() 
         extrap_date = AbsoluteDate(
             start_time.year,
             start_time.month,
