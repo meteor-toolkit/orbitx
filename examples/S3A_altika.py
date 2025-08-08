@@ -1,19 +1,25 @@
 """Script to obtain matchups between Sentinel 3A and Altika"""
 
 
-"""__Built-In Modules__"""
-from orbitx.interface import return_matchups
-
 """___Third-Party Modules___"""
 import faulthandler
 import datetime
-import cartopy.crs as ccrs
-from functools import partial
-import multiprocessing
-from multiprocessing import Pool
 import numpy as np
 import calendar
+from functools import partial
+
+import cartopy.crs as ccrs
+import orekit
+
+import multiprocessing
+import concurrent.futures
+
 """___NPL Modules___"""
+
+"""__Built-In Modules__"""
+faulthandler.enable()
+from orbitx.interface import return_matchups
+
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -23,31 +29,27 @@ __maintainer__ = "Zhav Loizeau"
 __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
-faulthandler.enable()
-
 sats = ["S3A", "SA"]
-years = [2017]
-months = range(1, 13)
-
-arguments = np.empty((len(years) * 12, 4), dtype = object)
-
-for year in years:
-    idx_year = (year - np.min(years)) * 12
-    for month in months:
-        idx_month = idx_year + month - 1
-        month_end_day = int(calendar.monthrange(year, month)[1])
-        start_date = datetime.datetime(year, month, 1, 0, 0, 0)
-        end_date = datetime.datetime(year, month, month_end_day, 0, 0, 0)
-        output_path_sim = "./orbits_S3A_J3_{}_{}".format(year, month)
-        output_path_matchups = "./matchups_S3A_J3_{}_{}".format(year, month)
-        arguments[idx_month, :] = [
-            start_date,
-            end_date,
-            output_path_sim,
-            output_path_matchups
-            ]
+years = range(2016, 2026)
+output_path_sim_orbits = "../../../output/orbitx/S3A_SA/orbits/"
+output_path_matchups = "../../../output/orbitx/S3A_SA/matchups/"
+propagation_sampling_interval = 60
+interpolation_sampling_interval = 5
+cntr2cntr_dist = 290
+time_diff_threshold = 900
 
 
+arguments = np.empty((len(years), 2), dtype = object)
+
+for idx_year, year in enumerate(years):
+    start_date = datetime.datetime(year, 1, 1, 0, 0, 0)
+    end_date = datetime.datetime(year, 12, 31, 0, 0, 0)
+    arguments[idx_year, :] = [
+        start_date,
+        end_date,
+    ]
+
+orekit.initVM()
 def return_matchups_(
     start_time,
     end_time,
@@ -74,13 +76,21 @@ partial_matchup = partial(return_matchups_,
                           propagation_sampling_interval = 60,
                           interpolation_sampling_interval = 5,
                           cntr2cntr_dist = 290,
-                          time_diff_threshold = 900)
-
+                          time_diff_threshold = 900,
+                          output_path_sim_orbits = output_path_sim_orbits,
+                          output_path_matchups = output_path_matchups)
 
 n_cores = multiprocessing.cpu_count()
-with Pool(n_cores) as pool:
-    pool.starmap(partial_matchup,arguments)
-
+res = []
+with concurrent.futures.ThreadPoolExecutor(max_workers = n_cores) as pool:
+    for arg in arguments:
+        call = partial(partial_matchup,
+                       start_time = arg[0],
+                       end_time = arg[1],
+                       )
+        res.append(pool.submit(call))
+    for r in res:
+        print(r.result())
 
 if __name__ == "__main__":
     pass

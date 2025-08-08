@@ -11,15 +11,15 @@ from orbitx.interface import return_matchups, plot_matchups
 __author__ = "Sajedeh Behnia"
 start = time.time()
 ds = return_matchups(
-    sats=["LS8", "S2A"],
+    sats=["S3A", "SA"],
     start_time=datetime.datetime(2022, 1, 1, 0, 0, 0),
     end_time=datetime.datetime(2022, 1, 31, 0, 0, 0),
     propagation_sampling_interval=60,
     interpolation_sampling_interval=5,
     cntr2cntr_dist=290,
     time_diff_threshold=900,
-    output_path_sim_orbits=r"../../satellite_simulated_orbits",
-    output_path_matchups=r"../../satellite_matchups"
+    output_path_sim_orbits=r"../../../output/orbitx/S3A_SA/orbits",
+    output_path_matchups=r"../../../output/orbitx/S3A_SA/matchups"
 )
 
 end = time.time()
