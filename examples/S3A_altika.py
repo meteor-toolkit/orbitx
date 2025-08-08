@@ -26,7 +26,7 @@ __status__ = "Development"
 faulthandler.enable()
 
 sats = ["S3A", "SA"]
-years = range(2016, 2026)
+years = [2017]
 months = range(1, 13)
 
 arguments = np.empty((len(years) * 12, 4), dtype = object)
@@ -38,8 +38,8 @@ for year in years:
         month_end_day = int(calendar.monthrange(year, month)[1])
         start_date = datetime.datetime(year, month, 1, 0, 0, 0)
         end_date = datetime.datetime(year, month, month_end_day, 0, 0, 0)
-        output_path_sim = "orbits_S3A_J3_{}_{}".format(year, month)
-        output_path_matchups = "matchups_S3A_J3_{}_{}".format(year, month)
+        output_path_sim = "./orbits_S3A_J3_{}_{}".format(year, month)
+        output_path_matchups = "./matchups_S3A_J3_{}_{}".format(year, month)
         arguments[idx_month, :] = [
             start_date,
             end_date,
