@@ -166,14 +166,14 @@ def generate_python_content(sats:List[str], dates:List[int])->str:
         pass
     """
     return "\n".join(
-        descrption,
+        (descrption,
         modules_import,
         authorship,
         parameters,
-        execute)
+        execute))
 
 def generate_python_title(sats:List[str])->str:
-    return "/home/xl3/projects/orbitx/examples/DPAAR/python/{}_{}.py".format(sats[0], sats[1])
+    return "/home/xl3/Documents/projects/orbitx/examples/DPAAR/python/{}_{}.py".format(sats[0], sats[1])
 
 for idx in range(len(sats_list)):
     sats = sats_list[idx]
