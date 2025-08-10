@@ -1,3 +1,6 @@
+./examples/DPAAR/SLURM/**
+./examples/DPAAR/python/**
+**.out
 # Mypy cache
 .mypy_cache
 

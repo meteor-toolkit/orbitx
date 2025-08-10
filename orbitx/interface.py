@@ -29,8 +29,12 @@ SATELLITE_DICT = {
     "S3A": "Sentinel-3A",
     "S3B": "Sentinel-3B",
     "S6": "Sentinel-6",
+    "J2": "JASON-2",
     "J3": "JASON-3",
     "SA": "Saral-AltiKa",
+    "CS2": "CryoSat-2",
+    "LINCS2": "Lin-CryoSat-2",
+    "N20": "NOAA-20"
 }
 
 
