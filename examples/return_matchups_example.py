@@ -11,21 +11,21 @@ __author__ = "Sajedeh Behnia"
 
 ds = return_matchups(
     sats=["LS8", "S2A"],
-    start_time=datetime.datetime(2022, 1, 1, 0, 0, 0),
-    end_time=datetime.datetime(2022, 1, 7, 0, 0, 0),
+    start_time=datetime.datetime(2023, 1, 5, 8, 49, 24),
+    end_time=datetime.datetime(2023, 1, 7, 9, 39, 54),
     propagation_sampling_interval=60,
     interpolation_sampling_interval=5,
     cntr2cntr_dist=290,
     time_diff_threshold=900,
-    # output_path_sim_orbits=r"..\..\satellite_simulated_orbits",
-    # output_path_matchups=r"..\..\satellite_matchups",
+    output_path_sim_orbits=r"C:\Users\sb25\OneDrive - National Physical Laboratory\Desktop\newRepo\in review\outputFiles",
+    output_path_matchups=r"C:\Users\sb25\OneDrive - National Physical Laboratory\Desktop\newRepo\in review\outputFiles",
 )
 
-plot_matchups(ds, ccrs.Mollweide())
+# plot_matchups(ds, ccrs.Mollweide())
 
-print(ds)
+# print(ds)
 
-ds.to_netcdf("test.nc")
+# ds.to_netcdf("test.nc")
 
 if __name__ == "__main__":
     pass
