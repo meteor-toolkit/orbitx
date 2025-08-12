@@ -2,6 +2,7 @@
 
 import os
 import datetime
+import numpy as np
 import xarray as xr
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -100,16 +101,29 @@ def return_matchups(
             sampling_part = f"psi{propagation_sampling_interval}_isi{interpolation_sampling_interval}"
             filename = f"{date_part}_{sampling_part}_orbit_{sat}.nc"
 
+            time_datetime = [datetime.datetime(1970, 1, 1 ) + datetime.timedelta(seconds=orbit_output[sat]["time"][j]) for j in range(len(orbit_output[sat]["time"]))]
+
             # Save orbit as xr
             orbit_of_sat = xr.Dataset(
                 {
-                    "lat": orbit_output[sat]["lat"],
-                    "lon": orbit_output[sat]["lon"],
-                    "time": orbit_output[sat]["time"],
-                    #     Add time
+                    "lat": ("time", orbit_output[sat]["lat"]),
+                    "lon": ("time", orbit_output[sat]["lon"]),
+                },
+                coords={
+                    "time": time_datetime,
+                },
+                attrs={
+                    "sat": sat,
                 }
             )
-            orbit_of_sat.attrs["sat"] = sat
+            orbit_of_sat["time"].attrs["description"] = "UTC time from Unix timestamp"
+
+            # Add seconds since 2000 for altimetry applications
+            offset = (datetime.datetime(2000, 1, 1) - datetime.datetime(1970, 1, 1)).total_seconds()
+            seconds_since_2000 = [t - offset for t in orbit_output[sat]["time"]]
+            orbit_of_sat["seconds_since_2000"] = ("time", seconds_since_2000)
+            orbit_of_sat["seconds_since_2000"].attrs["units"] = "seconds"
+            orbit_of_sat["seconds_since_2000"].attrs["description"] = "Seconds since 2000-01-01T00:00:00 UTC"
 
             # Save as netCDF4
             orbit_of_sat.to_netcdf(os.path.join(output_path_sim_orbits, filename))
@@ -136,10 +150,22 @@ def return_matchups(
         matchup_part = f"c2c{cntr2cntr_dist}_tdt{time_diff_threshold}"
         filename = f"{date_part}_{sampling_part}_matchups_{sat_part}_{matchup_part}.nc"
 
-        # Save as netCDF4
-        matchup_output.to_netcdf(os.path.join(output_path_matchups, filename))
-    else:
+        matchup_output_copy = matchup_output.copy()
+
+        # Add seconds since 2000 for altimetry applications.
+        ref_time = np.datetime64("2000-01-01T00:00:00", "ns")
+        seconds_since_2000 = (matchup_output["time"].values - ref_time) / np.timedelta64(1, "s")
+        matchup_output_copy["seconds_since_2000"] = xr.DataArray(
+            seconds_since_2000,
+            dims=["time"],
+            coords={"time": matchup_output["time"]},
+            attrs={"description": "Seconds since 2000-01-01T00:00:00 UTC"}
+        )
+
+        matchup_output_copy.to_netcdf(os.path.join(output_path_matchups, filename))
         output = True
+    else:
+        output = False
 
     if output is True:
         return matchup_output
