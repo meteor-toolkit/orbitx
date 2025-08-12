@@ -3,16 +3,18 @@
 import faulthandler
 import datetime
 import cartopy.crs as ccrs
+import time
 
 faulthandler.enable()
 from orbitx.interface import return_matchups, plot_matchups
 
 __author__ = "Sajedeh Behnia"
 
+start = time.time()
 ds = return_matchups(
     sats=["LS8", "S2A"],
     start_time=datetime.datetime(2022, 1, 1, 0, 0, 0),
-    end_time=datetime.datetime(2022, 1, 7, 0, 0, 0),
+    end_time=datetime.datetime(2022, 1, 31, 0, 0, 0),
     propagation_sampling_interval=60,
     interpolation_sampling_interval=5,
     cntr2cntr_dist=290,
@@ -20,12 +22,13 @@ ds = return_matchups(
     # output_path_sim_orbits=r"..\..\satellite_simulated_orbits",
     # output_path_matchups=r"..\..\satellite_matchups",
 )
+end = time.time()
+print(end - start)
+# plot_matchups(ds, ccrs.Mollweide())
 
-plot_matchups(ds, ccrs.Mollweide())
+# print(ds)
 
-print(ds)
-
-ds.to_netcdf("test.nc")
+# ds.to_netcdf("test.nc")
 
 if __name__ == "__main__":
     pass
