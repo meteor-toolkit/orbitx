@@ -9,49 +9,16 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-import cartopy.io.shapereader as shpreader
 import cartopy.feature as cfeature
-import shapely.geometry as sgeom
-from shapely.geometry import Polygon
-import shapely.vectorized as vectorized
 
 faulthandler.enable()
-from orbitx.interface import return_matchups, plot_matchups, SATELLITE_DICT
+from orbitx.interface import return_matchups
+from orbitx.utils._constants import SATELLITE_DICT
 
 __author__ = "Sajedeh Behnia"
 
-def is_land(x,y):
-    """Returns boolean land mask for x,y coordinates"""
-    return vectorized.contains(land_geom,x,y)
-
-def landmask(lon_c,lat_c,swath_width=1):
-    """Returns estimate of land fraction for a scene with centre of (lon_c,lat_c) +/- swath width"""
-
-    xmin, xmax, ymin, ymax = lon_c - swath_width, lon_c + swath_width, lat_c - swath_width, lat_c + swath_width,
-    xx, yy = np.meshgrid(np.linspace(xmin, xmax, 100), np.linspace(ymin, ymax, 100))
-    xc = xx.flatten()
-    yc = yy.flatten()
-
-    land_cover = is_land(yc, xc)
-    land_fraction = sum(np.where(land_cover == True, 1, 0)) / len(land_cover)
-
-    if land_fraction == 0:
-        mask = "OCEAN"
-    elif land_fraction == 1:
-        mask = "LAND"
-    else:
-        mask = "COAST"
-    return mask
 
 get_range = np.vectorize(lambda *delay: max(delay) - min(delay))
-
-land_shp_fname = shpreader.natural_earth(resolution='50m',
-                                         category='physical', name='land')
-
-geoms = list(shpreader.Reader(land_shp_fname).geometries())
-
-land_geom = sgeom.MultiPolygon([sgeom.shape(geom)
-                                for geom in geoms])
 
 start = time.time()
 ds = return_matchups(
@@ -64,6 +31,7 @@ ds = return_matchups(
     time_diff_threshold=900,
     # output_path_sim_orbits=r"../../../output/orbitx/S3A_SA/orbits",
     # output_path_matchups=r"../../../output/orbitx/S3A_SA/matchups"
+    output=True
 )
 end = time.time()
 print(end - start)
@@ -102,8 +70,6 @@ for year in years:
     df_y = df.where(df.year == year)
     df_y = df_y.dropna()
     for month in set(df_y["month"]):
-
-
         df_m = df_y.where(df_y.month == month)
         df_m = df_m.dropna()
 
