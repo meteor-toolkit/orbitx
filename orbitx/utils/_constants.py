@@ -36,6 +36,9 @@ SATELLITE_DICT = {
     "N20": "NOAA-20"
 }
 
+# Radius of earth in kilometers
+EARTH_RADIUS = 6371
+
 __land_shp_fname = shpreader.natural_earth(resolution='50m',
                                          category='physical', name='land')
 

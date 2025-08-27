@@ -20,7 +20,6 @@ __author__ = "Sajedeh Behnia"
 
 get_range = np.vectorize(lambda *delay: max(delay) - min(delay))
 
-start = time.time()
 ds = return_matchups(
     sats=["S3A", "SA"],
     start_time=datetime.datetime(2022, 1, 1, 0, 0, 0),
@@ -33,8 +32,6 @@ ds = return_matchups(
     # output_path_matchups=r"../../../output/orbitx/S3A_SA/matchups"
     output=True
 )
-end = time.time()
-print(end - start)
 # plot_matchups(ds, ccrs.Mollweide())
 
 # print(ds)

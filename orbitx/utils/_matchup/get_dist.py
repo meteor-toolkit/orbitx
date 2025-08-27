@@ -8,7 +8,7 @@ from typing import Union
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-
+from orbitx.utils._constants import EARTH_RADIUS
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -19,10 +19,10 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 def get_dist(
-    lon1: Union[int, float],
     lat1: Union[int, float],
-    lon2: Union[int, float],
+    lon1: Union[int, float],
     lat2: Union[int, float],
+    lon2: Union[int, float],
 ) -> float:
     """
     Calculate the distance in kilometers between two points
@@ -41,7 +41,7 @@ def get_dist(
     dlat = lat2 - lat1
     a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
     c = 2 * asin(sqrt(a))
-    r = 6371  # Radius of earth in kilometers. Use 3956 for miles. Determines return value units.
+    r = EARTH_RADIUS
     return c * r
 
 

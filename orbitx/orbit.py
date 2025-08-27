@@ -56,6 +56,9 @@ class Orbit:
         self._orbits = dict()
         self.run()
 
+    def __len__(self):
+        return len(self.orbits[self.satellites[0]]['lat'])
+
     def run(
         self
     ) -> None:

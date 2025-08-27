@@ -9,12 +9,14 @@ from matplotlib import pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 from typing import Optional, List
+import os
 
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
 from orbitx import Orbit
 from orbitx.utils._matchup.get_dist import get_distance
+from orbitx.utils._matchup.find_matches import find_matches
 from orbitx.utils._constants import SATELLITE_DICT
 
 __author__ = [
@@ -43,28 +45,21 @@ class Matchups:
             interpolation_sampling_interval: float = 5,
             has_land_ocean_mask: bool = False):
         
+        self._satellites = satellites
         self._start_time = start_time
         self._end_time = end_time
         self._time_diff_threshold = time_diff_threshold
         self._space_diff_threshold = space_diff_threshold
+        self._check_before = check_before
+        self._check_after = check_after
+        self._propagation_sampling_interval = propagation_sampling_interval
         self._interpolation_sampling_interval = interpolation_sampling_interval
         self._has_land_ocean_mask = has_land_ocean_mask
-        self._satellites = satellites
 
-        orbit = Orbit(
-            self.satellites,
-            self.start_time,
-            self.end_time,
-            self.propagation_sampling_interval,
-            self.interpolation_sampling_interval)
-        
-        self.eval(orbit)
-        if self.has_land_ocean_mask:
-            self.land_ocean_mask()
+        self.run()
 
-    def eval(
-        self,
-        orbit: Orbit
+    def run(
+        self
     ):
         """matchup Return information relating to matchup instances between satellites
 
@@ -93,88 +88,31 @@ class Matchups:
         :return: _description_
         :rtype: _type_
         """
-        # choose one satellite to remain stable and loop through the rest with respect to it
-        sat1 = list(orbit.satellites)[0]
-        other_sats = [i for i in orbit.satellites if i != sat1]
-
-        # set attributes
-        attrs = {
-            "time_threshold": self.time_diff_threshold,
-            "distance_threshold": self.space_diff_threshold,
-            "interpolation_sampling_interval": self.interpolation_sampling_interval,
-        }
-
-        match = dict(
-            [
-                (
-                    f"{sat1}_{s}",
-                    {
-                        "lat1": -68787 * np.ones(len(orbit.orbits[sat1]["lat"])),
-                        "lon1": -68787 * np.ones(len(orbit.orbits[sat1]["lat"])),
-                        "lat2": -68787 * np.ones(len(orbit.orbits[sat1]["lat"])),
-                        "lon2": -68787 * np.ones(len(orbit.orbits[sat1]["lat"])),
-                        "delay": -68787 * np.ones(len(orbit.orbits[sat1]["lat"])),
-                        "time": np.array(
-                            [datetime.datetime(1, 1, 1)]
-                            * len(orbit.orbits[sat1]["lat"])
-                        ),
-                        "distance": -68787 * np.ones(len(orbit.orbits[sat1]["lat"])),
-                    },
-                )
-                for s in other_sats
-            ]
+        # simulate desired orbits
+        orbit_start_time = self.start_time
+        orbit_end_time = self.end_time
+        if self.check_before:
+            orbit_start_time = orbit_start_time - self.time_diff_threshold
+        if self.check_after:
+            orbit_end_time = orbit_end_time + self.time_diff_threshold
+        self.orbit = Orbit(
+            satellites=self.satellites,
+            start_time=orbit_start_time,
+            end_time=orbit_end_time,
+            propagation_sampling_interval=self.propagation_sampling_interval,
+            interpolation_sampling_interval=self.interpolation_sampling_interval
         )
 
-        s1_lat = orbit.orbits[sat1]["lat"]
-        s1_lon = orbit.orbits[sat1]["lon"]
-        s1_time = orbit.orbits[sat1]["time"]
+        self.matchups = find_matches(
+            self.orbit,
+            self.start_time,
+            self.end_time)
 
-        # Calculate number of interpolation sampling bins fit into the time difference threshold and generate vector of numbers of bins
-        acceptable_bin_shifts = range(
-                -abs(int(self.time_diff_threshold / self.interpolation_sampling_interval)),
-                +abs(int(self.time_diff_threshold / self.interpolation_sampling_interval)),
-            )
-        for s in other_sats:
-            # roll through the accepted time window through the lons and lats
-            for i in acceptable_bin_shifts:
-                s2_lat = np.roll(orbit.orbits[s]["lat"], i)
-                s2_lon = np.roll(orbit.orbits[s]["lon"], i)
 
-                position = np.array([s1_lon, s1_lat, s2_lon, s2_lat])[
-                    :, [j for j in np.arange(len(s1_lon))]  # if j in match_peak]
-                ]
 
-                distance = get_distance(*tuple(position))
+        if self.has_land_ocean_mask:
+            self.land_ocean_mask()
 
-                # check distance is within the c2c_dist (centre to centre)
-                for item, dist in enumerate(distance):
-                    if dist <= self.space_diff_threshold:
-                        if (
-                            match[f"{sat1}_{s}"]["delay"][item] == -68787
-                            or match[f"{sat1}_{s}"]["delay"][item]
-                            > i * self.interpolation_sampling_interval
-                        ):
-                            match[f"{sat1}_{s}"]["lat1"][item] = s1_lat[item]
-                            match[f"{sat1}_{s}"]["lon1"][item] = s1_lon[item]
-                            match[f"{sat1}_{s}"]["lat2"][item] = s2_lat[item]
-                            match[f"{sat1}_{s}"]["lon2"][item] = s2_lon[item]
-                            match[f"{sat1}_{s}"]["delay"][item] = (
-                                i * self.interpolation_sampling_interval
-                            )
-                            match[f"{sat1}_{s}"]["time"][item] = datetime.datetime(
-                                1970, 1, 1
-                            ) + datetime.timedelta(seconds=s1_time[item])
-                            match[f"{sat1}_{s}"]["distance"][item] = dist
-            for key in match[f"{sat1}_{s}"].keys():
-                if key != "time":
-                    match[f"{sat1}_{s}"][key] = match[f"{sat1}_{s}"][key][
-                        match[f"{sat1}_{s}"][key] != -68787
-                    ]
-                else:
-                    match[f"{sat1}_{s}"][key] = match[f"{sat1}_{s}"][key][
-                        match[f"{sat1}_{s}"][key] != datetime.datetime(1, 1, 1)
-                    ]
-        self.matchups = match
         return
 
     def land_ocean_mask(self):
@@ -186,26 +124,26 @@ class Matchups:
         # Construct filename
         sat_part = "_".join(self.satellites)
 
-        date_part = f"{start_time:%Y%m%d}_{end_time:%Y%m%d}"
+        date_part = f"{self.start_time:%Y%m%d}_{self.end_time:%Y%m%d}"
         sampling_part = (
-            f"psi{propagation_sampling_interval}_isi{interpolation_sampling_interval}"
+            f"psi{self.propagation_sampling_interval}_isi{self.interpolation_sampling_interval}"
         )
-        matchup_part = f"c2c{cntr2cntr_dist}_tdt{time_diff_threshold}"
+        matchup_part = f"c2c{self.space_diff_threshold}_tdt{self.time_diff_threshold}"
         filename = f"{date_part}_{sampling_part}_matchups_{sat_part}_{matchup_part}.nc"
 
-        matchup_output_copy = matchup_output.copy()
+        matchup_output_copy = self.matchups.copy()
 
         # Add seconds since 2000 for altimetry applications.
         ref_time = np.datetime64("2000-01-01T00:00:00", "ns")
-        seconds_since_2000 = (matchup_output["time"].values - ref_time) / np.timedelta64(1, "s")
+        seconds_since_2000 = (self.matchupsmatchup_output["time"].values - ref_time) / np.timedelta64(1, "s")
         matchup_output_copy["seconds_since_2000"] = xr.DataArray(
             seconds_since_2000,
             dims=["time"],
-            coords={"time": matchup_output["time"]},
+            coords={"time": self.matchupsmatchup_output["time"]},
             attrs={"description": "Seconds since 2000-01-01T00:00:00 UTC"}
         )
 
-        matchup_output_copy.to_netcdf(os.path.join(output_path_matchups, filename))
+        matchup_output_copy.to_netcdf(os.path.join(output_path, filename))
 
 
     def to_ds(self) -> xr.Dataset:
@@ -305,13 +243,13 @@ class Matchups:
     def plot(
             self,
             projection=ccrs.PlateCarree()
-            ) -> None:
+            ) -> plt.Figure:
         """
         Plot the matchup dataset generated from orbitx.interface.return_matchups
 
-        :param ds: matchup dataset containing latitude, latitude and time information for matchup events
         :param projection: cartopy.crs projection to use to plot, defaults to cartopy.crs.PlateCarree()
         """
+        ds = self.to_ds()
         cm = 1 / 2.54
         fig = plt.figure(figsize=(16 * cm, 9 * cm), dpi=400)
         ax = fig.add_subplot(1, 1, 1, projection=projection)
@@ -329,15 +267,22 @@ class Matchups:
                 s=(ds.attrs["time_threshold"] - delay) ** 2
                 / (ds.attrs["time_threshold"] / 2) ** 2,
                 label=SATELLITE_DICT[ds.attrs[f"sat{i + 1}"]],
-                transform=ccrs.PlateCarree(),
+                transform=projection,
             )
         ax.legend(loc="lower right")
-        plt.show()
-
+        return fig
 
     @property
     def satellites(self):
         return self._satellites
+    
+    @property
+    def start_time(self):
+        return self._start_time
+
+    @property
+    def end_time(self):
+        return self._end_time
     
     @property
     def time_diff_threshold(self):
@@ -346,7 +291,19 @@ class Matchups:
     @property
     def space_diff_threshold(self):
         return self._space_diff_threshold
+
+    @property
+    def check_before(self):
+        return self._check_before
+
+    @property
+    def check_after(self):
+        return self._check_after
     
+    @property
+    def propagation_sampling_interval(self):
+        return self._propagation_sampling_interval
+
     @property
     def interpolation_sampling_interval(self):
         return self._interpolation_sampling_interval
