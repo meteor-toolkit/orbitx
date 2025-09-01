@@ -67,7 +67,8 @@ def find_matches(
                     "lat2": np.empty((len(orbit),), dtype = float),
                     "lon2": np.empty((len(orbit),), dtype = float),
                     "delay": np.empty((len(orbit),), dtype = float),
-                    "time": np.empty((len(orbit),), dtype = datetime.datetime),
+                    "time": np.empty((len(orbit),), dtype = float),
+                    "time_datetime": np.empty((len(orbit),), dtype = datetime.datetime),
                     "distance": np.empty((len(orbit),), dtype = float),
                 },
             )
@@ -79,6 +80,7 @@ def find_matches(
     s1_lat = orbit.orbits[sat1]["lat"]
     s1_lon = orbit.orbits[sat1]["lon"]
     s1_time = orbit.orbits[sat1]["time"]
+    s1_date = orbit.orbits[sat1]["time_datetime"]
 
     # Vector indicating which entries havea matchup:
     has_matchup = np.array([False for _ in range(len(orbit))])
@@ -95,6 +97,7 @@ def find_matches(
             # extract the coordinate of the other satellite with an appropriate lag
             s2_lat = np.roll(orbit.orbits[s]["lat"], i)
             s2_lon = np.roll(orbit.orbits[s]["lon"], i)
+            s2_date = np.roll(orbit.orbits[s]["time_datetime"], i)
 
             # create an array of all positions
             position = np.array([s1_lat, s1_lon, s2_lat, s2_lon]).transpose()
@@ -106,12 +109,14 @@ def find_matches(
             indeces_array = range(position.shape[0])
             if i < 0:
                 position = position[:i, :]
+                s2_date = s2_date[:i]
                 indeces_array = indeces_array[:i]
             elif i > 0:
                 position = position[i:, :]
+                s2_date = s2_date[i:]
                 indeces_array = indeces_array[i:]
-
-            distance = get_distance(*tuple(position))
+                
+            distance = get_distance(*tuple(position.transpose()))
 
             # check distance is within the c2c_dist (centre to centre)
             for item, dist in enumerate(distance):
@@ -119,7 +124,12 @@ def find_matches(
                 current_index = indeces_array[item]
                 if (
                     (dist <= space_diff_threshold)
-                    and (s1_time[current_index] < end_time)):
+                    and (
+                        (s1_date[current_index] < end_time)
+                        or (s2_date[item] < end_time))
+                    and (
+                        (s1_date[current_index] > start_time)
+                        or (s2_date[item] > start_time))):
                     # If there is no matchup for this entry yet or if this new matchup has a smaller delay, update the entry
                     if (
                         ((not has_matchup[current_index])
@@ -133,9 +143,8 @@ def find_matches(
                         match[f"{sat1}_{s}"]["delay"][current_index] = (
                             i * orbit.interpolation_sampling_interval
                         )
-                        match[f"{sat1}_{s}"]["time"][current_index] = datetime.datetime(
-                            1970, 1, 1
-                        ) + datetime.timedelta(seconds=s1_time[current_index])
+                        match[f"{sat1}_{s}"]["time"][current_index] = s1_time[current_index]
+                        match[f"{sat1}_{s}"]["time_datetime"][current_index] = s1_date[current_index]
                         match[f"{sat1}_{s}"]["distance"][current_index] = dist
                         has_matchup[current_index] = True
         # remove all entries which do not have a matchup

@@ -51,3 +51,6 @@ for loc in __multipol_loc:
 
 LAND_GEOM = sgeom.MultiPolygon([sgeom.shape(geom)
                                 for geom in __geoms])
+
+# inches to cm conversion constant
+CM = 1 / 2.54

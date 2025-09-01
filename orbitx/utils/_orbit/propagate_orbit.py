@@ -1,3 +1,5 @@
+"""Python function to simulate the orbit of a satellite at given dates     *** Modified from Bernardo's code ***"""
+
 """___Third-Party Modules___"""
 import datetime
 import numpy as np
@@ -56,8 +58,7 @@ def propagate_orbit(
     :param start_time: start time of orbit propagation
     :param end_time: end time of orbit propagation
     :param propagation_sampling_interval: sampling interval in seconds
-    :return: vector of orbit latitude, longitude, altitude, elevation angle, and azimuth angle
-    *** Modified from Bernardo's code ***
+    :return: Tuple containing the date in seconds from 1970, the date in datetime, orbit latitude, longitude, altitude, elevation angle, and azimuth angle
     """
     orekit.getVMEnv().attachCurrentThread() 
     extrap_date = AbsoluteDate(
@@ -178,6 +179,7 @@ def propagate_orbit(
             - datetime.datetime(1970, 1, 1, 0, 0, 0)
         ).total_seconds()
 
+
     pos_s0_lat = np.array([i * 180.0 / pi for i in pos_s0_lat])
     pos_s0_lon = np.array([i * 180.0 / pi for i in pos_s0_lon])
-    return julian_date, pos_s0_lat, pos_s0_lon, pos_s0_alt, sel, saz
+    return julian_date, date, pos_s0_lat, pos_s0_lon, pos_s0_alt, sel, saz

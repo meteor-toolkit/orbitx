@@ -22,11 +22,12 @@ __status__ = "Development"
 
 
 def interpolate_orbit(
-    self,
-    sat_sec_since,
-    sat_lat_sim,
-    sat_lon_sim,
-    interpolation_sampling_interval
+        start_time,
+        end_time,
+        sat_sec_since,
+        sat_lat_sim,
+        sat_lon_sim,
+        interpolation_sampling_interval
 ) -> Tuple[Any, Any, np.ndarray]:
     """
     Interpolate the propagated orbit for a higher spatiotemporal sampling rate.
@@ -41,14 +42,15 @@ def interpolate_orbit(
     f1_lon_linear = interp_circ(sat_sec_since, sat_lon_sim)
 
     interp_smpl_space = np.arange(
-        (self.start_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds(),
-        (self.end_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds()
+        (start_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds(),
+        (end_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds()
         + interpolation_sampling_interval,
         interpolation_sampling_interval,
     )
-
+    interpolate_date = np.array([datetime.datetime(1970, 1, 1, 0, 0, 0) + datetime.timedelta(seconds = time_delta) for time_delta in interp_smpl_space])
     return (
         f1_lat_linear(interp_smpl_space),
         f1_lon_linear(interp_smpl_space),
         interp_smpl_space,
+        interpolate_date
     )

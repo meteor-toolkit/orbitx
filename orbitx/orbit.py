@@ -2,15 +2,21 @@
 
 """___Third-Party Modules___"""
 import datetime
-from typing import List
+from typing import List, Dict
 import numbers
 import os
 import xarray as xr
+import numpy.typing as npt
+from matplotlib import pyplot as plt
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
 
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._orbit import simulate_orbit, interpolate_orbit
+from orbitx.utils._orbit.simulate_orbit import simulate_orbit
+from orbitx.utils._orbit.interpolate_orbit import interpolate_orbit
+from orbitx.utils._constants import CM, SATELLITE_DICT
 from orbitx.tle import TLEInfo
 
 """___Authorship___"""
@@ -46,22 +52,28 @@ class Orbit:
             start_time: datetime.datetime,
             end_time: datetime.datetime,
             propagation_sampling_interval: numbers,
-            interpolation_sampling_interval: numbers):
+            interpolation_sampling_interval: numbers,
+            orbit: Dict[str, Dict[str, npt.NDArray]]):
         
         self._satellites = satellites
         self._start_time = start_time
         self._end_time = end_time
         self._propagation_sampling_interval = propagation_sampling_interval
         self._interpolation_sampling_interval = interpolation_sampling_interval
-        self._orbits = dict()
-        self.run()
+        self._orbits = orbit
 
     def __len__(self):
         return len(self.orbits[self.satellites[0]]['lat'])
 
-    def run(
-        self
-    ) -> None:
+    @classmethod
+    def simulate(
+        cls,
+        satellites: List[str],
+        start_time: datetime.datetime,
+        end_time: datetime.datetime,
+        propagation_sampling_interval: numbers,
+        interpolation_sampling_interval: numbers
+    ):
         """
         Calculate the interpolated satellite orbits
 
@@ -73,26 +85,34 @@ class Orbit:
         :return: dictionary containing lat, lon, and time of simulated orbit for the satellite of interest
         """
         tle = TLEInfo()
-        sat_interp_dict = {}
-        for sat in self.satellites:
-            line1, line2, secs_since = tle.get_tle(sat, self.start_time, self.end_time)
-            sat_secs_since, sat_lat_sim, sat_lon_sim = simulate_orbit(
-                self.start_time,
-                self.end_time,
+        orbit = {}
+        for sat in satellites:
+            line1, line2, tle_secs_since = tle.get_tle(sat, start_time, end_time)
+            sat_secs_since, _, sat_lat_sim, sat_lon_sim = simulate_orbit(
+                start_time,
+                end_time,
                 line1,
                 line2,
-                secs_since,
-                self.propagation_sampling_interval
+                tle_secs_since,
+                propagation_sampling_interval
             )
-            lat, lon, time = interpolate_orbit(
+
+            lat, lon, time, date = interpolate_orbit(
+                start_time,
+                end_time,
                 sat_secs_since,
                 sat_lat_sim,
                 sat_lon_sim,
-                self.interpolation_sampling_interval,
+                interpolation_sampling_interval,
             )
-            sat_interp_dict.update({sat: {"lat": lat, "lon": lon, "time": time}})
-        self._orbits = sat_interp_dict
-        return
+            orbit.update({sat: {"lat": lat, "lon": lon, "time": time, "time_datetime" : date}})
+        return cls(
+            satellites,
+            start_time,
+            end_time,
+            propagation_sampling_interval,
+            interpolation_sampling_interval,
+            orbit)
     
     def to_netcdf(self, output_path:str)->None:
         """to_netcdf Export orbits to netCDF
@@ -112,8 +132,6 @@ class Orbit:
             sampling_part = f"psi{self.propagation_sampling_interval}_isi{self.interpolation_sampling_interval}"
             filename = f"{date_part}_{sampling_part}_orbit_{sat}.nc"
 
-            time_datetime = [datetime.datetime(1970, 1, 1 ) + datetime.timedelta(seconds=self.orbits[sat]["time"][j]) for j in range(len(self.orbits[sat]["time"]))]
-
             # Save orbit as xr
             orbit_of_sat = xr.Dataset(
                 {
@@ -121,12 +139,12 @@ class Orbit:
                     "lon": ("time", self.orbits[sat]["lon"]),
                 },
                 coords={
-                    "time": time_datetime,
+                    "time": self.orbits[sat]["time_datetime"],
                 },
                 attrs={
                     "sat": sat,
-                    "start_time": self.start_time,
-                    "end_time": self.end_time,
+                    "start_time": (self.start_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds(),
+                    "end_time": (self.end_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds(),
                     "propagation_sampling_interval": self.propagation_sampling_interval,
                     "interpolation_sampling_interval": self.interpolation_sampling_interval,
                 }
@@ -142,6 +160,43 @@ class Orbit:
 
             # Save as netCDF4
             orbit_of_sat.to_netcdf(os.path.join(output_path, filename))
+    
+    def plot(
+            self,
+            projection=ccrs.PlateCarree()
+            ) -> plt.Figure:
+        """
+        Plot the matchup dataset generated from orbitx.interface.return_matchups
+
+        :param projection: cartopy.crs projection to use to plot, defaults to cartopy.crs.PlateCarree()
+        """
+        fig = plt.figure(figsize=(16 * CM, 9 * CM), dpi=400)
+        ax = fig.add_subplot(1, 1, 1, projection=projection)
+        ax.coastlines()
+        ax.add_feature(cfeature.LAND)
+
+        for sat in self.satellites:
+            ax.scatter(
+                self.orbits[sat]["lon"],
+                self.orbits[sat]["lat"],
+                label=SATELLITE_DICT[sat],
+                transform=projection,
+                s=.5
+            )
+        ax.legend(loc="lower right")
+        return fig
+    
+    def __len__(self):
+        return len(self.orbits)
+
+    def __str__(self):
+        res = f"""Orbit object for satellites {[sat for sat in self.satellites]}.
+        Start date: {self.start_time}
+        End date: {self.end_time}
+        Propagation sampling interval: {self.propagation_sampling_interval}
+        Interpolation sampling interval: {self.interpolation_sampling_interval}
+        Number of simulated times: {len(self.orbits[self.satellites[0]]["time"])}"""
+        return res
 
     @property
     def satellites(self):

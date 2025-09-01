@@ -8,7 +8,9 @@ from datetime import datetime
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._orbit import form_sample_space, get_matching_indices, propagate_orbit
+from orbitx.utils._orbit.form_sample_space import form_sample_space
+from orbitx.utils._orbit.get_matching_indices import get_matching_indices
+from orbitx.utils._orbit.propagate_orbit import propagate_orbit
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -45,9 +47,10 @@ def simulate_orbit(
     sat_lat_sim: np.ndarray = np.empty((0,), dtype=float)
     sat_lon_sim: np.ndarray = np.empty((0,), dtype=float)
     sat_sec_since: np.ndarray = np.empty((0,), dtype=float)
+    sat_date: np.ndarray = np.empty((0,), dtype=datetime)
 
     if len(tle_ref_lines) == 1:
-        secsince1, lat1, lon1, alt1, el1, az1 = propagate_orbit(
+        secsince1, date, lat1, lon1, _, _, _ = propagate_orbit(
             line1[tle_ref_lines[0]],
             line2[tle_ref_lines[0]],
             start_time,
@@ -57,6 +60,7 @@ def simulate_orbit(
         sat_lat_sim = lat1
         sat_lon_sim = lon1
         sat_sec_since = secsince1
+        sat_date = date
 
     else:
         # Change the second-to-last timestamp of the sampling step, to the last one (the end_time). This is to
@@ -64,7 +68,7 @@ def simulate_orbit(
         # stamp.
         smpl_space[-2] = smpl_space[-1]
         for i in range(len(tle_ref_lines) - 1):
-            secsince1, lat1, lon1, alt1, el1, az1 = propagate_orbit(
+            secsince1, date, lat1, lon1, _, _, _ = propagate_orbit(
                 line1[tle_ref_lines[i]],
                 line2[tle_ref_lines[i]],
                 smpl_space[sat_smpl_breakup_idx[i]],
@@ -74,9 +78,11 @@ def simulate_orbit(
             sat_lat_sim = np.append(sat_lat_sim, lat1)
             sat_lon_sim = np.append(sat_lon_sim, lon1)
             sat_sec_since = np.append(sat_sec_since, secsince1)
+            sat_date = np.append(sat_date, date)
 
     return (
         sat_sec_since,
+        sat_date,
         sat_lat_sim,
         sat_lon_sim,
     )
