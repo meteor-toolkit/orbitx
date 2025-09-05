@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=bb78de6c"></script>
+    <script src="../../_static/documentation_options.js?v=f4b5b424"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -164,23 +164,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../content/user/atbd.html">ATBD</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../content/user/api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.interface.return_matchups.html">orbitx.interface.return_matchups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.interface.plot_matchups.html">orbitx.interface.plot_matchups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.html">orbitx.tle.TLEInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_tle_path.html">orbitx.tle.TLEInfo.return_tle_path</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_date_from_tle.html">orbitx.tle.TLEInfo.return_date_from_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_seconds_since_1970.html">orbitx.tle.TLEInfo.return_seconds_since_1970</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.get_tle.html">orbitx.tle.TLEInfo.get_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.html">orbitx.orbit.Orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.form_sample_space.html">orbitx.orbit.Orbit.form_sample_space</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.get_matching_indices.html">orbitx.orbit.Orbit.get_matching_indices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.propagate_orbit.html">orbitx.orbit.Orbit.propagate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.simulate_orbit.html">orbitx.orbit.Orbit.simulate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.interpolate_orbit.html">orbitx.orbit.Orbit.interpolate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.run.html">orbitx.orbit.Orbit.run</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchup.get_dist.html">orbitx.matchup.get_dist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchup.Matchups.html">orbitx.matchup.Matchups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchup.Matchups.matchup.html">orbitx.matchup.Matchups.matchup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchup.Matchups.to_ds.html">orbitx.matchup.Matchups.to_ds</a></li>
 </ul>
 </details></li>
 </ul>
@@ -296,6 +286,7 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;Sajedeh Behnia &lt;sajedeh.behnia@npl.co.uk&gt;&quot;</span><span class="p">,</span>
@@ -308,8 +299,9 @@ document.write(`
 <div class="viewcode-block" id="TLEInfo">
 <a class="viewcode-back" href="../../content/user/generated/orbitx.tle.TLEInfo.html#orbitx.tle.TLEInfo">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TLEInfo</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class to retrieve satellite TLEs</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to retrieve satellite TLEs.</span>
+<span class="sd">    For more information on Two line elements, see the [Wikipedia page](https://en.wikipedia.org/wiki/Two-line_element_set)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TLEInfo.return_tle_path">
@@ -390,10 +382,10 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns two-line elements within defined time window, with seconds since 1970</span>
 
-<span class="sd">        :param start_time: start of time window</span>
-<span class="sd">        :param end_time: end of time window</span>
 <span class="sd">        :param satellite: satellite short name as included in TLE file name ``TLEset_XXX``,</span>
 <span class="sd">                where ``XXX`` may be ``S2A`` for the Sentinel-2A mission</span>
+<span class="sd">        :param start_time: start of time window</span>
+<span class="sd">        :param end_time: end of time window</span>
 
 <span class="sd">        :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 1970</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -408,15 +400,25 @@ document.write(`
 
         <span class="c1"># region Access indexes of line-1 and line-2</span>
         <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">69</span><span class="p">:</span>
-            <span class="n">line_1_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-            <span class="n">line_2_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">line_1_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="n">line_2_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">69</span>
+        <span class="p">):</span>  <span class="c1"># If the file includes the name of the mission at the beginning of each TLE, the name is at position 0, 3, ... (and we do not care about it)</span>
+            <span class="n">line_1_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">3</span>
+            <span class="p">)</span>  <span class="c1"># Line 1&#39;s are at position 1, 4, ...</span>
+            <span class="n">line_2_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="mi">2</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">3</span>
+            <span class="p">)</span>  <span class="c1"># Line 2&#39;s are at position 2, 5, ...</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># If the name is not included</span>
+            <span class="n">line_1_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">2</span>
+            <span class="p">)</span>  <span class="c1"># Line 1&#39;s are at position 0, 2, ...</span>
+            <span class="n">line_2_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">2</span>
+            <span class="p">)</span>  <span class="c1"># Line 2&#39;s are at position 1, 3, ...</span>
 
-        <span class="n">tle_line_1</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_1_indexes</span><span class="p">]</span>
-        <span class="n">tle_line_2</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_2_indexes</span><span class="p">]</span>
+        <span class="n">tle_line_1</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_1_indexes</span><span class="p">]</span>  <span class="c1"># list of all line 1s</span>
+        <span class="n">tle_line_2</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_2_indexes</span><span class="p">]</span>  <span class="c1"># list of all line 2s</span>
         <span class="c1"># endregion</span>
 
         <span class="c1"># Get date times</span>
@@ -428,10 +430,34 @@ document.write(`
         <span class="n">end_time_s1970</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_seconds_since_1970</span><span class="p">(</span><span class="n">end_time</span><span class="p">)</span>
 
         <span class="c1"># Filter time</span>
+        <span class="n">lower_bound_tle_time</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tle_time_s1970</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">start_time_s1970</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lower_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;The oldest TLE file is more recent than the start time requested.</span><span class="se">\n</span><span class="s2"> Oldest TLE file: </span><span class="si">{}</span><span class="se">\n</span><span class="s2"> Start time requested: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tle_time</span><span class="p">),</span> <span class="n">start_time</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">lower_bound_tle_time</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">start_time_s1970</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lower_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">lower_bound_tle_time</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">upper_bound_tle_time</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tle_time_s1970</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="n">end_time_s1970</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">upper_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;The most recent TLE file is older than the end time requested.</span><span class="se">\n</span><span class="s2"> Oldest TLE file: </span><span class="si">{}</span><span class="se">\n</span><span class="s2"> Start time requested: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tle_time</span><span class="p">),</span> <span class="n">end_time</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">upper_bound_tle_time</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">end_time_s1970</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">upper_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">upper_bound_tle_time</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">i</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tle_time_s1970</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">t_i</span> <span class="o">&gt;=</span> <span class="n">start_time_s1970</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t_i</span> <span class="o">&lt;</span> <span class="n">end_time_s1970</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">t_i</span> <span class="o">&gt;=</span> <span class="n">lower_bound_tle_time</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t_i</span> <span class="o">&lt;</span> <span class="n">upper_bound_tle_time</span><span class="p">)</span>
         <span class="p">]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">idx</span><span class="p">:</span>
@@ -448,7 +474,7 @@ document.write(`
             <span class="n">tle_line_2</span> <span class="o">=</span> <span class="n">tle_line_2</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
             <span class="n">tle_time_s1970</span> <span class="o">=</span> <span class="n">tle_time_s1970</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">tle_line_1</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">tle_line_2</span><span class="p">),</span> <span class="n">tle_time_s1970</span></div>
+        <span class="k">return</span> <span class="n">tle_line_1</span><span class="p">,</span> <span class="n">tle_line_2</span><span class="p">,</span> <span class="n">tle_time_s1970</span></div>
 </div>
 
 

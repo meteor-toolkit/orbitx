@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=bb78de6c"></script>
+    <script src="../../../_static/documentation_options.js?v=f4b5b424"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -45,8 +45,6 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'content/user/generated/orbitx.interface.return_matchups';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="orbitx.interface.plot_matchups" href="orbitx.interface.plot_matchups.html" />
-    <link rel="prev" title="API reference" href="../api.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -109,6 +107,8 @@
       
       
       
+        
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -157,31 +157,20 @@
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">For users</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../user_guide.html">User Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html">Quickstart Guide</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../atbd.html">ATBD</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../api.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">orbitx.interface.return_matchups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.interface.plot_matchups.html">orbitx.interface.plot_matchups</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.html">orbitx.tle.TLEInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_tle_path.html">orbitx.tle.TLEInfo.return_tle_path</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_date_from_tle.html">orbitx.tle.TLEInfo.return_date_from_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_seconds_since_1970.html">orbitx.tle.TLEInfo.return_seconds_since_1970</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.get_tle.html">orbitx.tle.TLEInfo.get_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.html">orbitx.orbit.Orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.form_sample_space.html">orbitx.orbit.Orbit.form_sample_space</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.get_matching_indices.html">orbitx.orbit.Orbit.get_matching_indices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.propagate_orbit.html">orbitx.orbit.Orbit.propagate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.simulate_orbit.html">orbitx.orbit.Orbit.simulate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.interpolate_orbit.html">orbitx.orbit.Orbit.interpolate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.run.html">orbitx.orbit.Orbit.run</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.matchup.get_dist.html">orbitx.matchup.get_dist</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.matchup.Matchups.html">orbitx.matchup.Matchups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.matchup.Matchups.matchup.html">orbitx.matchup.Matchups.matchup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.matchup.Matchups.to_ds.html">orbitx.matchup.Matchups.to_ds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.matchups.Matchups.html">orbitx.matchups.Matchups</a></li>
 </ul>
 </details></li>
 </ul>
@@ -352,7 +341,7 @@ document.write(`
 <h1>orbitx.interface.return_matchups<a class="headerlink" href="#orbitx-interface-return-matchups" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="orbitx.interface.return_matchups">
-<span class="sig-prename descclassname"><span class="pre">orbitx.interface.</span></span><span class="sig-name descname"><span class="pre">return_matchups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propagation_sampling_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation_sampling_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cntr2cntr_dist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_diff_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path_sim_orbits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path_matchups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dataset</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/orbitx/interface.html#return_matchups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.interface.return_matchups" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">orbitx.interface.</span></span><span class="sig-name descname"><span class="pre">return_matchups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propagation_sampling_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation_sampling_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cntr2cntr_dist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_diff_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_land_ocean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path_sim_orbits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path_matchups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dataset</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/orbitx/interface.html#return_matchups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.interface.return_matchups" title="Link to this definition">#</a></dt>
 <dd><p>Matchup event identification between multiple satellites. Creates an xr.Dataset
 containing position and time information for satellite matchups.</p>
 <p>If no output paths are specified, the dataset will be returned.
@@ -361,27 +350,40 @@ If <code class="code docutils literal notranslate"><span class="pre">output</spa
 <dl class="simple">
 <dt>Currently accepted satellites:</dt><dd><ul class="simple">
 <li><p>LS8 (Landsat-8)</p></li>
+<li><p>LS9 (Landsat-9)</p></li>
 <li><p>S2A (Sentinel-2A)</p></li>
 <li><p>S2B (Sentinel-2B)</p></li>
 <li><p>S3A (Sentinel-3A)</p></li>
+<li><p>S3B (Sentinel-3B)</p></li>
 <li><p>S6 (Sentinel-6)</p></li>
+<li><p>J3 (Jason-3)</p></li>
+<li><p>SA (Saral-Altika)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sats</strong> – list of satellites</p></li>
-<li><p><strong>start_time</strong> – start of time period of interest</p></li>
-<li><p><strong>end_time</strong> – end of time period of interest</p></li>
-<li><p><strong>propagation_sampling_interval</strong> – sampling rate of orbit propagation per sensor</p></li>
-<li><p><strong>interpolation_sampling_interval</strong> – subsampling rate of orbit propagation per sensor by interpolation</p></li>
-<li><p><strong>cntr2cntr_dist</strong> – matchup threshold for distance between the nadir position of the two satellites (kilometres)</p></li>
-<li><p><strong>time_diff_threshold</strong> – matchup threshold for time difference between the two satellites (seconds)</p></li>
-<li><p><strong>output_path_sim_orbits</strong> – path to write evaluated propagated orbits to</p></li>
-<li><p><strong>output_path_matchups</strong> – path to write matchups to (as a netcdf file)</p></li>
-<li><p><strong>output</strong> – whether or not to output the matchup dataset, if no output_path defined defaults to True else False</p></li>
+<li><p><strong>sats</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – list of satellites</p></li>
+<li><p><strong>start_time</strong> (<em>datetime.datetime</em>) – start of time period of interest</p></li>
+<li><p><strong>end_time</strong> (<em>datetime.datetime</em>) – end of time period of interest</p></li>
+<li><p><strong>propagation_sampling_interval</strong> (<em>float</em>) – sampling rate of orbit propagation per sensor</p></li>
+<li><p><strong>interpolation_sampling_interval</strong> (<em>float</em>) – subsampling rate of orbit propagation per sensor by interpolation</p></li>
+<li><p><strong>cntr2cntr_dist</strong> (<em>float</em>) – matchup threshold for distance between the nadir position of the two satellites (kilometres)</p></li>
+<li><p><strong>time_diff_threshold</strong> (<em>float</em>) – matchup threshold for time difference between the two satellites (seconds)</p></li>
+<li><p><strong>check_before</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – whether matchups where strictly one of the two satellites appears before the start date, defaults to False</p></li>
+<li><p><strong>check_after</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – whether matchups where strictly one of the two satellites appears after the end date, defaults to False</p></li>
+<li><p><strong>get_land_ocean</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – whether the output should contain a land - ocean - coast label, defaults to False</p></li>
+<li><p><strong>output_path_sim_orbits</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – path to write evaluated propagated orbits to, defaults to None</p></li>
+<li><p><strong>output_path_matchups</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – path to write matchups to (as a netcdf file), defaults to None</p></li>
+<li><p><strong>output</strong> (<em>bool</em><em>, </em><em>optional</em>) – whether or not to output the matchup dataset, if no output_path defined defaults to True else False, defaults to False</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[xr.Dataset]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -399,24 +401,6 @@ If <code class="code docutils literal notranslate"><span class="pre">output</spa
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="../api.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">API reference</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="orbitx.interface.plot_matchups.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">orbitx.interface.plot_matchups</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               

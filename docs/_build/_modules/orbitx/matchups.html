@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>orbitx.matchup &#8212; orbitx</title>
+    <title>orbitx.matchups &#8212; orbitx</title>
   
   
   
@@ -41,7 +41,7 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/orbitx/matchup';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/orbitx/matchups';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -163,14 +163,13 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/user/atbd.html">ATBD</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../content/user/api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.interface.return_matchups.html">orbitx.interface.return_matchups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.html">orbitx.tle.TLEInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_tle_path.html">orbitx.tle.TLEInfo.return_tle_path</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_date_from_tle.html">orbitx.tle.TLEInfo.return_date_from_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_seconds_since_1970.html">orbitx.tle.TLEInfo.return_seconds_since_1970</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.get_tle.html">orbitx.tle.TLEInfo.get_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.html">orbitx.orbit.Orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchup.Matchups.html">orbitx.matchup.Matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchups.Matchups.html">orbitx.matchups.Matchups</a></li>
 </ul>
 </details></li>
 </ul>
@@ -279,7 +278,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for orbitx.matchup</h1><div class="highlight"><pre>
+  <h1>Source code for orbitx.matchups</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;orbitx.matchup - class to find matchups between satellite orbits&quot;&quot;&quot;</span>
 
 
@@ -293,15 +292,14 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="sd">&quot;&quot;&quot;___NPL Modules___&quot;&quot;&quot;</span>
 
 <span class="sd">&quot;&quot;&quot;__Built-In Modules__&quot;&quot;&quot;</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">orbitx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orbit</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._matchup.find_matches</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_matches</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._matchup.get_land_ocean_mask</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_land_ocean_mask</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._matchup.matchup_dict_to_xarray</span><span class="w"> </span><span class="kn">import</span> <span class="n">matchup_dict_to_xarray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._matchups.find_matches</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_matches</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._matchups.get_land_ocean_mask</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_land_ocean_mask</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._matchups.matchup_dict_to_xarray</span><span class="w"> </span><span class="kn">import</span> <span class="n">matchup_dict_to_xarray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">SATELLITE_DICT</span><span class="p">,</span> <span class="n">CM</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span>
@@ -314,13 +312,13 @@ document.write(`
 <span class="n">get_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">delay</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">delay</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Matchups">
-<a class="viewcode-back" href="../../content/user/generated/orbitx.matchup.Matchups.html#orbitx.matchup.Matchups">[docs]</a>
+<a class="viewcode-back" href="../../content/user/generated/orbitx.matchups.Matchups.html#orbitx.matchups.Matchups">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Matchups</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to find matchup events between multiple satellites</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Matchups.__init__">
-<a class="viewcode-back" href="../../content/user/generated/orbitx.matchup.Matchups.html#orbitx.matchup.Matchups.__init__">[docs]</a>
+<a class="viewcode-back" href="../../content/user/generated/orbitx.matchups.Matchups.html#orbitx.matchups.Matchups.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">satellites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -415,6 +413,8 @@ document.write(`
             <span class="s2">&quot;check_before&quot;</span><span class="p">:</span> <span class="n">check_before</span><span class="p">,</span>
             <span class="s2">&quot;check_after&quot;</span><span class="p">:</span> <span class="n">check_after</span><span class="p">,</span>
             <span class="s2">&quot;has_land_ocean_mask&quot;</span><span class="p">:</span> <span class="n">has_land_ocean_mask</span><span class="p">,</span>
+            <span class="s2">&quot;interpolation_sampling_interval&quot;</span><span class="p">:</span> <span class="n">orbit</span><span class="o">.</span><span class="n">interpolation_sampling_interval</span><span class="p">,</span>
+            <span class="s2">&quot;propagation_sample_interval&quot;</span><span class="p">:</span> <span class="n">orbit</span><span class="o">.</span><span class="n">propagation_sampling_interval</span>
         <span class="p">}</span>
         <span class="n">matchups</span> <span class="o">=</span> <span class="n">matchup_dict_to_xarray</span><span class="p">(</span><span class="n">matchups</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span>
 

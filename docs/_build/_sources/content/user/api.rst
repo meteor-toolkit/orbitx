@@ -15,9 +15,6 @@ documentation.
 .. autosummary::
    :toctree: generated/
 
-   interface.return_matchups
-   interface.plot_matchups
-
    tle.TLEInfo
    tle.TLEInfo.return_tle_path
    tle.TLEInfo.return_date_from_tle
@@ -32,7 +29,7 @@ documentation.
    orbit.Orbit.interpolate_orbit
    orbit.Orbit.run
 
-   matchup.get_dist
-   matchup.Matchups
-   matchup.Matchups.matchup
-   matchup.Matchups.to_ds
+   matchups.get_dist
+   matchups.Matchups
+   matchups.Matchups.matchup
+   matchups.Matchups.to_ds

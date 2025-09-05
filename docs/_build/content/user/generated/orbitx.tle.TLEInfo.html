@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=bb78de6c"></script>
+    <script src="../../../_static/documentation_options.js?v=f4b5b424"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -46,7 +46,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="orbitx.tle.TLEInfo.return_tle_path" href="orbitx.tle.TLEInfo.return_tle_path.html" />
-    <link rel="prev" title="orbitx.interface.plot_matchups" href="orbitx.interface.plot_matchups.html" />
+    <link rel="prev" title="orbitx.interface.return_matchups" href="orbitx.interface.return_matchups.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -165,23 +165,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../atbd.html">ATBD</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../api.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="orbitx.interface.return_matchups.html">orbitx.interface.return_matchups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.interface.plot_matchups.html">orbitx.interface.plot_matchups</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">orbitx.tle.TLEInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_tle_path.html">orbitx.tle.TLEInfo.return_tle_path</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_date_from_tle.html">orbitx.tle.TLEInfo.return_date_from_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_seconds_since_1970.html">orbitx.tle.TLEInfo.return_seconds_since_1970</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.get_tle.html">orbitx.tle.TLEInfo.get_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.html">orbitx.orbit.Orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.form_sample_space.html">orbitx.orbit.Orbit.form_sample_space</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.get_matching_indices.html">orbitx.orbit.Orbit.get_matching_indices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.propagate_orbit.html">orbitx.orbit.Orbit.propagate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.simulate_orbit.html">orbitx.orbit.Orbit.simulate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.interpolate_orbit.html">orbitx.orbit.Orbit.interpolate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.run.html">orbitx.orbit.Orbit.run</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.matchup.get_dist.html">orbitx.matchup.get_dist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.matchup.Matchups.html">orbitx.matchup.Matchups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.matchup.Matchups.matchup.html">orbitx.matchup.Matchups.matchup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.matchup.Matchups.to_ds.html">orbitx.matchup.Matchups.to_ds</a></li>
 </ul>
 </details></li>
 </ul>
@@ -356,7 +346,8 @@ document.write(`
 <dl class="py class">
 <dt class="sig sig-object py" id="orbitx.tle.TLEInfo">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">orbitx.tle.</span></span><span class="sig-name descname"><span class="pre">TLEInfo</span></span><a class="reference internal" href="../../../_modules/orbitx/tle.html#TLEInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.tle.TLEInfo" title="Link to this definition">#</a></dt>
-<dd><p>Class to retrieve satellite TLEs</p>
+<dd><p>Class to retrieve satellite TLEs.
+For more information on Two line elements, see the [Wikipedia page](<a class="reference external" href="https://en.wikipedia.org/wiki/Two-line_element_set">https://en.wikipedia.org/wiki/Two-line_element_set</a>)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="orbitx.tle.TLEInfo.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orbitx.tle.TLEInfo.__init__" title="Link to this definition">#</a></dt>
@@ -399,12 +390,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="orbitx.interface.plot_matchups.html"
+       href="orbitx.interface.return_matchups.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">orbitx.interface.plot_matchups</p>
+        <p class="prev-next-title">orbitx.interface.return_matchups</p>
       </div>
     </a>
     <a class="right-next"

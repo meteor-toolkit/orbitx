@@ -1,7 +1,7 @@
-﻿orbitx.matchup.Matchups
-=======================
+﻿orbitx.matchups.Matchups
+========================
 
-.. currentmodule:: orbitx.matchup
+.. currentmodule:: orbitx.matchups
 
 .. autoclass:: Matchups
 

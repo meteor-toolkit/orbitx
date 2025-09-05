@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>orbitx.orbit.Orbit &#8212; orbitx</title>
+    <title>orbitx.matchups.Matchups &#8212; orbitx</title>
   
   
   
@@ -42,11 +42,11 @@
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'content/user/generated/orbitx.orbit.Orbit';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'content/user/generated/orbitx.matchups.Matchups';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="orbitx.matchups.Matchups" href="orbitx.matchups.Matchups.html" />
-    <link rel="prev" title="orbitx.tle.TLEInfo.get_tle" href="orbitx.tle.TLEInfo.get_tle.html" />
+    <link rel="next" title="Developer Guide" href="../../developer/developer_guide.html" />
+    <link rel="prev" title="orbitx.orbit.Orbit" href="orbitx.orbit.Orbit.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -169,8 +169,8 @@
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_date_from_tle.html">orbitx.tle.TLEInfo.return_date_from_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_seconds_since_1970.html">orbitx.tle.TLEInfo.return_seconds_since_1970</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.get_tle.html">orbitx.tle.TLEInfo.get_tle</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">orbitx.orbit.Orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.matchups.Matchups.html">orbitx.matchups.Matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.html">orbitx.orbit.Orbit</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">orbitx.matchups.Matchups</a></li>
 </ul>
 </details></li>
 </ul>
@@ -231,7 +231,7 @@
       
       
       
-      <li><a href="../../../_sources/content/user/generated/orbitx.orbit.Orbit.rst" target="_blank"
+      <li><a href="../../../_sources/content/user/generated/orbitx.matchups.Matchups.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -315,7 +315,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>orbitx.orbit.Orbit</h1>
+    <h1>orbitx.matchups.Matchups</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -325,8 +325,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orbitx.orbit.Orbit"><code class="docutils literal notranslate"><span class="pre">Orbit</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orbitx.orbit.Orbit.__init__"><code class="docutils literal notranslate"><span class="pre">Orbit.__init__()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orbitx.matchups.Matchups"><code class="docutils literal notranslate"><span class="pre">Matchups</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orbitx.matchups.Matchups.__init__"><code class="docutils literal notranslate"><span class="pre">Matchups.__init__()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -340,34 +340,31 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="orbitx-orbit-orbit">
-<h1>orbitx.orbit.Orbit<a class="headerlink" href="#orbitx-orbit-orbit" title="Link to this heading">#</a></h1>
+  <section id="orbitx-matchups-matchups">
+<h1>orbitx.matchups.Matchups<a class="headerlink" href="#orbitx-matchups-matchups" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="orbitx.orbit.Orbit">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">orbitx.orbit.</span></span><span class="sig-name descname"><span class="pre">Orbit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">satellites:</span> <span class="pre">~typing.List[str],</span> <span class="pre">start_time:</span> <span class="pre">~datetime.datetime,</span> <span class="pre">end_time:</span> <span class="pre">~datetime.datetime,</span> <span class="pre">propagation_sampling_interval:</span> <span class="pre">&lt;module</span> <span class="pre">'numbers'</span> <span class="pre">from</span> <span class="pre">'C:\\Users\\xl3\\Documents\\environments\\orbitx\\Lib\\numbers.py'&gt;,</span> <span class="pre">interpolation_sampling_interval:</span> <span class="pre">&lt;module</span> <span class="pre">'numbers'</span> <span class="pre">from</span> <span class="pre">'C:\\Users\\xl3\\Documents\\environments\\orbitx\\Lib\\numbers.py'&gt;,</span> <span class="pre">orbit:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~numpy.ndarray[tuple[~typing.Any,</span> <span class="pre">...],</span> <span class="pre">~numpy.dtype[~numpy._typing._array_like._ScalarT]]]]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/orbitx/orbit.html#Orbit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.orbit.Orbit" title="Link to this definition">#</a></dt>
-<dd><p>Class to simulate satellite orbits</p>
+<dt class="sig sig-object py" id="orbitx.matchups.Matchups">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">orbitx.matchups.</span></span><span class="sig-name descname"><span class="pre">Matchups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satellites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_diff_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_diff_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="orbitx.orbit.Orbit.html#orbitx.orbit.Orbit" title="orbitx.orbit.Orbit"><span class="pre">Orbit</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matchups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarT</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_land_ocean_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/orbitx/matchups.html#Matchups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.matchups.Matchups" title="Link to this definition">#</a></dt>
+<dd><p>Class to find matchup events between multiple satellites</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="orbitx.orbit.Orbit.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">satellites:</span> <span class="pre">~typing.List[str],</span> <span class="pre">start_time:</span> <span class="pre">~datetime.datetime,</span> <span class="pre">end_time:</span> <span class="pre">~datetime.datetime,</span> <span class="pre">propagation_sampling_interval:</span> <span class="pre">&lt;module</span> <span class="pre">'numbers'</span> <span class="pre">from</span> <span class="pre">'C:\\Users\\xl3\\Documents\\environments\\orbitx\\Lib\\numbers.py'&gt;,</span> <span class="pre">interpolation_sampling_interval:</span> <span class="pre">&lt;module</span> <span class="pre">'numbers'</span> <span class="pre">from</span> <span class="pre">'C:\\Users\\xl3\\Documents\\environments\\orbitx\\Lib\\numbers.py'&gt;,</span> <span class="pre">orbit:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~numpy.ndarray[tuple[~typing.Any,</span> <span class="pre">...],</span> <span class="pre">~numpy.dtype[~numpy._typing._array_like._ScalarT]]]]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/orbitx/orbit.html#Orbit.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.orbit.Orbit.__init__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="orbitx.matchups.Matchups.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satellites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_diff_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_diff_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="orbitx.orbit.Orbit.html#orbitx.orbit.Orbit" title="orbitx.orbit.Orbit"><span class="pre">Orbit</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matchups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarT</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_land_ocean_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/orbitx/matchups.html#Matchups.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.matchups.Matchups.__init__" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#orbitx.orbit.Orbit.__init__" title="orbitx.orbit.Orbit.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(satellites, start_time, end_time, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#orbitx.matchups.Matchups.__init__" title="orbitx.matchups.Matchups.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(satellites, start_time, end_time, ...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_netcdf</span></code>(input_path)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_matchups</span></code>(satellites, start_time, ...[, ...])</p></td>
+<td><p>matchup Return information relating to matchup instances between satellites</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code>([projection])</p></td>
 <td><p>Plot the matchup dataset generated from orbitx.interface.return_matchups</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate</span></code>(satellites, start_time, end_time, ...)</p></td>
-<td><p>Calculate the interpolated satellite orbits</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_netcdf</span></code>(output_path)</p></td>
-<td><p>to_netcdf Export orbits to netCDF</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_netcdf</span></code>(output_path)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -375,22 +372,34 @@ document.write(`
 <p class="rubric">Attributes</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_after</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_before</span></code></p></td>
+<td><p></p></td>
+</tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_time</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolation_sampling_interval</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_land_ocean_mask</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbits</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">matchups</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagation_sampling_interval</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbit</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">satellites</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_time</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">space_diff_threshold</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_time</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_diff_threshold</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -412,20 +421,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="orbitx.tle.TLEInfo.get_tle.html"
+       href="orbitx.orbit.Orbit.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">orbitx.tle.TLEInfo.get_tle</p>
+        <p class="prev-next-title">orbitx.orbit.Orbit</p>
       </div>
     </a>
     <a class="right-next"
-       href="orbitx.matchups.Matchups.html"
+       href="../../developer/developer_guide.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">orbitx.matchups.Matchups</p>
+        <p class="prev-next-title">Developer Guide</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -445,8 +454,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orbitx.orbit.Orbit"><code class="docutils literal notranslate"><span class="pre">Orbit</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orbitx.orbit.Orbit.__init__"><code class="docutils literal notranslate"><span class="pre">Orbit.__init__()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orbitx.matchups.Matchups"><code class="docutils literal notranslate"><span class="pre">Matchups</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orbitx.matchups.Matchups.__init__"><code class="docutils literal notranslate"><span class="pre">Matchups.__init__()</span></code></a></li>
 </ul>
 </li>
 </ul>

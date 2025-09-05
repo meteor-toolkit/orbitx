@@ -14,15 +14,24 @@
    .. autosummary::
    
       ~Orbit.__init__
-      ~Orbit.form_sample_space
-      ~Orbit.get_matching_indices
-      ~Orbit.interpolate_orbit
-      ~Orbit.propagate_orbit
-      ~Orbit.run
-      ~Orbit.simulate_orbit
+      ~Orbit.from_netcdf
+      ~Orbit.plot
+      ~Orbit.simulate
+      ~Orbit.to_netcdf
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Orbit.end_time
+      ~Orbit.interpolation_sampling_interval
+      ~Orbit.orbits
+      ~Orbit.propagation_sampling_interval
+      ~Orbit.satellites
+      ~Orbit.start_time
    
    

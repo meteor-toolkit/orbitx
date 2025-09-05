@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=bb78de6c"></script>
+    <script src="../../_static/documentation_options.js?v=f4b5b424"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -163,24 +163,13 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/user/atbd.html">ATBD</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../content/user/api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.interface.return_matchups.html">orbitx.interface.return_matchups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.interface.plot_matchups.html">orbitx.interface.plot_matchups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.html">orbitx.tle.TLEInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_tle_path.html">orbitx.tle.TLEInfo.return_tle_path</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_date_from_tle.html">orbitx.tle.TLEInfo.return_date_from_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_seconds_since_1970.html">orbitx.tle.TLEInfo.return_seconds_since_1970</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.get_tle.html">orbitx.tle.TLEInfo.get_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.html">orbitx.orbit.Orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.form_sample_space.html">orbitx.orbit.Orbit.form_sample_space</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.get_matching_indices.html">orbitx.orbit.Orbit.get_matching_indices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.propagate_orbit.html">orbitx.orbit.Orbit.propagate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.simulate_orbit.html">orbitx.orbit.Orbit.simulate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.interpolate_orbit.html">orbitx.orbit.Orbit.interpolate_orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.run.html">orbitx.orbit.Orbit.run</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchup.get_dist.html">orbitx.matchup.get_dist</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchup.Matchups.html">orbitx.matchup.Matchups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchup.Matchups.matchup.html">orbitx.matchup.Matchups.matchup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchup.Matchups.to_ds.html">orbitx.matchup.Matchups.to_ds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchups.Matchups.html">orbitx.matchups.Matchups</a></li>
 </ul>
 </details></li>
 </ul>
@@ -294,6 +283,7 @@ document.write(`
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.crs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ccrs</span>
@@ -302,7 +292,7 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orbit</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.matchup</span><span class="w"> </span><span class="kn">import</span> <span class="n">Matchups</span><span class="p">,</span> <span class="n">get_range</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.matchups</span><span class="w"> </span><span class="kn">import</span> <span class="n">Matchups</span><span class="p">,</span> <span class="n">get_range</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;Sajedeh Behnia &lt;sajedeh.behnia@npl.co.uk&gt;&quot;</span><span class="p">,</span>
@@ -312,17 +302,6 @@ document.write(`
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;return_matchups&quot;</span><span class="p">,</span> <span class="s2">&quot;plot_matchups&quot;</span><span class="p">]</span>
 
-
-<span class="n">SATELLITE_DICT</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;LS8&quot;</span><span class="p">:</span> <span class="s2">&quot;Landsat-8&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;LS9&quot;</span><span class="p">:</span> <span class="s2">&quot;Landsat-9&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;S2A&quot;</span><span class="p">:</span> <span class="s2">&quot;Sentinel-2A&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;S2B&quot;</span><span class="p">:</span> <span class="s2">&quot;Sentinel-2B&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;S3A&quot;</span><span class="p">:</span> <span class="s2">&quot;Sentinel-3A&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;S3B&quot;</span><span class="p">:</span> <span class="s2">&quot;Sentinel-3B&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;S6&quot;</span><span class="p">:</span> <span class="s2">&quot;Sentinel-6&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;J3&quot;</span><span class="p">:</span> <span class="s2">&quot;JASON-3&quot;</span>
-<span class="p">}</span>
 
 
 <div class="viewcode-block" id="return_matchups">
@@ -335,12 +314,14 @@ document.write(`
     <span class="n">interpolation_sampling_interval</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">cntr2cntr_dist</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">time_diff_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">check_before</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">check_after</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">get_land_ocean</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">output_path_sim_orbits</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">output_path_matchups</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Matchup event identification between multiple satellites. Creates an xr.Dataset</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Matchup event identification between multiple satellites. Creates an xr.Dataset</span>
 <span class="sd">    containing position and time information for satellite matchups.</span>
 
 <span class="sd">    If no output paths are specified, the dataset will be returned.</span>
@@ -349,85 +330,72 @@ document.write(`
 
 <span class="sd">    Currently accepted satellites:</span>
 <span class="sd">        * LS8 (Landsat-8)</span>
+<span class="sd">        * LS9 (Landsat-9)</span>
 <span class="sd">        * S2A (Sentinel-2A)</span>
 <span class="sd">        * S2B (Sentinel-2B)</span>
 <span class="sd">        * S3A (Sentinel-3A)</span>
+<span class="sd">        * S3B (Sentinel-3B)</span>
 <span class="sd">        * S6 (Sentinel-6)</span>
+<span class="sd">        * J3 (Jason-3)</span>
+<span class="sd">        * SA (Saral-Altika)</span>
 
 <span class="sd">    :param sats: list of satellites</span>
+<span class="sd">    :type sats: List[str]</span>
 <span class="sd">    :param start_time: start of time period of interest</span>
+<span class="sd">    :type start_time: datetime.datetime</span>
 <span class="sd">    :param end_time: end of time period of interest</span>
+<span class="sd">    :type end_time: datetime.datetime</span>
 <span class="sd">    :param propagation_sampling_interval: sampling rate of orbit propagation per sensor</span>
+<span class="sd">    :type propagation_sampling_interval: float</span>
 <span class="sd">    :param interpolation_sampling_interval: subsampling rate of orbit propagation per sensor by interpolation</span>
+<span class="sd">    :type interpolation_sampling_interval: float</span>
 <span class="sd">    :param cntr2cntr_dist: matchup threshold for distance between the nadir position of the two satellites (kilometres)</span>
+<span class="sd">    :type cntr2cntr_dist: float</span>
 <span class="sd">    :param time_diff_threshold: matchup threshold for time difference between the two satellites (seconds)</span>
-<span class="sd">    :param output_path_sim_orbits: path to write evaluated propagated orbits to</span>
-<span class="sd">    :param output_path_matchups: path to write matchups to (as a netcdf file)</span>
-<span class="sd">    :param output: whether or not to output the matchup dataset, if no output_path defined defaults to True else False</span>
+<span class="sd">    :type time_diff_threshold: float</span>
+<span class="sd">    :param check_before: whether matchups where strictly one of the two satellites appears before the start date, defaults to False</span>
+<span class="sd">    :type check_before: Optional[bool], optional</span>
+<span class="sd">    :param check_after: whether matchups where strictly one of the two satellites appears after the end date, defaults to False</span>
+<span class="sd">    :type check_after: Optional[bool], optional</span>
+<span class="sd">    :param get_land_ocean: whether the output should contain a land - ocean - coast label, defaults to False</span>
+<span class="sd">    :type get_land_ocean: Optional[bool], optional</span>
+<span class="sd">    :param output_path_sim_orbits: path to write evaluated propagated orbits to, defaults to None</span>
+<span class="sd">    :type output_path_sim_orbits: Optional[str], optional</span>
+<span class="sd">    :param output_path_matchups: path to write matchups to (as a netcdf file), defaults to None</span>
+<span class="sd">    :type output_path_matchups: Optional[str], optional</span>
+<span class="sd">    :param output: whether or not to output the matchup dataset, if no output_path defined defaults to True else False, defaults to False</span>
+<span class="sd">    :type output: bool, optional</span>
+<span class="sd">    :return: _description_</span>
+<span class="sd">    :rtype: Optional[xr.Dataset]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># simulate desired orbits</span>
-    <span class="n">orbit</span> <span class="o">=</span> <span class="n">Orbit</span><span class="p">()</span>
-    <span class="n">orbit_output</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="n">sats</span><span class="p">,</span>
-        <span class="n">start_time</span><span class="p">,</span>
-        <span class="n">end_time</span><span class="p">,</span>
-        <span class="n">propagation_sampling_interval</span><span class="p">,</span>
-        <span class="n">interpolation_sampling_interval</span><span class="p">,</span>
+    <span class="n">orbit_start_time</span> <span class="o">=</span> <span class="n">start_time</span>
+    <span class="n">orbit_end_time</span> <span class="o">=</span> <span class="n">end_time</span>
+    <span class="k">if</span> <span class="n">check_before</span><span class="p">:</span>
+        <span class="n">orbit_start_time</span> <span class="o">=</span> <span class="n">orbit_start_time</span> <span class="o">-</span> <span class="n">time_diff_threshold</span>
+    <span class="k">if</span> <span class="n">check_after</span><span class="p">:</span>
+        <span class="n">orbit_end_time</span> <span class="o">=</span> <span class="n">orbit_end_time</span> <span class="o">+</span> <span class="n">time_diff_threshold</span>
+    <span class="n">orbit</span> <span class="o">=</span> <span class="n">Orbit</span><span class="p">(</span>
+        <span class="n">satellites</span><span class="o">=</span><span class="n">sats</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="o">=</span><span class="n">orbit_start_time</span><span class="p">,</span>
+        <span class="n">end_time</span><span class="o">=</span><span class="n">orbit_end_time</span><span class="p">,</span>
+        <span class="n">propagation_sampling_interval</span><span class="o">=</span><span class="n">propagation_sampling_interval</span><span class="p">,</span>
+        <span class="n">interpolation_sampling_interval</span><span class="o">=</span><span class="n">interpolation_sampling_interval</span>
     <span class="p">)</span>
 
-    <span class="c1"># find matchups between orbits</span>
-    <span class="n">matchup</span> <span class="o">=</span> <span class="n">Matchups</span><span class="p">()</span>
-    <span class="n">matchup_output</span> <span class="o">=</span> <span class="n">matchup</span><span class="o">.</span><span class="n">matchup</span><span class="p">(</span><span class="n">orbit_output</span><span class="p">,</span> <span class="n">time_diff_threshold</span><span class="p">,</span> <span class="n">cntr2cntr_dist</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">output_path_sim_orbits</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">orbit</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">output_path_sim_orbits</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">output_path_sim_orbits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># save orbital data</span>
-        <span class="c1"># orbit.save(orbit_output, output_path_sim_orbits)</span>
-        <span class="k">pass</span>
+    <span class="c1"># find matchups between orbits</span>
+    <span class="n">matchup</span> <span class="o">=</span> <span class="n">Matchups</span><span class="p">(</span><span class="n">orbit</span><span class="p">,</span> <span class="n">time_diff_threshold</span><span class="p">,</span> <span class="n">cntr2cntr_dist</span><span class="p">,</span> <span class="n">get_land_ocean</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">output_path_matchups</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># save matchup data</span>
-        <span class="n">fname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;matchup_</span><span class="si">{</span><span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">orbit_output</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span><span class="si">}</span><span class="s2">_starttime_</span><span class="si">{</span><span class="n">start_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">_endtime_</span><span class="si">{</span><span class="n">end_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">_samplinginterval_</span><span class="si">{</span><span class="n">propagation_sampling_interval</span><span class="si">}</span><span class="s2">_tmptol_</span><span class="si">{</span><span class="n">time_diff_threshold</span><span class="si">}</span><span class="s2">.nc&quot;</span>
-
-        <span class="n">matchup_output</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path_matchups</span><span class="p">,</span> <span class="n">fname</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="kc">True</span>
-
+        <span class="n">matchup</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">output_path</span><span class="o">=</span><span class="n">output_path_matchups</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">matchup_output</span>
+        <span class="k">return</span> <span class="n">matchup</span><span class="o">.</span><span class="n">to_ds</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
-
-
-<div class="viewcode-block" id="plot_matchups">
-<a class="viewcode-back" href="../../content/user/generated/orbitx.interface.plot_matchups.html#orbitx.interface.plot_matchups">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">plot_matchups</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Plot the matchup dataset generated from orbitx.interface.return_matchups</span>
-
-<span class="sd">    :param ds: matchup dataset containing latitude, latitude and time information for matchup events</span>
-<span class="sd">    :param projection: cartopy.crs projection to use to plot, defaults to cartopy.crs.PlateCarree()</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">LAND</span><span class="p">)</span>
-    <span class="n">sat_no</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ds</span> <span class="k">if</span> <span class="s2">&quot;lat&quot;</span> <span class="ow">in</span> <span class="n">i</span><span class="p">])</span>
-    <span class="k">if</span> <span class="n">sat_no</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">delay</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;delay&quot;</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">delay</span> <span class="o">=</span> <span class="n">get_range</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ds</span> <span class="k">if</span> <span class="s2">&quot;delay&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sat_no</span><span class="p">):</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-            <span class="n">ds</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;lon</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
-            <span class="n">ds</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;lat</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
-            <span class="n">s</span><span class="o">=</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;time_threshold&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">delay</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-            <span class="o">/</span> <span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;time_threshold&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="n">SATELLITE_DICT</span><span class="p">[</span><span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;sat</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]],</span>
-            <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
-        <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 </pre></div>
 
