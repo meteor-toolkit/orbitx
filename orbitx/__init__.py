@@ -4,7 +4,7 @@ __author__ = "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>"
 __all__ = ["TLE_PATH", "add_to_tle_path", "setup_orekit", "return_matchups", "Orbit", "Matchups"]
 
 from orbitx.orbit import Orbit
-from orbitx.matchup import Matchups
+from orbitx.matchups import Matchups
 
 from ._version import get_versions
 import os

@@ -9,7 +9,7 @@ from numbers import Number
 
 """__Built-In Modules__"""
 from orbitx import Orbit
-from orbitx.utils._matchup.get_dist import get_distance
+from orbitx.utils._matchups.get_dist import get_distance
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -44,7 +44,7 @@ def find_matches(
     :rtype: Dict[str, Dict[str, Any]]
     """
     # choose one satellite to remain stable and loop through the rest with respect to it
-    sat1 = list(orbit.satellites)[0]
+    sat1 = orbit.satellites[0]
     other_sats = orbit.satellites[1:]
 
     # Prepare the output: a dictionary with an entry per "other satellite". The entry is named <name of ref sat>_<name of other sat>
@@ -62,14 +62,16 @@ def find_matches(
             (
                 f"{sat1}_{s}",
                 {
-                    "lat1": np.empty((len(orbit),), dtype = float),
-                    "lon1": np.empty((len(orbit),), dtype = float),
+                    "lat1": orbit.orbits[sat1]["lat"],
+                    "lon1": orbit.orbits[sat1]["lon"],
                     "lat2": np.empty((len(orbit),), dtype = float),
                     "lon2": np.empty((len(orbit),), dtype = float),
-                    "delay": np.empty((len(orbit),), dtype = float),
-                    "time": np.empty((len(orbit),), dtype = float),
-                    "time_datetime": np.empty((len(orbit),), dtype = datetime.datetime),
                     "distance": np.empty((len(orbit),), dtype = float),
+                    "time": orbit.orbits[sat1]["time"],
+                    "time_datetime": orbit.orbits[sat1]["time_datetime"],
+                    "time2": np.empty((len(orbit),), dtype = float),
+                    "time_datetime2": np.empty((len(orbit),), dtype = datetime.datetime),
+                    "delay": np.repeat(np.inf, (len(orbit),)),
                 },
             )
             for s in other_sats
@@ -91,14 +93,16 @@ def find_matches(
             +abs(int(time_diff_threshold / orbit.interpolation_sampling_interval)),
         )
     
-    for s in other_sats:
+    for index_sat, s in enumerate(other_sats):
         # roll through the accepted time window through the lons and lats
         for i in acceptable_bin_shifts:
+            indices_s1 = np.arange(s1_lat.shape[0])
             # extract the coordinate of the other satellite with an appropriate lag
             s2_lat = np.roll(orbit.orbits[s]["lat"], i)
             s2_lon = np.roll(orbit.orbits[s]["lon"], i)
             s2_date = np.roll(orbit.orbits[s]["time_datetime"], i)
-
+            s2_time = np.roll(orbit.orbits[s]["time"], i)
+            indices_s2 = np.roll(np.arange(s2_lat.shape[0]), i)
             # create an array of all positions
             position = np.array([s1_lat, s1_lon, s2_lat, s2_lon]).transpose()
 
@@ -106,48 +110,55 @@ def find_matches(
             # e.g., if i = 1, the last position of the other sat becomes first,
             # and will be compared with the first position of the ref satellite
             # the first entry must hence be removed (and so on for other values of i)
-            indeces_array = range(position.shape[0])
+            
             if i < 0:
                 position = position[:i, :]
                 s2_date = s2_date[:i]
-                indeces_array = indeces_array[:i]
+                s2_time = s2_time[:i]
+                indices_s1 = indices_s1[:i]
+                indices_s2 = indices_s2[:i]
             elif i > 0:
                 position = position[i:, :]
                 s2_date = s2_date[i:]
-                indeces_array = indeces_array[i:]
-                
+                s2_time = s2_time[i:]
+                indices_s1 = indices_s1[i:]
+                indices_s2 = indices_s2[i:]
             distance = get_distance(*tuple(position.transpose()))
 
             # check distance is within the c2c_dist (centre to centre)
-            for item, dist in enumerate(distance):
+            for index_dist, dist in enumerate(distance):
                 # The index in the orbit array corresponding to the distance being considered
-                current_index = indeces_array[item]
+                current_index_s1 = indices_s1[index_dist]
+                current_index_s2 = indices_s2[index_dist]
+
                 if (
                     (dist <= space_diff_threshold)
                     and (
-                        (s1_date[current_index] < end_time)
-                        or (s2_date[item] < end_time))
+                        (s1_date[current_index_s1] < end_time)
+                        or (s2_date[index_dist] < end_time))
                     and (
-                        (s1_date[current_index] > start_time)
-                        or (s2_date[item] > start_time))):
+                        (s1_date[current_index_s1] > start_time)
+                        or (s2_date[index_dist] > start_time))):
                     # If there is no matchup for this entry yet or if this new matchup has a smaller delay, update the entry
                     if (
-                        ((not has_matchup[current_index])
-                        or (np.abs(match[f"{sat1}_{s}"]["delay"][current_index])
+                        ((not has_matchup[current_index_s1])
+                        or (np.abs(match[f"{sat1}_{s}"]["delay"][current_index_s1])
                         > np.abs(i * orbit.interpolation_sampling_interval)))
                     ):
-                        match[f"{sat1}_{s}"]["lat1"][current_index] = position[0, item]
-                        match[f"{sat1}_{s}"]["lon1"][current_index] = position[1, item]
-                        match[f"{sat1}_{s}"]["lat2"][current_index] = position[2, item]
-                        match[f"{sat1}_{s}"]["lon2"][current_index] = position[3, item]
-                        match[f"{sat1}_{s}"]["delay"][current_index] = (
+                        match[f"{sat1}_{s}"]["lat1"][current_index_s1] = position[index_dist, 0]
+                        match[f"{sat1}_{s}"]["lon1"][current_index_s1] = position[index_dist, 1]
+                        match[f"{sat1}_{s}"]["lat2"][current_index_s1] = position[index_dist, 2]
+                        match[f"{sat1}_{s}"]["lon2"][current_index_s1] = position[index_dist, 3]
+                        match[f"{sat1}_{s}"]["distance"][current_index_s1] = dist
+                        match[f"{sat1}_{s}"]["time"][current_index_s1] = s1_time[current_index_s1]
+                        match[f"{sat1}_{s}"]["time_datetime"][current_index_s1] = s1_date[current_index_s1]
+                        match[f"{sat1}_{s}"]["time2"][current_index_s1] = s2_time[index_dist]
+                        match[f"{sat1}_{s}"]["time_datetime2"][current_index_s1] = s2_date[index_dist]
+                        match[f"{sat1}_{s}"]["delay"][current_index_s1] = (
                             i * orbit.interpolation_sampling_interval
                         )
-                        match[f"{sat1}_{s}"]["time"][current_index] = s1_time[current_index]
-                        match[f"{sat1}_{s}"]["time_datetime"][current_index] = s1_date[current_index]
-                        match[f"{sat1}_{s}"]["distance"][current_index] = dist
-                        has_matchup[current_index] = True
+                        has_matchup[current_index_s1] = True
         # remove all entries which do not have a matchup
         for key in match[f"{sat1}_{s}"].keys():
-            match[f"{sat1}_{s}"][key] = match[f"{sat1}_{s}"][key][has_matchup]
+            match[f"{sat1}_{s}"][key] = match[f"{sat1}_{s}"][key][np.where(has_matchup)]
     return match

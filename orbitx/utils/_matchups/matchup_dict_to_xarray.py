@@ -75,7 +75,6 @@ def matchup_dict_to_xarray(matchups_dict:Dict[str, Dict[str, npt.NDArray]], attr
     :param matchups_dict: matchup information dict containing lat, lon, distance and time info for matchup events
     :param attrs: dictionary of attributes to be added to the output dataset, must include "time_threshold"
     """
-
     ds_list = [
         xr.Dataset.from_dict(
             dict(
@@ -99,18 +98,20 @@ def matchup_dict_to_xarray(matchups_dict:Dict[str, Dict[str, npt.NDArray]], attr
         return ds_list[0]
 
     times = ds_list[0].time.data
-    for i in range(len(ds_list) - 1):
-        times = list(set(ds_list[i + 1].time.data).intersection(times))
-        ds_list[i + 1] = ds_list[i + 1].rename(
+    for i in range(len(ds_list)):
+        times = list(set(ds_list[i].time.data).intersection(times))
+        ds_list[i] = ds_list[i].rename(
             {
-                "lat2": f"lat{i + 3}",
-                "lon2": f"lon{i + 3}",
+                "lat2": f"lat{i + 2}",
+                "lon2": f"lon{i + 2}",
+                "time2": f"time{i + 2}",
+                "time_datetime2": f"time_datetime{i + 2}",
                 "delay": f"delay{i + 2}",
                 "distance": f"distance{i + 2}",
             }
         )
-        ds_list[i + 1].attrs.update(
-            {f"sat{i + 3}": ds_list[i + 1].attrs.pop("sat2")}
+        ds_list[i].attrs.update(
+            {f"sat{i + 2}": ds_list[i].attrs.pop("sat2")}
         )
     merged_ds = xr.merge(
         [ds.sel(time=times) for ds in ds_list], combine_attrs="no_conflicts"
@@ -119,6 +120,6 @@ def matchup_dict_to_xarray(matchups_dict:Dict[str, Dict[str, npt.NDArray]], attr
     return merged_ds.isel(
         time=np.where(
             _get_range(*[merged_ds[i] for i in merged_ds if "delay" in str(i)])
-            < attributes.time_threshold
+            < attributes["time_diff_threshold"]
         )[0]
     )

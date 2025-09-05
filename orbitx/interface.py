@@ -11,7 +11,7 @@ import cartopy.feature as cfeature
 from typing import List, Optional
 
 from orbitx.orbit import Orbit
-from orbitx.matchup import Matchups, get_range
+from orbitx.matchups import Matchups, get_range
 
 __author__ = [
     "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",

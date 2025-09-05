@@ -27,7 +27,7 @@ def simulate_orbit(
     line1: List[str],
     line2: List[str],
     seconds_since_1970: np.ndarray,
-    propagation_sampling_interval: Union[float, int],
+    propagation_sampling_interval: Union[float, int]
 ) -> Tuple[List[float], List[float], List[float]]:
     """
     Return latitude, longitude and time arrays for full simulated orbit

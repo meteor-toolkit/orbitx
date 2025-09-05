@@ -6,7 +6,7 @@ import numpy as np
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._matchup.is_land import is_land
+from orbitx.utils._matchups.is_land import is_land
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"

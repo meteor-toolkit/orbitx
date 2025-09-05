@@ -16,10 +16,11 @@ import os
 
 """__Built-In Modules__"""
 from orbitx import Orbit
-from orbitx.utils._matchup.find_matches import find_matches
-from orbitx.utils._matchup.get_land_ocean_mask import get_land_ocean_mask
-from orbitx.utils._matchup.matchup_dict_to_xarray import matchup_dict_to_xarray
+from orbitx.utils._matchups.find_matches import find_matches
+from orbitx.utils._matchups.get_land_ocean_mask import get_land_ocean_mask
+from orbitx.utils._matchups.matchup_dict_to_xarray import matchup_dict_to_xarray
 from orbitx.utils._constants import SATELLITE_DICT, CM
+from orbitx.utils._date_utils import datetime_to_sec_since, sec_since_to_datetime
 
 __author__ = [
     "Mattea Goalen <mattea.goalen@npl.co.uk>",
@@ -113,7 +114,6 @@ class Matchups:
             space_diff_threshold,
             start_time,
             end_time)
-
         # Add the land / ocean / coast masks
         if has_land_ocean_mask:
             matchups = get_land_ocean_mask(matchups)
@@ -128,6 +128,8 @@ class Matchups:
             "check_before": check_before,
             "check_after": check_after,
             "has_land_ocean_mask": has_land_ocean_mask,
+            "interpolation_sampling_interval": orbit.interpolation_sampling_interval,
+            "propagation_sample_interval": orbit.propagation_sampling_interval
         }
         matchups = matchup_dict_to_xarray(matchups, attributes)
 
@@ -144,31 +146,46 @@ class Matchups:
         has_land_ocean_mask)
         return result
 
-
+    def __str__(self):
+        result = f"""
+Matchup object with following attributes:
+Satellites considered: {self.satellites}
+Date from which matchups are looked for: {self.start_time}
+Date until which matchups are looked for: {self.end_time}
+Maximum time difference between members of a matchup: {self.time_diff_threshold} (seconds)
+Maximum distance between members of a matchup: {self.space_diff_threshold} (km)
+Are matchups in which on of the satellites appears before the start date considered? {self.check_before}
+Are matchups in which on of the satellites appears after the end date considered? {self.check_after}
+Has this matchup a land/ocean mask? {self.has_land_ocean_mask}
+Number of matchups found: {len(self)}
+"""
+        return result
+    
+    def __len__(self):
+        return len(self.matchups["time"])
+    
     def to_netcdf(
             self,
-            output_path:str)->None:
+            output_path:str,
+            reference_date:datetime.datetime = datetime.datetime(1970, 1, 1, 0, 0, 0))->None:
         # Construct filename
         sat_part = "_".join(self.satellites)
 
         date_part = f"{self.start_time:%Y%m%d}_{self.end_time:%Y%m%d}"
         sampling_part = (
-            f"psi{self.propagation_sampling_interval}_isi{self.interpolation_sampling_interval}"
+            f"psi{self.orbit.propagation_sampling_interval}_isi{self.orbit.interpolation_sampling_interval}"
         )
         matchup_part = f"c2c{self.space_diff_threshold}_tdt{self.time_diff_threshold}"
         filename = f"{date_part}_{sampling_part}_matchups_{sat_part}_{matchup_part}.nc"
 
         matchup_output_copy = self.matchups.copy()
 
-        # Add seconds since 2000 for altimetry applications.
-        ref_time = np.datetime64("2000-01-01T00:00:00", "ns")
-        seconds_since_2000 = (self.matchups["time"].values - ref_time) / np.timedelta64(1, "s")
-        matchup_output_copy["seconds_since_2000"] = xr.DataArray(
-            seconds_since_2000,
-            dims=["time"],
-            coords={"time": self.matchups["time"]},
-            attrs={"description": "Seconds since 2000-01-01T00:00:00 UTC"}
-        )
+        matchup_output_copy.attrs["start_time"] = datetime_to_sec_since(self.start_time, reference_date)
+        matchup_output_copy.attrs["end_time"] = datetime_to_sec_since(self.end_time, reference_date)
+        matchup_output_copy.attrs['check_before'] = str(matchup_output_copy.attrs['check_before'])
+        matchup_output_copy.attrs['check_after'] = str(matchup_output_copy.attrs['check_after'])
+        matchup_output_copy.attrs['has_land_ocean_mask'] = str(matchup_output_copy.attrs['has_land_ocean_mask'])
+
 
         matchup_output_copy.to_netcdf(os.path.join(output_path, filename))
     
@@ -186,7 +203,7 @@ class Matchups:
         ax.coastlines()
         ax.add_feature(cfeature.LAND)
 
-        sat_no = len([i for i in self.matchups if "lat" in i])
+        sat_no = len(self.satellites)
         if sat_no == 2:
             delay = self.matchups["delay"]
         else:
@@ -195,10 +212,11 @@ class Matchups:
             ax.scatter(
                 self.matchups[f"lon{i + 1}"],
                 self.matchups[f"lat{i + 1}"],
-                s=(self.matchups.attrs["time_threshold"] - delay) ** 2
-                / (self.matchups.attrs["time_threshold"] / 2) ** 2,
-                label=SATELLITE_DICT[self.matchups.attrs[f"sat{i + 1}"]],
+                s=(self.time_diff_threshold - delay) ** 2
+                / (self.time_diff_threshold / 2) ** 2,
+                label=SATELLITE_DICT[self.satellites[i]],
                 transform=projection,
+                alpha=.7
             )
         ax.legend(loc="lower right")
         return fig
