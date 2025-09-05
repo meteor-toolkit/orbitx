@@ -63,8 +63,8 @@ def matchup_dict_to_xarray(matchups_dict:Dict[str, Dict[str, npt.NDArray]], attr
 
         attributes = {
             "satellites": satellites,
-            "start_time": start_time,
-            "end_time": end_time,
+            "start_date": start_date,
+            "end_date": end_date,
             "time_diff_threshold": time_diff_threshold,
             "space_diff_threshold": space_diff_threshold,
             "check_before": check_before,
@@ -94,8 +94,8 @@ def matchup_dict_to_xarray(matchups_dict:Dict[str, Dict[str, npt.NDArray]], attr
         for key in matchups_dict.keys()
     ]
 
-    if len(ds_list) == 1:
-        return ds_list[0]
+    # if len(ds_list) == 1:
+    #     return ds_list[0]
 
     times = ds_list[0].time.data
     for i in range(len(ds_list)):

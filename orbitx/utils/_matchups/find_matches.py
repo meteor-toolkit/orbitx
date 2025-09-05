@@ -23,8 +23,8 @@ def find_matches(
         orbit:Orbit,
         time_diff_threshold:Number,
         space_diff_threshold:Number,
-        start_time:datetime.datetime,
-        end_time:datetime.datetime
+        start_date:datetime.datetime,
+        end_date:datetime.datetime
 )->Dict[str, Dict[str, Any]]:
     """find_matches _summary_
 
@@ -36,10 +36,10 @@ def find_matches(
     :type time_diff_threshold: Number
     :param space_diff_threshold: _description_
     :type space_diff_threshold: Number
-    :param start_time: _description_
-    :type start_time: datetime.datetime
-    :param end_time: _description_
-    :type end_time: datetime.datetime
+    :param start_date: _description_
+    :type start_date: datetime.datetime
+    :param end_date: _description_
+    :type end_date: datetime.datetime
     :return: _description_
     :rtype: Dict[str, Dict[str, Any]]
     """
@@ -78,7 +78,7 @@ def find_matches(
         ]
     )
 
-    # extract coordinates of the referrence satellite
+    # extract coordinates of the reference satellite
     s1_lat = orbit.orbits[sat1]["lat"]
     s1_lon = orbit.orbits[sat1]["lon"]
     s1_time = orbit.orbits[sat1]["time"]
@@ -134,11 +134,11 @@ def find_matches(
                 if (
                     (dist <= space_diff_threshold)
                     and (
-                        (s1_date[current_index_s1] < end_time)
-                        or (s2_date[index_dist] < end_time))
+                        (s1_date[current_index_s1] < end_date)
+                        or (s2_date[index_dist] < end_date))
                     and (
-                        (s1_date[current_index_s1] > start_time)
-                        or (s2_date[index_dist] > start_time))):
+                        (s1_date[current_index_s1] > start_date)
+                        or (s2_date[index_dist] > start_date))):
                     # If there is no matchup for this entry yet or if this new matchup has a smaller delay, update the entry
                     if (
                         ((not has_matchup[current_index_s1])

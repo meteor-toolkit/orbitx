@@ -11,7 +11,6 @@ import os
 from typing import Optional
 import orekit
 from orekit.pyhelpers import setup_orekit_curdir
-from orbitx.interface import return_matchups
 
 
 __version__ = get_versions()["version"]

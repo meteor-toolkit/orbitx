@@ -29,7 +29,7 @@ from orekit.pyhelpers import absolutedate_to_datetime
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-
+from orbitx.utils._date_utils import datetime_to_sec_since
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -47,6 +47,7 @@ def propagate_orbit(
     start_time: datetime.datetime,
     end_time: datetime.datetime,
     propagation_sampling_interval: Union[float, int],
+    reference_date: datetime.datetime = datetime.datetime(1970, 1, 1, 0, 0, 0)
 ) -> Tuple[
     List[float], List[float], List[float], List[float], List[float], List[float]
 ]:
@@ -174,10 +175,7 @@ def propagate_orbit(
         saz[extrap_date_ind] = saz_tmp
 
         date[extrap_date_ind] = absolutedate_to_datetime(extrap_date)
-        julian_date[extrap_date_ind] = (
-            absolutedate_to_datetime(extrap_date)
-            - datetime.datetime(1970, 1, 1, 0, 0, 0)
-        ).total_seconds()
+        julian_date[extrap_date_ind] = datetime_to_sec_since(absolutedate_to_datetime(extrap_date), reference_date)
 
 
     pos_s0_lat = np.array([i * 180.0 / pi for i in pos_s0_lat])

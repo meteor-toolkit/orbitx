@@ -1,10 +1,18 @@
 """orbitx.get_2LEs - module for accessing mission two line element data"""
 
+"""___Third-Party Modules___"""
 import numpy as np
 import os
 import datetime
 from typing import Tuple, List, Optional
 import warnings
+
+"""___NPL Modules___"""
+
+"""__Built-In Modules__"""
+from orbitx.utils._date_utils import datetime_to_sec_since
+
+
 
 __author__ = [
     "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
@@ -70,29 +78,22 @@ class TLEInfo:
 
         return date
 
-    @staticmethod
-    def return_seconds_since_1970(date_time: datetime.datetime) -> float:
-        """
-        Returns seconds since 1970 to defined date time
-
-        :param date_time: time of interest
-        :returns: seconds since 1970
-        """
-
-        return (date_time - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds()
-
     def get_tle(
-        self, satellite: str, start_time: datetime.datetime, end_time: datetime.datetime
+        self,
+        satellite: str,
+        start_date: datetime.datetime,
+        end_date: datetime.datetime,
+        reference_date: datetime.datetime = datetime.datetime(1970, 1, 1, 0, 0, 0)
     ) -> Tuple[List[str], List[str], np.ndarray]:
         """
-        Returns two-line elements within defined time window, with seconds since 1970
+        Returns two-line elements within defined time window, with seconds since reference date
 
         :param satellite: satellite short name as included in TLE file name ``TLEset_XXX``,
                 where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
         :param start_time: start of time window
         :param end_time: end of time window
 
-        :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 1970
+        :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since reference date
         """
 
         # region Read TLE file.
@@ -127,59 +128,59 @@ class TLEInfo:
         # endregion
 
         # Get date times
-        tle_time = np.array(
+        tle_date = np.array(
             [self.return_date_from_tle(tle_line_1_i) for tle_line_1_i in tle_line_1]
         )
-        tle_time_s1970 = np.array([self.return_seconds_since_1970(d) for d in tle_time])
-        start_time_s1970 = self.return_seconds_since_1970(start_time)
-        end_time_s1970 = self.return_seconds_since_1970(end_time)
+        tle_time_since = np.array([datetime_to_sec_since(d, reference_date) for d in tle_date])
+        start_time_since = datetime_to_sec_since(start_date, reference_date)
+        end_time_since = datetime_to_sec_since(end_date, reference_date)
 
         # Filter time
-        lower_bound_tle_time = [t for t in tle_time_s1970 if t <= start_time_s1970]
+        lower_bound_tle_time = [t for t in tle_time_since if t <= start_time_since]
         if len(lower_bound_tle_time) == 0:
             warnings.warn(
                 "The oldest TLE file is more recent than the start time requested.\n Oldest TLE file: {}\n Start time requested: {}".format(
-                    np.min(tle_time), start_time
+                    np.min(tle_date), start_date
                 )
             )
         lower_bound_tle_time = (
-            start_time_s1970
+            start_time_since
             if len(lower_bound_tle_time) == 0
             else np.max(lower_bound_tle_time)
         )
-        upper_bound_tle_time = [t for t in tle_time_s1970 if t >= end_time_s1970]
+        upper_bound_tle_time = [t for t in tle_time_since if t >= end_time_since]
         if len(upper_bound_tle_time) == 0:
             warnings.warn(
                 "The most recent TLE file is older than the end time requested.\n Oldest TLE file: {}\n Start time requested: {}".format(
-                    np.max(tle_time), end_time
+                    np.max(tle_date), end_date
                 )
             )
         upper_bound_tle_time = (
-            end_time_s1970
+            end_time_since
             if len(upper_bound_tle_time) == 0
             else np.min(upper_bound_tle_time)
         )
         idx = [
             i
-            for i, t_i in enumerate(tle_time_s1970)
+            for i, t_i in enumerate(tle_time_since)
             if (t_i >= lower_bound_tle_time) and (t_i < upper_bound_tle_time)
         ]
 
         if not idx:
             # If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time
-            closest_tle = np.argmin(np.abs(tle_time_s1970 - start_time_s1970))
+            closest_tle = np.argmin(np.abs(tle_time_since - start_time_since))
 
             tle_line_1 = [tle_line_1[closest_tle]]
             tle_line_2 = [tle_line_2[closest_tle]]
-            tle_time_s1970 = np.array([tle_time_s1970[closest_tle]])
+            tle_time_since = np.array([tle_time_since[closest_tle]])
 
         else:
             # Filter TLE set
             tle_line_1 = tle_line_1[idx]
             tle_line_2 = tle_line_2[idx]
-            tle_time_s1970 = tle_time_s1970[idx]
+            tle_time_since = tle_time_since[idx]
 
-        return tle_line_1, tle_line_2, tle_time_s1970
+        return tle_line_1, tle_line_2, tle_time_since
 
 
 if __name__ == "__main__":

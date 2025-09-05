@@ -110,5 +110,80 @@ An `Orbit` object can be exported to netCDF4 format and loaded from such a file 
 The Matchup class
 #################
 
+.. code-block:: python3
+
+    from orbitx import Matchups
+    import datetime
+
+    matchups = Matchups.find_matchups(
+        satellites=["CS2", "J3"],
+        start_time=datetime.datetime(2012, 1, 1, 0, 0, 0),
+        end_time=datetime.datetime(2012, 1, 1, 12, 0, 0),
+        propagation_sampling_interval = 60,
+        interpolation_sampling_interval = 5,
+        space_diff_threshold = 290,
+        time_diff_threshold = 900,
+        check_before = True,
+        check_after = True,
+        has_land_ocean_mask = True,
+    )
+    print(matchups)
+
+.. code-bloc:: text
+
+    Matchup object with following attributes:
+    Satellites considered: ['CS2', 'J3']
+    Date from which matchups are looked for: 2012-01-01 00:00:00
+    Date until which matchups are looked for: 2012-01-01 12:00:00
+    Maximum time difference between members of a matchup: 900 (seconds)
+    Maximum distance between members of a matchup: 290
+    Are matchups in which on of the satellites appears before the start date considered? True
+    Are matchups in which on of the satellites appears after the end date considered? True
+    Has this matchup a land/ocean mask? True
+    Number of matchups found: 53
+
+
+.. code-bloc:: python3
+
+    matchups.plot()
+
+.. image:: ../../_static/matchup_plot.png
+
+.. code-bloc:: python3
+
+    print(matchups.matchups)
+
+.. code-bloc:: text
+
+    <xarray.Dataset> Size: 5kB
+    Dimensions:         (time: 53)
+    Coordinates:
+    * time            (time) float64 424B 1.325e+09 1.325e+09 ... 1.325e+09
+    Data variables:
+        lat1            (time) float64 424B 63.72 64.02 64.32 ... 68.01 68.31 68.61
+        lon1            (time) float64 424B -173.1 -173.2 -173.3 ... 160.7 160.7
+        lat2            (time) float64 424B 66.12 66.13 66.08 ... 66.11 66.1 66.1
+        lon2            (time) float64 424B -171.3 -170.0 -168.8 ... 157.8 159.0
+        distance        (time) float64 424B 279.4 276.8 285.9 ... 283.5 276.9 287.3
+        time_datetime   (time) datetime64[ns] 424B 2012-01-01T09:54:25 ... 2012-0...
+        time2           (time) float64 424B 1.325e+09 1.325e+09 ... 1.325e+09
+        time_datetime2  (time) datetime64[ns] 424B 2012-01-01T09:44:50 ... 2012-0...
+        delay           (time) float64 424B 575.0 570.0 565.0 ... -75.0 -80.0 -85.0
+        land_mask_1     (time) <U1 212B 'O' 'O' 'O' 'O' 'O' ... 'O' 'O' 'O' 'O' 'O'
+        land_mask_2     (time) <U1 212B 'O' 'O' 'O' 'O' 'O' ... 'O' 'O' 'O' 'O' 'O'
+        matchup_type    (time) <U1 212B 'O' 'O' 'O' 'O' 'O' ... 'O' 'O' 'O' 'O' 'O'
+    Attributes:
+        satellites:            ['CS2', 'J3']
+        start_time:            2012-01-01 00:00:00
+        end_time:              2012-01-01 12:00:00
+        time_diff_threshold:   900
+        space_diff_threshold:  290
+        check_before:          True
+        check_after:           True
+        has_land_ocean_mask:   True
+        sat1:                  CS2
+        sat2:                  J3
+
+
 Running in parallel
 ###################
