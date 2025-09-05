@@ -5,7 +5,13 @@ import unittest
 import unittest.mock as mock
 import datetime
 from orbitx.tle import TLEInfo
-from orbitx.orbit import Orbit, AbsoluteDate
+from orbitx.orbit import Orbit
+from orbitx.utils._orbit.propagate_orbit import AbsoluteDate
+from orbitx.utils._orbit.propagate_orbit import propagate_orbit, absolutedate_to_datetime
+from orbitx.utils._orbit.interpolate_orbit import interpolate_orbit
+from orbitx.utils._orbit.form_sample_space import form_sample_space
+from orbitx.utils._orbit.get_matching_indices import get_matching_indices
+from orbitx.utils._orbit.simulate_orbit import simulate_orbit
 from orbitx import S6_ORBIT_PATH
 import netCDF4 as nc
 from math import pi
@@ -52,7 +58,7 @@ class TestORBIT(unittest.TestCase):
         ]
         exp_smpl_space_secs_since_1970 = np.array([0.0, 43200.0, 86400.0, 129600.0])
 
-        smpl_space, smpl_space_secs_since_1970 = Orbit.form_sample_space(
+        smpl_space, smpl_space_secs_since_1970 = form_sample_space(
             start_time, end_time, prop_smpl_interval
         )
 
@@ -102,7 +108,7 @@ class TestORBIT(unittest.TestCase):
             ]
         )  # These are the indices of the corresponding time stamps in simulation vector
 
-        idx_sim, idx_tle = Orbit.get_matching_indices(
+        idx_sim, idx_tle = get_matching_indices(
             np.array(sim_time), np.array(tle_time)
         )
 
@@ -131,12 +137,15 @@ class TestORBIT(unittest.TestCase):
         propagation_sampling_interval = 1
 
         tle = TLEInfo()
-        orbit = Orbit()
-        orbit.start_time = S6_start_time
-        orbit.end_time = S6_end_time
 
-        tle_info = tle.get_tle(sat, S6_start_time, S6_end_time)
-        time, lat, lon = orbit.simulate_orbit(*tle_info, propagation_sampling_interval)
+        tle_line_1, tle_line_2, tle_time_s1970 = tle.get_tle(sat, S6_start_time, S6_end_time)
+        time, date, lat, lon = simulate_orbit(
+            start_time=S6_start_time,
+            end_time=S6_end_time,
+            line1=tle_line_1,
+            line2=tle_line_2,
+            seconds_since_1970=tle_time_s1970,
+            propagation_sampling_interval=propagation_sampling_interval)
 
         time_diff = [np.abs(time[i] - exp_time[i]) for i in range(len(lat))]
         # Calculate the Haversine distance between simulated and real orbit at 1 Hz sampling rate
@@ -149,20 +158,20 @@ class TestORBIT(unittest.TestCase):
 
     #
     @mock.patch(
-        "orbitx.orbit.absolutedate_to_datetime",
+        "orbitx.utils._orbit.propagate_orbit.absolutedate_to_datetime",
         return_value=datetime.datetime(1970, 1, 1),
     )
-    @mock.patch("orbitx.orbit.TopocentricFrame")
-    @mock.patch("orbitx.orbit.GeodeticPoint")
-    @mock.patch("orbitx.orbit.TLEPropagator.selectExtrapolator")
-    @mock.patch("orbitx.orbit.TLE", return_value=([3]))
-    @mock.patch("orbitx.orbit.FramesFactory.getEME2000")
-    @mock.patch("orbitx.orbit.OneAxisEllipsoid")
-    @mock.patch("orbitx.orbit.FramesFactory.getITRF")
-    @mock.patch("orbitx.orbit.TimeScalesFactory.getUTC")
-    @mock.patch("orbitx.orbit.PVCoordinatesProvider.cast_")
-    @mock.patch("orbitx.orbit.CelestialBodyFactory.getSun")
-    @mock.patch("orbitx.orbit.AbsoluteDate")
+    @mock.patch("orbitx.utils._orbit.propagate_orbit.TopocentricFrame")
+    @mock.patch("orbitx.utils._orbit.propagate_orbit.GeodeticPoint")
+    @mock.patch("orbitx.utils._orbit.propagate_orbit.TLEPropagator.selectExtrapolator")
+    @mock.patch("orbitx.utils._orbit.propagate_orbit.TLE", return_value=([3]))
+    @mock.patch("orbitx.utils._orbit.propagate_orbit.FramesFactory.getEME2000")
+    @mock.patch("orbitx.utils._orbit.propagate_orbit.OneAxisEllipsoid")
+    @mock.patch("orbitx.utils._orbit.propagate_orbit.FramesFactory.getITRF")
+    @mock.patch("orbitx.utils._orbit.propagate_orbit.TimeScalesFactory.getUTC")
+    @mock.patch("orbitx.utils._orbit.propagate_orbit.PVCoordinatesProvider.cast_")
+    @mock.patch("orbitx.utils._orbit.propagate_orbit.CelestialBodyFactory.getSun")
+    @mock.patch("orbitx.utils._orbit.propagate_orbit.AbsoluteDate")
     def test_propagate_orbit(
         self,
         mock_AbsoluteDate,
@@ -195,10 +204,13 @@ class TestORBIT(unittest.TestCase):
         mock_TopocentricFrame().getAzimuth.return_value = 0
         mock_TopocentricFrame().getElevation.return_value = 0
 
-        orbit = Orbit()
-        julian_date, pos_s0_lat, pos_s0_lon, pos_s0_alt, sel, saz = (
-            orbit.propagate_orbit(
-                "", "", datetime.datetime(1970, 1, 1), datetime.datetime(1970, 1, 2), 1
+        julian_date, _, pos_s0_lat, pos_s0_lon, pos_s0_alt, sel, saz = (
+            propagate_orbit(
+                tle_line1 = "",
+                tle_line2 = "",
+                start_time = datetime.datetime(1970, 1, 1),
+                end_time = datetime.datetime(1970, 1, 2),
+                propagation_sampling_interval = 1
             )
         )
         self.assertCountEqual(
@@ -236,36 +248,31 @@ class TestORBIT(unittest.TestCase):
         pass
 
     @mock.patch(
-        "orbitx.orbit.Orbit.propagate_orbit",
-        return_value=([12], [13], [14], [], [], []),
+        "orbitx.utils._orbit.simulate_orbit.propagate_orbit",
+        return_value=([12], [13], [14], [15], [], [], []),
     )
-    @mock.patch("orbitx.orbit.Orbit.get_matching_indices", return_value=([3], [0]))
+    @mock.patch("orbitx.utils._orbit.simulate_orbit.get_matching_indices", return_value=([7], [0]))
     @mock.patch(
-        "orbitx.orbit.Orbit.form_sample_space",
-        return_value=(
-            [
-                datetime.datetime(1970, 1, 1, 0, 0, 0),
-                datetime.datetime(1970, 1, 1, 0, 0, 2),
-                datetime.datetime(1970, 1, 1, 0, 0, 4),
-                datetime.datetime(1970, 1, 1, 0, 0, 6),
-            ],
-            [0.0, 2.0, 4.0, 6.0],
-        ),
-    )
+        "orbitx.utils._orbit.simulate_orbit.form_sample_space", return_value=([], [9]))
     def test_simulate_orbit_1_tle_ref(self, mock_form_ss, mock_match_idx, mock_prop):
-        orbit = Orbit()
-        orbit.start_time = datetime.datetime(1970, 1, 1, 0, 0, 0)
-        orbit.end_time = datetime.datetime(1970, 1, 1, 0, 0, 5)
+        start_time = datetime.datetime(1970, 1, 1, 0, 0, 0)
+        end_time = datetime.datetime(1970, 1, 1, 0, 0, 5)
 
         self.assertEqual(
-            orbit.simulate_orbit(["12"], ["23"], [32], 2), ([12], [13], [14])
+            simulate_orbit(
+                start_time=start_time,
+                end_time=end_time,
+                line1=["12"],
+                line2=["23"],
+                seconds_since_1970=[32],
+                propagation_sampling_interval=2), ([12], [13], [14], [15])
         )
         mock_form_ss.assert_called_with(
             datetime.datetime(1970, 1, 1, 0, 0, 0),
             datetime.datetime(1970, 1, 1, 0, 0, 5),
             2,
         )
-        mock_match_idx.assert_called_with([0.0, 2.0, 4.0, 6.0], [32])
+        mock_match_idx.assert_called_with([9], [32])
         mock_prop.assert_called_with(
             "12",
             "23",
@@ -275,70 +282,91 @@ class TestORBIT(unittest.TestCase):
         )
 
     @mock.patch(
-        "orbitx.orbit.Orbit.propagate_orbit", return_value=([1], [1], [1], [], [], [])
+        "orbitx.utils._orbit.simulate_orbit.propagate_orbit", return_value=([12], [13], [14], [15], [], [], [])
     )
     @mock.patch(
-        "orbitx.orbit.Orbit.get_matching_indices", return_value=([1, 2], [1, 2])
+        "orbitx.utils._orbit.simulate_orbit.get_matching_indices", return_value=([7], [0])
     )
     @mock.patch(
-        "orbitx.orbit.Orbit.form_sample_space", return_value=([1, 2, 3, 5, 6], [])
+        "orbitx.utils._orbit.simulate_orbit.form_sample_space", return_value=([], [9])
     )
     def test_simulate_orbit_2_tle_ref(
         self, mock_form_smpl, mock_get_mtch_idx, mock_prop_orb
     ):
-        orbit = Orbit()
-        orbit.start_time = ""
-        orbit.end_time = ""
+        start_time = datetime.datetime(1970, 1, 1, 0, 0, 0)
+        end_time = datetime.datetime(1970, 1, 1, 0, 0, 0)
 
         self.assertEqual(
-            orbit.simulate_orbit(["1", "2"], ["2", "3"], [2], 1), ([1], [1], [1])
+            simulate_orbit(
+                start_time=start_time,
+                end_time=end_time,
+                line1=["1", "2"],
+                line2=["3", "4"],
+                seconds_since_1970=[2],
+                propagation_sampling_interval=1),
+                ([12], [13], [14], [15])
         )
-        mock_form_smpl.assert_called_with("", "", 1)
+        mock_form_smpl.assert_called_with(datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 1, 0, 0, 0), 1)
         mock_form_smpl.assert_called_once()
-        mock_get_mtch_idx.assert_called_with([], [2])
+        mock_get_mtch_idx.assert_called_with([9], [2])
         mock_get_mtch_idx.assert_called_once()
-        mock_prop_orb.assert_called_with("2", "3", 2, 2, 1)
+        mock_prop_orb.assert_called_with("1", "3", datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 1, 0, 0, 0), 1)
         mock_prop_orb.assert_called_once()
 
     def test_interpolate_orbit(self):
-        sat_sec_since = [0, 86400]
-        sat_lat_sim = [0, 24]
-        sat_lon_sim = [0, 24]
+        sat_sec_since = np.array([0, 86400])
+        sat_lat_sim = np.array([0, 24])
+        sat_lon_sim = np.array([0, 24])
         interpolation_sampling_interval = 60 * 60  # interpolate to every one hour
 
         exp_time = np.arange(0, 86400 + 60 * 60, 3600)
-        exp_lat = [i for i in range(0, 25)]
-        exp_lon = [i for i in range(0, 25)]
+        exp_lat = list(range(0, 25))
+        exp_lon = list(range(0, 25))
 
-        orbit = Orbit()
-        orbit.start_time = datetime.datetime(1970, 1, 1)
-        orbit.end_time = datetime.datetime(1970, 1, 2)
+        start_time = datetime.datetime(1970, 1, 1)
+        end_time = datetime.datetime(1970, 1, 2)
 
-        lat, lon, time = orbit.interpolate_orbit(
-            np.array(sat_sec_since),
-            np.array(sat_lat_sim),
-            np.array(sat_lon_sim),
-            interpolation_sampling_interval,
+        lat, lon, time, _ = interpolate_orbit(
+            start_time,
+            end_time,
+            sat_sec_since,
+            sat_lat_sim,
+            sat_lon_sim,
+            interpolation_sampling_interval
         )
 
         self.assertTrue((exp_lat == lat).all())
         self.assertTrue((exp_lon == lon).all())
         self.assertTrue((exp_time == time).all())
 
-    @mock.patch("orbitx.orbit.Orbit.interpolate_orbit", return_value=([2], ["B"], []))
-    @mock.patch("orbitx.orbit.Orbit.simulate_orbit", return_value=([2], ["b"], []))
+    @mock.patch("orbitx.orbit.interpolate_orbit", return_value=([2], ["3"], ["B"], []))
+    @mock.patch("orbitx.orbit.simulate_orbit", return_value=([2], [3], ["b"], []))
     @mock.patch("orbitx.tle.TLEInfo.get_tle", return_value=([1], [], [""]))
-    def test_run(self, mock_get_tle, mock_sim_orb, mock_interp_orb):
-        orbit = Orbit()
-        self.assertEqual(
-            orbit.run([""], 1, 2, [3], [4]),
-            {"": {"lat": [2], "lon": ["B"], "time": []}},
+    def test_simulate(self, mock_get_tle, mock_sim_orb, mock_interp_orb):
+        dummy_orbit = Orbit(
+            satellites=[""],
+            start_time=datetime.datetime(1970, 1, 1, 0, 0, 0),
+            end_time=datetime.datetime(1970, 1, 2, 0, 0, 1),
+            propagation_sampling_interval=3,
+            interpolation_sampling_interval=4,
+            orbit={"": {"lat": [2], "lon": ["3"], "time": ["B"], "time_datetime": []}}
         )
-        mock_get_tle.assert_called_with("", 1, 2)
+        simulated_orbit = Orbit.simulate(
+                satellites = [""],
+                start_time = datetime.datetime(1970, 1, 1, 0, 0, 0),
+                end_time = datetime.datetime(1970, 1, 2, 0, 0, 1),
+                propagation_sampling_interval = 3,
+                interpolation_sampling_interval = 4)
+        print(simulated_orbit.orbits)
+        self.assertEqual(
+            simulated_orbit,
+            dummy_orbit
+        )
+        mock_get_tle.assert_called_with("", datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 2, 0, 0, 1))
         mock_get_tle.assert_called_once()
-        mock_sim_orb.assert_called_with([1], [], [""], [3])
+        mock_sim_orb.assert_called_with(datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 2, 0, 0, 1), [1], [], [""], 3)
         mock_sim_orb.assert_called_once()
-        mock_interp_orb.assert_called_with([2], ["b"], [], [4])
+        mock_interp_orb.assert_called_with(datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 2, 0, 0, 1), [2], ["b"], [], 4)
         mock_interp_orb.assert_called_once()
 
 
