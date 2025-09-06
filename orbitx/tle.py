@@ -90,8 +90,8 @@ class TLEInfo:
 
         :param satellite: satellite short name as included in TLE file name ``TLEset_XXX``,
                 where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
-        :param start_time: start of time window
-        :param end_time: end of time window
+        :param start_date: start of time window
+        :param end_date: end of time window
 
         :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since reference date
         """

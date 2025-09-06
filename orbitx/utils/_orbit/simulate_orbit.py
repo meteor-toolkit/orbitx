@@ -22,8 +22,8 @@ __status__ = "Development"
 
 
 def simulate_orbit(
-    start_time:datetime,
-    end_time:datetime,
+    start_date:datetime,
+    end_date:datetime,
     line1: List[str],
     line2: List[str],
     seconds_since_tle: np.ndarray,
@@ -40,8 +40,8 @@ def simulate_orbit(
     :return: tuple containing elements - time of simulation, simulated latitude, simulated longitude
     """
     smpl_space, smpl_space_secs_since = form_sample_space(
-        start_time,
-        end_time,
+        start_date,
+        end_date,
         propagation_sampling_interval,
         reference_date
     )
@@ -58,8 +58,8 @@ def simulate_orbit(
         secsince1, date, lat1, lon1, _, _, _ = propagate_orbit(
             line1[tle_ref_lines[0]],
             line2[tle_ref_lines[0]],
-            start_time,
-            end_time,
+            start_date,
+            end_date,
             propagation_sampling_interval,
             reference_date
         )

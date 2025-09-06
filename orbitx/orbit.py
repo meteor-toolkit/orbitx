@@ -18,8 +18,9 @@ import numpy as np
 """__Built-In Modules__"""
 from orbitx.utils._orbit.simulate_orbit import simulate_orbit
 from orbitx.utils._orbit.interpolate_orbit import interpolate_orbit
+from orbitx.utils._orbit.orbit_dict_to_xarray import orbit_dict_to_xarray
 from orbitx.utils._constants import CM, SATELLITE_DICT
-from orbitx.utils._date_utils import datetime_to_sec_since, sec_since_to_datetime
+from orbitx.utils._date_utils import datetime_to_sec_since, sec_since_to_datetime, datetime64_to_datetime
 from orbitx.tle import TLEInfo
 
 """___Authorship___"""
@@ -117,7 +118,7 @@ class Orbit:
         """
 
         tle = TLEInfo()
-        orbit = {}
+        orbit_dict = {}
         for sat in satellites:
             line1, line2, tle_secs_since = tle.get_tle(sat, start_date, end_date)
             sat_secs_since, _, sat_lat_sim, sat_lon_sim = simulate_orbit(
@@ -139,7 +140,17 @@ class Orbit:
                 interpolation_sampling_interval,
                 reference_date
             )
-            orbit.update({sat: {"lat": lat, "lon": lon, "time": time, "time_datetime" : date}})
+            orbit_dict.update({sat: {"lat": lat, "lon": lon, "time": time, "time_datetime" : date}})
+        
+        orbit = orbit_dict_to_xarray(
+            orbit_dict,
+            start_date,
+            end_date,
+            propagation_sampling_interval,
+            interpolation_sampling_interval,
+            reference_date
+        )
+
         return cls(
             satellites,
             start_date,
@@ -151,32 +162,30 @@ class Orbit:
 
     @classmethod
     def from_netcdf(cls, input_path: str):
-        with nc.Dataset(input_path, "r") as orbit_file:
-            reference_time = float(orbit_file.variables["reference_date"][0])
-            reference_date = sec_since_to_datetime(reference_time)
-
-            satellite = [str(getattr(orbit_file, "satellite"))]
-            start_date = sec_since_to_datetime(getattr(orbit_file, "start_date"), reference_date)
-            end_date = sec_since_to_datetime(getattr(orbit_file, "end_date"), reference_date)
-            propagation_sampling_interval = float(getattr(orbit_file, "propagation_sampling_interval"))
-            interpolation_sampling_interval = float(getattr(orbit_file, "interpolation_sampling_interval"))
-
-            time = np.array(orbit_file.variables["time"][:])
-            date = np.array([sec_since_to_datetime(t, reference_date) for t in time])
-            latitude = np.array(orbit_file.variables["lat"][:])
-            longitude = np.array(orbit_file.variables["lon"][:])
+        orbit_xarray = xr.open_dataset(
+            input_path,
+            engine="netcdf4",
+            decode_times = False,
+            decode_timedelta = False
+        )
+        satellites = orbit_xarray.attrs["satellites"]
+        reference_date = sec_since_to_datetime(float(orbit_xarray["reference_date"].values), datetime.datetime(1970, 1, 1, 0, 0, 0))
         
-        orbit = {
-            satellite[0]: {"lat": latitude, "lon": longitude, "time": time, "time_datetime" : date}
-        }
+        orbit_xarray["time"].attrs["units"] = f"seconds since {reference_date:%Y-%m-%d}"
+        
+        orbit_xarray[f"time_datetime"].values = [sec_since_to_datetime(time, reference_date) for time in orbit_xarray[f"time"].values]
+        start_date = sec_since_to_datetime(orbit_xarray.attrs["start_date"], reference_date)
+        end_date = sec_since_to_datetime(orbit_xarray.attrs["end_date"], reference_date)
+        propagation_sampling_interval = orbit_xarray.attrs["propagation_sampling_interval"]
+        interpolation_sampling_interval = orbit_xarray.attrs["interpolation_sampling_interval"]
         return cls(
-            satellite,
+            satellites,
             start_date,
             end_date,
             propagation_sampling_interval,
             interpolation_sampling_interval,
             reference_date,
-            orbit
+            orbit_xarray
         )
     
     def to_netcdf(
@@ -190,41 +199,15 @@ class Orbit:
         :type output_path: str
         :return: None
         """
-        keys = list(self.orbits.keys())
-        for i in range(len(keys)):
+        satellites_part = "_".join(self.satellites)
+        date_part = f"{self.start_date:%Y%m%d}_{self.end_date:%Y%m%d}"
+        sampling_part = f"psi{self.propagation_sampling_interval}_isi{self.interpolation_sampling_interval}"
+        filename = f"{date_part}_{sampling_part}_orbit_{satellites_part}.nc"
 
-            # Construct filename
-            sat = keys[i]
-            date_part = f"{self.start_date:%Y%m%d}_{self.end_date:%Y%m%d}"
-            sampling_part = f"psi{self.propagation_sampling_interval}_isi{self.interpolation_sampling_interval}"
-            filename = f"{date_part}_{sampling_part}_orbit_{sat}.nc"
+        orbit_copy = self.orbits.copy()
 
-            # Save orbit as xr
-            orbit_of_sat = xr.Dataset(
-                data_vars = {
-                    "lat": ("time", self.orbits[sat]["lat"]),
-                    "lon": ("time", self.orbits[sat]["lon"]),
-                    "reference_date": (datetime_to_sec_since(self.reference_date, datetime.datetime(1970, 1, 1, 0, 0, 0)))
-                },
-                coords={
-                    "time": self.orbits[sat]["time"],
-                },
-                attrs={
-                    "satellite": sat,
-                    "start_date": datetime_to_sec_since(self.start_date, self.reference_date),
-                    "end_date": datetime_to_sec_since(self.end_date, self.reference_date),
-                    "propagation_sampling_interval": self.propagation_sampling_interval,
-                    "interpolation_sampling_interval": self.interpolation_sampling_interval
-                }
-            )
-            orbit_of_sat["time"].attrs["units"] = "seconds"
-            orbit_of_sat["time"].attrs["description"] = f"Seconds since {self.reference_date}"
-            
-            orbit_of_sat["reference_date"].attrs["units"] = "seconds"
-            orbit_of_sat["reference_date"].attrs["description"] = f"Seconds since {datetime.datetime(1970, 1, 1, 0, 0, 0)}"
-
-            # Save as netCDF4
-            orbit_of_sat.to_netcdf(os.path.join(output_path, filename))
+        # Save as netCDF4
+        orbit_copy.to_netcdf(os.path.join(output_path, filename))
 
     def plot(
             self,
@@ -240,10 +223,10 @@ class Orbit:
         ax.coastlines()
         ax.add_feature(cfeature.LAND)
 
-        for sat in self.satellites:
+        for sat_index, sat in enumerate(self.satellites):
             ax.scatter(
-                self.orbits[sat]["lon"],
-                self.orbits[sat]["lat"],
+                self.orbits[f"lon{sat_index + 1}"],
+                self.orbits[f"lat{sat_index + 1}"],
                 label=SATELLITE_DICT[sat],
                 transform=projection,
                 s=.5
@@ -257,7 +240,7 @@ class Orbit:
         :return: Number of times at which the orbits are simulated
         :rtype: int
         """
-        return len(self.orbits[self.satellites[0]]['lat'])
+        return len(self.orbits['time'])
     
     def __eq__(self, value:"Orbit")->bool:
         """__eq__ Checks if two orbit objects are identical
@@ -275,7 +258,7 @@ class Orbit:
         res = res and (self.end_date == value.end_date)
         res = res and (self.propagation_sampling_interval == value.propagation_sampling_interval)
         res = res and (self.interpolation_sampling_interval == value.interpolation_sampling_interval)
-        res = res and (self.orbits == value.orbits)
+        res = res and (self.orbits.equals(value.orbits))
         return res
 
     def __str__(self):

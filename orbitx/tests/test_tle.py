@@ -103,20 +103,16 @@ class TestTLE(unittest.TestCase):
         self.assertEqual(date.minute, exp_date.minute)
         self.assertEqual(date.second, exp_date.second)
 
-    def test_return_seconds_since_1970(self):
-        tle = TLEInfo()
-        self.assertEqual(tle.return_seconds_since_1970(dt(1970, 1, 1, 0, 0, 1)), 1.0)
-
     def test_get_tle(self):
         # define input parameters
-        start_time = dt(2015, 6, 24, 0, 0, 0)
-        end_time = dt(2015, 6, 26, 0, 0, 0)
+        start_date = dt(2015, 6, 24, 0, 0, 0)
+        end_date = dt(2015, 6, 26, 0, 0, 0)
         satellite_name = "S2A"
 
         # run code under test
         tle = TLEInfo()
         tles = tle.get_tle(
-            start_time=start_time, end_time=end_time, satellite=satellite_name
+            start_date=start_date, end_date=end_date, satellite=satellite_name
         )
         # define expected output
         exp_first_lines = [
@@ -149,18 +145,18 @@ class TestTLE(unittest.TestCase):
 
     def test_get_tle_(self):
         """
-        This is to test a situation when there is no TLE within the [start_time, end_time]
+        This is to test a situation when there is no TLE within the [start_date, end_date]
         """
 
         # define input parameters
-        start_time = dt(2015, 6, 24, 22, 0, 0)
-        end_time = dt(2015, 6, 24, 23, 0, 0)
+        start_date = dt(2015, 6, 24, 22, 0, 0)
+        end_date = dt(2015, 6, 24, 23, 0, 0)
         satellite_name = "S2A"
 
         # run code under test
         tle = TLEInfo()
         tles = tle.get_tle(
-            start_time=start_time, end_time=end_time, satellite=satellite_name
+            start_date=start_date, end_date=end_date, satellite=satellite_name
         )
 
         # define expected output

@@ -43,10 +43,11 @@ class TestMatchups(unittest.TestCase):
         "orbitx.orbit.Orbit.simulate",
         return_value=Orbit(
             satellites = ["S3A", "LS8"],
-            start_time = dt.datetime(1970, 1, 1, 0, 0, 0),
-            end_time = dt.datetime(1970, 1, 1, 0, 0, 0) + dt.timedelta(seconds = 9),
+            start_date = dt.datetime(1970, 1, 1, 0, 0, 0),
+            end_date = dt.datetime(1970, 1, 1, 0, 0, 0) + dt.timedelta(seconds = 9),
             propagation_sampling_interval = 2,
             interpolation_sampling_interval = 1,
+            reference_date=dt.datetime(1970, 1, 1, 0, 0, 0),
             orbit = {
                 "S3A": {
                     "lat": np.array([1, 2,   3, 4, 5, 6, 7, 8,  9, 10], dtype = float),
@@ -75,8 +76,8 @@ class TestMatchups(unittest.TestCase):
         mock_get_distance.side_effect = np.vectorize(mock_get_dist)
 
         satellites = ["S3A", "LS8"]
-        start_time = dt.datetime(1970, 1, 1, 0, 0, 0)
-        end_time = dt.datetime(1970, 1, 1, 0, 0, 0) + dt.timedelta(seconds = 9)
+        start_date = dt.datetime(1970, 1, 1, 0, 0, 0)
+        end_date = dt.datetime(1970, 1, 1, 0, 0, 0) + dt.timedelta(seconds = 9)
         propagation_sampling_interval = 2
         interpolation_sampling_interval = 1
         time_diff_threshold = 3
@@ -87,8 +88,8 @@ class TestMatchups(unittest.TestCase):
 
         _ = Matchups.find_matchups(
             satellites = satellites,
-            start_time = start_time,
-            end_time = end_time,
+            start_date = start_date,
+            end_date = end_date,
             propagation_sampling_interval = propagation_sampling_interval,
             interpolation_sampling_interval = interpolation_sampling_interval,
             space_diff_threshold = space_diff_threshold,
@@ -99,10 +100,11 @@ class TestMatchups(unittest.TestCase):
         )
         mock_orbit_simulate.assert_called_with(
             satellites = satellites,
-            start_time = start_time,
-            end_time = end_time,
+            start_date = start_date,
+            end_date = end_date,
             propagation_sampling_interval = propagation_sampling_interval,
-            interpolation_sampling_interval = interpolation_sampling_interval
+            interpolation_sampling_interval = interpolation_sampling_interval,
+            reference_date = dt.datetime(1970, 1, 1, 0, 0, 0)
         )
         mock_matchup_dict_to_xarray.assert_called_with(
             {
@@ -121,15 +123,15 @@ class TestMatchups(unittest.TestCase):
             },
             {
             "satellites": satellites,
-            "start_time": start_time,
-            "end_time": end_time,
+            "start_date": start_date,
+            "end_date": end_date,
             "time_diff_threshold": time_diff_threshold,
             "space_diff_threshold": space_diff_threshold,
             "check_before": check_before,
             "check_after": check_after,
             "has_land_ocean_mask": has_land_ocean_mask,
             "interpolation_sampling_interval": 1,
-            "propagation_sample_interval": 2
+            "propagation_sampling_interval": 2
             },
         )
 

@@ -45,8 +45,8 @@ def cal_dist_d2m(lat1, lon1, lat2, lon2):
 class TestORBIT(unittest.TestCase):
     def test_form_sample_space(self):
         # Start at 1st of Jan. 1970, and sample every 12 hours until 2nd of Jan. 1970, one o'clock am.
-        start_time = datetime.datetime(1970, 1, 1)
-        end_time = datetime.datetime(1970, 1, 2, 1)
+        start_date = datetime.datetime(1970, 1, 1)
+        end_date = datetime.datetime(1970, 1, 2, 1)
         prop_smpl_interval = 12 * 60 * 60
 
         # We are expecting 4 samples:
@@ -59,7 +59,7 @@ class TestORBIT(unittest.TestCase):
         exp_smpl_space_secs_since_1970 = np.array([0.0, 43200.0, 86400.0, 129600.0])
 
         smpl_space, smpl_space_secs_since_1970 = form_sample_space(
-            start_time, end_time, prop_smpl_interval
+            start_date, end_date, prop_smpl_interval
         )
 
         self.assertCountEqual(exp_smpl_space, smpl_space)
@@ -125,10 +125,10 @@ class TestORBIT(unittest.TestCase):
         # Convert start-time and end-time of S6 track to datetime. Notice that altimetry satellites (in this case
         # Sentinel-6MF) do report time as seconds since 2000. This is not to be mistaken with OrbitX's reference time
         # which is 1970.
-        S6_start_time = datetime.timedelta(seconds=exp_time[0]) + datetime.datetime(
+        S6_start_date = datetime.timedelta(seconds=exp_time[0]) + datetime.datetime(
             2000, 1, 1, 0, 0, 0
         )
-        S6_end_time = datetime.timedelta(seconds=exp_time[-1]) + datetime.datetime(
+        S6_end_date = datetime.timedelta(seconds=exp_time[-1]) + datetime.datetime(
             2000, 1, 1, 0, 0, 0
         )
 
@@ -138,16 +138,16 @@ class TestORBIT(unittest.TestCase):
 
         tle = TLEInfo()
 
-        tle_line_1, tle_line_2, tle_time_s1970 = tle.get_tle(sat, S6_start_time, S6_end_time)
-        time, date, lat, lon = simulate_orbit(
-            start_time=S6_start_time,
-            end_time=S6_end_time,
+        tle_line_1, tle_line_2, tle_time_s1970 = tle.get_tle(sat, S6_start_date, S6_end_date)
+        _, _, lat, lon = simulate_orbit(
+            start_date=S6_start_date,
+            end_date=S6_end_date,
             line1=tle_line_1,
             line2=tle_line_2,
-            seconds_since_1970=tle_time_s1970,
-            propagation_sampling_interval=propagation_sampling_interval)
+            seconds_since_tle=tle_time_s1970,
+            propagation_sampling_interval=propagation_sampling_interval,
+            reference_date=datetime.datetime(1970, 1, 1, 0, 0, 0))
 
-        time_diff = [np.abs(time[i] - exp_time[i]) for i in range(len(lat))]
         # Calculate the Haversine distance between simulated and real orbit at 1 Hz sampling rate
         distance = [
             cal_dist_d2m(lat[i], lon[i], exp_lat[i], exp_lon[i])
@@ -208,8 +208,8 @@ class TestORBIT(unittest.TestCase):
             propagate_orbit(
                 tle_line1 = "",
                 tle_line2 = "",
-                start_time = datetime.datetime(1970, 1, 1),
-                end_time = datetime.datetime(1970, 1, 2),
+                start_date = datetime.datetime(1970, 1, 1),
+                end_date = datetime.datetime(1970, 1, 2),
                 propagation_sampling_interval = 1
             )
         )
@@ -255,22 +255,24 @@ class TestORBIT(unittest.TestCase):
     @mock.patch(
         "orbitx.utils._orbit.simulate_orbit.form_sample_space", return_value=([], [9]))
     def test_simulate_orbit_1_tle_ref(self, mock_form_ss, mock_match_idx, mock_prop):
-        start_time = datetime.datetime(1970, 1, 1, 0, 0, 0)
-        end_time = datetime.datetime(1970, 1, 1, 0, 0, 5)
+        start_date = datetime.datetime(1970, 1, 1, 0, 0, 0)
+        end_date = datetime.datetime(1970, 1, 1, 0, 0, 5)
 
         self.assertEqual(
             simulate_orbit(
-                start_time=start_time,
-                end_time=end_time,
+                start_date=start_date,
+                end_date=end_date,
                 line1=["12"],
                 line2=["23"],
-                seconds_since_1970=[32],
-                propagation_sampling_interval=2), ([12], [13], [14], [15])
+                seconds_since_tle=[32],
+                propagation_sampling_interval=2,
+                reference_date=datetime.datetime(1970, 1, 1, 0, 0, 0)), ([12], [13], [14], [15])
         )
         mock_form_ss.assert_called_with(
             datetime.datetime(1970, 1, 1, 0, 0, 0),
             datetime.datetime(1970, 1, 1, 0, 0, 5),
             2,
+            datetime.datetime(1970, 1, 1, 0, 0, 0)
         )
         mock_match_idx.assert_called_with([9], [32])
         mock_prop.assert_called_with(
@@ -279,6 +281,7 @@ class TestORBIT(unittest.TestCase):
             datetime.datetime(1970, 1, 1, 0, 0, 0),
             datetime.datetime(1970, 1, 1, 0, 0, 5),
             2,
+            datetime.datetime(1970, 1, 1, 0, 0, 0)
         )
 
     @mock.patch(
@@ -293,24 +296,25 @@ class TestORBIT(unittest.TestCase):
     def test_simulate_orbit_2_tle_ref(
         self, mock_form_smpl, mock_get_mtch_idx, mock_prop_orb
     ):
-        start_time = datetime.datetime(1970, 1, 1, 0, 0, 0)
-        end_time = datetime.datetime(1970, 1, 1, 0, 0, 0)
+        start_date = datetime.datetime(1970, 1, 1, 0, 0, 0)
+        end_date = datetime.datetime(1970, 1, 1, 0, 0, 0)
 
         self.assertEqual(
             simulate_orbit(
-                start_time=start_time,
-                end_time=end_time,
+                start_date=start_date,
+                end_date=end_date,
                 line1=["1", "2"],
                 line2=["3", "4"],
-                seconds_since_1970=[2],
-                propagation_sampling_interval=1),
+                seconds_since_tle=[2],
+                propagation_sampling_interval=1,
+                reference_date=datetime.datetime(1970, 1, 1, 0, 0, 0)),
                 ([12], [13], [14], [15])
         )
-        mock_form_smpl.assert_called_with(datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 1, 0, 0, 0), 1)
+        mock_form_smpl.assert_called_with(datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 1, 0, 0, 0), 1, datetime.datetime(1970, 1, 1, 0, 0, 0))
         mock_form_smpl.assert_called_once()
         mock_get_mtch_idx.assert_called_with([9], [2])
         mock_get_mtch_idx.assert_called_once()
-        mock_prop_orb.assert_called_with("1", "3", datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 1, 0, 0, 0), 1)
+        mock_prop_orb.assert_called_with("1", "3", datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 1, 0, 0, 0), 1, datetime.datetime(1970, 1, 1, 0, 0, 0))
         mock_prop_orb.assert_called_once()
 
     def test_interpolate_orbit(self):
@@ -323,12 +327,12 @@ class TestORBIT(unittest.TestCase):
         exp_lat = list(range(0, 25))
         exp_lon = list(range(0, 25))
 
-        start_time = datetime.datetime(1970, 1, 1)
-        end_time = datetime.datetime(1970, 1, 2)
+        start_date = datetime.datetime(1970, 1, 1)
+        end_date = datetime.datetime(1970, 1, 2)
 
         lat, lon, time, _ = interpolate_orbit(
-            start_time,
-            end_time,
+            start_date,
+            end_date,
             sat_sec_since,
             sat_lat_sim,
             sat_lon_sim,
@@ -345,16 +349,17 @@ class TestORBIT(unittest.TestCase):
     def test_simulate(self, mock_get_tle, mock_sim_orb, mock_interp_orb):
         dummy_orbit = Orbit(
             satellites=[""],
-            start_time=datetime.datetime(1970, 1, 1, 0, 0, 0),
-            end_time=datetime.datetime(1970, 1, 2, 0, 0, 1),
+            start_date=datetime.datetime(1970, 1, 1, 0, 0, 0),
+            end_date=datetime.datetime(1970, 1, 2, 0, 0, 1),
             propagation_sampling_interval=3,
             interpolation_sampling_interval=4,
+            reference_date=datetime.datetime(1970, 1, 1, 0, 0, 0),
             orbit={"": {"lat": [2], "lon": ["3"], "time": ["B"], "time_datetime": []}}
         )
         simulated_orbit = Orbit.simulate(
                 satellites = [""],
-                start_time = datetime.datetime(1970, 1, 1, 0, 0, 0),
-                end_time = datetime.datetime(1970, 1, 2, 0, 0, 1),
+                start_date = datetime.datetime(1970, 1, 1, 0, 0, 0),
+                end_date = datetime.datetime(1970, 1, 2, 0, 0, 1),
                 propagation_sampling_interval = 3,
                 interpolation_sampling_interval = 4)
         print(simulated_orbit.orbits)
@@ -364,9 +369,9 @@ class TestORBIT(unittest.TestCase):
         )
         mock_get_tle.assert_called_with("", datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 2, 0, 0, 1))
         mock_get_tle.assert_called_once()
-        mock_sim_orb.assert_called_with(datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 2, 0, 0, 1), [1], [], [""], 3)
+        mock_sim_orb.assert_called_with(datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 2, 0, 0, 1), [1], [], [""], 3, datetime.datetime(1970, 1, 1, 0, 0))
         mock_sim_orb.assert_called_once()
-        mock_interp_orb.assert_called_with(datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 2, 0, 0, 1), [2], ["b"], [], 4)
+        mock_interp_orb.assert_called_with(datetime.datetime(1970, 1, 1, 0, 0, 0), datetime.datetime(1970, 1, 2, 0, 0, 1), [2], ["b"], [], 4, datetime.datetime(1970, 1, 1, 0, 0))
         mock_interp_orb.assert_called_once()
 
 

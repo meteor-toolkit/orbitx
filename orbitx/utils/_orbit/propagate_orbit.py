@@ -44,8 +44,8 @@ __status__ = "Development"
 def propagate_orbit(
     tle_line1: str,
     tle_line2: str,
-    start_time: datetime.datetime,
-    end_time: datetime.datetime,
+    start_date: datetime.datetime,
+    end_date: datetime.datetime,
     propagation_sampling_interval: Union[float, int],
     reference_date: datetime.datetime = datetime.datetime(1970, 1, 1, 0, 0, 0)
 ) -> Tuple[
@@ -56,28 +56,28 @@ def propagate_orbit(
 
     :param tle_line1: first line of the reference two-line-element
     :param tle_line2: first line of the reference two-line-element
-    :param start_time: start time of orbit propagation
-    :param end_time: end time of orbit propagation
+    :param start_date: start time of orbit propagation
+    :param end_date: end time of orbit propagation
     :param propagation_sampling_interval: sampling interval in seconds
     :return: Tuple containing the date in seconds from 1970, the date in datetime, orbit latitude, longitude, altitude, elevation angle, and azimuth angle
     """
     orekit.getVMEnv().attachCurrentThread() 
     extrap_date = AbsoluteDate(
-        start_time.year,
-        start_time.month,
-        start_time.day,
-        start_time.hour,
-        start_time.minute,
-        float(start_time.second),
+        start_date.year,
+        start_date.month,
+        start_date.day,
+        start_date.hour,
+        start_date.minute,
+        float(start_date.second),
         TimeScalesFactory.getUTC(),
     )  # when you want to start tracking
     final_date = AbsoluteDate(
-        end_time.year,
-        end_time.month,
-        end_time.day,
-        end_time.hour,
-        end_time.minute,
-        float(end_time.second),
+        end_date.year,
+        end_date.month,
+        end_date.day,
+        end_date.hour,
+        end_date.minute,
+        float(end_date.second),
         TimeScalesFactory.getUTC(),
     )  # when you want to stop tracking
     propagation_sampling_interval = float(propagation_sampling_interval)

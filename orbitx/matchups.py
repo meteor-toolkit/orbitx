@@ -21,7 +21,7 @@ from orbitx.utils._matchups.find_matches import find_matches
 from orbitx.utils._matchups.get_land_ocean_mask import get_land_ocean_mask
 from orbitx.utils._matchups.matchup_dict_to_xarray import matchup_dict_to_xarray
 from orbitx.utils._constants import SATELLITE_DICT, CM
-from orbitx.utils._date_utils import datetime_to_sec_since, sec_since_to_datetime
+from orbitx.utils._date_utils import sec_since_to_datetime, datetime64_to_datetime, datetime_to_sec_since
 
 __author__ = [
     "Mattea Goalen <mattea.goalen@npl.co.uk>",
@@ -144,7 +144,7 @@ class Matchups:
             "interpolation_sampling_interval": orbit.interpolation_sampling_interval,
             "propagation_sampling_interval": orbit.propagation_sampling_interval
         }
-        matchups = matchup_dict_to_xarray(matchups, attributes)
+        matchups = matchup_dict_to_xarray(matchups, attributes, reference_date)
 
         # Create object instance
         result = cls(satellites,
@@ -156,7 +156,8 @@ class Matchups:
         matchups,
         check_before,
         check_after,
-        has_land_ocean_mask)
+        has_land_ocean_mask,
+        reference_date)
         return result
     
     @classmethod
@@ -172,53 +173,31 @@ class Matchups:
         :return: A Matchups object with the same value as the one that generated the imported file
         :rtype: Matchups
         """
-        with nc.Dataset(input_path, "r") as matchup_file:
-            reference_date = sec_since_to_datetime(float(matchup_file["reference_date"][:]), datetime.datetime(1970, 1, 1, 0, 0, 0))
+        matchups_xarray = xr.open_dataset(
+            input_path,
+            engine="netcdf4",
+            decode_times = False,
+            decode_timedelta = False)
 
-            satellites = getattr(matchup_file, "satellites")
-            start_date = sec_since_to_datetime(getattr(matchup_file, "start_date"), reference_date)
-            end_date = sec_since_to_datetime(getattr(matchup_file, "end_date"), reference_date)
-            time_diff_threshold = float(getattr(matchup_file, "time_diff_threshold"))
-            space_diff_threshold = float(getattr(matchup_file, "space_diff_threshold"))
-            check_before = getattr(matchup_file, "check_before")
-            check_after = getattr(matchup_file, "check_after")
-            has_land_ocean_mask = getattr(matchup_file, "has_land_ocean_mask")
-            propagation_sampling_interval = getattr(matchup_file, "propagation_sampling_interval")
-            interpolation_sampling_interval = getattr(matchup_file, "interpolation_sampling_interval")
+        satellites = matchups_xarray.attrs["satellites"]
 
-            time = np.array(matchup_file["time"][:])
-            
-            matchups = xr.Dataset(
-                data_vars = {
-                    "reference_date": (float(matchup_file["reference_date"][:])),
-                    "lat1": ("time", np.array(matchup_file["lat1"][:])),
-                    "lon1": ("time", np.array(matchup_file["lon1"][:])),
-                    "land_mask_1": ("time", np.array(matchup_file["land_mask_1"][:])),
-                    "time_datetime": ("time", [sec_since_to_datetime(t) for t in time]),
-                    "matchup_type": ("time", np.array(matchup_file["matchup_type"][:]))},
-                coords = {"time": time},
-                attrs={
-                    "satellites": satellites,
-                    "start_date": start_date,
-                    "end_date": end_date,
-                    "propagation_sampling_interval": propagation_sampling_interval,
-                    "interpolation_sampling_interval": interpolation_sampling_interval
-                }
-            )
-            for sat_index, _ in enumerate(satellites[1:]):
-                new_sat_df = xr.Dataset(
-                    data_vars = {
-                        f"lat{sat_index + 2}": ("time", np.array(matchup_file[f"lat{sat_index + 2}"][:])),
-                        f"lon{sat_index + 2}": ("time", np.array(matchup_file[f"lon{sat_index + 2}"][:])),
-                        f"distance{sat_index + 2}": ("time", np.array(matchup_file[f"distance{sat_index + 2}"][:])),
-                        f"land_mask_{sat_index + 2}": ("time", np.array(matchup_file[f"land_mask_{sat_index + 2}"][:])),
-                        f"time{sat_index + 2}": ("time", np.array(matchup_file[f"time{sat_index + 2}"][:])),
-                        f"time_datetime{sat_index + 2}": ("time", np.array(matchup_file[f"time_datetime{sat_index + 2}"][:])),
-                        f"delay{sat_index + 2}": ("time", np.array(matchup_file[f"delay{sat_index + 2}"][:]))
-                    },
-                    coords = {"time": time}
-                )
-                matchups = matchups.merge(new_sat_df)
+        reference_date = sec_since_to_datetime(float(matchups_xarray["reference_date"].values), datetime.datetime(1970, 1, 1, 0, 0, 0))
+        matchups_xarray["time_datetime"].values = [sec_since_to_datetime(time, reference_date) for time in matchups_xarray["time"].values]
+        matchups_xarray["time_datetime"].attrs["units"] = f"seconds since {reference_date:%Y-%m-%d}"
+        for sat_index, _ in enumerate(satellites[1:]):
+            matchups_xarray[f"time_datetime{sat_index + 2}"].values = [sec_since_to_datetime(time, reference_date) for time in matchups_xarray[f"time{sat_index + 2}"].values]
+        
+        start_date = sec_since_to_datetime(matchups_xarray.attrs["start_date"], reference_date)
+        end_date = sec_since_to_datetime(matchups_xarray.attrs["end_date"], reference_date)
+        propagation_sampling_interval = matchups_xarray.attrs["propagation_sampling_interval"]
+        interpolation_sampling_interval = matchups_xarray.attrs["interpolation_sampling_interval"]
+
+        time_diff_threshold = float(matchups_xarray.attrs["time_diff_threshold"])
+        space_diff_threshold = float(matchups_xarray.attrs["space_diff_threshold"])
+        check_before = matchups_xarray.attrs["check_before"]
+        check_after = matchups_xarray.attrs["check_after"]
+        has_land_ocean_mask = matchups_xarray.attrs["has_land_ocean_mask"]
+
         loaded_orbit_start_date = start_date
         loaded_orbit_end_date = end_date
         if check_before:
@@ -240,7 +219,7 @@ class Matchups:
             time_diff_threshold=time_diff_threshold,
             space_diff_threshold=space_diff_threshold,
             orbit=loaded_orbit,
-            matchups=matchups,
+            matchups=matchups_xarray,
             check_before=check_before,
             check_after=check_after,
             has_land_ocean_mask=has_land_ocean_mask,
@@ -250,8 +229,7 @@ class Matchups:
     
     def to_netcdf(
             self,
-            output_path:str,
-            reference_date:datetime.datetime = datetime.datetime(1970, 1, 1, 0, 0, 0))->None:
+            output_path:str)->None:
         """to_netcdf Exports a matchup object to a netcdf file
 
         The exported file is structured as follows:
@@ -272,17 +250,6 @@ class Matchups:
         filename = f"{date_part}_{sampling_part}_matchups_{sat_part}_{matchup_part}.nc"
 
         matchup_output_copy = self.matchups.copy()
-
-        matchup_output_copy = matchup_output_copy.assign(reference_date = (datetime_to_sec_since(self.reference_date, datetime.datetime(1970, 1, 1, 0, 0, 0))))
-        
-        matchup_output_copy["reference_date"].attrs["units"] = "seconds"
-        matchup_output_copy["reference_date"].attrs["description"] = f"Seconds since {datetime.datetime(1970, 1, 1, 0, 0, 0)}"
-
-        matchup_output_copy.attrs["start_date"] = datetime_to_sec_since(self.start_date, reference_date)
-        matchup_output_copy.attrs["end_date"] = datetime_to_sec_since(self.end_date, reference_date)
-        matchup_output_copy.attrs['check_before'] = str(matchup_output_copy.attrs['check_before'])
-        matchup_output_copy.attrs['check_after'] = str(matchup_output_copy.attrs['check_after'])
-        matchup_output_copy.attrs['has_land_ocean_mask'] = str(matchup_output_copy.attrs['has_land_ocean_mask'])
 
         matchup_output_copy.to_netcdf(os.path.join(output_path, filename))
     
@@ -352,6 +319,22 @@ Number of matchups found: {len(self)}
         :rtype: int
         """
         return len(self.matchups["time"])
+    
+    def __eq__(self, other:"Matchups")->bool:
+        res = True
+        res = res and (self.satellites == other.satellites)
+        res = res and (self.start_date == other.start_date)
+        res = res and (self.end_date == other.end_date)
+        res = res and (self.time_diff_threshold == other.time_diff_threshold)
+        res = res and (self.space_diff_threshold == other.space_diff_threshold)
+        res = res and (self.orbit == other.orbit)
+        res = res and (self.matchups.equals(other.matchups))
+        res = res and (self.check_before == other.check_before)
+        res = res and (self.check_after == other.check_after)
+        res = res and (self.has_land_ocean_mask == other.has_land_ocean_mask)
+        res = res and (self.reference_date == other.reference_date)
+        return res
+    
     @property
     def satellites(self):
         return self._satellites

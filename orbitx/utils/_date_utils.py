@@ -2,7 +2,8 @@
 
 """___Third-Party Modules___"""
 import datetime 
-
+import numpy as np
+import pandas as pd
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
@@ -55,3 +56,7 @@ def sec_since_to_datetime(date:float, ref_date:datetime.datetime = datetime.date
     :rtype: datetime.datetime
     """
     return ref_date + datetime.timedelta(seconds=date)
+
+def datetime64_to_datetime(date64: np.datetime64)->datetime.datetime:
+    timestamp = pd.Timestamp(date64)
+    return pd.to_datetime(timestamp)
