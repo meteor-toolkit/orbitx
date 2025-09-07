@@ -1,9 +1,8 @@
 """A python function to simulate the orbit of a satellite from on a requested time frame using a collection of TLE's"""
 
 """___Third-Party Modules___"""
-from typing import List, Union, Tuple
+from typing import List, Tuple
 import numpy as np
-from datetime import datetime
 
 """___NPL Modules___"""
 
@@ -22,13 +21,13 @@ __status__ = "Development"
 
 
 def simulate_orbit(
-    start_date:datetime,
-    end_date:datetime,
+    start_date:np.datetime64,
+    end_date:np.datetime64,
     line1: List[str],
     line2: List[str],
     seconds_since_tle: np.ndarray,
-    propagation_sampling_interval: Union[float, int],
-    reference_date:datetime=datetime(1970, 1, 1, 0, 0, 0)
+    propagation_sampling_interval: np.timedelta64,
+    reference_date:np.datetime64=np.datetime64('1970-01-01T00:00:00')
 ) -> Tuple[List[float], List[float], List[float]]:
     """
     Return latitude, longitude and time arrays for full simulated orbit
@@ -52,7 +51,7 @@ def simulate_orbit(
     sat_lat_sim: np.ndarray = np.empty((0,), dtype=float)
     sat_lon_sim: np.ndarray = np.empty((0,), dtype=float)
     sat_sec_since: np.ndarray = np.empty((0,), dtype=float)
-    sat_date: np.ndarray = np.empty((0,), dtype=datetime)
+    sat_date: np.ndarray = np.empty((0,), dtype=np.datetime64)
 
     if len(tle_ref_lines) == 1:
         secsince1, date, lat1, lon1, _, _, _ = propagate_orbit(

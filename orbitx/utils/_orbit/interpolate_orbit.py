@@ -1,7 +1,6 @@
 """A python function to interpolate an orbit from a simulated orbit"""
 
 """___Third-Party Modules___"""
-import datetime
 import numpy as np
 import numpy.typing as npt
 from typing import Tuple, Any
@@ -11,7 +10,7 @@ from scipy.interpolate import interp1d
 
 """__Built-In Modules__"""
 from orbitx.utils._orbit.interp_circ import interp_circ
-from orbitx.utils._date_utils import datetime_to_sec_since
+from orbitx.utils._date_utils import datetime64_to_sec_since
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -24,13 +23,13 @@ __status__ = "Development"
 
 
 def interpolate_orbit(
-        start_date:datetime.datetime,
-        end_date:datetime.datetime,
+        start_date:np.datetime64,
+        end_date:np.datetime64,
         sat_sec_since:npt.NDArray,
         sat_lat_sim:npt.NDArray,
         sat_lon_sim:npt.NDArray,
-        interpolation_sampling_interval:float,
-        reference_date:datetime.datetime=datetime.datetime(1970, 1, 1, 0, 0, 0)
+        interpolation_sampling_interval:np.timedelta64,
+        reference_date:np.datetime64=np.datetime64('1970-01-01T00:00:00')
 ) -> Tuple[Any, Any, np.ndarray]:
     """interpolate_orbit Interpolate the orbit at desired time resolution
 
@@ -56,16 +55,15 @@ def interpolate_orbit(
     f1_lat_linear = interp1d(sat_sec_since, sat_lat_sim)
     f1_lon_linear = interp_circ(sat_sec_since, sat_lon_sim)
 
-    interp_smpl_space = np.arange(
-        datetime_to_sec_since(start_date, reference_date),
-        datetime_to_sec_since(end_date, reference_date)
-        + interpolation_sampling_interval,
-        interpolation_sampling_interval,
-    )
-    interpolate_date = np.array([reference_date + datetime.timedelta(seconds = time_delta) for time_delta in interp_smpl_space])
+    end_date = end_date + interpolation_sampling_interval
+    interpolate_date = np.arange(
+        start=start_date,
+        stop=end_date,
+        step=interpolation_sampling_interval)
+    interpolate_time = [datetime64_to_sec_since(date, reference_date=reference_date) for date in interpolate_date]
     return (
-        f1_lat_linear(interp_smpl_space),
-        f1_lon_linear(interp_smpl_space),
-        interp_smpl_space,
+        f1_lat_linear(interpolate_time),
+        f1_lon_linear(interpolate_time),
+        interpolate_time,
         interpolate_date
     )

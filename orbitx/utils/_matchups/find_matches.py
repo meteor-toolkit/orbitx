@@ -2,7 +2,6 @@
 
 """___Third-Party Modules___"""
 import numpy as np
-import datetime
 from typing import Dict, Any
 from numbers import Number
 """___NPL Modules___"""
@@ -21,10 +20,10 @@ __status__ = "Development"
 
 def find_matches(
         orbit:Orbit,
-        time_diff_threshold:Number,
+        time_diff_threshold:np.timedelta64,
         space_diff_threshold:Number,
-        start_date:datetime.datetime,
-        end_date:datetime.datetime
+        start_date:np.datetime64,
+        end_date:np.datetime64
 )->Dict[str, Dict[str, Any]]:
     """find_matches Finds matchups between each pair of satellites
 
@@ -63,8 +62,6 @@ def find_matches(
     sat1 = orbit.satellites[0]
     other_sats = orbit.satellites[1:]
 
-    start_date = np.datetime64(start_date)
-    end_date = np.datetime64(end_date)
     # Prepare the output: a dictionary with an entry per "other satellite". The entry is named <name of ref sat>_<name of other sat>
     # each entry contains a dictionary with the following entries:
     # lat1     the lattitude of the ref satellite at each match up
@@ -88,8 +85,8 @@ def find_matches(
                     "time": orbit.orbits["time"].values,
                     "time_datetime": orbit.orbits["time_datetime"].values,
                     "time2": np.empty((len(orbit),), dtype = float),
-                    "time_datetime2": np.empty((len(orbit),), dtype = datetime.datetime),
-                    "delay": np.repeat(np.inf, (len(orbit),)),
+                    "time_datetime2": np.empty((len(orbit),), dtype = "datetime64[s]"),
+                    "delay": np.repeat(2 * time_diff_threshold, (len(orbit),)),
                 },
             )
             for s in other_sats
@@ -128,7 +125,6 @@ def find_matches(
             # e.g., if i = 1, the last position of the other sat becomes first,
             # and will be compared with the first position of the ref satellite
             # the first entry must hence be removed (and so on for other values of i)
-            
             if i < 0:
                 position = position[:i, :]
                 s2_date = s2_date[:i]

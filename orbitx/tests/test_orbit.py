@@ -15,6 +15,7 @@ from orbitx.utils._orbit.simulate_orbit import simulate_orbit
 from orbitx import S6_ORBIT_PATH
 import netCDF4 as nc
 from math import pi
+import xarray as xr
 
 __author__ = "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>"
 
@@ -354,7 +355,26 @@ class TestORBIT(unittest.TestCase):
             propagation_sampling_interval=3,
             interpolation_sampling_interval=4,
             reference_date=datetime.datetime(1970, 1, 1, 0, 0, 0),
-            orbit={"": {"lat": [2], "lon": ["3"], "time": ["B"], "time_datetime": []}}
+            orbit=xr.Dataset(
+                data_vars = {
+                    "reference_date": (0),
+                    "time_datetime": ("time", np.array([datetime.datetime(1970, 1, 1, 0, 0, 0) + datetime.timedelta(seconds=float(i)) for i in np.arange(10)])),
+                    "lat1": ("time", np.array([1, 2,   3, 4, 5, 6, 7, 8,  9, 10], dtype = float)),
+                    "lon1": ("time", np.array([3, 2,   0, 3, 6, 5, 8, 6, 10, 11], dtype = float)),
+                    "lat2": ("time", np.array([ 1,  3,  5, 7, 9, 11, 13, 15, 17, 19], dtype = float)),
+                    "lon2": ("time", np.array([-3, -2, -1, 0, 1,  2,  3,  4,  5,  6], dtype = float)),
+                    "time2": ("time", np.array([float(i) for i in np.arange(10)], dtype = float)),
+                    "time_datetime2": ("time", np.array([datetime.datetime(1970, 1, 1, 0, 0, 0) + datetime.timedelta(seconds=float(i)) for i in np.arange(10)]))
+                },
+                coords = {"time": np.array([float(i) for i in np.arange(10)], dtype = float)},
+                attrs={
+                    "satellites": [""],
+                    "start_date": datetime.datetime(1970, 1, 1, 0, 0, 0),
+                    "end_date": datetime.datetime(1970, 1, 2, 0, 0, 1),
+                    "propagation_sampling_interval": 3,
+                    "interpolation_sampling_interval": 4
+                }
+            )
         )
         simulated_orbit = Orbit.simulate(
                 satellites = [""],
@@ -362,7 +382,6 @@ class TestORBIT(unittest.TestCase):
                 end_date = datetime.datetime(1970, 1, 2, 0, 0, 1),
                 propagation_sampling_interval = 3,
                 interpolation_sampling_interval = 4)
-        print(simulated_orbit.orbits)
         self.assertEqual(
             simulated_orbit,
             dummy_orbit

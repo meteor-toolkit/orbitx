@@ -17,7 +17,11 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 
-def landmask(lon_c,lat_c,swath_width=1):
+def landmask(
+        lat_c,
+        lon_c,
+        swath_width=1
+    ):
     """Returns estimate of land fraction for a scene with centre of (lon_c,lat_c) +/- swath width"""
 
     xmin, xmax, ymin, ymax = lon_c - swath_width, lon_c + swath_width, lat_c - swath_width, lat_c + swath_width,

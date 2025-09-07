@@ -21,7 +21,9 @@ __status__ = "Development"
 
 
 def interp_circ(
-    x: np.ndarray, y: np.ndarray, period: float = 360.0
+    x: np.ndarray,
+    y: np.ndarray,
+    period: float = 360.0
 ) -> Callable[[npt.NDArray], npt.NDArray]:
     """interp_circ interpolation for periodic-valued data
 

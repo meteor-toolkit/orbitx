@@ -3,7 +3,6 @@
 """___Third-Party Modules___"""
 import numpy as np
 from typing import Tuple
-import datetime
 
 """___NPL Modules___"""
 
@@ -21,7 +20,7 @@ __status__ = "Development"
 
 
 def get_matching_indices(
-    sim_time: np.ndarray,
+    simulation_time: np.ndarray,
     tle_time: np.ndarray
 ) -> Tuple[list, list]:
     """
@@ -40,7 +39,7 @@ def get_matching_indices(
     # Find corresponding indices of tle and simulation time vectors
     for i in idx_tle:
         idx_sim[i] = np.argmax(
-            sim_time >= tle_time[i]
+            simulation_time >= tle_time[i]
         )  # idx_sim[i] contains the index of the smallest simulation time that is larger than tle_time[i]
         # If no such simulation time exists, it is set to 0
 
@@ -59,5 +58,5 @@ def get_matching_indices(
 
     # Force the idx_sim to include the start_time and end_time stamps
     idx_sim[0] = 0
-    idx_sim[-1] = len(sim_time) - 1
+    idx_sim[-1] = len(simulation_time) - 1
     return idx_sim, idx_tle

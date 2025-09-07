@@ -1,17 +1,15 @@
 """A python function to convert the temporary orbit dictionary to an xarray in the simulation pipeline"""
 
 """___Third-Party Modules___"""
-import datetime
 import numpy as np
 import numpy.typing as npt
-from typing import Tuple, Any, Dict
-from scipy.interpolate import interp1d
+from typing import Dict
 import xarray as xr
 
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._date_utils import datetime_to_sec_since
+from orbitx.utils._date_utils import datetime64_to_sec_since
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
 __created__ = "05/09/2025"
@@ -22,11 +20,11 @@ __status__ = "Development"
 
 def orbit_dict_to_xarray(
         orbit_dict:Dict[str, Dict[str, npt.NDArray]],
-        start_date:datetime.datetime,
-        end_date:datetime.datetime,
-        propagation_sampling_interval:float,
-        interpolation_sampling_interval:float,
-        reference_date:datetime.datetime
+        start_date:np.datetime64,
+        end_date:np.datetime64,
+        propagation_sampling_interval:np.timedelta64,
+        interpolation_sampling_interval:np.timedelta64,
+        reference_date:np.datetime64 = np.datetime64("1970-01-01T00:00:00")
         )->xr.Dataset:
     """orbit_dict_to_xarray convert the temporary orbit dictionary to an xarray in the simulation pipeline
 
@@ -93,18 +91,19 @@ def orbit_dict_to_xarray(
     satellites = list(orbit_dict.keys())
     orbit_xarray = xr.Dataset(
         data_vars = {
-            "reference_date": (datetime_to_sec_since(reference_date, datetime.datetime(1970, 1, 1, 0, 0, 0))),
+            "reference_date": (reference_date),
             "time_datetime": ("time", orbit_dict[satellites[0]]["time_datetime"]),
         },
         coords = {"time": orbit_dict[satellites[0]]["time"]},
         attrs={
             "satellites": satellites,
-            "start_date": datetime_to_sec_since(start_date, reference_date),
-            "end_date": datetime_to_sec_since(end_date, reference_date),
-            "propagation_sampling_interval": propagation_sampling_interval,
-            "interpolation_sampling_interval": interpolation_sampling_interval
+            "start_date": datetime64_to_sec_since(start_date, reference_date=reference_date),
+            "end_date": datetime64_to_sec_since(end_date, reference_date=reference_date),
+            "propagation_sampling_interval": propagation_sampling_interval.item().total_seconds(),
+            "interpolation_sampling_interval": interpolation_sampling_interval.item().total_seconds()
         }
     )
+
     for sat_index, satellite in enumerate(satellites):
         new_sat_df = xr.Dataset(
             data_vars = {
@@ -113,8 +112,9 @@ def orbit_dict_to_xarray(
             },
             coords = {"time": orbit_dict[satellites[0]]["time"]}
         )
+        new_sat_df[f"lat{sat_index + 1}"].attrs["units"] = "degrees"
+        new_sat_df[f"lon{sat_index + 1}"].attrs["units"] = "degrees"
         orbit_xarray = orbit_xarray.merge(new_sat_df)
 
-    orbit_xarray["time"].attrs["units"] = f"seconds since {reference_date:%Y-%m-%d}"
-    orbit_xarray["reference_date"].attrs["units"] = "seconds since 1970-01-01"
+    orbit_xarray["time"].attrs["units"] = f"seconds since {reference_date}"
     return orbit_xarray

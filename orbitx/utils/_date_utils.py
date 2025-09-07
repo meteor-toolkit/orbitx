@@ -60,3 +60,13 @@ def sec_since_to_datetime(date:float, ref_date:datetime.datetime = datetime.date
 def datetime64_to_datetime(date64: np.datetime64)->datetime.datetime:
     timestamp = pd.Timestamp(date64)
     return pd.to_datetime(timestamp)
+
+def datetime_to_datetime64(date: datetime.datetime)->np.datetime64:
+    sec_since = datetime_to_sec_since(date, datetime.datetime(1970, 1, 1, 0, 0, 0))
+    return sec_since_to_datetime64(sec_since=sec_since, reference_date=np.datetime64("1970-01-01T00:00:00"))
+
+def datetime64_to_sec_since(date64: np.datetime64, reference_date: np.datetime64)->float:
+    return (date64 - reference_date).item().total_seconds()
+
+def sec_since_to_datetime64(sec_since: float, reference_date: np.datetime64)->float:
+    return reference_date + np.array([int(sec_since)], dtype = "timedelta64[s]")[0]

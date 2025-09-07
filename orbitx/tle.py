@@ -3,14 +3,13 @@
 """___Third-Party Modules___"""
 import numpy as np
 import os
-import datetime
 from typing import Tuple, List, Optional
 import warnings
 
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._date_utils import datetime_to_sec_since
+from orbitx.utils._date_utils import datetime64_to_sec_since
 
 
 
@@ -52,7 +51,7 @@ class TLEInfo:
         return path
 
     @staticmethod
-    def return_date_from_tle(tle_line_1: str) -> datetime.datetime:
+    def return_date_from_tle(tle_line_1: str) -> np.datetime64:
         """
         Returns date time from TLE first line
 
@@ -62,28 +61,29 @@ class TLEInfo:
 
         # Extract date time information from TLE line 1
         year_tens_and_units = int(tle_line_1[18:20])
-        decimal_day = float(tle_line_1[20:32])
+        milliseconds_day = float(tle_line_1[20:32]) * 86400000
+        date_delta = np.timedelta64(int(milliseconds_day), 'ms')
 
         # TODO: Test the code with any TLE dated before 2000.
         # Create date time object at start of relevant year.
         # Notice that the reference year here has to do with the TLE conventions as explained in
         # 'celestrak.org/NORAD/documentation/tle-fmt.php' and not the reference year for OrbitX which is 1970.
         if tle_line_1[18] == "0" or tle_line_1[18] == "1" or tle_line_1[18] == "2":
-            date = datetime.datetime(year=2000 + year_tens_and_units, month=1, day=1)
+            date = np.datetime64(f'20{year_tens_and_units}-01-01T00:00:00')
         else:
-            date = datetime.datetime(year=1900 + year_tens_and_units, month=1, day=1)
+            date = np.datetime64(f'19{year_tens_and_units}-01-01T00:00:00')
 
         # Add the necessary number of days to get TLE
-        date += datetime.timedelta(days=decimal_day - 1)
+        date += np.array([date_delta], dtype='timedelta64[ms]')
 
         return date
 
     def get_tle(
         self,
         satellite: str,
-        start_date: datetime.datetime,
-        end_date: datetime.datetime,
-        reference_date: datetime.datetime = datetime.datetime(1970, 1, 1, 0, 0, 0)
+        start_date: np.datetime64,
+        end_date: np.datetime64,
+        reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00")
     ) -> Tuple[List[str], List[str], np.ndarray]:
         """
         Returns two-line elements within defined time window, with seconds since reference date
@@ -131,9 +131,9 @@ class TLEInfo:
         tle_date = np.array(
             [self.return_date_from_tle(tle_line_1_i) for tle_line_1_i in tle_line_1]
         )
-        tle_time_since = np.array([datetime_to_sec_since(d, reference_date) for d in tle_date])
-        start_time_since = datetime_to_sec_since(start_date, reference_date)
-        end_time_since = datetime_to_sec_since(end_date, reference_date)
+        tle_time_since = np.array([datetime64_to_sec_since(d, reference_date) for d in tle_date])
+        start_time_since = datetime64_to_sec_since(start_date, reference_date)
+        end_time_since = datetime64_to_sec_since(end_date, reference_date)
 
         # Filter time
         lower_bound_tle_time = [t for t in tle_time_since if t <= start_time_since]
