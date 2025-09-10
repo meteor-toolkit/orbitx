@@ -9,7 +9,6 @@ import unittest
 from orbitx.tle import TLEInfo
 from orbitx import add_to_tle_path
 from pathlib import Path
-from datetime import datetime as dt
 
 
 __author__ = "Sam Hunt <sam.hunt@npl.co.uk>"
@@ -94,39 +93,34 @@ class TestTLE(unittest.TestCase):
         tle = TLEInfo()
         date = tle.return_date_from_tle(tle_line_1)
 
-        exp_date = dt(2015, 6, 23, 3, 50, 23, 384832)
+        exp_date = np.datetime64("2015-06-23T03:50:23.384832")
 
-        self.assertEqual(date.year, exp_date.year)
-        self.assertEqual(date.month, exp_date.month)
-        self.assertEqual(date.day, exp_date.day)
-        self.assertEqual(date.hour, exp_date.hour)
-        self.assertEqual(date.minute, exp_date.minute)
-        self.assertEqual(date.second, exp_date.second)
+        self.assertEqual(date, exp_date)
 
     def test_get_tle(self):
         # define input parameters
-        start_date = dt(2015, 6, 24, 0, 0, 0)
-        end_date = dt(2015, 6, 26, 0, 0, 0)
+        start_date = np.datetime64("2015-06-24T00:00:00")
+        end_date = np.datetime64("2015-06-26T00:00:00")
         satellite_name = "S2A"
 
         # run code under test
         tle = TLEInfo()
         tles = tle.get_tle(
-            start_date=start_date, end_date=end_date, satellite=satellite_name
+            satellite=satellite_name, start_date=start_date, end_date=end_date
         )
         # define expected output
-        exp_first_lines = [
+        exp_first_lines = np.array([
             "1 40697U 15028A   15174.84616994 -.00000044  00000+0  00000+0 0  9994",
             "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994",
             "1 40697U 15028A   15176.80399346 -.00024242  00000+0 -91643-2 0  9994",
-        ]
-        exp_second_lines = [
+        ], dtype = str)
+        exp_second_lines = np.array([
             "2 40697  98.5727 249.1811 0001221 155.7341 204.3855 14.30973291   112",
             "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266",
             "2 40697  98.5705 251.1120 0002131 229.6310 131.1858 14.31372223   391",
-        ]
+        ], dtype = str)
 
-        # The expected time since 1970 for each relevant TLE cab be calculated as follows. Take line 1 of
+        # The expected time since 1970 for each relevant TLE can be calculated as follows. Take line 1 of
         # "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994\n" for instance;
         # Day 175 of year 2015 is June 24. The decimal days .89500181 equals hour 21, minute 28 and second 48.156384 of
         # same day. Below the decimal seconds are added up separately.
@@ -149,14 +143,17 @@ class TestTLE(unittest.TestCase):
         """
 
         # define input parameters
-        start_date = dt(2015, 6, 24, 22, 0, 0)
-        end_date = dt(2015, 6, 24, 23, 0, 0)
+        start_date = np.datetime64("2015-06-24T22:00:00")
+        end_date = np.datetime64("2015-06-24T23:00:00")
         satellite_name = "S2A"
 
         # run code under test
         tle = TLEInfo()
         tles = tle.get_tle(
-            start_date=start_date, end_date=end_date, satellite=satellite_name
+            start_date=start_date,
+            end_date=end_date,
+            satellite=satellite_name,
+            reference_date=np.datetime64("1970-01-01T00:00:00")
         )
 
         # define expected output

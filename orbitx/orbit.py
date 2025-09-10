@@ -128,7 +128,7 @@ class Orbit:
                 reference_date
             )
 
-            lat, lon, time, date = interpolate_orbit(
+            time, date, lat, lon = interpolate_orbit(
                 start_date,
                 end_date,
                 sat_secs_since,

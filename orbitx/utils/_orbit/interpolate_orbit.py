@@ -62,8 +62,8 @@ def interpolate_orbit(
         step=interpolation_sampling_interval)
     interpolate_time = [datetime64_to_sec_since(date, reference_date=reference_date) for date in interpolate_date]
     return (
-        f1_lat_linear(interpolate_time),
-        f1_lon_linear(interpolate_time),
         interpolate_time,
-        interpolate_date
+        interpolate_date,
+        f1_lat_linear(interpolate_time),
+        f1_lon_linear(interpolate_time)
     )

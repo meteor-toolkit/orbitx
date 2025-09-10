@@ -105,7 +105,6 @@ def propagate_orbit(
         extrap_date = extrap_date.shiftedBy(propagation_sampling_interval)
         extrap_date_list = np.append(extrap_date_list, extrap_date)
 
-    extrap_date_list = np.array(extrap_date_list)
     sel = np.empty(extrap_date_list.shape, dtype=float)
     saz = np.empty(extrap_date_list.shape, dtype=float)
     pos_lat = np.empty(extrap_date_list.shape, dtype=float)

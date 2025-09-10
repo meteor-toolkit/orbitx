@@ -61,8 +61,9 @@ class TLEInfo:
 
         # Extract date time information from TLE line 1
         year_tens_and_units = int(tle_line_1[18:20])
-        milliseconds_day = float(tle_line_1[20:32]) * 86400000
-        date_delta = np.timedelta64(int(milliseconds_day), 'ms')
+        day_in_year = np.timedelta64(int(tle_line_1[20:23]), 'D') - 1
+        microseconds_day = float(tle_line_1[23:32]) * 86400000000
+        date_delta = np.timedelta64(int(microseconds_day), 'us')
 
         # TODO: Test the code with any TLE dated before 2000.
         # Create date time object at start of relevant year.
@@ -74,8 +75,7 @@ class TLEInfo:
             date = np.datetime64(f'19{year_tens_and_units}-01-01T00:00:00')
 
         # Add the necessary number of days to get TLE
-        date += np.array([date_delta], dtype='timedelta64[ms]')
-
+        date += day_in_year + np.array(date_delta, dtype='timedelta64[us]')
         return date
 
     def get_tle(
@@ -179,7 +179,6 @@ class TLEInfo:
             tle_line_1 = tle_line_1[idx]
             tle_line_2 = tle_line_2[idx]
             tle_time_since = tle_time_since[idx]
-
         return tle_line_1, tle_line_2, tle_time_since
 
 

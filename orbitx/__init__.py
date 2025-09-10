@@ -1,10 +1,11 @@
 """orbitx - Propagate satellite orbits to identify matchups."""
 
 __author__ = "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>"
-__all__ = ["TLE_PATH", "add_to_tle_path", "setup_orekit", "return_matchups", "Orbit", "Matchups"]
+__all__ = ["TLE_PATH", "add_to_tle_path", "setup_orekit", "Orbit", "Matchups", "TLEInfo"]
 
 from orbitx.orbit import Orbit
 from orbitx.matchups import Matchups
+from orbitx.tle import TLEInfo
 
 from ._version import get_versions
 import os
