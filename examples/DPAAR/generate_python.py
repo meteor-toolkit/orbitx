@@ -103,10 +103,14 @@ sats = ["{}", "{}"]
 years = range({}, {})
 output_path_sim_orbits = "/home/xl3/Documents/output/orbitx/{{}}_{{}}/orbits/".format(sats[0], sats[1])
 output_path_matchups = "/home/xl3/Documents/output/orbitx/{{}}_{{}}/matchups/".format(sats[0], sats[1])
-propagation_sampling_interval = 60
-interpolation_sampling_interval = 5
-cntr2cntr_dist = 290
-time_diff_threshold = 900
+propagation_sampling_interval = np.array(60, dtype="timedelta64[s]")
+interpolation_sampling_interval = np.array(5, dtype="timedelta64[s]")
+space_diff_threshold = 290
+time_diff_threshold = time_diff_threshold = np.array(900, dtype="timedelta64[s]")
+check_before = False
+check_after = True
+has_land_ocean_mask = True
+reference_date=np.datetime64("2000-01-01T00:00:00")
 
 os.makedirs(output_path_sim_orbits, exist_ok=True)
 os.makedirs(output_path_matchups, exist_ok=True)
@@ -116,8 +120,8 @@ os.makedirs(output_path_matchups, exist_ok=True)
 arguments = np.empty((len(years), 2), dtype = object)
 
 for idx_year, year in enumerate(years):
-    start_date = datetime.datetime(year, 1, 1, 0, 0, 0)
-    end_date = datetime.datetime(year, 12, 31, 0, 0, 0)
+    start_date = np.datetime64(f"{year}-01-01T00:00:00")
+    end_date = np.datetime64("{year + 1}-01-01T00:00:00")
     arguments[idx_year, :] = [
         start_date,
         end_date,
@@ -125,34 +129,48 @@ for idx_year, year in enumerate(years):
 
 orekit.initVM()
 def return_matchups_(
-    start_time,
-    end_time,
-    output_path_sim_orbits,
-    output_path_matchups,
-    sats,
+    start_date,
+    end_date,
+    satellites,
     propagation_sampling_interval,
     interpolation_sampling_interval,
-    cntr2cntr_dist,
-    time_diff_threshold):
-    return return_matchups(
-        sats,
-        start_time,
-        end_time,
-        propagation_sampling_interval,
-        interpolation_sampling_interval,
-        cntr2cntr_dist,
-        time_diff_threshold,
-        output_path_sim_orbits,
-        output_path_matchups)
+    space_diff_threshold,
+    time_diff_threshold,
+    check_before,
+    check_after,
+    has_land_ocean_mask,
+    reference_date
+    ):
+    matchups = Matchups.find_matchups(
+        satellites=satellites,
+        start_date=start_date,
+        end_date=end_date,
+        propagation_sampling_interval = propagation_sampling_interval,
+        interpolation_sampling_interval = interpolation_sampling_interval,
+        space_diff_threshold = space_diff_threshold,
+        time_diff_threshold = time_diff_threshold,
+        check_before = check_before,
+        check_after = check_after,
+        has_land_ocean_mask = has_land_ocean_mask,
+        reference_date=reference_date
+    )
+
+    matchups.orbit.to_netcdf(output_path_sim_orbits)
+    matchups.to_netcdf(output_path_matchups)
+
+    fig_matchup = matchups.plot()
+    fig_matchup.savefig(f"{output_path_matchups}matchup_plot.png")
+    fig_orbit = matchups.orbit.plot()
+    fig_orbit.savefig(f"{output_path_matchups}orbit_plot.png")
+
+    return
 
 partial_matchup = partial(return_matchups_,
-                        sats = sats,
-                        propagation_sampling_interval = 60,
-                        interpolation_sampling_interval = 5,
-                        cntr2cntr_dist = 290,
-                        time_diff_threshold = 900,
-                        output_path_sim_orbits = output_path_sim_orbits,
-                        output_path_matchups = output_path_matchups)
+                        satellites = satellites,
+                        propagation_sampling_interval = propagation_sampling_interval,
+                        interpolation_sampling_interval = interpolation_sampling_interval,
+                        space_diff_threshold = space_diff_threshold,
+                        time_diff_threshold = time_diff_threshold)
 
 n_cores = multiprocessing.cpu_count()
 res = []
