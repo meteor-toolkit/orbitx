@@ -1,8 +1,0 @@
-2025-07-23 15:00:39,072 - ERROR - An error occurred for start date 2023-01-01 00:00:00 and end date 2023-01-07 23:59:59
-Traceback (most recent call last):
-  File "C:\Users\ra19\OneDrive - National Physical Laboratory\Documents\CEO\Matchups\orbitx\examples\RA\DPAAR_get_matchups.py", line 72, in <module>
-    plot_matchups(ds, ccrs.Mollweide())
-  File "C:\Users\ra19\OneDrive - National Physical Laboratory\Documents\CEO\Matchups\orbitx\orbitx\interface.py", line 127, in plot_matchups
-    label=SATELLITE_DICT[ds.attrs[f"sat{i + 1}"]],
-          ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
-KeyError: 'J3'

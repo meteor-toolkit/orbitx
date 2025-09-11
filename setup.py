@@ -1,15 +1,9 @@
 import io
 import os
 import re
-import logging
-import platform
-import shlex
-import subprocess as sp
-import sys
+
 from setuptools import find_packages
 from setuptools import setup
-from setuptools.command.develop import develop
-from setuptools.command.install import install
 import versioneer
 
 
@@ -20,59 +14,11 @@ def read(filename):
         return re.sub(text_type(r":[a-z]+:`~?(.*?)`"), text_type(r"``\1``"), fd.read())
 
 
-# installs orekit via conda
-def post_install_commands():
-    on_windows = platform.system() == "Windows"
-
-    commands = [
-       "conda install -k -c conda-forge orekit==12.0.1",
-    ]
-    commands = [shlex.split(c, posix=(not on_windows)) for c in commands]
-
-    logging.debug(platform.system())
-    logging.debug(commands)
-
-    for cmd in commands:
-        logging.debug(cmd)
-        process = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.STDOUT)
-
-        for c in iter(lambda: process.stdout.read(1), b""):
-            c_decoded = c.decode()
-            sys.stdout.write(c_decoded)
-            sys.stdout.flush()
-
-        process.wait()
-        if process.returncode != 0:
-            err = "Command '{}' failed: aborting install".format(cmd)
-            logging.error(err)
-            raise RuntimeError(err)
-
-
-class PostDevelopCommand(develop):
-    """Post-installation for development mode."""
-
-    def run(self):
-        develop.run(self)
-        post_install_commands()
-
-
-class PostInstallCommand(install):
-    """Post-installation for installation mode."""
-
-    def run(self):
-        install.run(self)
-        post_install_commands()
-
-
-cmdclass = {"develop": PostDevelopCommand, "install": PostInstallCommand}
-
-cmdclass = versioneer.get_cmdclass(cmdclass=cmdclass)
-
 setup(
     version=versioneer.get_version(),
-    cmdclass=cmdclass,
+    cmdclass=versioneer.get_cmdclass(),
     name="orbitx",
-    url="https://gitlab.npl.co.uk/eco/tools/orbitx",
+    url="https://gitlab.npl.co.uk/altimetry/orbitx",
     license="None",
     author="Sajedeh Behnia",
     author_email="sajedeh.behnia@npl.co.uk",
@@ -86,23 +32,30 @@ setup(
         ]
     },
     install_requires=[
-        "numpy==1.26.4",
-        "scipy==1.13.0",
-        "Cartopy==0.22.0",
-        "matplotlib==3.8.4",
-        "netCDF4==1.6.5",
-        "xarray==2024.3.0",
+        "numpy==2.3.1",
+        "scipy==1.16.0",
+        "Cartopy==0.24.1",
+        "matplotlib==3.10.3",
+        "netCDF4==1.7.2",
+        "xarray==2025.7.1",
     ],
     extras_require={
         "dev": [
+            "black",
+            "black[jupyter]",
+            "build",
+            "ipython",
+            "mypy",
             "pre-commit",
+            "pytest",
+            "pytest-cov",
+            "pytest-html",
+            "setuptools",
             "sphinx",
             "sphinx_book_theme",
             "sphinx_design",
-            "ipython",
-            "pytest",
-            "pytest-html",
-            "pytest-cov",
+            "tox",
+            "twine",
         ]
     },
     classifiers=[
