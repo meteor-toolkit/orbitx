@@ -25,6 +25,7 @@ from org.orekit.utils import (
 )
 from org.orekit.propagation.analytical.tle import TLE, TLEPropagator
 from orekit.pyhelpers import absolutedate_to_datetime
+
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
@@ -39,14 +40,13 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 
-
 def propagate_orbit(
     tle_line1: str,
     tle_line2: str,
     start_date: np.datetime64,
     end_date: np.datetime64,
     propagation_sampling_interval: np.timedelta64,
-    reference_date: np.datetime64 = np.datetime64('1970-01-01T00:00:00')
+    reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
 ) -> Tuple[
     List[float], List[float], List[float], List[float], List[float], List[float]
 ]:
@@ -60,23 +60,57 @@ def propagate_orbit(
     :param propagation_sampling_interval: sampling interval in seconds
     :return: Tuple containing the date in seconds from 1970, the date in datetime, orbit latitude, longitude, altitude, elevation angle, and azimuth angle
     """
-    orekit.getVMEnv().attachCurrentThread() 
+    orekit.getVMEnv().attachCurrentThread()
     extrap_date = AbsoluteDate(
-        int(start_date.astype('datetime64[Y]').astype(int) + 1970),
-        int(start_date.astype('datetime64[M]').astype(int) % 12 + 1),
-        int((start_date.astype('datetime64[D]') - start_date.astype('datetime64[M]')).astype(int) + 1),
-        int((start_date.astype('datetime64[h]') - start_date.astype('datetime64[D]')).astype(int)),
-        int((start_date.astype('datetime64[m]') - start_date.astype('datetime64[h]')).astype(int)),
-        float((start_date.astype('datetime64[s]') - start_date.astype('datetime64[m]')).astype(float)),
+        int(start_date.astype("datetime64[Y]").astype(int) + 1970),
+        int(start_date.astype("datetime64[M]").astype(int) % 12 + 1),
+        int(
+            (
+                start_date.astype("datetime64[D]") - start_date.astype("datetime64[M]")
+            ).astype(int)
+            + 1
+        ),
+        int(
+            (
+                start_date.astype("datetime64[h]") - start_date.astype("datetime64[D]")
+            ).astype(int)
+        ),
+        int(
+            (
+                start_date.astype("datetime64[m]") - start_date.astype("datetime64[h]")
+            ).astype(int)
+        ),
+        float(
+            (
+                start_date.astype("datetime64[s]") - start_date.astype("datetime64[m]")
+            ).astype(float)
+        ),
         TimeScalesFactory.getUTC(),
     )  # when you want to start tracking
     final_date = AbsoluteDate(
-        int(end_date.astype('datetime64[Y]').astype(int) + 1970),
-        int(end_date.astype('datetime64[M]').astype(int) % 12 + 1),
-        int((end_date.astype('datetime64[D]') - end_date.astype('datetime64[M]')).astype(int) + 1),
-        int((end_date.astype('datetime64[h]') - end_date.astype('datetime64[D]')).astype(int)),
-        int((end_date.astype('datetime64[m]') - end_date.astype('datetime64[h]')).astype(int)),
-        float((end_date.astype('datetime64[s]') - end_date.astype('datetime64[m]')).astype(float)),
+        int(end_date.astype("datetime64[Y]").astype(int) + 1970),
+        int(end_date.astype("datetime64[M]").astype(int) % 12 + 1),
+        int(
+            (
+                end_date.astype("datetime64[D]") - end_date.astype("datetime64[M]")
+            ).astype(int)
+            + 1
+        ),
+        int(
+            (
+                end_date.astype("datetime64[h]") - end_date.astype("datetime64[D]")
+            ).astype(int)
+        ),
+        int(
+            (
+                end_date.astype("datetime64[m]") - end_date.astype("datetime64[h]")
+            ).astype(int)
+        ),
+        float(
+            (
+                end_date.astype("datetime64[s]") - end_date.astype("datetime64[m]")
+            ).astype(float)
+        ),
         TimeScalesFactory.getUTC(),
     )  # when you want to stop tracking
     propagation_sampling_interval = propagation_sampling_interval.item().total_seconds()
@@ -130,12 +164,8 @@ def propagate_orbit(
             pos_tmp0, inertial_frame, extrap_date
         )  # position of the satellite on the earth surface
 
-        pos_s0_lat[extrap_date_ind] = (
-            poss0.getLatitude()
-        )  # satellite nadir lattitude
-        pos_s0_lon[extrap_date_ind] = (
-            poss0.getLongitude()
-        )  # satellite nadir longitude
+        pos_s0_lat[extrap_date_ind] = poss0.getLatitude()  # satellite nadir lattitude
+        pos_s0_lon[extrap_date_ind] = poss0.getLongitude()  # satellite nadir longitude
         alt_sat = poss0.getAltitude()
         if not isinstance(alt_sat, numbers.Number):
             warnings.warn("Satellite altitude is not a number: {}".format(alt_sat))
@@ -159,9 +189,7 @@ def propagate_orbit(
         station_frame = TopocentricFrame(earth, station, "Esrange")
 
         saz_tmp = (
-            station_frame.getAzimuth(pos_sun, inertial_frame, extrap_date)
-            * 180.0
-            / pi
+            station_frame.getAzimuth(pos_sun, inertial_frame, extrap_date) * 180.0 / pi
         )
         sel_tmp = (
             station_frame.getElevation(pos_sun, inertial_frame, extrap_date)
@@ -172,9 +200,12 @@ def propagate_orbit(
         sel[extrap_date_ind] = sel_tmp
         saz[extrap_date_ind] = saz_tmp
 
-        date[extrap_date_ind] = datetime_to_datetime64(absolutedate_to_datetime(extrap_date))
-        julian_date[extrap_date_ind] = datetime64_to_sec_since(date[extrap_date_ind], reference_date)
-
+        date[extrap_date_ind] = datetime_to_datetime64(
+            absolutedate_to_datetime(extrap_date)
+        )
+        julian_date[extrap_date_ind] = datetime64_to_sec_since(
+            date[extrap_date_ind], reference_date
+        )
 
     pos_s0_lat = np.array([i * 180.0 / pi for i in pos_s0_lat])
     pos_s0_lon = np.array([i * 180.0 / pi for i in pos_s0_lon])

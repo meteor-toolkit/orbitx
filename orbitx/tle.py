@@ -12,7 +12,6 @@ import warnings
 from orbitx.utils._date_utils import datetime64_to_sec_since
 
 
-
 __author__ = [
     "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
     "Sam Hunt <sam.hunt@npl.co.uk>",
@@ -61,21 +60,21 @@ class TLEInfo:
 
         # Extract date time information from TLE line 1
         year_tens_and_units = int(tle_line_1[18:20])
-        day_in_year = np.timedelta64(int(tle_line_1[20:23]), 'D') - 1
+        day_in_year = np.timedelta64(int(tle_line_1[20:23]), "D") - 1
         microseconds_day = float(tle_line_1[23:32]) * 86400000000
-        date_delta = np.timedelta64(int(microseconds_day), 'us')
+        date_delta = np.timedelta64(int(microseconds_day), "us")
 
         # TODO: Test the code with any TLE dated before 2000.
         # Create date time object at start of relevant year.
         # Notice that the reference year here has to do with the TLE conventions as explained in
         # 'celestrak.org/NORAD/documentation/tle-fmt.php' and not the reference year for OrbitX which is 1970.
         if tle_line_1[18] == "0" or tle_line_1[18] == "1" or tle_line_1[18] == "2":
-            date = np.datetime64(f'20{year_tens_and_units}-01-01T00:00:00')
+            date = np.datetime64(f"20{year_tens_and_units}-01-01T00:00:00")
         else:
-            date = np.datetime64(f'19{year_tens_and_units}-01-01T00:00:00')
+            date = np.datetime64(f"19{year_tens_and_units}-01-01T00:00:00")
 
         # Add the necessary number of days to get TLE
-        date += day_in_year + np.array(date_delta, dtype='timedelta64[us]')
+        date += day_in_year + np.array(date_delta, dtype="timedelta64[us]")
         return date
 
     def get_tle(
@@ -83,7 +82,7 @@ class TLEInfo:
         satellite: str,
         start_date: np.datetime64,
         end_date: np.datetime64,
-        reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00")
+        reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
     ) -> Tuple[List[str], List[str], np.ndarray]:
         """
         Returns two-line elements within defined time window, with seconds since reference date
@@ -131,7 +130,9 @@ class TLEInfo:
         tle_date = np.array(
             [self.return_date_from_tle(tle_line_1_i) for tle_line_1_i in tle_line_1]
         )
-        tle_time_since = np.array([datetime64_to_sec_since(d, reference_date) for d in tle_date])
+        tle_time_since = np.array(
+            [datetime64_to_sec_since(d, reference_date) for d in tle_date]
+        )
         start_time_since = datetime64_to_sec_since(start_date, reference_date)
         end_time_since = datetime64_to_sec_since(end_date, reference_date)
 

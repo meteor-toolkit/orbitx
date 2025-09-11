@@ -1,8 +1,8 @@
 """A File to submit all the slurm jobs for this project"""
 
-
 """___Third-Party Modules___"""
 import os
+
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
@@ -41,4 +41,8 @@ sats_list = [
 ]
 
 for sats in sats_list:
-    os.system("sbatch /home/xl3/projects/orbitx/examples/DPAAR/SLURM/slurm_submit.icelake.{}_{}.venv".format(sats[0], sats[1]))
+    os.system(
+        "sbatch /home/xl3/projects/orbitx/examples/DPAAR/SLURM/slurm_submit.icelake.{}_{}.venv".format(
+            sats[0], sats[1]
+        )
+    )

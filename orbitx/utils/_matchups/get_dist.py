@@ -18,6 +18,7 @@ __maintainer__ = "Zhav Loizeau"
 __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
+
 def get_dist(
     lat1: Union[int, float],
     lon1: Union[int, float],

@@ -10,14 +10,10 @@ import numpy as np
 """__Built-In Modules__"""
 
 """___Authorship___"""
-__author__ = __author__ = [
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>"
-]
+__author__ = __author__ = ["Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>"]
 __created__ = "26/08/2025"
 __version__ = 1.0
-__maintainer__ = [
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>"
-]
+__maintainer__ = ["Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>"]
 __status__ = "Development"
 
 SATELLITE_DICT = {
@@ -33,14 +29,15 @@ SATELLITE_DICT = {
     "SA": "Saral-AltiKa",
     "CS2": "CryoSat-2",
     "LINCS2": "Lin-CryoSat-2",
-    "N20": "NOAA-20"
+    "N20": "NOAA-20",
 }
 
 # Radius of earth in kilometers
 EARTH_RADIUS = 6371
 
-__land_shp_fname = shpreader.natural_earth(resolution='50m',
-                                         category='physical', name='land')
+__land_shp_fname = shpreader.natural_earth(
+    resolution="50m", category="physical", name="land"
+)
 
 __geoms = list(shpreader.Reader(__land_shp_fname).geometries())
 __multipol_loc = np.where([isinstance(geom, sgeom.MultiPolygon) for geom in __geoms])[0]
@@ -49,8 +46,7 @@ for loc in __multipol_loc:
     [__geoms.append(multipol) for multipol in __multipols]
     __geoms.pop(loc)
 
-LAND_GEOM = sgeom.MultiPolygon([sgeom.shape(geom)
-                                for geom in __geoms])
+LAND_GEOM = sgeom.MultiPolygon([sgeom.shape(geom) for geom in __geoms])
 
 # inches to cm conversion constant
 CM = 1 / 2.54

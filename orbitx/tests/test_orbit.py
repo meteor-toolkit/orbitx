@@ -56,7 +56,7 @@ class TestORBIT(unittest.TestCase):
             np.datetime64("1970-01-01T00:00:00"),
             np.datetime64("1970-01-01T12:00:00"),
             np.datetime64("1970-01-02T00:00:00"),
-            np.datetime64("1970-01-02T12:00:00")
+            np.datetime64("1970-01-02T12:00:00"),
         ]
         exp_smpl_space_secs_since_1970 = np.array([0.0, 43200.0, 86400.0, 129600.0])
 
@@ -110,9 +110,7 @@ class TestORBIT(unittest.TestCase):
             ]
         )  # These are the indices of the corresponding time stamps in simulation vector
 
-        idx_sim, idx_tle = get_matching_indices(
-            np.array(sim_time), np.array(tle_time)
-        )
+        idx_sim, idx_tle = get_matching_indices(np.array(sim_time), np.array(tle_time))
 
         self.assertCountEqual(exp_idx_tle, idx_tle)
         self.assertCountEqual(exp_idx_sim, idx_sim)
@@ -123,9 +121,9 @@ class TestORBIT(unittest.TestCase):
         exp_time = ds.groups["data_01"].variables["time"][:]
         exp_date = [
             sec_since_to_datetime64(
-                exp_sec_since,
-                reference_date=np.datetime64("2000-01-01T00:00:00")
-            ) for exp_sec_since in exp_time
+                exp_sec_since, reference_date=np.datetime64("2000-01-01T00:00:00")
+            )
+            for exp_sec_since in exp_time
         ]
         exp_lat = ds.groups["data_01"].variables["latitude"][:]
         exp_lon = ds.groups["data_01"].variables["longitude"][:]
@@ -136,11 +134,16 @@ class TestORBIT(unittest.TestCase):
         S6_end_date = np.max(exp_date)
         # Simulate S6 orbit at 1 Hz
         sat = "S6"
-        propagation_sampling_interval = np.array(1, dtype = "timedelta64[s]")
+        propagation_sampling_interval = np.array(1, dtype="timedelta64[s]")
 
         tle = TLEInfo()
 
-        tle_line_1, tle_line_2, tle_time_s1970 = tle.get_tle(sat, S6_start_date, S6_end_date, reference_date=np.datetime64("2000-01-01T00:00:00"))
+        tle_line_1, tle_line_2, tle_time_s1970 = tle.get_tle(
+            sat,
+            S6_start_date,
+            S6_end_date,
+            reference_date=np.datetime64("2000-01-01T00:00:00"),
+        )
 
         time, date, lat, lon = simulate_orbit(
             start_date=S6_start_date,
@@ -149,7 +152,8 @@ class TestORBIT(unittest.TestCase):
             line2=tle_line_2,
             seconds_since_tle=tle_time_s1970,
             propagation_sampling_interval=propagation_sampling_interval,
-            reference_date=np.datetime64("2000-01-01T00:00:00"))
+            reference_date=np.datetime64("2000-01-01T00:00:00"),
+        )
         self.assertCountEqual(time, exp_time)
         self.assertCountEqual(date, exp_date)
         # Calculate the Haversine distance between simulated and real orbit at 1 Hz sampling rate
@@ -161,7 +165,6 @@ class TestORBIT(unittest.TestCase):
         # Make sure that at all instances, the distance is less than 1 km (which is an acceptable deviation for S6)
         self.assertTrue((np.array(distance) < 1).all())
 
-    
     # @mock.patch(
     #     "orbitx.utils._orbit.propagate_orbit.datetime_to_datetime64",
     #     return_value=np.datetime64("1970-01-01T00:00:00"),
@@ -262,9 +265,13 @@ class TestORBIT(unittest.TestCase):
         "orbitx.utils._orbit.simulate_orbit.propagate_orbit",
         return_value=([12], [13], [14], [15], [], [], []),
     )
-    @mock.patch("orbitx.utils._orbit.simulate_orbit.get_matching_indices", return_value=([7], [0]))
     @mock.patch(
-        "orbitx.utils._orbit.simulate_orbit.form_sample_space", return_value=([], [9]))
+        "orbitx.utils._orbit.simulate_orbit.get_matching_indices",
+        return_value=([7], [0]),
+    )
+    @mock.patch(
+        "orbitx.utils._orbit.simulate_orbit.form_sample_space", return_value=([], [9])
+    )
     def test_simulate_orbit_1_tle_ref(self, mock_form_ss, mock_match_idx, mock_prop):
         start_date = np.datetime64("1970-01-01T00:00:00")
         end_date = np.datetime64("1970-01-01T00:00:05")
@@ -276,14 +283,16 @@ class TestORBIT(unittest.TestCase):
                 line1=["12"],
                 line2=["23"],
                 seconds_since_tle=[32],
-                propagation_sampling_interval=np.array(2, dtype = "timedelta64[s]"),
-                reference_date=np.datetime64("1970-01-01T00:00:00")), ([12], [13], [14], [15])
+                propagation_sampling_interval=np.array(2, dtype="timedelta64[s]"),
+                reference_date=np.datetime64("1970-01-01T00:00:00"),
+            ),
+            ([12], [13], [14], [15]),
         )
         mock_form_ss.assert_called_with(
             np.datetime64("1970-01-01T00:00:00"),
             np.datetime64("1970-01-01T00:00:05"),
-            np.array(2, dtype = "timedelta64[s]"),
-            np.datetime64("1970-01-01T00:00:00")
+            np.array(2, dtype="timedelta64[s]"),
+            np.datetime64("1970-01-01T00:00:00"),
         )
         mock_match_idx.assert_called_with([9], [32])
         mock_prop.assert_called_with(
@@ -291,15 +300,17 @@ class TestORBIT(unittest.TestCase):
             "23",
             np.datetime64("1970-01-01T00:00:00"),
             np.datetime64("1970-01-01T00:00:05"),
-            np.array(2, dtype = "timedelta64[s]"),
-            np.datetime64("1970-01-01T00:00:00")
+            np.array(2, dtype="timedelta64[s]"),
+            np.datetime64("1970-01-01T00:00:00"),
         )
 
     @mock.patch(
-        "orbitx.utils._orbit.simulate_orbit.propagate_orbit", return_value=([12], [13], [14], [15], [], [], [])
+        "orbitx.utils._orbit.simulate_orbit.propagate_orbit",
+        return_value=([12], [13], [14], [15], [], [], []),
     )
     @mock.patch(
-        "orbitx.utils._orbit.simulate_orbit.get_matching_indices", return_value=([7], [0])
+        "orbitx.utils._orbit.simulate_orbit.get_matching_indices",
+        return_value=([7], [0]),
     )
     @mock.patch(
         "orbitx.utils._orbit.simulate_orbit.form_sample_space", return_value=([], [9])
@@ -317,15 +328,17 @@ class TestORBIT(unittest.TestCase):
                 line1=["1", "2"],
                 line2=["3", "4"],
                 seconds_since_tle=[2],
-                propagation_sampling_interval=np.array(1, dtype = "timedelta64[s]"),
-                reference_date=np.datetime64("1970-01-01T00:00:00")),
-                ([12], [13], [14], [15])
+                propagation_sampling_interval=np.array(1, dtype="timedelta64[s]"),
+                reference_date=np.datetime64("1970-01-01T00:00:00"),
+            ),
+            ([12], [13], [14], [15]),
         )
         mock_form_smpl.assert_called_with(
             np.datetime64("1970-01-01T00:00:00"),
             np.datetime64("1970-01-01T00:00:05"),
-            np.array(1, dtype = "timedelta64[s]"),
-            np.datetime64("1970-01-01T00:00:00"))
+            np.array(1, dtype="timedelta64[s]"),
+            np.datetime64("1970-01-01T00:00:00"),
+        )
         mock_form_smpl.assert_called_once()
         mock_get_mtch_idx.assert_called_with([9], [2])
         mock_get_mtch_idx.assert_called_once()
@@ -334,21 +347,44 @@ class TestORBIT(unittest.TestCase):
             "3",
             np.datetime64("1970-01-01T00:00:00"),
             np.datetime64("1970-01-01T00:00:05"),
-            np.array(1, dtype = "timedelta64[s]"),
-            np.datetime64("1970-01-01T00:00:00"))
+            np.array(1, dtype="timedelta64[s]"),
+            np.datetime64("1970-01-01T00:00:00"),
+        )
         mock_prop_orb.assert_called_once()
 
     def test_interpolate_orbit(self):
         sat_sec_since = np.linspace(0, 86400, 33)
-        sat_date =np.linspace(0, 86400, 33, dtype = "datetime64[s]")
-        sat_lat_sim = np.concatenate((np.linspace(-70, 70, 17, dtype=float), np.linspace(70, -70, 17, dtype=float)[1:]))
-        sat_lon_sim = np.concatenate((np.linspace(-180, 180, 17, dtype=float)[:-1], np.linspace(-180, 180, 17, dtype=float)[:-1], [-180]))
-        interpolation_sampling_interval = np.array(675, dtype = "timedelta64[s]")
+        sat_date = np.linspace(0, 86400, 33, dtype="datetime64[s]")
+        sat_lat_sim = np.concatenate(
+            (
+                np.linspace(-70, 70, 17, dtype=float),
+                np.linspace(70, -70, 17, dtype=float)[1:],
+            )
+        )
+        sat_lon_sim = np.concatenate(
+            (
+                np.linspace(-180, 180, 17, dtype=float)[:-1],
+                np.linspace(-180, 180, 17, dtype=float)[:-1],
+                [-180],
+            )
+        )
+        interpolation_sampling_interval = np.array(675, dtype="timedelta64[s]")
 
         exp_time = np.linspace(0, 86400, 129)
-        exp_date = np.linspace(0, 86400, 129, dtype = "datetime64[s]")
-        exp_lat = np.concatenate((np.linspace(-70, 70, 65, dtype=float), np.linspace(70, -70, 65, dtype=float)[1:]))
-        exp_lon = np.concatenate((np.linspace(-180, 180, 65, dtype=float)[:-1], np.linspace(-180, 180, 65, dtype=float)[:-1], [-180]))
+        exp_date = np.linspace(0, 86400, 129, dtype="datetime64[s]")
+        exp_lat = np.concatenate(
+            (
+                np.linspace(-70, 70, 65, dtype=float),
+                np.linspace(70, -70, 65, dtype=float)[1:],
+            )
+        )
+        exp_lon = np.concatenate(
+            (
+                np.linspace(-180, 180, 65, dtype=float)[:-1],
+                np.linspace(-180, 180, 65, dtype=float)[:-1],
+                [-180],
+            )
+        )
 
         start_date = np.datetime64("1970-01-01T00:00:00")
         end_date = np.datetime64("1970-01-02T00:00:00")
@@ -359,9 +395,9 @@ class TestORBIT(unittest.TestCase):
             sat_sec_since,
             sat_lat_sim,
             sat_lon_sim,
-            interpolation_sampling_interval
+            interpolation_sampling_interval,
         )
-        
+
         self.assertCountEqual(exp_lat, lat)
         self.assertCountEqual(exp_lon, lon)
         self.assertTrue((exp_time == time).all())
@@ -371,10 +407,21 @@ class TestORBIT(unittest.TestCase):
         "orbitx.orbit.interpolate_orbit",
         return_value=(
             np.linspace(0, 86400, 129),
-            np.linspace(0, 86400, 129, dtype = "datetime64[s]"),
-            np.concatenate((np.linspace(-70, 70, 65, dtype=float), np.linspace(70, -70, 65, dtype=float)[1:])),
-            np.concatenate((np.linspace(-180, 180, 65, dtype=float)[:-1], np.linspace(-180, 180, 65, dtype=float)[:-1], [-180]))
-        )
+            np.linspace(0, 86400, 129, dtype="datetime64[s]"),
+            np.concatenate(
+                (
+                    np.linspace(-70, 70, 65, dtype=float),
+                    np.linspace(70, -70, 65, dtype=float)[1:],
+                )
+            ),
+            np.concatenate(
+                (
+                    np.linspace(-180, 180, 65, dtype=float)[:-1],
+                    np.linspace(-180, 180, 65, dtype=float)[:-1],
+                    [-180],
+                )
+            ),
+        ),
     )
     @mock.patch(
         "orbitx.orbit.simulate_orbit",
@@ -382,55 +429,68 @@ class TestORBIT(unittest.TestCase):
             "simulate return time",
             "simulate return date",
             "simulate return lat",
-            "simulate return lon"
-        )
+            "simulate return lon",
+        ),
     )
     @mock.patch("orbitx.tle.TLEInfo.get_tle", return_value=([1], [], [""]))
-    def test_simulate(
-        self,
-        mock_get_tle,
-        mock_sim_orb,
-        mock_interp_orb
-    ):
+    def test_simulate(self, mock_get_tle, mock_sim_orb, mock_interp_orb):
         dummy_orbit = Orbit(
             satellites=[""],
             start_date=np.datetime64("1970-01-01T00:00:00"),
             end_date=np.datetime64("1970-01-02T00:00:00"),
-            propagation_sampling_interval=np.array(2700, dtype = "timedelta64[s]"),
-            interpolation_sampling_interval=np.array(675, dtype = "timedelta64[s]"),
+            propagation_sampling_interval=np.array(2700, dtype="timedelta64[s]"),
+            interpolation_sampling_interval=np.array(675, dtype="timedelta64[s]"),
             reference_date=np.datetime64("1970-01-01T00:00:00"),
             orbit=xr.Dataset(
-                data_vars = {
+                data_vars={
                     "reference_date": (np.datetime64("1970-01-01T00:00:00")),
-                    "time_datetime": ("time", np.linspace(0, 86400, 129, dtype = "datetime64[s]")),
-                    "lat1": ("time", np.concatenate((np.linspace(-70, 70, 65, dtype=float), np.linspace(70, -70, 65, dtype=float)[1:]))),
-                    "lon1": ("time", np.concatenate((np.linspace(-180, 180, 65, dtype=float)[:-1], np.linspace(-180, 180, 65, dtype=float)[:-1], [-180]))),
+                    "time_datetime": (
+                        "time",
+                        np.linspace(0, 86400, 129, dtype="datetime64[s]"),
+                    ),
+                    "lat1": (
+                        "time",
+                        np.concatenate(
+                            (
+                                np.linspace(-70, 70, 65, dtype=float),
+                                np.linspace(70, -70, 65, dtype=float)[1:],
+                            )
+                        ),
+                    ),
+                    "lon1": (
+                        "time",
+                        np.concatenate(
+                            (
+                                np.linspace(-180, 180, 65, dtype=float)[:-1],
+                                np.linspace(-180, 180, 65, dtype=float)[:-1],
+                                [-180],
+                            )
+                        ),
+                    ),
                 },
-                coords = {"time": np.linspace(0, 86400, 129)},
+                coords={"time": np.linspace(0, 86400, 129)},
                 attrs={
                     "satellites": [""],
-                    "start_date": 0.,
-                    "end_date": 86400.,
-                    "propagation_sampling_interval": 2700.,
-                    "interpolation_sampling_interval": 675.
-                }
-            )
+                    "start_date": 0.0,
+                    "end_date": 86400.0,
+                    "propagation_sampling_interval": 2700.0,
+                    "interpolation_sampling_interval": 675.0,
+                },
+            ),
         )
         simulated_orbit = Orbit.simulate(
-            satellites = [""],
-            start_date = np.datetime64("1970-01-01T00:00:00"),
-            end_date = np.datetime64("1970-01-02T00:00:00"),
-            propagation_sampling_interval = np.array(2700, dtype = "timedelta64[s]"),
-            interpolation_sampling_interval = np.array(675, dtype = "timedelta64[s]")
+            satellites=[""],
+            start_date=np.datetime64("1970-01-01T00:00:00"),
+            end_date=np.datetime64("1970-01-02T00:00:00"),
+            propagation_sampling_interval=np.array(2700, dtype="timedelta64[s]"),
+            interpolation_sampling_interval=np.array(675, dtype="timedelta64[s]"),
         )
-        self.assertEqual(
-            simulated_orbit,
-            dummy_orbit
-        )
+        self.assertEqual(simulated_orbit, dummy_orbit)
         mock_get_tle.assert_called_with(
             "",
             np.datetime64("1970-01-01T00:00:00"),
-            np.datetime64("1970-01-02T00:00:00"))
+            np.datetime64("1970-01-02T00:00:00"),
+        )
         mock_get_tle.assert_called_once()
         mock_sim_orb.assert_called_with(
             np.datetime64("1970-01-01T00:00:00"),
@@ -438,8 +498,8 @@ class TestORBIT(unittest.TestCase):
             [1],
             [],
             [""],
-            np.array(2700, dtype = "timedelta64[s]"),
-            np.datetime64("1970-01-01T00:00:00")
+            np.array(2700, dtype="timedelta64[s]"),
+            np.datetime64("1970-01-01T00:00:00"),
         )
         mock_sim_orb.assert_called_once()
         mock_interp_orb.assert_called_with(
@@ -448,8 +508,8 @@ class TestORBIT(unittest.TestCase):
             "simulate return time",
             "simulate return lat",
             "simulate return lon",
-            np.array(675, dtype = "timedelta64[s]"),
-            np.datetime64("1970-01-01T00:00:00")
+            np.array(675, dtype="timedelta64[s]"),
+            np.datetime64("1970-01-01T00:00:00"),
         )
         mock_interp_orb.assert_called_once()
 

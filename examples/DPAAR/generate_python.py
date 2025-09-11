@@ -1,9 +1,9 @@
 """A File to generate python scripts that generate matchups"""
 
-
 """___Third-Party Modules___"""
 from typing import List
 import datetime
+
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
@@ -18,27 +18,27 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 sats_list = [
-    ["CS2", "J2"], 
+    ["CS2", "J2"],
     ["CS2", "S3A"],
     ["CS2", "S3B"],
-    ["CS2", "S6"], 
-    ["CS2", "SA"], 
-    ["J2", "S3A"], 
-    ["J2", "SA"],  
-    ["J3", "CS2"], 
-    ["J3", "J2"],  
-    ["J3", "S3A"], 
-    ["J3", "S3B"], 
-    ["J3", "S6"],  
-    ["J3", "SA"],  
-    ["N20", "S6"], 
-    ["S3A", "SA"], 
-    ["S3B", "J2"], 
+    ["CS2", "S6"],
+    ["CS2", "SA"],
+    ["J2", "S3A"],
+    ["J2", "SA"],
+    ["J3", "CS2"],
+    ["J3", "J2"],
+    ["J3", "S3A"],
+    ["J3", "S3B"],
+    ["J3", "S6"],
+    ["J3", "SA"],
+    ["N20", "S6"],
+    ["S3A", "SA"],
+    ["S3B", "J2"],
     ["S3B", "S3A"],
-    ["S3B", "SA"], 
-    ["S6", "S3A"], 
-    ["S6", "S3B"], 
-    ["S6", "SA"],  
+    ["S3B", "SA"],
+    ["S6", "S3A"],
+    ["S6", "S3B"],
+    ["S6", "SA"],
 ]
 
 dates_list = [
@@ -66,8 +66,10 @@ dates_list = [
 ]
 
 
-def generate_python_content(sats:List[str], dates:List[int])->str:
-    descrption = "\"\"\"Script to obtain matchups between {} and {}\"\"\"".format(sats[0], sats[1])
+def generate_python_content(sats: List[str], dates: List[int]) -> str:
+    descrption = '"""Script to obtain matchups between {} and {}"""'.format(
+        sats[0], sats[1]
+    )
     modules_import = """
 \"\"\"___Third-Party Modules___\"\"\"
 import faulthandler
@@ -114,8 +116,10 @@ reference_date=np.datetime64("2000-01-01T00:00:00")
 
 os.makedirs(output_path_sim_orbits, exist_ok=True)
 os.makedirs(output_path_matchups, exist_ok=True)
-""".format(sats[0], sats[1], dates[0], dates[1] + 1)
-    
+""".format(
+        sats[0], sats[1], dates[0], dates[1] + 1
+    )
+
     execute = """
 arguments = np.empty((len(years), 2), dtype = object)
 
@@ -187,15 +191,14 @@ with concurrent.futures.ThreadPoolExecutor(max_workers = n_cores) as pool:
 if __name__ == "__main__":
     pass
 """
-    return "\n".join(
-        (descrption,
-        modules_import,
-        authorship,
-        parameters,
-        execute))
+    return "\n".join((descrption, modules_import, authorship, parameters, execute))
 
-def generate_python_title(sats:List[str])->str:
-    return "/home/xl3/Documents/projects/orbitx/examples/DPAAR/python/{}_{}.py".format(sats[0], sats[1])
+
+def generate_python_title(sats: List[str]) -> str:
+    return "/home/xl3/Documents/projects/orbitx/examples/DPAAR/python/{}_{}.py".format(
+        sats[0], sats[1]
+    )
+
 
 for idx in range(len(sats_list)):
     sats = sats_list[idx]

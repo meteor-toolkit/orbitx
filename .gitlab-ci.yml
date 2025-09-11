@@ -235,7 +235,6 @@ build-package:
   extends: .py_venv
   stage: build-package
   script:
-    - conda install python=3.11 build
     - python -m build
   artifacts:
     paths:

@@ -109,16 +109,22 @@ class TestTLE(unittest.TestCase):
             satellite=satellite_name, start_date=start_date, end_date=end_date
         )
         # define expected output
-        exp_first_lines = np.array([
-            "1 40697U 15028A   15174.84616994 -.00000044  00000+0  00000+0 0  9994",
-            "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994",
-            "1 40697U 15028A   15176.80399346 -.00024242  00000+0 -91643-2 0  9994",
-        ], dtype = str)
-        exp_second_lines = np.array([
-            "2 40697  98.5727 249.1811 0001221 155.7341 204.3855 14.30973291   112",
-            "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266",
-            "2 40697  98.5705 251.1120 0002131 229.6310 131.1858 14.31372223   391",
-        ], dtype = str)
+        exp_first_lines = np.array(
+            [
+                "1 40697U 15028A   15174.84616994 -.00000044  00000+0  00000+0 0  9994",
+                "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994",
+                "1 40697U 15028A   15176.80399346 -.00024242  00000+0 -91643-2 0  9994",
+            ],
+            dtype=str,
+        )
+        exp_second_lines = np.array(
+            [
+                "2 40697  98.5727 249.1811 0001221 155.7341 204.3855 14.30973291   112",
+                "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266",
+                "2 40697  98.5705 251.1120 0002131 229.6310 131.1858 14.31372223   391",
+            ],
+            dtype=str,
+        )
 
         # The expected time since 1970 for each relevant TLE can be calculated as follows. Take line 1 of
         # "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994\n" for instance;
@@ -153,7 +159,7 @@ class TestTLE(unittest.TestCase):
             start_date=start_date,
             end_date=end_date,
             satellite=satellite_name,
-            reference_date=np.datetime64("1970-01-01T00:00:00")
+            reference_date=np.datetime64("1970-01-01T00:00:00"),
         )
 
         # define expected output

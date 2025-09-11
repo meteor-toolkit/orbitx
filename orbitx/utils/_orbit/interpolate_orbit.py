@@ -21,15 +21,14 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 
-
 def interpolate_orbit(
-        start_date:np.datetime64,
-        end_date:np.datetime64,
-        sat_sec_since:npt.NDArray,
-        sat_lat_sim:npt.NDArray,
-        sat_lon_sim:npt.NDArray,
-        interpolation_sampling_interval:np.timedelta64,
-        reference_date:np.datetime64=np.datetime64('1970-01-01T00:00:00')
+    start_date: np.datetime64,
+    end_date: np.datetime64,
+    sat_sec_since: npt.NDArray,
+    sat_lat_sim: npt.NDArray,
+    sat_lon_sim: npt.NDArray,
+    interpolation_sampling_interval: np.timedelta64,
+    reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
 ) -> Tuple[Any, Any, np.ndarray]:
     """interpolate_orbit Interpolate the orbit at desired time resolution
 
@@ -57,13 +56,15 @@ def interpolate_orbit(
 
     end_date = end_date + interpolation_sampling_interval
     interpolate_date = np.arange(
-        start=start_date,
-        stop=end_date,
-        step=interpolation_sampling_interval)
-    interpolate_time = [datetime64_to_sec_since(date, reference_date=reference_date) for date in interpolate_date]
+        start=start_date, stop=end_date, step=interpolation_sampling_interval
+    )
+    interpolate_time = [
+        datetime64_to_sec_since(date, reference_date=reference_date)
+        for date in interpolate_date
+    ]
     return (
         interpolate_time,
         interpolate_date,
         f1_lat_linear(interpolate_time),
-        f1_lon_linear(interpolate_time)
+        f1_lon_linear(interpolate_time),
     )

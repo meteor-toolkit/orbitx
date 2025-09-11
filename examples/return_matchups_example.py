@@ -30,7 +30,7 @@ ds = return_matchups(
     time_diff_threshold=900,
     # output_path_sim_orbits=r"../../../output/orbitx/S3A_SA/orbits",
     # output_path_matchups=r"../../../output/orbitx/S3A_SA/matchups"
-    output=True
+    output=True,
 )
 # plot_matchups(ds, ccrs.Mollweide())
 
@@ -40,9 +40,9 @@ ds = return_matchups(
 # ds.to_netcdf("test.nc")
 
 df = ds.to_dataframe()
-years = set(df.index.values.astype('datetime64[Y]').astype(int) + 1970)
-df['month'] = df.index.values.astype('datetime64[M]').astype(int) % 12 + 1
-df['year'] = df.index.values.astype('datetime64[Y]').astype(int) + 1970
+years = set(df.index.values.astype("datetime64[Y]").astype(int) + 1970)
+df["month"] = df.index.values.astype("datetime64[M]").astype(int) % 12 + 1
+df["year"] = df.index.values.astype("datetime64[Y]").astype(int) + 1970
 
 
 land_mask_1 = []
@@ -59,8 +59,8 @@ for i in range(len(df.index)):
     else:
         matchup_type.append("COAST")
 
-df["land_mask_1" ] = land_mask_1
-df["land_mask_2" ] = land_mask_2
+df["land_mask_1"] = land_mask_1
+df["land_mask_2"] = land_mask_2
 df["matchup_type"] = matchup_type
 
 for year in years:
@@ -84,16 +84,38 @@ for year in years:
             ax.scatter(
                 df_m[f"lon{i + 1}"].values,
                 df_m[f"lat{i + 1}"].values,
-                s=((ds.attrs["time_threshold"] - delay) ** 2
-                    / (ds.attrs["time_threshold"] / 2) ** 2),
+                s=(
+                    (ds.attrs["time_threshold"] - delay) ** 2
+                    / (ds.attrs["time_threshold"] / 2) ** 2
+                ),
                 label=SATELLITE_DICT[ds.attrs[f"sat{i + 1}"]],
                 transform=ccrs.PlateCarree(),
             )
         ax.legend(loc="lower right")
 
-        fig_str = ds.attrs["sat1"] + "_" +ds.attrs["sat2"] + "_" + str(year) + "_" + str(month)
-        plt.title("Matchups " + ds.attrs["sat1"] + " and " + ds.attrs["sat2"] + " " + str(year) + "-" + str(month) + ", time threshold: " + str(ds.attrs["time_threshold"]) +" seconds")
-        plt.savefig(fig_str+".png")
+        fig_str = (
+            ds.attrs["sat1"]
+            + "_"
+            + ds.attrs["sat2"]
+            + "_"
+            + str(year)
+            + "_"
+            + str(month)
+        )
+        plt.title(
+            "Matchups "
+            + ds.attrs["sat1"]
+            + " and "
+            + ds.attrs["sat2"]
+            + " "
+            + str(year)
+            + "-"
+            + str(month)
+            + ", time threshold: "
+            + str(ds.attrs["time_threshold"])
+            + " seconds"
+        )
+        plt.savefig(fig_str + ".png")
 
 
 if __name__ == "__main__":

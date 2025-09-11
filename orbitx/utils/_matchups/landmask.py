@@ -17,14 +17,15 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 
-def landmask(
-        lat_c,
-        lon_c,
-        swath_width=1
-    ):
+def landmask(lat_c, lon_c, swath_width=1):
     """Returns estimate of land fraction for a scene with centre of (lon_c,lat_c) +/- swath width"""
 
-    xmin, xmax, ymin, ymax = lon_c - swath_width, lon_c + swath_width, lat_c - swath_width, lat_c + swath_width,
+    xmin, xmax, ymin, ymax = (
+        lon_c - swath_width,
+        lon_c + swath_width,
+        lat_c - swath_width,
+        lat_c + swath_width,
+    )
     xx, yy = np.meshgrid(np.linspace(xmin, xmax, 100), np.linspace(ymin, ymax, 100))
     xc = xx.flatten()
     yc = yy.flatten()

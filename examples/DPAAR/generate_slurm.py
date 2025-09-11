@@ -1,8 +1,8 @@
 """A File to generate SLURM scripts that execute python scripts"""
 
-
 """___Third-Party Modules___"""
 from typing import List
+
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
@@ -40,7 +40,8 @@ sats_list = [
     ["S6", "SA"],
 ]
 
-def generate_slurm_content(sats:List[str])->str:
+
+def generate_slurm_content(sats: List[str]) -> str:
     res = """#!/bin/bash -l
 
 #!#############################################################
@@ -104,11 +105,17 @@ conda init
 conda activate base
 conda activate $HOME/environments/orbitx
 python3 $HOME/projects/orbitx/examples/DPAAR/python/{}_{}.py
-""".format(sats[0], sats[1])
+""".format(
+        sats[0], sats[1]
+    )
     return res
 
-def generate_slurm_title(sats:List[str])->str:
-    return "/home/xl3/projects/orbitx/examples/DPAAR/SLURM/slurm_submit.icelake.{}_{}.venv".format(sats[0], sats[1])
+
+def generate_slurm_title(sats: List[str]) -> str:
+    return "/home/xl3/projects/orbitx/examples/DPAAR/SLURM/slurm_submit.icelake.{}_{}.venv".format(
+        sats[0], sats[1]
+    )
+
 
 for sats in sats_list:
     file_path = generate_slurm_title(sats)

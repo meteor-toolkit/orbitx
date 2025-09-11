@@ -42,35 +42,61 @@ class TestMatchups(unittest.TestCase):
     @mock.patch(
         "orbitx.orbit.Orbit.simulate",
         return_value=Orbit(
-            satellites = ["S3A", "LS8"],
-            start_date = np.datetime64("1970-01-01T00:00:00"),
-            end_date = np.datetime64("1970-01-01T00:00:00") + np.array(9, dtype = "timedelta64[s]"),
-            propagation_sampling_interval = np.array(2, dtype = "timedelta64[s]"),
-            interpolation_sampling_interval = np.array(1, dtype = "timedelta64[s]"),
+            satellites=["S3A", "LS8"],
+            start_date=np.datetime64("1970-01-01T00:00:00"),
+            end_date=np.datetime64("1970-01-01T00:00:00")
+            + np.array(9, dtype="timedelta64[s]"),
+            propagation_sampling_interval=np.array(2, dtype="timedelta64[s]"),
+            interpolation_sampling_interval=np.array(1, dtype="timedelta64[s]"),
             reference_date=np.datetime64("1970-01-01T00:00:00"),
-            orbit = xr.Dataset(
-                data_vars = {
+            orbit=xr.Dataset(
+                data_vars={
                     "reference_date": (np.datetime64("1970-01-01T00:00:00")),
-                    "time_datetime": ("time", np.array([np.datetime64("1970-01-01T00:00:00") + np.array(int(i), dtype = "timedelta64[s]") for i in np.arange(10)])),
-                    "lat1": ("time", np.array([1, 2,   3, 4, 5, 6, 7, 8,  9, 10], dtype = float)),
-                    "lon1": ("time", np.array([3, 2,   0, 3, 6, 5, 8, 6, 10, 11], dtype = float)),
-                    "lat2": ("time", np.array([ 1,  3,  5, 7, 9, 11, 13, 15, 17, 19], dtype = float)),
-                    "lon2": ("time", np.array([-3, -2, -1, 0, 1,  2,  3,  4,  5,  6], dtype = float)),
+                    "time_datetime": (
+                        "time",
+                        np.array(
+                            [
+                                np.datetime64("1970-01-01T00:00:00")
+                                + np.array(int(i), dtype="timedelta64[s]")
+                                for i in np.arange(10)
+                            ]
+                        ),
+                    ),
+                    "lat1": (
+                        "time",
+                        np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float),
+                    ),
+                    "lon1": (
+                        "time",
+                        np.array([3, 2, 0, 3, 6, 5, 8, 6, 10, 11], dtype=float),
+                    ),
+                    "lat2": (
+                        "time",
+                        np.array([1, 3, 5, 7, 9, 11, 13, 15, 17, 19], dtype=float),
+                    ),
+                    "lon2": (
+                        "time",
+                        np.array([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6], dtype=float),
+                    ),
                 },
-                coords = {"time": np.array([float(i) for i in np.arange(10)], dtype = float)},
+                coords={
+                    "time": np.array([float(i) for i in np.arange(10)], dtype=float)
+                },
                 attrs={
                     "satellites": ["S3A", "LS8"],
                     "start_date": 0,
                     "end_date": 9,
                     "propagation_sampling_interval": 2,
-                    "interpolation_sampling_interval": 1
-                }
-            )
-        )
+                    "interpolation_sampling_interval": 1,
+                },
+            ),
+        ),
     )
     @mock.patch("orbitx.matchups.matchup_dict_to_xarray")
     @mock.patch("orbitx.utils._matchups.find_matches.get_distance")
-    def test_matchup(self, mock_get_distance, mock_matchup_dict_to_xarray, mock_orbit_simulate):
+    def test_matchup(
+        self, mock_get_distance, mock_matchup_dict_to_xarray, mock_orbit_simulate
+    ):
         def mock_get_dist(lat1, lon1, lat2, lon2):
 
             dlat = abs(lat1 - lat2)
@@ -82,33 +108,33 @@ class TestMatchups(unittest.TestCase):
         satellites = ["S3A", "LS8"]
         start_date = np.datetime64("1970-01-01T00:00:00")
         end_date = np.datetime64("1970-01-01T00:00:09")
-        propagation_sampling_interval = np.array(2, dtype = "timedelta64[s]")
-        interpolation_sampling_interval = np.array(1, dtype = "timedelta64[s]")
-        time_diff_threshold = np.array(3, dtype = "timedelta64[s]")
-        space_diff_threshold = 4.
+        propagation_sampling_interval = np.array(2, dtype="timedelta64[s]")
+        interpolation_sampling_interval = np.array(1, dtype="timedelta64[s]")
+        time_diff_threshold = np.array(3, dtype="timedelta64[s]")
+        space_diff_threshold = 4.0
         check_before = False
         check_after = False
         has_land_ocean_mask = False
 
         _ = Matchups.find_matchups(
-            satellites = satellites,
-            start_date = start_date,
-            end_date = end_date,
-            propagation_sampling_interval = propagation_sampling_interval,
-            interpolation_sampling_interval = interpolation_sampling_interval,
-            space_diff_threshold = space_diff_threshold,
-            time_diff_threshold = time_diff_threshold,
-            check_before = check_before,
-            check_after = check_after,
-            has_land_ocean_mask = has_land_ocean_mask
+            satellites=satellites,
+            start_date=start_date,
+            end_date=end_date,
+            propagation_sampling_interval=propagation_sampling_interval,
+            interpolation_sampling_interval=interpolation_sampling_interval,
+            space_diff_threshold=space_diff_threshold,
+            time_diff_threshold=time_diff_threshold,
+            check_before=check_before,
+            check_after=check_after,
+            has_land_ocean_mask=has_land_ocean_mask,
         )
         mock_orbit_simulate.assert_called_with(
-            satellites = satellites,
-            start_date = start_date,
-            end_date = end_date,
-            propagation_sampling_interval = propagation_sampling_interval,
-            interpolation_sampling_interval = interpolation_sampling_interval,
-            reference_date = np.datetime64("1970-01-01T00:00:00")
+            satellites=satellites,
+            start_date=start_date,
+            end_date=end_date,
+            propagation_sampling_interval=propagation_sampling_interval,
+            interpolation_sampling_interval=interpolation_sampling_interval,
+            reference_date=np.datetime64("1970-01-01T00:00:00"),
         )
         mock_matchup_dict_to_xarray.assert_called_with(
             {
@@ -119,25 +145,29 @@ class TestMatchups(unittest.TestCase):
                     "lon2": np.array([-1.0]),
                     "distance": np.array([3.0]),
                     "time": np.array([2.0]),
-                    "time_datetime": np.array([np.datetime64("1970-01-01T00:00:02")], dtype="datetime64[s]"),
-                    'time2': np.array([2.]),
-                    'time_datetime2': np.array([np.datetime64("1970-01-01T00:00:02")], dtype="datetime64[s]"),
-                    "delay": np.array([0], dtype = "timedelta64[s]"),
+                    "time_datetime": np.array(
+                        [np.datetime64("1970-01-01T00:00:02")], dtype="datetime64[s]"
+                    ),
+                    "time2": np.array([2.0]),
+                    "time_datetime2": np.array(
+                        [np.datetime64("1970-01-01T00:00:02")], dtype="datetime64[s]"
+                    ),
+                    "delay": np.array([0], dtype="timedelta64[s]"),
                 }
             },
             {
-            "satellites": satellites,
-            "start_date": start_date,
-            "end_date": end_date,
-            "time_diff_threshold": time_diff_threshold,
-            "space_diff_threshold": space_diff_threshold,
-            "check_before": check_before,
-            "check_after": check_after,
-            "has_land_ocean_mask": has_land_ocean_mask,
-            "interpolation_sampling_interval": np.array(1, dtype = "timedelta64[s]"),
-            "propagation_sampling_interval": np.array(2, dtype = "timedelta64[s]")
+                "satellites": satellites,
+                "start_date": start_date,
+                "end_date": end_date,
+                "time_diff_threshold": time_diff_threshold,
+                "space_diff_threshold": space_diff_threshold,
+                "check_before": check_before,
+                "check_after": check_after,
+                "has_land_ocean_mask": has_land_ocean_mask,
+                "interpolation_sampling_interval": np.array(1, dtype="timedelta64[s]"),
+                "propagation_sampling_interval": np.array(2, dtype="timedelta64[s]"),
             },
-            np.datetime64('1970-01-01T00:00:00')
+            np.datetime64("1970-01-01T00:00:00"),
         )
 
 

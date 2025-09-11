@@ -18,10 +18,8 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 
-
 def get_matching_indices(
-    simulation_time: np.ndarray,
-    tle_time: np.ndarray
+    simulation_time: np.ndarray, tle_time: np.ndarray
 ) -> Tuple[list, list]:
     """
     Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and

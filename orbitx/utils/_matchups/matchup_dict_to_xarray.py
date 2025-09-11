@@ -5,10 +5,12 @@ import numpy as np
 import numpy.typing as npt
 import xarray as xr
 from typing import Dict
+
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
 from orbitx.utils._date_utils import datetime64_to_sec_since
+
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
 __created__ = "26/08/2025"
@@ -19,10 +21,12 @@ __status__ = "Development"
 
 _get_range = np.vectorize(lambda *delay: max(delay) - min(delay))
 
+
 def matchup_dict_to_xarray(
-        matchups_dict:Dict[str, Dict[str, npt.NDArray]],
-        attributes:Dict,
-        reference_date: np.datetime64) -> xr.Dataset:
+    matchups_dict: Dict[str, Dict[str, npt.NDArray]],
+    attributes: Dict,
+    reference_date: np.datetime64,
+) -> xr.Dataset:
     """
     Convert matchup dictionary to xarray dataset. For matchup events between more than two satellites, matchups
     are filtered to only those where all satellites are within the desired time threshold (specified in attrs).
@@ -80,7 +84,7 @@ def matchup_dict_to_xarray(
 
     ds_list = [
         xr.Dataset(
-            data_vars = {
+            data_vars={
                 "reference_date": (reference_date),
                 "time_datetime": ("time", matchups_dict[key]["time_datetime"]),
                 "lat1": ("time", matchups_dict[key]["lat1"]),
@@ -92,19 +96,33 @@ def matchup_dict_to_xarray(
                 "time_datetime2": ("time", matchups_dict[key]["time_datetime2"]),
                 "delay": ("time", matchups_dict[key]["delay"]),
             },
-            coords = {"time": matchups_dict[key]["time"]},
+            coords={"time": matchups_dict[key]["time"]},
             attrs={
                 "satellites": attributes["satellites"],
-                "start_date": datetime64_to_sec_since(attributes["start_date"], reference_date),
-                "end_date": datetime64_to_sec_since(attributes["end_date"], reference_date),
-                "propagation_sampling_interval": attributes["propagation_sampling_interval"].item().total_seconds(),
-                "interpolation_sampling_interval": attributes["interpolation_sampling_interval"].item().total_seconds(),
-                "time_diff_threshold": attributes["time_diff_threshold"].item().total_seconds(),
+                "start_date": datetime64_to_sec_since(
+                    attributes["start_date"], reference_date
+                ),
+                "end_date": datetime64_to_sec_since(
+                    attributes["end_date"], reference_date
+                ),
+                "propagation_sampling_interval": attributes[
+                    "propagation_sampling_interval"
+                ]
+                .item()
+                .total_seconds(),
+                "interpolation_sampling_interval": attributes[
+                    "interpolation_sampling_interval"
+                ]
+                .item()
+                .total_seconds(),
+                "time_diff_threshold": attributes["time_diff_threshold"]
+                .item()
+                .total_seconds(),
                 "space_diff_threshold": attributes["space_diff_threshold"],
                 "check_before": attributes["check_before"],
                 "check_after": attributes["check_after"],
-                "has_land_ocean_mask": attributes["has_land_ocean_mask"]
-            }
+                "has_land_ocean_mask": attributes["has_land_ocean_mask"],
+            },
         )
         for key in matchups_dict.keys()
     ]
@@ -139,22 +157,24 @@ def matchup_dict_to_xarray(
         )[0]
     )
     for sat_index, _ in enumerate(merged_ds.attrs["satellites"][1:]):
-        merged_ds[f"time{sat_index + 2}"].attrs["units"] = f"seconds since {reference_date}"
+        merged_ds[f"time{sat_index + 2}"].attrs[
+            "units"
+        ] = f"seconds since {reference_date}"
 
-    merged_ds = merged_ds.assign(
-        variables={
-            "reference_date": (reference_date)
-            }
-        )
+    merged_ds = merged_ds.assign(variables={"reference_date": (reference_date)})
 
     merged_ds["time"].attrs["units"] = f"seconds since {reference_date}"
-    
+
     merged_ds["lat1"].attrs["units"] = "degrees"
     merged_ds["lon1"].attrs["units"] = "degrees"
-    
-    merged_ds.attrs["start_date"] = datetime64_to_sec_since(attributes["start_date"], reference_date)
-    merged_ds.attrs["end_date"] = datetime64_to_sec_since(attributes["end_date"], reference_date)
-    merged_ds.attrs['check_before'] = str(merged_ds.attrs['check_before'])
-    merged_ds.attrs['check_after'] = str(merged_ds.attrs['check_after'])
-    merged_ds.attrs['has_land_ocean_mask'] = str(merged_ds.attrs['has_land_ocean_mask'])
+
+    merged_ds.attrs["start_date"] = datetime64_to_sec_since(
+        attributes["start_date"], reference_date
+    )
+    merged_ds.attrs["end_date"] = datetime64_to_sec_since(
+        attributes["end_date"], reference_date
+    )
+    merged_ds.attrs["check_before"] = str(merged_ds.attrs["check_before"])
+    merged_ds.attrs["check_after"] = str(merged_ds.attrs["check_after"])
+    merged_ds.attrs["has_land_ocean_mask"] = str(merged_ds.attrs["has_land_ocean_mask"])
     return merged_ds

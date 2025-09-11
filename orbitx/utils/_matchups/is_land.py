@@ -17,6 +17,6 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 
-def is_land(x,y):
+def is_land(x, y):
     """Returns boolean land mask for x,y coordinates"""
     return vectorized.contains(LAND_GEOM, x, y)

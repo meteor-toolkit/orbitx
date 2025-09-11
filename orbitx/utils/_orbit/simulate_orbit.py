@@ -21,13 +21,13 @@ __status__ = "Development"
 
 
 def simulate_orbit(
-    start_date:np.datetime64,
-    end_date:np.datetime64,
+    start_date: np.datetime64,
+    end_date: np.datetime64,
     line1: List[str],
     line2: List[str],
     seconds_since_tle: np.ndarray,
     propagation_sampling_interval: np.timedelta64,
-    reference_date:np.datetime64=np.datetime64('1970-01-01T00:00:00')
+    reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
 ) -> Tuple[List[float], List[float], List[float]]:
     """
     Return latitude, longitude and time arrays for full simulated orbit
@@ -39,14 +39,10 @@ def simulate_orbit(
     :return: tuple containing elements - time of simulation, simulated latitude, simulated longitude
     """
     smpl_space, smpl_space_secs_since = form_sample_space(
-        start_date,
-        end_date,
-        propagation_sampling_interval,
-        reference_date
+        start_date, end_date, propagation_sampling_interval, reference_date
     )
     sat_smpl_breakup_idx, tle_ref_lines = get_matching_indices(
-        smpl_space_secs_since,
-        seconds_since_tle
+        smpl_space_secs_since, seconds_since_tle
     )
     sat_lat_sim: np.ndarray = np.empty((0,), dtype=float)
     sat_lon_sim: np.ndarray = np.empty((0,), dtype=float)
@@ -60,7 +56,7 @@ def simulate_orbit(
             start_date,
             end_date,
             propagation_sampling_interval,
-            reference_date
+            reference_date,
         )
         sat_lat_sim = lat1
         sat_lon_sim = lon1
@@ -79,7 +75,7 @@ def simulate_orbit(
                 smpl_space[sat_smpl_breakup_idx[i]],
                 smpl_space[sat_smpl_breakup_idx[i + 1] - 1],
                 propagation_sampling_interval,
-                reference_date
+                reference_date,
             )
             sat_lat_sim = np.append(sat_lat_sim, lat1)
             sat_lon_sim = np.append(sat_lon_sim, lon1)

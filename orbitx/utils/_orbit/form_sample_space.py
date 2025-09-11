@@ -22,7 +22,7 @@ def form_sample_space(
     start_date: np.datetime64,
     end_date: np.datetime64,
     propagation_sampling_interval: np.timedelta64,
-    reference_date:np.datetime64 = np.datetime64("1970-01-01T00:00:00")
+    reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
 ) -> Tuple[list, np.ndarray]:
     """
     Return a time vector containing desired orbit simulation timestamps
@@ -42,9 +42,8 @@ def form_sample_space(
     # long enough to contain 'end_time'.
 
     sample_space_secs_since = np.array(
-        [
-            datetime64_to_sec_since(i, reference_date) for i in sample_space_date
-        ], dtype=float
+        [datetime64_to_sec_since(i, reference_date) for i in sample_space_date],
+        dtype=float,
     )
 
     return sample_space_date, sample_space_secs_since

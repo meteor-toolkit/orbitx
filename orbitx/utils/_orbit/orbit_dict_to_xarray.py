@@ -10,6 +10,7 @@ import xarray as xr
 
 """__Built-In Modules__"""
 from orbitx.utils._date_utils import datetime64_to_sec_since
+
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
 __created__ = "05/09/2025"
@@ -18,14 +19,15 @@ __maintainer__ = "Zhav Loizeau"
 __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
+
 def orbit_dict_to_xarray(
-        orbit_dict:Dict[str, Dict[str, npt.NDArray]],
-        start_date:np.datetime64,
-        end_date:np.datetime64,
-        propagation_sampling_interval:np.timedelta64,
-        interpolation_sampling_interval:np.timedelta64,
-        reference_date:np.datetime64 = np.datetime64("1970-01-01T00:00:00")
-        )->xr.Dataset:
+    orbit_dict: Dict[str, Dict[str, npt.NDArray]],
+    start_date: np.datetime64,
+    end_date: np.datetime64,
+    propagation_sampling_interval: np.timedelta64,
+    interpolation_sampling_interval: np.timedelta64,
+    reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
+) -> xr.Dataset:
     """orbit_dict_to_xarray convert the temporary orbit dictionary to an xarray in the simulation pipeline
 
     The input orbit dictionary should have a structure as follow:
@@ -47,7 +49,7 @@ def orbit_dict_to_xarray(
             },
             ...
         }
-    
+
     The variables `start_date`, `end_date`, `propagation_sampling_interval`, `interpolation_sampling_interval`, `reference_date` are provided for concervation of metadata.
     The returned xarray has the following structure:
 
@@ -70,7 +72,7 @@ def orbit_dict_to_xarray(
             end_date:                         ...
             propagation_sampling_interval:    ...
             interpolation_sampling_interval:  ...
-    
+
     where `lat1` and `lon1` correspond to the lattitude and longitude of the first satellite mentioned in the `satellites` attribute (here S6), and so on for the other satellites.
 
     :param orbit_dict: A dictionnary containing simulated orbits for different satellites
@@ -90,27 +92,31 @@ def orbit_dict_to_xarray(
     """
     satellites = list(orbit_dict.keys())
     orbit_xarray = xr.Dataset(
-        data_vars = {
+        data_vars={
             "reference_date": (reference_date),
             "time_datetime": ("time", orbit_dict[satellites[0]]["time_datetime"]),
         },
-        coords = {"time": orbit_dict[satellites[0]]["time"]},
+        coords={"time": orbit_dict[satellites[0]]["time"]},
         attrs={
             "satellites": satellites,
-            "start_date": datetime64_to_sec_since(start_date, reference_date=reference_date),
-            "end_date": datetime64_to_sec_since(end_date, reference_date=reference_date),
+            "start_date": datetime64_to_sec_since(
+                start_date, reference_date=reference_date
+            ),
+            "end_date": datetime64_to_sec_since(
+                end_date, reference_date=reference_date
+            ),
             "propagation_sampling_interval": propagation_sampling_interval.item().total_seconds(),
-            "interpolation_sampling_interval": interpolation_sampling_interval.item().total_seconds()
-        }
+            "interpolation_sampling_interval": interpolation_sampling_interval.item().total_seconds(),
+        },
     )
 
     for sat_index, satellite in enumerate(satellites):
         new_sat_df = xr.Dataset(
-            data_vars = {
+            data_vars={
                 f"lat{sat_index + 1}": ("time", np.array(orbit_dict[satellite]["lat"])),
-                f"lon{sat_index + 1}": ("time", np.array(orbit_dict[satellite]["lon"]))
+                f"lon{sat_index + 1}": ("time", np.array(orbit_dict[satellite]["lon"])),
             },
-            coords = {"time": orbit_dict[satellites[0]]["time"]}
+            coords={"time": orbit_dict[satellites[0]]["time"]},
         )
         new_sat_df[f"lat{sat_index + 1}"].attrs["units"] = "degrees"
         new_sat_df[f"lon{sat_index + 1}"].attrs["units"] = "degrees"
