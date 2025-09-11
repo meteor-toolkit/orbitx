@@ -80,8 +80,9 @@ def datetime_to_datetime64(date: datetime.datetime) -> np.datetime64:
 def datetime64_to_sec_since(
     date64: np.datetime64, reference_date: np.datetime64
 ) -> float:
-    return (date64 - reference_date).item().total_seconds()
+    timedelta_value:np.timedelta64 = date64 - reference_date
+    return timedelta_value.item().total_seconds()
 
 
-def sec_since_to_datetime64(sec_since: float, reference_date: np.datetime64) -> float:
+def sec_since_to_datetime64(sec_since: float, reference_date: np.datetime64) -> np.datetime64:
     return reference_date + np.array([int(sec_since)], dtype="timedelta64[s]")[0]
