@@ -41,17 +41,21 @@ setup(
     ],
     extras_require={
         "dev": [
-            "mypy",
             "black",
+            "black[jupyter]",
+            "build",
+            "ipython",
+            "mypy",
             "pre-commit",
+            "pytest",
+            "pytest-cov",
+            "pytest-html",
+            "setuptools",
             "sphinx",
             "sphinx_book_theme",
             "sphinx_design",
-            "ipython",
-            "pytest",
-            "pytest-html",
-            "pytest-cov",
             "tox",
+            "twine",
         ]
     },
     classifiers=[
