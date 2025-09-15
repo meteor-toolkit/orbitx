@@ -1,9 +1,7 @@
 """Global Constants for orbits"""
 
 """___Third-Party Modules___"""
-import cartopy.io.shapereader as shpreader
-import shapely.geometry as sgeom
-import numpy as np
+
 
 """___NPL Modules___"""
 
@@ -32,21 +30,9 @@ SATELLITE_DICT = {
     "N20": "NOAA-20",
 }
 
+
 # Radius of earth in kilometers
 EARTH_RADIUS = 6371
-
-__land_shp_fname = shpreader.natural_earth(
-    resolution="50m", category="physical", name="land"
-)
-
-__geoms = list(shpreader.Reader(__land_shp_fname).geometries())
-__multipol_loc = np.where([isinstance(geom, sgeom.MultiPolygon) for geom in __geoms])[0]
-for loc in __multipol_loc:
-    __multipols = list(__geoms[loc].geoms)
-    [__geoms.append(multipol) for multipol in __multipols]
-    __geoms.pop(loc)
-
-LAND_GEOM = sgeom.MultiPolygon([sgeom.shape(geom) for geom in __geoms])
 
 # inches to cm conversion constant
 CM = 1 / 2.54

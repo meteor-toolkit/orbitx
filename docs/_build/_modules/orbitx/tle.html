@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=f4b5b424"></script>
+    <script src="../../_static/documentation_options.js?v=e3552fcf"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -163,14 +163,12 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/user/atbd.html">ATBD</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../content/user/api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.interface.return_matchups.html">orbitx.interface.return_matchups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.html">orbitx.tle.TLEInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_tle_path.html">orbitx.tle.TLEInfo.return_tle_path</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_date_from_tle.html">orbitx.tle.TLEInfo.return_date_from_tle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_seconds_since_1970.html">orbitx.tle.TLEInfo.return_seconds_since_1970</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.get_tle.html">orbitx.tle.TLEInfo.get_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.html">orbitx.orbit.Orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchup.Matchups.html">orbitx.matchup.Matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchups.Matchups.html">orbitx.matchups.Matchups</a></li>
 </ul>
 </details></li>
 </ul>
@@ -282,11 +280,17 @@ document.write(`
   <h1>Source code for orbitx.tle</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;orbitx.get_2LEs - module for accessing mission two line element data&quot;&quot;&quot;</span>
 
+<span class="sd">&quot;&quot;&quot;___Third-Party Modules___&quot;&quot;&quot;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="sd">&quot;&quot;&quot;___NPL Modules___&quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;__Built-In Modules__&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._date_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime64_to_sec_since</span>
+
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;Sajedeh Behnia &lt;sajedeh.behnia@npl.co.uk&gt;&quot;</span><span class="p">,</span>
@@ -333,7 +337,7 @@ document.write(`
 <div class="viewcode-block" id="TLEInfo.return_date_from_tle">
 <a class="viewcode-back" href="../../content/user/generated/orbitx.tle.TLEInfo.return_date_from_tle.html#orbitx.tle.TLEInfo.return_date_from_tle">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">return_date_from_tle</span><span class="p">(</span><span class="n">tle_line_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">return_date_from_tle</span><span class="p">(</span><span class="n">tle_line_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns date time from TLE first line</span>
 
@@ -343,51 +347,42 @@ document.write(`
 
         <span class="c1"># Extract date time information from TLE line 1</span>
         <span class="n">year_tens_and_units</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tle_line_1</span><span class="p">[</span><span class="mi">18</span><span class="p">:</span><span class="mi">20</span><span class="p">])</span>
-        <span class="n">decimal_day</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tle_line_1</span><span class="p">[</span><span class="mi">20</span><span class="p">:</span><span class="mi">32</span><span class="p">])</span>
+        <span class="n">day_in_year</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">tle_line_1</span><span class="p">[</span><span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">]),</span> <span class="s2">&quot;D&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">microseconds_day</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tle_line_1</span><span class="p">[</span><span class="mi">23</span><span class="p">:</span><span class="mi">32</span><span class="p">])</span> <span class="o">*</span> <span class="mi">86400000000</span>
+        <span class="n">date_delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">microseconds_day</span><span class="p">),</span> <span class="s2">&quot;us&quot;</span><span class="p">)</span>
 
         <span class="c1"># TODO: Test the code with any TLE dated before 2000.</span>
         <span class="c1"># Create date time object at start of relevant year.</span>
         <span class="c1"># Notice that the reference year here has to do with the TLE conventions as explained in</span>
         <span class="c1"># &#39;celestrak.org/NORAD/documentation/tle-fmt.php&#39; and not the reference year for OrbitX which is 1970.</span>
         <span class="k">if</span> <span class="n">tle_line_1</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span> <span class="ow">or</span> <span class="n">tle_line_1</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span> <span class="ow">or</span> <span class="n">tle_line_1</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span>
-            <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2000</span> <span class="o">+</span> <span class="n">year_tens_and_units</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;20</span><span class="si">{</span><span class="n">year_tens_and_units</span><span class="si">}</span><span class="s2">-01-01T00:00:00&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">1900</span> <span class="o">+</span> <span class="n">year_tens_and_units</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;19</span><span class="si">{</span><span class="n">year_tens_and_units</span><span class="si">}</span><span class="s2">-01-01T00:00:00&quot;</span><span class="p">)</span>
 
         <span class="c1"># Add the necessary number of days to get TLE</span>
-        <span class="n">date</span> <span class="o">+=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">decimal_day</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-
+        <span class="n">date</span> <span class="o">+=</span> <span class="n">day_in_year</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">date_delta</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;timedelta64[us]&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">date</span></div>
-
-
-<div class="viewcode-block" id="TLEInfo.return_seconds_since_1970">
-<a class="viewcode-back" href="../../content/user/generated/orbitx.tle.TLEInfo.return_seconds_since_1970.html#orbitx.tle.TLEInfo.return_seconds_since_1970">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">return_seconds_since_1970</span><span class="p">(</span><span class="n">date_time</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns seconds since 1970 to defined date time</span>
-
-<span class="sd">        :param date_time: time of interest</span>
-<span class="sd">        :returns: seconds since 1970</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="p">(</span><span class="n">date_time</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1970</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="TLEInfo.get_tle">
 <a class="viewcode-back" href="../../content/user/generated/orbitx.tle.TLEInfo.get_tle.html#orbitx.tle.TLEInfo.get_tle">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_tle</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">satellite</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_time</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="n">end_time</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">satellite</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">start_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
+        <span class="n">end_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
+        <span class="n">reference_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s2">&quot;1970-01-01T00:00:00&quot;</span><span class="p">),</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns two-line elements within defined time window, with seconds since 1970</span>
+<span class="sd">        Returns two-line elements within defined time window, with seconds since reference date</span>
 
 <span class="sd">        :param satellite: satellite short name as included in TLE file name ``TLEset_XXX``,</span>
 <span class="sd">                where ``XXX`` may be ``S2A`` for the Sentinel-2A mission</span>
-<span class="sd">        :param start_time: start of time window</span>
-<span class="sd">        :param end_time: end of time window</span>
+<span class="sd">        :param start_date: start of time window</span>
+<span class="sd">        :param end_date: end of time window</span>
 
-<span class="sd">        :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 1970</span>
+<span class="sd">        :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since reference date</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># region Read TLE file.</span>
@@ -422,59 +417,60 @@ document.write(`
         <span class="c1"># endregion</span>
 
         <span class="c1"># Get date times</span>
-        <span class="n">tle_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="n">tle_date</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
             <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">return_date_from_tle</span><span class="p">(</span><span class="n">tle_line_1_i</span><span class="p">)</span> <span class="k">for</span> <span class="n">tle_line_1_i</span> <span class="ow">in</span> <span class="n">tle_line_1</span><span class="p">]</span>
         <span class="p">)</span>
-        <span class="n">tle_time_s1970</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">return_seconds_since_1970</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">tle_time</span><span class="p">])</span>
-        <span class="n">start_time_s1970</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_seconds_since_1970</span><span class="p">(</span><span class="n">start_time</span><span class="p">)</span>
-        <span class="n">end_time_s1970</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_seconds_since_1970</span><span class="p">(</span><span class="n">end_time</span><span class="p">)</span>
+        <span class="n">tle_time_since</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">datetime64_to_sec_since</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">reference_date</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">tle_date</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">start_time_since</span> <span class="o">=</span> <span class="n">datetime64_to_sec_since</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">reference_date</span><span class="p">)</span>
+        <span class="n">end_time_since</span> <span class="o">=</span> <span class="n">datetime64_to_sec_since</span><span class="p">(</span><span class="n">end_date</span><span class="p">,</span> <span class="n">reference_date</span><span class="p">)</span>
 
         <span class="c1"># Filter time</span>
-        <span class="n">lower_bound_tle_time</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tle_time_s1970</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">start_time_s1970</span><span class="p">]</span>
+        <span class="n">lower_bound_tle_time</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tle_time_since</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">start_time_since</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lower_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                 <span class="s2">&quot;The oldest TLE file is more recent than the start time requested.</span><span class="se">\n</span><span class="s2"> Oldest TLE file: </span><span class="si">{}</span><span class="se">\n</span><span class="s2"> Start time requested: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tle_time</span><span class="p">),</span> <span class="n">start_time</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tle_date</span><span class="p">),</span> <span class="n">start_date</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="n">lower_bound_tle_time</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">start_time_s1970</span>
+            <span class="n">start_time_since</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lower_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
             <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">lower_bound_tle_time</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">upper_bound_tle_time</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tle_time_s1970</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="n">end_time_s1970</span><span class="p">]</span>
+        <span class="n">upper_bound_tle_time</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tle_time_since</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="n">end_time_since</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">upper_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                 <span class="s2">&quot;The most recent TLE file is older than the end time requested.</span><span class="se">\n</span><span class="s2"> Oldest TLE file: </span><span class="si">{}</span><span class="se">\n</span><span class="s2"> Start time requested: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tle_time</span><span class="p">),</span> <span class="n">end_time</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tle_date</span><span class="p">),</span> <span class="n">end_date</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="n">upper_bound_tle_time</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">end_time_s1970</span>
+            <span class="n">end_time_since</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">upper_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
             <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">upper_bound_tle_time</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">i</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tle_time_s1970</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tle_time_since</span><span class="p">)</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">t_i</span> <span class="o">&gt;=</span> <span class="n">lower_bound_tle_time</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t_i</span> <span class="o">&lt;</span> <span class="n">upper_bound_tle_time</span><span class="p">)</span>
         <span class="p">]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">idx</span><span class="p">:</span>
             <span class="c1"># If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time</span>
-            <span class="n">closest_tle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tle_time_s1970</span> <span class="o">-</span> <span class="n">start_time_s1970</span><span class="p">))</span>
+            <span class="n">closest_tle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tle_time_since</span> <span class="o">-</span> <span class="n">start_time_since</span><span class="p">))</span>
 
             <span class="n">tle_line_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">tle_line_1</span><span class="p">[</span><span class="n">closest_tle</span><span class="p">]]</span>
             <span class="n">tle_line_2</span> <span class="o">=</span> <span class="p">[</span><span class="n">tle_line_2</span><span class="p">[</span><span class="n">closest_tle</span><span class="p">]]</span>
-            <span class="n">tle_time_s1970</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tle_time_s1970</span><span class="p">[</span><span class="n">closest_tle</span><span class="p">]])</span>
+            <span class="n">tle_time_since</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tle_time_since</span><span class="p">[</span><span class="n">closest_tle</span><span class="p">]])</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Filter TLE set</span>
             <span class="n">tle_line_1</span> <span class="o">=</span> <span class="n">tle_line_1</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
             <span class="n">tle_line_2</span> <span class="o">=</span> <span class="n">tle_line_2</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-            <span class="n">tle_time_s1970</span> <span class="o">=</span> <span class="n">tle_time_s1970</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">tle_line_1</span><span class="p">,</span> <span class="n">tle_line_2</span><span class="p">,</span> <span class="n">tle_time_s1970</span></div>
+            <span class="n">tle_time_since</span> <span class="o">=</span> <span class="n">tle_time_since</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">tle_line_1</span><span class="p">,</span> <span class="n">tle_line_2</span><span class="p">,</span> <span class="n">tle_time_since</span></div>
 </div>
 
 

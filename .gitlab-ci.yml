@@ -61,9 +61,7 @@ cache:
 ### Linting ###
 
 black:
-  image: 
-    name: cytopia/black
-    entrypoint: [""]
+  extends: .py_venv
   stage: Static Analysis
   script:
     - black --check orbitx
@@ -72,9 +70,7 @@ black:
 
 
 mypy:
-  image:
-    name: grktsh/mypy
-    entrypoint: [""]
+  extends: .py_venv
   stage: Static Analysis
   script:
     - mypy orbitx

@@ -6,7 +6,7 @@ import shapely.vectorized as vectorized
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._constants import LAND_GEOM
+from orbitx import LAND_GEOM
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"

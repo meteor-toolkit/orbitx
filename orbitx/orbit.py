@@ -52,7 +52,7 @@ class Orbit:
         propagation_sampling_interval: np.timedelta64,
         interpolation_sampling_interval: np.timedelta64,
         reference_date: np.datetime64,
-        orbit: Dict[str, Dict[str, npt.NDArray]],
+        orbit: xr.Dataset,
     ):
 
         self._satellites = satellites
@@ -73,10 +73,11 @@ class Orbit:
         interpolation_sampling_interval: np.timedelta64,
         reference_date: np.timedelta64 = np.datetime64("1970-01-01T00:00:00"),
     ):
-        """simulate Main generator for the Orbit class
+        """Main generator for the Orbit class
 
         Simulates the orbit of requested satellites between `start_date` and `end_date`.
         The supported names for satellites are the following:
+
         .. code-block:: bash
 
             "LS8": "Landsat-8",
@@ -161,7 +162,15 @@ class Orbit:
 
     @classmethod
     def from_netcdf(cls, input_path: str):
+        """from_netcdf _summary_
 
+        _extended_summary_
+
+        :param input_path: _description_
+        :type input_path: str
+        :return: _description_
+        :rtype: _type_
+        """
         orbit_xarray = xr.open_dataset(
             input_path, engine="netcdf4", decode_times=True, decode_timedelta=True
         )
@@ -215,7 +224,7 @@ class Orbit:
         )
 
     def to_netcdf(self, output_path: str) -> None:
-        """to_netcdf Export orbits to netCDF
+        """Export orbits to netCDF
 
         Saves the generated orbits to a netCDF file
 
@@ -233,7 +242,7 @@ class Orbit:
 
     def plot(self, projection=ccrs.PlateCarree()) -> plt.Figure:
         """
-        Plot the matchup dataset generated from orbitx.interface.return_matchups
+        Plots the simulated orbits
 
         :param projection: cartopy.crs projection to use to plot, defaults to cartopy.crs.PlateCarree()
         """
@@ -254,14 +263,16 @@ class Orbit:
         return fig
 
     def __len__(self):
-        """__len__
+        """
+        Number of positions simulated in the orbits
+
         :return: Number of times at which the orbits are simulated
         :rtype: int
         """
         return len(self.orbits["time"])
 
     def __eq__(self, value: "Orbit") -> bool:
-        """__eq__ Checks if two orbit objects are identical
+        """Checks if two orbit objects are identical
 
         :param value: Orbit object to be compared to
         :type value: Orbit
@@ -296,7 +307,12 @@ Number of simulated times: {len(self)}"""
         return res
 
     @property
-    def satellites(self):
+    def satellites(self)->List[str]:
+        """Satellites which the orbits are computed for
+
+        :return: _description_
+        :rtype: List[str]
+        """
         return self._satellites
 
     @property

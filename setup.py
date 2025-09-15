@@ -29,6 +29,7 @@ setup(
         "orbitx": [
             os.path.join("data", "orekit-data.zip"),
             os.path.join("data", "tle", "*"),
+            os.path.join("data", "land_mask", "ne_50m_land.shp"),
         ]
     },
     install_requires=[

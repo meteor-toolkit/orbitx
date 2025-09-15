@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=f4b5b424"></script>
+    <script src="../../../_static/documentation_options.js?v=e3552fcf"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -46,7 +46,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="orbitx.tle.TLEInfo.return_tle_path" href="orbitx.tle.TLEInfo.return_tle_path.html" />
-    <link rel="prev" title="orbitx.interface.return_matchups" href="orbitx.interface.return_matchups.html" />
+    <link rel="prev" title="API reference" href="../api.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -164,14 +164,12 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../atbd.html">ATBD</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../api.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="orbitx.interface.return_matchups.html">orbitx.interface.return_matchups</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">orbitx.tle.TLEInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_tle_path.html">orbitx.tle.TLEInfo.return_tle_path</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_date_from_tle.html">orbitx.tle.TLEInfo.return_date_from_tle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_seconds_since_1970.html">orbitx.tle.TLEInfo.return_seconds_since_1970</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.get_tle.html">orbitx.tle.TLEInfo.get_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.html">orbitx.orbit.Orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.matchup.Matchups.html">orbitx.matchup.Matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.matchups.Matchups.html">orbitx.matchups.Matchups</a></li>
 </ul>
 </details></li>
 </ul>
@@ -359,16 +357,13 @@ For more information on Two line elements, see the [Wikipedia page](<a class="re
 <tr class="row-odd"><td><p><a class="reference internal" href="#orbitx.tle.TLEInfo.__init__" title="orbitx.tle.TLEInfo.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="orbitx.tle.TLEInfo.get_tle.html#orbitx.tle.TLEInfo.get_tle" title="orbitx.tle.TLEInfo.get_tle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tle</span></code></a>(satellite, start_time, end_time)</p></td>
-<td><p>Returns two-line elements within defined time window, with seconds since 1970</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="orbitx.tle.TLEInfo.get_tle.html#orbitx.tle.TLEInfo.get_tle" title="orbitx.tle.TLEInfo.get_tle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tle</span></code></a>(satellite, start_date, end_date[, ...])</p></td>
+<td><p>Returns two-line elements within defined time window, with seconds since reference date</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="orbitx.tle.TLEInfo.return_date_from_tle.html#orbitx.tle.TLEInfo.return_date_from_tle" title="orbitx.tle.TLEInfo.return_date_from_tle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_date_from_tle</span></code></a>(tle_line_1)</p></td>
 <td><p>Returns date time from TLE first line</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="orbitx.tle.TLEInfo.return_seconds_since_1970.html#orbitx.tle.TLEInfo.return_seconds_since_1970" title="orbitx.tle.TLEInfo.return_seconds_since_1970"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_seconds_since_1970</span></code></a>(date_time)</p></td>
-<td><p>Returns seconds since 1970 to defined date time</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="orbitx.tle.TLEInfo.return_tle_path.html#orbitx.tle.TLEInfo.return_tle_path" title="orbitx.tle.TLEInfo.return_tle_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_tle_path</span></code></a>(satellite_name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="orbitx.tle.TLEInfo.return_tle_path.html#orbitx.tle.TLEInfo.return_tle_path" title="orbitx.tle.TLEInfo.return_tle_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_tle_path</span></code></a>(satellite_name)</p></td>
 <td><p>Returns path for TLE file for defined satellite</p></td>
 </tr>
 </tbody>
@@ -390,12 +385,12 @@ For more information on Two line elements, see the [Wikipedia page](<a class="re
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="orbitx.interface.return_matchups.html"
+       href="../api.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">orbitx.interface.return_matchups</p>
+        <p class="prev-next-title">API reference</p>
       </div>
     </a>
     <a class="right-next"

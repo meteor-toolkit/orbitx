@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=f4b5b424"></script>
+    <script src="../../../_static/documentation_options.js?v=e3552fcf"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -46,7 +46,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="orbitx.orbit.Orbit" href="orbitx.orbit.Orbit.html" />
-    <link rel="prev" title="orbitx.tle.TLEInfo.return_seconds_since_1970" href="orbitx.tle.TLEInfo.return_seconds_since_1970.html" />
+    <link rel="prev" title="orbitx.tle.TLEInfo.return_date_from_tle" href="orbitx.tle.TLEInfo.return_date_from_tle.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -164,14 +164,12 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../atbd.html">ATBD</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../api.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="orbitx.interface.return_matchups.html">orbitx.interface.return_matchups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.html">orbitx.tle.TLEInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_tle_path.html">orbitx.tle.TLEInfo.return_tle_path</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_date_from_tle.html">orbitx.tle.TLEInfo.return_date_from_tle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_seconds_since_1970.html">orbitx.tle.TLEInfo.return_seconds_since_1970</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">orbitx.tle.TLEInfo.get_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.html">orbitx.orbit.Orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.matchup.Matchups.html">orbitx.matchup.Matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.matchups.Matchups.html">orbitx.matchups.Matchups</a></li>
 </ul>
 </details></li>
 </ul>
@@ -342,19 +340,19 @@ document.write(`
 <h1>orbitx.tle.TLEInfo.get_tle<a class="headerlink" href="#orbitx-tle-tleinfo-get-tle" title="Link to this heading">#</a></h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="orbitx.tle.TLEInfo.get_tle">
-<span class="sig-prename descclassname"><span class="pre">TLEInfo.</span></span><span class="sig-name descname"><span class="pre">get_tle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satellite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/orbitx/tle.html#TLEInfo.get_tle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.tle.TLEInfo.get_tle" title="Link to this definition">#</a></dt>
-<dd><p>Returns two-line elements within defined time window, with seconds since 1970</p>
+<span class="sig-prename descclassname"><span class="pre">TLEInfo.</span></span><span class="sig-name descname"><span class="pre">get_tle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">satellite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime64</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">np.datetime64('1970-01-01T00:00:00')</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/orbitx/tle.html#TLEInfo.get_tle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.tle.TLEInfo.get_tle" title="Link to this definition">#</a></dt>
+<dd><p>Returns two-line elements within defined time window, with seconds since reference date</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>satellite</strong> – satellite short name as included in TLE file name <code class="docutils literal notranslate"><span class="pre">TLEset_XXX</span></code>,
 where <code class="docutils literal notranslate"><span class="pre">XXX</span></code> may be <code class="docutils literal notranslate"><span class="pre">S2A</span></code> for the Sentinel-2A mission</p></li>
-<li><p><strong>start_time</strong> – start of time window</p></li>
-<li><p><strong>end_time</strong> – end of time window</p></li>
+<li><p><strong>start_date</strong> – start of time window</p></li>
+<li><p><strong>end_date</strong> – end of time window</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 1970</p>
+<dd class="field-even"><p>tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since reference date</p>
 </dd>
 </dl>
 </dd></dl>
@@ -373,12 +371,12 @@ where <code class="docutils literal notranslate"><span class="pre">XXX</span></c
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="orbitx.tle.TLEInfo.return_seconds_since_1970.html"
+       href="orbitx.tle.TLEInfo.return_date_from_tle.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">orbitx.tle.TLEInfo.return_seconds_since_1970</p>
+        <p class="prev-next-title">orbitx.tle.TLEInfo.return_date_from_tle</p>
       </div>
     </a>
     <a class="right-next"

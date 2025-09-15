@@ -22,21 +22,23 @@ A basic use of this class is as follows:
 
     orbit = Orbit.simulate(
         satellites=["S6", "SA"],
-        start_time=datetime.datetime(2020, 2, 1, 0, 0, 0),
-        end_time=datetime.datetime(2020, 2, 1, 12, 0, 0),
-        propagation_sampling_interval=20,
-        interpolation_sampling_interval=5
+        start_date=np.datetime64("2020-02-01T00:00:00"),
+        end_date=np.datetime64("2020-02-01T12:00:00"),
+        propagation_sampling_interval=np.array(20, dtype="timedelta64[s]"),
+        interpolation_sampling_interval=np.array(5, dtype="timedelta64[s]"),
+        reference_date=np.datetime64("2000-01-01T00:00:00")
     )
 
     print(orbit)
 
 .. code-block:: text
 
-    Orbit object for satellites ['CS2', 'J2'].
-    Start date: 2012-01-01 00:00:00
-    End date: 2012-01-01 12:00:00
-    Propagation sampling interval: 60
-    Interpolation sampling interval: 5
+    Orbit object for satellites ['S6', 'SA'].
+    Start date: 2020-02-01T00:00:00
+    End date: 2020-02-01T12:00:00
+    Propagation sampling interval: 20 seconds
+    Interpolation sampling interval: 5 seconds
+    Reference date used to represent time in seconds since: 2000-01-01T00:00:00
     Number of simulated times: 8641
 
 The `satellites` attribute is a list of satellite short names of arbitrary length.
@@ -58,6 +60,10 @@ The supported short names are currently the following ones:
     "LINCS2": "Lin-CryoSat-2",
     "N20": "NOAA-20" 
 
+Note that the attributes `start_date`, `end_date`, and `reference_date` (optional defaulting to 1st of January 1970) must be given as numpy
+[datetime64 objects](https://numpy.org/doc/stable/reference/arrays.datetime.html)
+and the attributes `propagation_sampling_interval` and `interpolation_sampling_interval` must be given as numpy timedelta64 objects.
+
 An orbit object can simply be plotted with a call to the `plot` method of the class:
 
 .. code-block:: python3
@@ -67,8 +73,19 @@ An orbit object can simply be plotted with a call to the `plot` method of the cl
 .. image:: ../../_static/orbit_plot.png
 
 The core of an `Orbit` class object is its `orbits` attribute.
-It contains a nested dictionnary, with one entry per requested satellite.
-Each satellite entry contains the `lat` (lattitude), `lon` (longitude), `time` (time of the simulated position in seconds since 1970), `time_datetime` (time of the simulated position in a `datetime` format).
+It contains an `xarray.Dataset` object.
+This dataset uses a `time` coordinate, which is given in seconds since the chosen reference date (float64).
+It contains the following variables:
+  - `time_datetime`: gives a `numpy.datetime64` representation of the time coordinate
+  - `lat<i>` (`i` gives the number of the satellite in the `satellites` argument) latitude of the satellite
+  - `lon<i>` (`i` gives the number of the satellite in the `satellites` argument) longitude of the satellite
+
+And it contains the following attributes:
+  - `satellites`: the list of the satellites for which orbits are given
+  - `start_date`: The start date of the orbit in seconds since the reference date
+  - `end_date`: The end date of the orbit in seconds since the reference date
+  - `propagation_sampling_interval`: the number of seconds separating two successing simulated (physics based) positions in the orbit
+  - `interpolation_sampling_interval`: the number of seconds separating two interpolated positions in the orbit
 
 .. code-block:: python3
 
@@ -76,20 +93,23 @@ Each satellite entry contains the `lat` (lattitude), `lon` (longitude), `time` (
 
 .. code-block:: text
 
-    {
-        'CS2': {
-            'lat': array([-74.15645752, -74.36682531, -74.5771931 , ..., -56.29122754, -58.33525305, -60.37927857], shape=(8641,)),
-            'lon': array([  71.45679019,   81.22522576,   90.99366134, ..., -124.07410594, -123.42313735, -122.77216877], shape=(8641,)),
-            'time': array([1.32537600e+09, 1.32537600e+09, 1.32537601e+09, ..., 1.32541919e+09, 1.32541920e+09, 1.32541920e+09], shape=(8641,)),
-            'time_datetime': array([datetime.datetime(2012, 1, 1, 0, 0), datetime.datetime(2012, 1, 1, 0, 0, 5), datetime.datetime(2012, 1, 1, 0, 0, 10), ..., datetime.datetime(2012, 1, 1, 11, 59, 50), datetime.datetime(2012, 1, 1, 11, 59, 55), datetime.datetime(2012, 1, 1, 12, 0)], shape=(8641,), dtype=object)
-        },
-        'J2': {
-            'lat': array([-44.56685663, -44.78376038, -45.00066412, ...,  13.63047882, 13.87435618,  14.11823355], shape=(8641,)),
-            'lon': array([49.52344903, 49.72488617, 49.92632331, ..., 28.37651745, 28.46935208, 28.56218672], shape=(8641,)),
-            'time': array([1.32537600e+09, 1.32537600e+09, 1.32537601e+09, ..., 1.32541919e+09, 1.32541920e+09, 1.32541920e+09], shape=(8641,)),
-            'time_datetime': array([datetime.datetime(2012, 1, 1, 0, 0), datetime.datetime(2012, 1, 1, 0, 0, 5), datetime.datetime(2012, 1, 1, 0, 0, 10), ..., datetime.datetime(2012, 1, 1, 11, 59, 50), datetime.datetime(2012, 1, 1, 11, 59, 55), datetime.datetime(2012, 1, 1, 12, 0)], shape=(8641,), dtype=object)
-        }
-    }
+    <xarray.Dataset> Size: 415kB
+Dimensions:         (time: 8641)
+Coordinates:
+  * time            (time) float64 69kB 6.338e+08 6.338e+08 ... 6.339e+08
+Data variables:
+    reference_date  datetime64[s] 8B 2000-01-01
+    time_datetime   (time) datetime64[s] 69kB 2020-02-01 ... 2020-02-01T12:00:00
+    lat1            (time) float64 69kB 13.25 13.49 13.74 ... 10.52 10.27 10.03
+    lon1            (time) float64 69kB 171.5 171.5 171.6 ... 159.3 159.4 159.5
+    lat2            (time) float64 69kB -74.64 -74.89 -75.13 ... -46.66 -46.37
+    lon2            (time) float64 69kB -124.0 -124.6 -125.3 ... -81.88 -81.99
+Attributes:
+    satellites:                       ['S6', 'SA']
+    start_date:                       633830400.0
+    end_date:                         633873600.0
+    propagation_sampling_interval:    20.0
+    interpolation_sampling_interval:  5.0
 
 An `Orbit` object can be exported to netCDF4 format and loaded from such a file as well (as long as the structure is as expected).
 
@@ -97,11 +117,9 @@ An `Orbit` object can be exported to netCDF4 format and loaded from such a file 
 
     orbit.to_netcdf("./test_export/")
 
-.. code-block:: python3
+    loaded_orbit = Orbit.from_netcdf("./test_export/2020-02-01_2020-02-01_psi20.0_isi5.0_orbit_S6_SA.nc")
 
-    new_orbit = Orbit.from_netcdf("./test_export/")
-
-    print(new_orbit == orbit)
+    print(loaded_orbit == orbit)
 
 .. code-block:: text
 
@@ -110,80 +128,110 @@ An `Orbit` object can be exported to netCDF4 format and loaded from such a file 
 The Matchup class
 #################
 
+The `Matchups` is used to find the time and location of matchup events (that is two or more satellites passing through the same location window within a short time-frame).
+A typical use example is as follows:
+
 .. code-block:: python3
 
     from orbitx import Matchups
     import datetime
 
+    from orbitx import Matchups
+    import numpy as np
     matchups = Matchups.find_matchups(
         satellites=["CS2", "J3"],
-        start_time=datetime.datetime(2012, 1, 1, 0, 0, 0),
-        end_time=datetime.datetime(2012, 1, 1, 12, 0, 0),
-        propagation_sampling_interval = 60,
-        interpolation_sampling_interval = 5,
+        start_date=np.datetime64("2012-01-01T00:00:00"),
+        end_date=np.datetime64("2012-01-01T12:00:00"),
+        propagation_sampling_interval = np.array(60, dtype="timedelta64[s]"),
+        interpolation_sampling_interval = np.array(5, dtype="timedelta64[s]"),
         space_diff_threshold = 290,
-        time_diff_threshold = 900,
+        time_diff_threshold = np.array(900, dtype="timedelta64[s]"),
         check_before = True,
         check_after = True,
         has_land_ocean_mask = True,
+        reference_date=np.datetime64("2000-01-01T00:00:00")
     )
     print(matchups)
 
-.. code-bloc:: text
+.. code-block:: text
 
     Matchup object with following attributes:
     Satellites considered: ['CS2', 'J3']
-    Date from which matchups are looked for: 2012-01-01 00:00:00
-    Date until which matchups are looked for: 2012-01-01 12:00:00
-    Maximum time difference between members of a matchup: 900 (seconds)
-    Maximum distance between members of a matchup: 290
+    Date from which matchups are looked for: 2012-01-01T00:00:00
+    Date until which matchups are looked for: 2012-01-01T12:00:00
+    Maximum time difference between members of a matchup: 900 seconds (seconds)
+    Maximum distance between members of a matchup: 290.0 (km)
     Are matchups in which on of the satellites appears before the start date considered? True
     Are matchups in which on of the satellites appears after the end date considered? True
     Has this matchup a land/ocean mask? True
     Number of matchups found: 53
 
+The `space_diff_threshold` argument represents the maximum accepted distance (in kilometers, projected on Earth surface from the satellites latitude and longitude) between two satellites for an event to be considered a matchup.
+The `time_diff_threshold` argument represents the maximum time between the passing of any two satellites for an event to be called a matchup.
+The `check_before` argument specifies whether a matchup where one of the satellites crossed before `start_date` should be considered
+The `check_after` argument specifies whether a matchup where one of the satellites crossed after `end_date` should be considered.
+`has_land_ocean_mask` specifies whether the result should indicate whether the satellites are above land or ocean or above different masks.
 
-.. code-bloc:: python3
+A `Matchups` object can be plotted simply using the `plot` method.
+
+.. code-block:: python3
 
     matchups.plot()
 
 .. image:: ../../_static/matchup_plot.png
 
-.. code-bloc:: python3
+The `matchups` attribute is at the core of the `Matchups` objects.
+It contains an `xarray` with a `time` coordinate (`float64` in seconds since reference date) giving the time at which the first satellite in the `satellites` list got in the matchup.
+For each satellite in the list the xarray contains the variables `lat<i>` and `lon<i>` which represent the latitude and longitude of the satellite at the time it joined the matchup.
+
+
+.. code-block:: python3
 
     print(matchups.matchups)
 
-.. code-bloc:: text
+.. code-block:: text
 
     <xarray.Dataset> Size: 5kB
     Dimensions:         (time: 53)
     Coordinates:
-    * time            (time) float64 424B 1.325e+09 1.325e+09 ... 1.325e+09
-    Data variables:
-        lat1            (time) float64 424B 63.72 64.02 64.32 ... 68.01 68.31 68.61
-        lon1            (time) float64 424B -173.1 -173.2 -173.3 ... 160.7 160.7
-        lat2            (time) float64 424B 66.12 66.13 66.08 ... 66.11 66.1 66.1
-        lon2            (time) float64 424B -171.3 -170.0 -168.8 ... 157.8 159.0
-        distance        (time) float64 424B 279.4 276.8 285.9 ... 283.5 276.9 287.3
-        time_datetime   (time) datetime64[ns] 424B 2012-01-01T09:54:25 ... 2012-0...
-        time2           (time) float64 424B 1.325e+09 1.325e+09 ... 1.325e+09
-        time_datetime2  (time) datetime64[ns] 424B 2012-01-01T09:44:50 ... 2012-0...
-        delay           (time) float64 424B 575.0 570.0 565.0 ... -75.0 -80.0 -85.0
-        land_mask_1     (time) <U1 212B 'O' 'O' 'O' 'O' 'O' ... 'O' 'O' 'O' 'O' 'O'
-        land_mask_2     (time) <U1 212B 'O' 'O' 'O' 'O' 'O' ... 'O' 'O' 'O' 'O' 'O'
-        matchup_type    (time) <U1 212B 'O' 'O' 'O' 'O' 'O' ... 'O' 'O' 'O' 'O' 'O'
+    * time            (time) float64 424B 3.787e+08 3.787e+08 ... 3.787e+08
+    Data variables: (12/13)
+        reference_date  datetime64[s] 8B 2000-01-01
+        time_datetime   (time) datetime64[s] 424B 2012-01-01T09:55:15 ... 2012-01...
+        lat1            (time) float64 424B 66.73 -64.78 67.03 ... 66.43 -64.48
+        lon1            (time) float64 424B -173.9 -5.807 -174.0 ... -173.8 -5.725
+        lat2            (time) float64 424B 66.05 -65.99 66.05 ... 66.02 -66.02
+        lon2            (time) float64 424B -168.1 -0.4905 -168.1 ... -167.5 -1.118
+        distance2       (time) float64 424B 279.4 276.8 285.9 ... 283.5 276.9 287.3
+        time2           (time) float64 424B 3.787e+08 3.787e+08 ... 3.787e+08
+        time_datetime2  (time) datetime64[s] 424B 2012-01-01T09:45:15 ... 2012-01...
+        delay2          (time) timedelta64[s] 424B 0 days 00:10:00 ... 00:03:05
+        land_mask1      (time) <U1 212B 'O' 'L' 'O' 'L' 'O' ... 'L' 'O' 'L' 'O' 'L'
+        land_mask2      (time) <U1 212B 'O' 'L' 'O' 'L' 'O' ... 'L' 'O' 'L' 'O' 'L'
+        matchup_type    (time) <U1 212B 'O' 'L' 'O' 'L' 'O' ... 'L' 'O' 'L' 'O' 'L'
     Attributes:
-        satellites:            ['CS2', 'J3']
-        start_time:            2012-01-01 00:00:00
-        end_time:              2012-01-01 12:00:00
-        time_diff_threshold:   900
-        space_diff_threshold:  290
-        check_before:          True
-        check_after:           True
-        has_land_ocean_mask:   True
-        sat1:                  CS2
-        sat2:                  J3
+        satellites:                       ['CS2', 'J3']
+        start_date:                       378691200.0
+        end_date:                         378734400.0
+        propagation_sampling_interval:    60.0
+        interpolation_sampling_interval:  5.0
+        time_diff_threshold:              900.0
+        space_diff_threshold:             290.0
+        check_before:                     True
+        check_after:                      True
+        has_land_ocean_mask:              True
 
+Finally, a `Matchups` object can be exported to and loaded from netcdf4 files:
+
+.. code-block:: python3
+
+    matchups.to_netcdf("./test_export/")
+    loaded_matchup = Matchups.from_netcdf("./test_export/2012-01-01_2012-01-01_psi60.0_isi5.0_matchups_CS2_J3_c2c290.0_tdt900.0.nc")
+    print(matchups == loaded_matchup)
+
+.. code-block:: text
+
+    True
 
 Running in parallel
 ###################

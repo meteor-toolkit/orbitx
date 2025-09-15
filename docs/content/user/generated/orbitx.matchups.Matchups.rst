@@ -15,6 +15,7 @@
    
       ~Matchups.__init__
       ~Matchups.find_matchups
+      ~Matchups.from_netcdf
       ~Matchups.plot
       ~Matchups.to_netcdf
    
@@ -28,13 +29,14 @@
    
       ~Matchups.check_after
       ~Matchups.check_before
-      ~Matchups.end_time
+      ~Matchups.end_date
       ~Matchups.has_land_ocean_mask
       ~Matchups.matchups
       ~Matchups.orbit
+      ~Matchups.reference_date
       ~Matchups.satellites
       ~Matchups.space_diff_threshold
-      ~Matchups.start_time
+      ~Matchups.start_date
       ~Matchups.time_diff_threshold
    
    
