@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=e3552fcf"></script>
+    <script src="../../_static/documentation_options.js?v=4c939389"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -332,7 +332,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-orbitx">Installing orbitx</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-orbitx">Installing OrbitX</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-orbit-class">The Orbit class</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-matchup-class">The Matchup class</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-in-parallel">Running in parallel</a></li>
@@ -349,8 +349,33 @@ document.write(`
                   
   <section id="quickstart-guide">
 <span id="quickstart"></span><h1>Quickstart Guide<a class="headerlink" href="#quickstart-guide" title="Link to this heading">#</a></h1>
+<p>In this quickstqrt guide, we cover how to instqll OrbitX, and the basic use of all its user-facing classes.</p>
 <section id="installing-orbitx">
-<h2>Installing orbitx<a class="headerlink" href="#installing-orbitx" title="Link to this heading">#</a></h2>
+<h2>Installing OrbitX<a class="headerlink" href="#installing-orbitx" title="Link to this heading">#</a></h2>
+<p><code class="code docutils literal notranslate"><span class="pre">orbitx</span></code> depends on Cartopy and Orekit, two packages that are more easily installed with a package manager that has access to conda forge (<a class="reference external" href="https://conda-forge.org/miniforge/">miniforge</a>, <a class="reference external" href="https://prefix.dev/blog/uv_in_pixi">pixi</a>, <a class="reference external" href="https://www.anaconda.com/download">anaconda</a>…)</p>
+<p>Once you have installed one of these package managers, create a virtual environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-p<span class="w"> </span>/path/to/venv<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12
+conda<span class="w"> </span>activate<span class="w"> </span>/path/to/venv
+</pre></div>
+</div>
+<p>and install the Cartopy and Orekit packages:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span><span class="nv">Cartopy</span><span class="o">=</span><span class="m">0</span>.24.1
+conda<span class="w"> </span>install<span class="w"> </span><span class="nv">orekit</span><span class="o">=</span><span class="m">13</span>.0.1
+</pre></div>
+</div>
+<p>you can now move on with the install of <code class="code docutils literal notranslate"><span class="pre">orbitx</span></code> itself.</p>
+<p><strong>Local installation</strong>:</p>
+<p>Clone this package</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@gitlab.npl.co.uk:eco/tools/orbitx.git
+</pre></div>
+</div>
+<p>navigate with your terminal to the location where you cloned this package, and install it:</p>
+<p><strong>Remote install</strong>
+First, you will need to create a GitLab personal access token.</p>
+<p>Then, run the following command in your terminal</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>orbitx<span class="w"> </span>--index-url<span class="w"> </span>https://__token__:&lt;your_personal_token&gt;@gitlab.npl.co.uk/api/v4/projects/3075/packages/pypi/simple
+</pre></div>
+</div>
 </section>
 <section id="the-orbit-class">
 <h2>The Orbit class<a class="headerlink" href="#the-orbit-class" title="Link to this heading">#</a></h2>
@@ -611,7 +636,7 @@ Attributes:
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-orbitx">Installing orbitx</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-orbitx">Installing OrbitX</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-orbit-class">The Orbit class</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-matchup-class">The Matchup class</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-in-parallel">Running in parallel</a></li>

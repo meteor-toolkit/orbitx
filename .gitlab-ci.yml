@@ -7,7 +7,6 @@ stages:
   - Build latex Documentation
   - Publish latex Documentation
   - Test
-  #- Full test
   - Publish test report
   - Combine quality documentation
   - build-package

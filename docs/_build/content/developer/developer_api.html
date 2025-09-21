@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; orbitx</title>
+    <title>API reference &#8212; orbitx</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=e3552fcf"></script>
+    <script src="../../_static/documentation_options.js?v=4c939389"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -160,6 +160,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../user/user_guide.html">User Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../user/quickstart.html">Quickstart Guide</a></li>
+
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../user/atbd.html">ATBD</a></li>
@@ -309,9 +310,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -322,19 +321,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>API reference</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-            </nav>
         </div>
     </div>
 </div>
@@ -344,7 +335,36 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  
+  <section id="api-reference">
+<span id="api"></span><h1>API reference<a class="headerlink" href="#api-reference" title="Link to this heading">#</a></h1>
+<p>This page provides an auto-generated summary of <strong>orbitx</strong>’s API.
+For more details and examples, refer to the relevant chapters in the main part of the
+documentation.</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../user/generated/orbitx.orbit.Orbit.html#orbitx.orbit.Orbit" title="orbitx.orbit.Orbit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbit.Orbit</span></code></a>(satellites, start_date, ...)</p></td>
+<td><p>Class to simulate satellite orbits</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../user/generated/orbitx.matchups.Matchups.html#orbitx.matchups.Matchups" title="orbitx.matchups.Matchups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matchups.Matchups</span></code></a>(satellites, start_date, ...)</p></td>
+<td><p>Class to find matchup events between multiple satellites</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../user/generated/orbitx.tle.TLEInfo.html#orbitx.tle.TLEInfo" title="orbitx.tle.TLEInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tle.TLEInfo</span></code></a>()</p></td>
+<td><p>Class to retrieve satellite TLEs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../user/generated/orbitx.tle.TLEInfo.return_tle_path.html#orbitx.tle.TLEInfo.return_tle_path" title="orbitx.tle.TLEInfo.return_tle_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tle.TLEInfo.return_tle_path</span></code></a>(satellite_name)</p></td>
+<td><p>Returns path for TLE file for defined satellite</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../user/generated/orbitx.tle.TLEInfo.return_date_from_tle.html#orbitx.tle.TLEInfo.return_date_from_tle" title="orbitx.tle.TLEInfo.return_date_from_tle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tle.TLEInfo.return_date_from_tle</span></code></a>(tle_line_1)</p></td>
+<td><p>Returns date time from TLE first line</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../user/generated/orbitx.tle.TLEInfo.get_tle.html#orbitx.tle.TLEInfo.get_tle" title="orbitx.tle.TLEInfo.get_tle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tle.TLEInfo.get_tle</span></code></a>(satellite, start_date, ...)</p></td>
+<td><p>Returns two-line elements within defined time window, with seconds since reference date</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
 
                 </article>
               
@@ -362,21 +382,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-  </nav></div>
-
-</div></div>
               
             
           </div>
