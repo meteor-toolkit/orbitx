@@ -86,3 +86,39 @@ def datetime64_to_sec_since(
 
 def sec_since_to_datetime64(sec_since: float, reference_date: np.datetime64) -> np.datetime64:
     return reference_date + np.array([int(sec_since)], dtype="timedelta64[s]")[0]
+
+
+def datetime64_get_year(date: np.datetime64) -> int:
+    return int(date.astype("datetime64[Y]").astype(int) + 1970)
+
+def datetime64_get_month(date: np.datetime64) -> int:
+    return int(date.astype("datetime64[M]").astype(int) % 12 + 1)
+
+def datetime64_get_day(date: np.datetime64) -> int:
+    return int(
+            (
+                date.astype("datetime64[D]") - date.astype("datetime64[M]")
+            ).astype(int)
+            + 1
+        )
+
+def datetime64_get_hour(date: np.datetime64) -> int:
+    return int(
+            (
+                date.astype("datetime64[h]") - date.astype("datetime64[D]")
+            ).astype(int)
+        )
+
+def datetime64_get_minute(date: np.datetime64) -> int:
+    return int(
+            (
+                date.astype("datetime64[m]") - date.astype("datetime64[h]")
+            ).astype(int)
+        )
+
+def datetime64_get_second(date: np.datetime64) -> int:
+    return float(
+            (
+                date.astype("datetime64[s]") - date.astype("datetime64[m]")
+            ).astype(float)
+        )

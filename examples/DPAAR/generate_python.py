@@ -100,12 +100,12 @@ __status__ = "Development"
     parameters = f"""
 satellites = ["{sats[0]}", "{sats[1]}"]
 years = range({dates[0]}, {dates[1] + 1})
-output_path_sim_orbits = "/home/xl3/Documents/output/orbitx/{{sats[0]}}_{{sats[1]}}/orbits/"
-output_path_matchups = "/home/xl3/Documents/output/orbitx/{{sats[0]}}_{{sats[1]}}/matchups/"
+output_path_sim_orbits = "/home/xl3/Documents/output/orbitx/{sats[0]}_{sats[1]}/orbits/"
+output_path_matchups = "/home/xl3/Documents/output/orbitx/{sats[0]}_{sats[1]}/matchups/"
 propagation_sampling_interval = np.array(60, dtype="timedelta64[s]")
 interpolation_sampling_interval = np.array(5, dtype="timedelta64[s]")
 space_diff_threshold = 290
-time_diff_threshold = time_diff_threshold = np.array(900, dtype="timedelta64[s]")
+time_diff_threshold = np.array(900, dtype="timedelta64[s]")
 check_before = False
 check_after = True
 has_land_ocean_mask = True

@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=4c939389"></script>
+    <script src="../../_static/documentation_options.js?v=4d28ad59"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -160,7 +160,6 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../user/user_guide.html">User Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../user/quickstart.html">Quickstart Guide</a></li>
-
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../user/atbd.html">ATBD</a></li>
@@ -342,23 +341,26 @@ For more details and examples, refer to the relevant chapters in the main part o
 documentation.</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../user/generated/orbitx.orbit.Orbit.html#orbitx.orbit.Orbit" title="orbitx.orbit.Orbit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbit.Orbit</span></code></a>(satellites, start_date, ...)</p></td>
-<td><p>Class to simulate satellite orbits</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._date_utils.datetime_to_sec_since.html#orbitx.utils._date_utils.datetime_to_sec_since" title="orbitx.utils._date_utils.datetime_to_sec_since"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_date_utils.datetime_to_sec_since</span></code></a>(date[, ...])</p></td>
+<td><p>datetime_to_sec_since Converts a datetime to number of seconds since reference date</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../user/generated/orbitx.matchups.Matchups.html#orbitx.matchups.Matchups" title="orbitx.matchups.Matchups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matchups.Matchups</span></code></a>(satellites, start_date, ...)</p></td>
-<td><p>Class to find matchup events between multiple satellites</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._date_utils.sec_since_change_ref.html#orbitx.utils._date_utils.sec_since_change_ref" title="orbitx.utils._date_utils.sec_since_change_ref"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_date_utils.sec_since_change_ref</span></code></a>(date, ...)</p></td>
+<td><p>sec_since_change_ref Converts a date in seconds since reference date format to a seconds since a different date</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../user/generated/orbitx.tle.TLEInfo.html#orbitx.tle.TLEInfo" title="orbitx.tle.TLEInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tle.TLEInfo</span></code></a>()</p></td>
-<td><p>Class to retrieve satellite TLEs.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._date_utils.sec_since_to_datetime.html#orbitx.utils._date_utils.sec_since_to_datetime" title="orbitx.utils._date_utils.sec_since_to_datetime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_date_utils.sec_since_to_datetime</span></code></a>(date[, ...])</p></td>
+<td><p>sec_since_to_datetime Converts a date from seconds since reference date to datetime</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../user/generated/orbitx.tle.TLEInfo.return_tle_path.html#orbitx.tle.TLEInfo.return_tle_path" title="orbitx.tle.TLEInfo.return_tle_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tle.TLEInfo.return_tle_path</span></code></a>(satellite_name)</p></td>
-<td><p>Returns path for TLE file for defined satellite</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._date_utils.datetime64_to_datetime.html#orbitx.utils._date_utils.datetime64_to_datetime" title="orbitx.utils._date_utils.datetime64_to_datetime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_date_utils.datetime64_to_datetime</span></code></a>(date64)</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../user/generated/orbitx.tle.TLEInfo.return_date_from_tle.html#orbitx.tle.TLEInfo.return_date_from_tle" title="orbitx.tle.TLEInfo.return_date_from_tle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tle.TLEInfo.return_date_from_tle</span></code></a>(tle_line_1)</p></td>
-<td><p>Returns date time from TLE first line</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._date_utils.datetime_to_datetime64.html#orbitx.utils._date_utils.datetime_to_datetime64" title="orbitx.utils._date_utils.datetime_to_datetime64"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_date_utils.datetime_to_datetime64</span></code></a>(date)</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../user/generated/orbitx.tle.TLEInfo.get_tle.html#orbitx.tle.TLEInfo.get_tle" title="orbitx.tle.TLEInfo.get_tle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tle.TLEInfo.get_tle</span></code></a>(satellite, start_date, ...)</p></td>
-<td><p>Returns two-line elements within defined time window, with seconds since reference date</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._date_utils.datetime64_to_sec_since.html#orbitx.utils._date_utils.datetime64_to_sec_since" title="orbitx.utils._date_utils.datetime64_to_sec_since"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_date_utils.datetime64_to_sec_since</span></code></a>(date64, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._date_utils.sec_since_to_datetime64.html#orbitx.utils._date_utils.sec_since_to_datetime64" title="orbitx.utils._date_utils.sec_since_to_datetime64"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_date_utils.sec_since_to_datetime64</span></code></a>(...)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>

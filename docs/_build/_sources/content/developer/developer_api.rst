@@ -1,4 +1,4 @@
-.. currentmodule:: orbitx
+.. currentmodule:: orbitx.utils
 
 .. _api:
 
@@ -15,22 +15,10 @@ documentation.
 .. autosummary::
    :toctree: generated/
 
-
-   orbit.Orbit
-   orbit.Orbit.form_sample_space
-   orbit.Orbit.get_matching_indices
-   orbit.Orbit.propagate_orbit
-   orbit.Orbit.simulate_orbit
-   orbit.Orbit.interpolate_orbit
-   orbit.Orbit.run
-
-   matchups.get_dist
-   matchups.Matchups
-   matchups.Matchups.matchup
-   matchups.Matchups.to_ds
-   
-   tle.TLEInfo
-   tle.TLEInfo.return_tle_path
-   tle.TLEInfo.return_date_from_tle
-   tle.TLEInfo.return_seconds_since_1970
-   tle.TLEInfo.get_tle
+   _date_utils.datetime_to_sec_since
+   _date_utils.sec_since_change_ref
+   _date_utils.sec_since_to_datetime
+   _date_utils.datetime64_to_datetime
+   _date_utils.datetime_to_datetime64
+   _date_utils.datetime64_to_sec_since
+   _date_utils.sec_since_to_datetime64

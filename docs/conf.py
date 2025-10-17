@@ -92,7 +92,7 @@ todo_include_todos = False
 #
 html_theme = "sphinx_book_theme"
 
-html_logo = "orbitx_name.png"
+html_logo = "_static/orbitx_name.png"
 html_title = "orbitx"
 
 # Theme options are theme-specific and customize the look and feel of a

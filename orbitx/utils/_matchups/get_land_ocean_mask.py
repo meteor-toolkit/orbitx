@@ -9,7 +9,7 @@ import xarray as xr
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._matchups.landmask import landmask
+from orbitx.utils._matchups.land_mask import land_mask
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -25,7 +25,7 @@ def get_land_ocean_mask(matchups: xr.Dataset) -> Dict[str, Dict[str, npt.NDArray
     land_mask_sat = np.empty((matchups["lat1"].shape[0],), dtype=str)
     for sat_index, _ in enumerate(matchups.attrs["satellites"]):
         for i in range(land_mask_sat.shape[0]):
-            land_mask_sat[i] = landmask(
+            land_mask_sat[i] = land_mask(
                 matchups[f"lat{sat_index+1}"].values[i],
                 matchups[f"lon{sat_index+1}"].values[i],
             )

@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=4c939389"></script>
+    <script src="../../_static/documentation_options.js?v=4d28ad59"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -184,6 +184,30 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">For developers/contributors</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../developer/developer_guide.html">Developer Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../developer/backend_documentation.html">Backend documentation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._date_utils.datetime_to_sec_since.html">orbitx.utils._date_utils.datetime_to_sec_since</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._date_utils.sec_since_change_ref.html">orbitx.utils._date_utils.sec_since_change_ref</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._date_utils.sec_since_to_datetime.html">orbitx.utils._date_utils.sec_since_to_datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._date_utils.datetime64_to_datetime.html">orbitx.utils._date_utils.datetime64_to_datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._date_utils.datetime_to_datetime64.html">orbitx.utils._date_utils.datetime_to_datetime64</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._date_utils.datetime64_to_sec_since.html">orbitx.utils._date_utils.datetime64_to_sec_since</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._date_utils.sec_since_to_datetime64.html">orbitx.utils._date_utils.sec_since_to_datetime64</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.html">orbitx.utils._tle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html">orbitx.utils._orbit.form_sample_space.form_sample_space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html">orbitx.utils._orbit.get_matching_indices.get_matching_indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.interp_circ.interp_circ.html">orbitx.utils._orbit.interp_circ.interp_circ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.interpolate_orbit.interpolate_orbit.html">orbitx.utils._orbit.interpolate_orbit.interpolate_orbit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray.html">orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.propagate_orbit.propagate_orbit.html">orbitx.utils._orbit.propagate_orbit.propagate_orbit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.simulate_orbit.simulate_orbit.html">orbitx.utils._orbit.simulate_orbit.simulate_orbit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.find_matches.find_matches.html">orbitx.utils._matchups.find_matches.find_matches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.get_dist.get_dist.html">orbitx.utils._matchups.get_dist.get_dist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask.html">orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.is_land.is_land.html">orbitx.utils._matchups.is_land.is_land</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.land_mask.land_mask.html">orbitx.utils._matchups.land_mask.land_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray.html">orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray</a></li>
+</ul>
+</details></li>
 </ul>
 
     </div>
@@ -370,8 +394,8 @@ conda<span class="w"> </span>install<span class="w"> </span><span class="nv">ore
 </pre></div>
 </div>
 <p>navigate with your terminal to the location where you cloned this package, and install it:</p>
-<p><strong>Remote install</strong>
-First, you will need to create a GitLab personal access token.</p>
+<p><strong>Remote install</strong></p>
+<p>First, you will need to create a GitLab personal access token.</p>
 <p>Then, run the following command in your terminal</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>orbitx<span class="w"> </span>--index-url<span class="w"> </span>https://__token__:&lt;your_personal_token&gt;@gitlab.npl.co.uk/api/v4/projects/3075/packages/pypi/simple
 </pre></div>
@@ -435,23 +459,19 @@ and the attributes <code class="code docutils literal notranslate"><span class="
 It contains an <code class="code docutils literal notranslate"><span class="pre">xarray.Dataset</span></code> object.
 This dataset uses a <code class="code docutils literal notranslate"><span class="pre">time</span></code> coordinate, which is given in seconds since the chosen reference date (float64).
 It contains the following variables:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">time_datetime</span></code>: gives a <code class="code docutils literal notranslate"><span class="pre">numpy.datetime64</span></code> representation of the time coordinate</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">lat&lt;i&gt;</span></code> (<code class="code docutils literal notranslate"><span class="pre">i</span></code> gives the number of the satellite in the <code class="code docutils literal notranslate"><span class="pre">satellites</span></code> argument) latitude of the satellite</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">lon&lt;i&gt;</span></code> (<code class="code docutils literal notranslate"><span class="pre">i</span></code> gives the number of the satellite in the <code class="code docutils literal notranslate"><span class="pre">satellites</span></code> argument) longitude of the satellite</p></li>
 </ul>
-</div></blockquote>
-<dl class="simple">
-<dt>And it contains the following attributes:</dt><dd><ul class="simple">
+<p>And it contains the following attributes:</p>
+<ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">satellites</span></code>: the list of the satellites for which orbits are given</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">start_date</span></code>: The start date of the orbit in seconds since the reference date</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">end_date</span></code>: The end date of the orbit in seconds since the reference date</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">propagation_sampling_interval</span></code>: the number of seconds separating two successing simulated (physics based) positions in the orbit</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">interpolation_sampling_interval</span></code>: the number of seconds separating two interpolated positions in the orbit</p></li>
 </ul>
-</dd>
-</dl>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">orbit</span><span class="o">.</span><span class="n">orbits</span><span class="p">)</span>
 </pre></div>
 </div>

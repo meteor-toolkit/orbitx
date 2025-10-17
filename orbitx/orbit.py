@@ -18,7 +18,7 @@ from orbitx.utils._orbit.interpolate_orbit import interpolate_orbit
 from orbitx.utils._orbit.orbit_dict_to_xarray import orbit_dict_to_xarray
 from orbitx.utils._constants import CM, SATELLITE_DICT
 from orbitx.utils._date_utils import datetime64_to_sec_since, sec_since_to_datetime64
-from orbitx.tle import TLEInfo
+from orbitx.tle import TLE
 
 """___Authorship___"""
 __author__ = __author__ = [
@@ -114,7 +114,7 @@ class Orbit:
         :rtype: Orbit
         """
 
-        tle = TLEInfo()
+        tle = TLE()
         orbit_dict = {}
         for sat in satellites:
             line1, line2, tle_secs_since = tle.get_tle(sat, start_date, end_date)
@@ -214,12 +214,6 @@ class Orbit:
             dtype="timedelta64[s]",
         )[0]
         return cls(
-            satellites,
-            start_date,
-            end_date,
-            propagation_sampling_interval,
-            interpolation_sampling_interval,
-            reference_date,
             orbit_xarray,
         )
 
@@ -308,33 +302,37 @@ Number of simulated times: {len(self)}"""
 
     @property
     def satellites(self)->List[str]:
-        """Satellites which the orbits are computed for
-
-        :return: _description_
+        """
+        :return: Satellites which the orbits are computed for
         :rtype: List[str]
         """
-        return self._satellites
+        return self._orbits.attrs["satellites"]
 
     @property
-    def start_date(self):
-        return self._start_date
+    def start_date(self) -> np.datetime64:
+        """
+        :return: Date from which the orbits are computed
+        :rtype: np.datetime64
+        """
+        return np.array(self._orbits.attrs["start_date"], dtype="datetime64[s]")
 
     @property
-    def end_date(self):
-        return self._end_date
+    def end_date(self) -> np.datetime64:
+
+        return np.array(self._orbits.attrs["end_date"], dtype="datetime64[s]")
 
     @property
-    def propagation_sampling_interval(self):
-        return self._propagation_sampling_interval
+    def propagation_sampling_interval(self) -> np.timedelta64:
+        return np.array(self._orbits.attrs["propagation_sampling_interval"], dtype = "timedelta64[s]")
 
     @property
-    def interpolation_sampling_interval(self):
-        return self._interpolation_sampling_interval
+    def interpolation_sampling_interval(self) -> np.timedelta64:
+        return np.array(self._orbits.attrs["interpolation_sampling_interval"], dtype = "timedelta64[s]")
 
     @property
-    def orbits(self):
+    def orbits(self) -> xr.Dataset:
         return self._orbits
 
     @property
-    def reference_date(self):
-        return self._reference_date
+    def reference_date(self) -> np.datetime64:
+        return self._orbits["reference_date"].values

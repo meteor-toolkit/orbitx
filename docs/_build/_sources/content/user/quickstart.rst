@@ -42,6 +42,7 @@ navigate with your terminal to the location where you cloned this package, and i
    pip install -e .
 
 **Remote install**
+
 First, you will need to create a GitLab personal access token.
 
 Then, run the following command in your terminal
@@ -119,16 +120,18 @@ The core of an `Orbit` class object is its `orbits` attribute.
 It contains an `xarray.Dataset` object.
 This dataset uses a `time` coordinate, which is given in seconds since the chosen reference date (float64).
 It contains the following variables:
-  - `time_datetime`: gives a `numpy.datetime64` representation of the time coordinate
-  - `lat<i>` (`i` gives the number of the satellite in the `satellites` argument) latitude of the satellite
-  - `lon<i>` (`i` gives the number of the satellite in the `satellites` argument) longitude of the satellite
+
+- `time_datetime`: gives a `numpy.datetime64` representation of the time coordinate
+- `lat<i>` (`i` gives the number of the satellite in the `satellites` argument) latitude of the satellite
+- `lon<i>` (`i` gives the number of the satellite in the `satellites` argument) longitude of the satellite
 
 And it contains the following attributes:
-  - `satellites`: the list of the satellites for which orbits are given
-  - `start_date`: The start date of the orbit in seconds since the reference date
-  - `end_date`: The end date of the orbit in seconds since the reference date
-  - `propagation_sampling_interval`: the number of seconds separating two successing simulated (physics based) positions in the orbit
-  - `interpolation_sampling_interval`: the number of seconds separating two interpolated positions in the orbit
+
+- `satellites`: the list of the satellites for which orbits are given
+- `start_date`: The start date of the orbit in seconds since the reference date
+- `end_date`: The end date of the orbit in seconds since the reference date
+- `propagation_sampling_interval`: the number of seconds separating two successing simulated (physics based) positions in the orbit
+- `interpolation_sampling_interval`: the number of seconds separating two interpolated positions in the orbit
 
 .. code-block:: python3
 
