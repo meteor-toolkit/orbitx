@@ -46,21 +46,8 @@ class Orbit:
 
     def __init__(
         self,
-        satellites: List[str],
-        start_date: np.datetime64,
-        end_date: np.datetime64,
-        propagation_sampling_interval: np.timedelta64,
-        interpolation_sampling_interval: np.timedelta64,
-        reference_date: np.datetime64,
         orbit: xr.Dataset,
     ):
-
-        self._satellites = satellites
-        self._start_date = start_date
-        self._end_date = end_date
-        self._propagation_sampling_interval = propagation_sampling_interval
-        self._interpolation_sampling_interval = interpolation_sampling_interval
-        self._reference_date = reference_date
         self._orbits = orbit
 
     @classmethod
@@ -72,6 +59,7 @@ class Orbit:
         propagation_sampling_interval: np.timedelta64,
         interpolation_sampling_interval: np.timedelta64,
         reference_date: np.timedelta64 = np.datetime64("1970-01-01T00:00:00"),
+        custom_satellites: List[Dict[str, str]] = []
     ):
         """Main generator for the Orbit class
 
@@ -93,37 +81,67 @@ class Orbit:
             "CS2": "CryoSat-2",
             "LINCS2": "Lin-CryoSat-2",
             "N20": "NOAA-20"
+        
+        If the satellite you are interested in is not in this list, you may use the `custom_satellites` argument.
 
         The simulation starts by finding relevant Two Line Elements (TLE).
         The simulation then does a *Physics* simulation of the orbits (propagation step) from the TLEs at the requested resolution `propagation_sampling_interval`.
         Finally the simulation performs an interpolation of the propagated orbits at the requested resolution `interpolation_sampling_interval`
 
-        :param satellites: List of short names for satellites.
-        :type satellites: List[str]
-        :param start_date: The date from which the orbits are to be simulated
-        :type start_date: np.datetime64
-        :param end_date: The date until which the orbits are to be simulated
-        :type end_date: np.datetime64
-        :param propagation_sampling_interval: The time interval in seconds between two successive physics simulations of the orbit
-        :type propagation_sampling_interval: np.timedelta64
-        :param interpolation_sampling_interval: The time interval in seconds between two successive interpolations
-        :type interpolation_sampling_interval: np.timedelta64
-        :param reference_date: The time variable of an orbit is given in seconds since a reference year. This variable let's you set this reference year, defaults to np.timedelta64('1970-01-01T00:00:00')
-        :type reference_date: np.datetime64, optional
-        :return: An Orbit object with the requested parameters. See the Orbit class documentation for details about their structure
-        :rtype: Orbit
-        """
+        Args:
+            satellites (List[str]): List of short names for satellites.
+            start_date (np.datetime64): The date from which the orbits are to be simulated
+            end_date (np.datetime64): The date until which the orbits are to be simulated
+            propagation_sampling_interval (np.timedelta64): The time interval in seconds between two successive physics simulations of the orbit
+            interpolation_sampling_interval (np.timedelta64): The time interval in seconds between two successive interpolations
+            reference_date (_type_, optional): The time variable of an orbit is given in seconds since a reference year. This variable let's you set this reference year. Defaults to np.datetime64("1970-01-01T00:00:00").
+            custom_satellites (List[Dict[str, str]], optional): A list of dictionaries used for the satellites that are not natively covered in OrbitX. Each element of the list needs to be a dictionary with the following entries: tle_filepath (the path to the TLE file for the satellite), satellite_shortname (the short name of the satellite), satellite_name (the full name of the satellite). Defaults to [].
 
-        tle = TLE()
+        Returns:
+            Orbit: An Orbit object with the requested parameters. See the Orbit class documentation for details about their structure
+        """
         orbit_dict = {}
         for sat in satellites:
-            line1, line2, tle_secs_since = tle.get_tle(sat, start_date, end_date)
+            tle = TLE.from_sat_shortname(
+                sat,
+                start_date,
+                end_date,
+                reference_date
+            )
             sat_secs_since, _, sat_lat_sim, sat_lon_sim = simulate_orbit(
                 start_date,
                 end_date,
-                line1,
-                line2,
-                tle_secs_since,
+                tle,
+                propagation_sampling_interval,
+                reference_date,
+            )
+
+            time, date, lat, lon = interpolate_orbit(
+                start_date,
+                end_date,
+                sat_secs_since,
+                sat_lat_sim,
+                sat_lon_sim,
+                interpolation_sampling_interval,
+                reference_date,
+            )
+            orbit_dict.update(
+                {sat: {"lat": lat, "lon": lon, "time": time, "time_datetime": date}}
+            )
+        
+        for sat in custom_satellites:
+            tle = TLE.from_filepath(
+                sat["tle_filepath"],
+                sat["satellite_shortname"],
+                sat["satellite_name"],
+                start_date,
+                end_date,
+                reference_date
+            )
+            sat_secs_since, _, sat_lat_sim, sat_lon_sim = simulate_orbit(
+                start_date,
+                end_date,
+                tle,
                 propagation_sampling_interval,
                 reference_date,
             )
@@ -151,76 +169,29 @@ class Orbit:
         )
 
         return cls(
-            satellites,
-            start_date,
-            end_date,
-            propagation_sampling_interval,
-            interpolation_sampling_interval,
-            reference_date,
             orbit,
         )
 
     @classmethod
     def from_netcdf(cls, input_path: str):
-        """from_netcdf _summary_
+        """Loads an Orbit object from a netcdf file. This file should have the appropriate structure, as exported by the `to_netcdf` method.
 
-        _extended_summary_
-
-        :param input_path: _description_
+        :param input_path: The path of the file to load
         :type input_path: str
-        :return: _description_
-        :rtype: _type_
+        :return: An orbit object with data corresponding to the content of the file.
+        :rtype: Orbit
         """
         orbit_xarray = xr.open_dataset(
             input_path, engine="netcdf4", decode_times=True, decode_timedelta=True
         )
-        satellites = orbit_xarray.attrs["satellites"]
-        reference_date = np.array(
-            [orbit_xarray["reference_date"].values], dtype="datetime64[s]"
-        )[0]
-        time_datetime = np.array(
-            orbit_xarray[f"time_datetime"].values, dtype="datetime64[s]"
-        )
-        orbit_xarray = orbit_xarray.assign_coords(
-            coords={
-                "time": [
-                    datetime64_to_sec_since(date, reference_date)
-                    for date in time_datetime
-                ]
-            }
-        )
-
-        orbit_xarray = orbit_xarray.assign(
-            variables={
-                "reference_date": (reference_date),
-                "time_datetime": ("time", time_datetime),
-            }
-        )
-
-        orbit_xarray["time"].attrs["units"] = f"seconds since {reference_date}"
-
-        start_date = sec_since_to_datetime64(
-            orbit_xarray.attrs["start_date"], reference_date=reference_date
-        )
-        end_date = sec_since_to_datetime64(
-            orbit_xarray.attrs["end_date"], reference_date=reference_date
-        )
-        propagation_sampling_interval = np.array(
-            [orbit_xarray.attrs["propagation_sampling_interval"]],
-            dtype="timedelta64[s]",
-        )[0]
-        interpolation_sampling_interval = np.array(
-            [orbit_xarray.attrs["interpolation_sampling_interval"]],
-            dtype="timedelta64[s]",
-        )[0]
+        orbit_xarray["reference_date"] = np.array(orbit_xarray["reference_date"], dtype = "datetime64[s]")
+        orbit_xarray["time_datetime"][:] = np.array(orbit_xarray["time_datetime"], dtype = "datetime64[s]")
         return cls(
             orbit_xarray,
         )
 
     def to_netcdf(self, output_path: str) -> None:
-        """Export orbits to netCDF
-
-        Saves the generated orbits to a netCDF file
+        """Saves the generated orbits to a netCDF file
 
         :param output_path: Path where to save the file
         :type output_path: str
@@ -247,8 +218,8 @@ class Orbit:
 
         for sat_index, sat in enumerate(self.satellites):
             ax.scatter(
-                self.orbits[f"lon{sat_index + 1}"],
-                self.orbits[f"lat{sat_index + 1}"],
+                self.orbits[f"lon"][:, sat_index],
+                self.orbits[f"lat"][:, sat_index],
                 label=SATELLITE_DICT[sat],
                 transform=projection,
                 s=0.5,
@@ -314,25 +285,62 @@ Number of simulated times: {len(self)}"""
         :return: Date from which the orbits are computed
         :rtype: np.datetime64
         """
-        return np.array(self._orbits.attrs["start_date"], dtype="datetime64[s]")
+        return np.array(
+            sec_since_to_datetime64(
+                self._orbits.attrs["start_date"],
+                self.reference_date
+            ), dtype="datetime64[s]")
 
     @property
     def end_date(self) -> np.datetime64:
-
-        return np.array(self._orbits.attrs["end_date"], dtype="datetime64[s]")
+        """
+        :return: Date until which the orbits are computed
+        :rtype: np.datetime64
+        """
+        return np.array(
+            sec_since_to_datetime64(
+                self._orbits.attrs["end_date"],
+                self.reference_date), dtype="datetime64[s]")
 
     @property
     def propagation_sampling_interval(self) -> np.timedelta64:
+        """The time delta between each physics-based simulations of the satellite orbit
+        """
         return np.array(self._orbits.attrs["propagation_sampling_interval"], dtype = "timedelta64[s]")
 
     @property
     def interpolation_sampling_interval(self) -> np.timedelta64:
+        """The time delta between each interpolated position of the satellite orbit"""
         return np.array(self._orbits.attrs["interpolation_sampling_interval"], dtype = "timedelta64[s]")
 
     @property
     def orbits(self) -> xr.Dataset:
+        """The xarray containing all the satellite orbits.
+        The structure of the array is as follows:
+        
+        .. code-block::
+        
+            <xarray.Dataset> Size: 415kB
+            Dimensions:         (time: 8641, satellites: 2)
+            Coordinates:
+            * time            (time) float64 69kB 6.338e+08 6.338e+08 ... 6.339e+08
+            * satellites      (satellites) <U2 16B 'S6' 'SA'
+            Data variables:
+                reference_date  datetime64[s] 8B 2000-01-01
+                time_datetime   (time) datetime64[s] 69kB 2020-02-01 ... 2020-02-01T12:00:00
+                lat             (time, satellites) float64 138kB 13.25 -74.64 ... -46.37
+                lon             (time, satellites) float64 138kB 171.5 -124.0 ... -81.99
+            Attributes:
+                satellites:                       ['S6', 'SA']
+                start_date:                       633830400.0
+                end_date:                         633873600.0
+                propagation_sampling_interval:    20
+                interpolation_sampling_interval:  5
+
+        """
         return self._orbits
 
     @property
     def reference_date(self) -> np.datetime64:
+        """The reference date used for the representation of time in seconds since reference date"""
         return self._orbits["reference_date"].values

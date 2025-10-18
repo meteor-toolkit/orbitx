@@ -78,6 +78,8 @@ def create_xarray(
             "start_date": (start_date),
             "end_date": (end_date),
             "tle_date": ("tle_index", tle_dates),
+            "line_1": ("tle_index", tle_line_1),
+            "line_2": ("tle_index", tle_line_2),
             "reference_date_seconds_since1970": (datetime64_to_sec_since(reference_date, np.datetime64("1970-01-01T00:00:00"))),
             "start_date_seconds_since": (datetime64_to_sec_since(start_date, reference_date)),
             "end_date_seconds_since": (datetime64_to_sec_since(end_date, reference_date)),

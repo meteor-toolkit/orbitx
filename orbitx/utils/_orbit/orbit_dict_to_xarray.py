@@ -94,9 +94,13 @@ def orbit_dict_to_xarray(
     orbit_xarray = xr.Dataset(
         data_vars={
             "reference_date": (reference_date),
-            "time_datetime": ("time", orbit_dict[satellites[0]]["time_datetime"]),
+            "time_datetime": (["time"], orbit_dict[satellites[0]]["time_datetime"]),
+            "lat": (["time", "satellites"], np.empty((len(orbit_dict[satellites[0]]["time"]), len(satellites)), dtype = float)),
+            "lon": (["time", "satellites"], np.empty((len(orbit_dict[satellites[0]]["time"]), len(satellites)), dtype = float)),
         },
-        coords={"time": orbit_dict[satellites[0]]["time"]},
+        coords={
+            "time": orbit_dict[satellites[0]]["time"],
+            "satellites": satellites},
         attrs={
             "satellites": satellites,
             "start_date": datetime64_to_sec_since(
@@ -105,22 +109,17 @@ def orbit_dict_to_xarray(
             "end_date": datetime64_to_sec_since(
                 end_date, reference_date=reference_date
             ),
-            "propagation_sampling_interval": propagation_sampling_interval.item().total_seconds(),
-            "interpolation_sampling_interval": interpolation_sampling_interval.item().total_seconds(),
+            "propagation_sampling_interval": int(propagation_sampling_interval.item().total_seconds()),
+            "interpolation_sampling_interval": int(interpolation_sampling_interval.item().total_seconds()),
         },
     )
+    
+    orbit_xarray[f"lat"].attrs["units"] = "degrees"
+    orbit_xarray[f"lon"].attrs["units"] = "degrees"
+    orbit_xarray["time"].attrs["units"] = f"seconds since {reference_date}"
 
     for sat_index, satellite in enumerate(satellites):
-        new_sat_df = xr.Dataset(
-            data_vars={
-                f"lat{sat_index + 1}": ("time", np.array(orbit_dict[satellite]["lat"])),
-                f"lon{sat_index + 1}": ("time", np.array(orbit_dict[satellite]["lon"])),
-            },
-            coords={"time": orbit_dict[satellites[0]]["time"]},
-        )
-        new_sat_df[f"lat{sat_index + 1}"].attrs["units"] = "degrees"
-        new_sat_df[f"lon{sat_index + 1}"].attrs["units"] = "degrees"
-        orbit_xarray = orbit_xarray.merge(new_sat_df)
+        orbit_xarray["lat"][:, sat_index] = np.array(orbit_dict[satellite]["lat"])
+        orbit_xarray["lon"][:, sat_index] = np.array(orbit_dict[satellite]["lon"])
 
-    orbit_xarray["time"].attrs["units"] = f"seconds since {reference_date}"
     return orbit_xarray

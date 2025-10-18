@@ -47,9 +47,9 @@ for loc in __multipol_loc:
 LAND_GEOM = sgeom.MultiPolygon([sgeom.shape(geom) for geom in __geoms])
 
 
+from orbitx.tle import TLE
 from orbitx.orbit import Orbit
 from orbitx.matchups import Matchups
-from orbitx.tle import TLE
 
 def add_to_tle_path(new_tle_path: str, prepend: bool = True) -> None:
     """

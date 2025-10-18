@@ -35,7 +35,7 @@ def load_file(tle_filepath: str) -> Tuple[List[str], List[str]]:
         tle_line_2 (List[str]): The list of all second TLE lines
     """
     with open(tle_filepath, "r") as f:
-        lines = np.array(f.read().splitlines())
+        lines = np.array(f.read().splitlines(), dtype = str)
     # endregion
 
     # region Access indexes of line-1 and line-2

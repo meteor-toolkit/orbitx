@@ -19,7 +19,8 @@ __status__ = "Development"
 
 
 def get_matching_indices(
-    simulation_time: np.ndarray, tle_time: np.ndarray
+    simulation_time: np.ndarray,
+    tle_time: np.ndarray
 ) -> Tuple[list, list]:
     """
     Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and
@@ -29,10 +30,10 @@ def get_matching_indices(
     :param tle_time: a vector of time containing all tle instances
     :return: tuple of lists containing corresponding indices between simulation space and tle references
     """
-
     idx_tle = np.array(range(len(tle_time)))
     idx_sim = np.empty(idx_tle.shape, int)
     idx_redundant = []
+    
 
     # Find corresponding indices of tle and simulation time vectors
     for i in idx_tle:

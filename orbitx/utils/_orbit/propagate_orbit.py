@@ -29,7 +29,16 @@ from orekit.pyhelpers import absolutedate_to_datetime
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._date_utils import datetime64_to_sec_since, datetime_to_datetime64
+from orbitx.utils._date_utils import (
+    datetime64_to_sec_since,
+    datetime_to_datetime64,
+    datetime64_get_year,
+    datetime64_get_month,
+    datetime64_get_day,
+    datetime64_get_hour,
+    datetime64_get_minute,
+    datetime64_get_second
+)
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -62,55 +71,21 @@ def propagate_orbit(
     """
     orekit.getVMEnv().attachCurrentThread()
     extrap_date = AbsoluteDate(
-        int(start_date.astype("datetime64[Y]").astype(int) + 1970),
-        int(start_date.astype("datetime64[M]").astype(int) % 12 + 1),
-        int(
-            (
-                start_date.astype("datetime64[D]") - start_date.astype("datetime64[M]")
-            ).astype(int)
-            + 1
-        ),
-        int(
-            (
-                start_date.astype("datetime64[h]") - start_date.astype("datetime64[D]")
-            ).astype(int)
-        ),
-        int(
-            (
-                start_date.astype("datetime64[m]") - start_date.astype("datetime64[h]")
-            ).astype(int)
-        ),
-        float(
-            (
-                start_date.astype("datetime64[s]") - start_date.astype("datetime64[m]")
-            ).astype(float)
-        ),
+        datetime64_get_year(start_date),
+        datetime64_get_month(start_date),
+        datetime64_get_day(start_date),
+        datetime64_get_hour(start_date),
+        datetime64_get_minute(start_date),
+        datetime64_get_second(start_date),
         TimeScalesFactory.getUTC(),
     )  # when you want to start tracking
     final_date = AbsoluteDate(
-        int(end_date.astype("datetime64[Y]").astype(int) + 1970),
-        int(end_date.astype("datetime64[M]").astype(int) % 12 + 1),
-        int(
-            (
-                end_date.astype("datetime64[D]") - end_date.astype("datetime64[M]")
-            ).astype(int)
-            + 1
-        ),
-        int(
-            (
-                end_date.astype("datetime64[h]") - end_date.astype("datetime64[D]")
-            ).astype(int)
-        ),
-        int(
-            (
-                end_date.astype("datetime64[m]") - end_date.astype("datetime64[h]")
-            ).astype(int)
-        ),
-        float(
-            (
-                end_date.astype("datetime64[s]") - end_date.astype("datetime64[m]")
-            ).astype(float)
-        ),
+        datetime64_get_year(end_date),
+        datetime64_get_month(end_date),
+        datetime64_get_day(end_date),
+        datetime64_get_hour(end_date),
+        datetime64_get_minute(end_date),
+        datetime64_get_second(end_date),
         TimeScalesFactory.getUTC(),
     )  # when you want to stop tracking
     propagation_sampling_interval = propagation_sampling_interval.item().total_seconds()

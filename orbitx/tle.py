@@ -38,7 +38,7 @@ class TLE:
     """
     def __init__(
             self,
-            tle_xarray: xr.Dataset
+            tle_xarray: xr.Dataset,
         ):
         self._tle_xarray = tle_xarray
     
@@ -83,7 +83,7 @@ class TLE:
         if not satellite_shortname in SATELLITE_DICT.keys():
             raise ValueError(f"No TLE file found for '{satellite_shortname}'. Consider using the `from_filepath` method with your own TLE file.")
         satellite_name = SATELLITE_DICT[satellite_shortname]
-        # region Read TLE file.
+        # Read TLE file.
         tle_filepath = get_tle_path(satellite_shortname)
             
         return cls.from_filepath(
@@ -131,12 +131,30 @@ class TLE:
         tle_xarray = filter_xarray(tle_xarray)
             
         return cls(tle_xarray)
-
+    
+    def __str__(self):
+        res = f"""
+TLE object for the satellite {self.satellite_name} with short name {self.satellite_shortname}.
+Satellite catalog number: {self.satellite_catalog_number}.
+Satellite classification: {self.classification}.
+Launch year: {self.launch_year}.
+Launch number: {self.launch_number}.
+Launch piece: {self.launch_piece}.
+Number of TLEs included: {len(self)}.
+Reference date for dates in 'senconds since reference date': {self.reference_date}.
+Start date for the orbit to simulate: {self.start_date}.
+End date for the orbit to simulate: {self.end_date}.
+"""
+        return res
+    
+    def __len__(self):
+        """The number of TLEs included in this object"""
+        return len(self.tle_xarray.coords["tle_index"])
 
     @property
     def satellite_shortname(self)->str:
         r"""The short name associated with the satellite (e.g., CS2)."""
-        return self._tle_xarray.attrs["satellite_name"]
+        return self._tle_xarray.attrs["satellite_shortname"]
 
     @property
     def satellite_name(self)->str:
@@ -338,6 +356,16 @@ class TLE:
     def tle_xarray(self)->xr.Dataset:
         r"""The xarray containing the information about all TLE's for this satellite"""
         return self._tle_xarray
+    
+    @property
+    def tle_line_1(self)->List[str]:
+        r"""The list of all first TLE lines"""
+        return self._tle_xarray["line_1"]
+    
+    @property
+    def tle_line_2(self)->List[str]:
+        r"""The list of all second TLE lines"""
+        return self._tle_xarray["line_2"]
     
 if __name__ == "__main__":
     pass

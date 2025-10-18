@@ -10,6 +10,7 @@ import numpy as np
 from orbitx.utils._orbit.form_sample_space import form_sample_space
 from orbitx.utils._orbit.get_matching_indices import get_matching_indices
 from orbitx.utils._orbit.propagate_orbit import propagate_orbit
+from orbitx import TLE
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -23,9 +24,7 @@ __status__ = "Development"
 def simulate_orbit(
     start_date: np.datetime64,
     end_date: np.datetime64,
-    line1: List[str],
-    line2: List[str],
-    seconds_since_tle: np.ndarray,
+    tle: TLE,
     propagation_sampling_interval: np.timedelta64,
     reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
 ) -> Tuple[List[float], List[float], List[float]]:
@@ -42,7 +41,8 @@ def simulate_orbit(
         start_date, end_date, propagation_sampling_interval, reference_date
     )
     sat_smpl_breakup_idx, tle_ref_lines = get_matching_indices(
-        smpl_space_secs_since, seconds_since_tle
+        smpl_space_secs_since,
+        tle.tle_date_seconds_since
     )
     sat_lat_sim: np.ndarray = np.empty((0,), dtype=float)
     sat_lon_sim: np.ndarray = np.empty((0,), dtype=float)
@@ -51,8 +51,8 @@ def simulate_orbit(
 
     if len(tle_ref_lines) == 1:
         secsince1, date, lat1, lon1, _, _, _ = propagate_orbit(
-            line1[tle_ref_lines[0]],
-            line2[tle_ref_lines[0]],
+            tle.tle_line_1.values[tle_ref_lines[0]],
+            tle.tle_line_2.values[tle_ref_lines[0]],
             start_date,
             end_date,
             propagation_sampling_interval,
@@ -70,8 +70,8 @@ def simulate_orbit(
         smpl_space[-2] = smpl_space[-1]
         for i in range(len(tle_ref_lines) - 1):
             secsince1, date, lat1, lon1, _, _, _ = propagate_orbit(
-                line1[tle_ref_lines[i]],
-                line2[tle_ref_lines[i]],
+                tle.tle_line_1.values[tle_ref_lines[i]],
+                tle.tle_line_2.values[tle_ref_lines[i]],
                 smpl_space[sat_smpl_breakup_idx[i]],
                 smpl_space[sat_smpl_breakup_idx[i + 1] - 1],
                 propagation_sampling_interval,

@@ -140,22 +140,21 @@ And it contains the following attributes:
 .. code-block:: text
 
     <xarray.Dataset> Size: 415kB
-Dimensions:         (time: 8641)
+Dimensions:         (time: 8641, satellites: 2)
 Coordinates:
   * time            (time) float64 69kB 6.338e+08 6.338e+08 ... 6.339e+08
+  * satellites      (satellites) <U2 16B 'S6' 'SA'
 Data variables:
     reference_date  datetime64[s] 8B 2000-01-01
     time_datetime   (time) datetime64[s] 69kB 2020-02-01 ... 2020-02-01T12:00:00
-    lat1            (time) float64 69kB 13.25 13.49 13.74 ... 10.52 10.27 10.03
-    lon1            (time) float64 69kB 171.5 171.5 171.6 ... 159.3 159.4 159.5
-    lat2            (time) float64 69kB -74.64 -74.89 -75.13 ... -46.66 -46.37
-    lon2            (time) float64 69kB -124.0 -124.6 -125.3 ... -81.88 -81.99
+    lat             (time, satellites) float64 138kB 13.25 -74.64 ... -46.37
+    lon             (time, satellites) float64 138kB 171.5 -124.0 ... -81.99
 Attributes:
     satellites:                       ['S6', 'SA']
     start_date:                       633830400.0
     end_date:                         633873600.0
-    propagation_sampling_interval:    20.0
-    interpolation_sampling_interval:  5.0
+    propagation_sampling_interval:    20
+    interpolation_sampling_interval:  5
 
 An `Orbit` object can be exported to netCDF4 format and loaded from such a file as well (as long as the structure is as expected).
 
