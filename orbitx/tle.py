@@ -13,26 +13,11 @@ import cartopy.feature as cfeature
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._date_utils import datetime64_to_sec_since
 from orbitx.utils._tle import (
-    get_argument_perigee,
-    get_ballistic_coefficient,
-    get_catalog_number,
-    get_classification,
-    get_drag_term,
-    get_eccentricity,
-    get_element_set_number,
-    get_inclination,
-    get_launch_number,
-    get_launch_piece,
-    get_launch_year,
-    get_mean_anomaly,
-    get_mean_motion,
-    get_revolution_number,
-    get_right_ascension,
-    get_second_derivative,
-    get_tle_date,
-    get_tle_path
+    get_tle_path,
+    load_file,
+    create_xarray,
+    filter_xarray
 ) 
 from orbitx.utils._constants import SATELLITE_DICT, CM
 
@@ -130,111 +115,20 @@ class TLE:
             end_date (np.datetime64): The date until which the orbit needs to be simulated
             reference_date (np.datetime64, optional): The reference date used to represent dates as "seconds since". Defaults to np.datetime64("1970-01-01T00:00:00").
         """
-        with open(tle_filepath, "r") as f:
-            lines = np.array(f.read().splitlines())
+        tle_line_1, tle_line_2 = load_file(tle_filepath)
+        
         # endregion
-
-        # region Access indexes of line-1 and line-2
-        length = len(lines)
-        if (
-            len(lines[0]) < 69
-        ):  # If the file includes the name of the mission at the beginning of each TLE, the name is at position 0, 3, ... (and we do not care about it)
-            line_1_indexes = np.arange(
-                1, length, 3
-            )  # Line 1's are at position 1, 4, ...
-            line_2_indexes = np.arange(
-                2, length, 3
-            )  # Line 2's are at position 2, 5, ...
-        else:  # If the name is not included
-            line_1_indexes = np.arange(
-                0, length, 2
-            )  # Line 1's are at position 0, 2, ...
-            line_2_indexes = np.arange(
-                1, length, 2
-            )  # Line 2's are at position 1, 3, ...
-
-        tle_line_1 = lines[line_1_indexes]  # list of all line 1s
-        tle_line_2 = lines[line_2_indexes]  # list of all line 2s
-        # endregion
-        tle_dates = np.array([get_tle_date(line1) for line1 in tle_line_1], dtype = "datetime64[s]")
-        tle_dates_seconds_since = np.array(
-            [datetime64_to_sec_since(d, reference_date) for d in tle_dates]
-        )
-        tle_xarray = xr.Dataset(
-            data_vars={
-                "reference_date": (reference_date),
-                "start_date": (start_date),
-                "end_date": (end_date),
-                "tle_date": ("tle_index", tle_dates),
-                "reference_date_seconds_since1970": (datetime64_to_sec_since(reference_date, np.datetime64("1970-01-01T00:00:00"))),
-                "start_date_seconds_since": (datetime64_to_sec_since(start_date, reference_date)),
-                "end_date_seconds_since": (datetime64_to_sec_since(end_date, reference_date)),
-                "tle_date_seconds_since": ("tle_index", tle_dates_seconds_since),
-                "argument_perigee": ("tle_index", np.array([get_argument_perigee(line2) for line2 in tle_line_2], dtype = float)),
-                "balistic_coefficient": ("tle_index", np.array([get_ballistic_coefficient(line1) for line1 in tle_line_1], dtype = float)),
-                "drag_term": ("tle_index", np.array([get_drag_term(line1) for line1 in tle_line_1], dtype = float)),
-                "eccentricity": ("tle_index", np.array([get_eccentricity(line2) for line2 in tle_line_2], dtype = float)),
-                "element_set_number": ("tle_index", np.array([get_element_set_number(line1) for line1 in tle_line_1], dtype = float)),
-                "inclination": ("tle_index", np.array([get_inclination(line2) for line2 in tle_line_2], dtype = float)),
-                "mean_anomaly": ("tle_index", np.array([get_mean_anomaly(line2) for line2 in tle_line_2], dtype = float)),
-                "mean_motion": ("tle_index", np.array([get_mean_motion(line2) for line2 in tle_line_2], dtype = float)),
-                "revolution_number": ("tle_index", np.array([get_revolution_number(line2) for line2 in tle_line_2], dtype = float)),
-                "right_ascension": ("tle_index", np.array([get_right_ascension(line2) for line2 in tle_line_2], dtype = float)),
-                "second_derivative": ("tle_index", np.array([get_second_derivative(line1) for line1 in tle_line_1], dtype = float)),
-            },
-            coords={"tle_index": np.arange(len(tle_line_1))},
-            attrs={
-                "satellite_shortname": satellite_shortname, 
-                "satellite_name": satellite_name,
-                "catalog_number": get_catalog_number(tle_line_1[0]),
-                "classification": get_classification(tle_line_1[0]),
-                "launch_number": get_launch_number(tle_line_1[0]),
-                "launch_piece": get_launch_piece(tle_line_1[0]),
-                "launch_year": get_launch_year(tle_line_1[0]),
-            },
+        tle_xarray = create_xarray(
+            tle_line_1,
+            tle_line_2,
+            reference_date,
+            start_date,
+            end_date,
+            satellite_shortname,
+            satellite_name
         )
 
-        # Filter time
-        lower_bound_tle_time = [t for t in tle_xarray["tle_date"].values if t <= tle_xarray["start_date"].values]
-        if len(lower_bound_tle_time) == 0:
-            warnings.warn(
-                f"""The oldest TLE file is more recent than the start time requested.
-Oldest TLE file: {np.min(tle_xarray["start_date"].values)}
-Start time requested: {tle_xarray["start_date"].values}"""
-            )
-        lower_bound_tle_time = (
-            tle_xarray["start_date"].values
-            if len(lower_bound_tle_time) == 0
-            else np.max(lower_bound_tle_time)
-        )
-
-        upper_bound_tle_time = [t for t in tle_xarray["tle_date"].values if t >= tle_xarray["end_date"].values]
-        if len(upper_bound_tle_time) == 0:
-            warnings.warn(
-                f"""The most recent TLE file is older than the end time requested.
-Oldest TLE file: {np.max(tle_xarray["tle_date"].values)}
-Start time requested: {tle_xarray["end_date"]}"""
-            )
-        upper_bound_tle_time = (
-            tle_xarray["end_date"].values
-            if len(upper_bound_tle_time) == 0
-            else np.min(upper_bound_tle_time)
-        )
-        idx = [
-            i
-            for i, t_i in enumerate(tle_xarray["tle_date"])
-            if (t_i >= lower_bound_tle_time) and (t_i < upper_bound_tle_time)
-        ]
-
-        if not idx:
-            # If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time
-            closest_tle = np.argmin(np.abs(tle_xarray["tle_date"].values - tle_xarray["start_date"].values))
-
-            tle_xarray = tle_xarray.isel(tle_index = closest_tle)
-
-        else:
-            # Filter TLE set
-            tle_xarray = tle_xarray.isel(tle_index = idx)
+        tle_xarray = filter_xarray(tle_xarray)
             
         return cls(tle_xarray)
 
