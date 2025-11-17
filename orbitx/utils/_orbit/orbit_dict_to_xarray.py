@@ -90,19 +90,21 @@ def orbit_dict_to_xarray(
     :return: An xarray containing the simulated orbits and metadata
     :rtype: xr.Dataset
     """
-    satellites = list(orbit_dict.keys())
+    satellite_shortname = list(orbit_dict.keys())
+    satellite_name = [orbit_dict[key]["satellite_name"] for key in satellite_shortname]
     orbit_xarray = xr.Dataset(
         data_vars={
             "reference_date": (reference_date),
-            "time_datetime": (["time"], orbit_dict[satellites[0]]["time_datetime"]),
-            "lat": (["time", "satellites"], np.empty((len(orbit_dict[satellites[0]]["time"]), len(satellites)), dtype = float)),
-            "lon": (["time", "satellites"], np.empty((len(orbit_dict[satellites[0]]["time"]), len(satellites)), dtype = float)),
+            "time_datetime": (["time"], orbit_dict[satellite_shortname[0]]["time_datetime"]),
+            "lat": (["time", "satellite"], np.empty((len(orbit_dict[satellite_shortname[0]]["time"]), len(satellite_shortname)), dtype = float)),
+            "lon": (["time", "satellite"], np.empty((len(orbit_dict[satellite_shortname[0]]["time"]), len(satellite_shortname)), dtype = float)),
         },
         coords={
-            "time": orbit_dict[satellites[0]]["time"],
-            "satellites": satellites},
+            "time": orbit_dict[satellite_shortname[0]]["time"],
+            "satellite": satellite_shortname},
         attrs={
-            "satellites": satellites,
+            "satellite_shortname": satellite_shortname,
+            "satellite_name": satellite_name,
             "start_date": datetime64_to_sec_since(
                 start_date, reference_date=reference_date
             ),
@@ -118,7 +120,7 @@ def orbit_dict_to_xarray(
     orbit_xarray[f"lon"].attrs["units"] = "degrees"
     orbit_xarray["time"].attrs["units"] = f"seconds since {reference_date}"
 
-    for sat_index, satellite in enumerate(satellites):
+    for sat_index, satellite in enumerate(satellite_shortname):
         orbit_xarray["lat"][:, sat_index] = np.array(orbit_dict[satellite]["lat"])
         orbit_xarray["lon"][:, sat_index] = np.array(orbit_dict[satellite]["lon"])
 

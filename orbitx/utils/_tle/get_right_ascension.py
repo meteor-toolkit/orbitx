@@ -40,9 +40,9 @@ def get_right_ascension(line2: str) -> float:
             right_ascension = get_right_ascension(line2)
             print(right_ascension)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 51.6416
+            51.6416
     """
     right_ascension_str = line2[17:25]
     

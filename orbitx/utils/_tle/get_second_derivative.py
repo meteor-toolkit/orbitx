@@ -40,9 +40,9 @@ def get_second_derivative(line1: str) -> float:
             ballistic_coefficient = get_ballistic_coefficient(line1)
             print(ballistic_coefficient)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 1.2345e-06
+            1.2345e-06
     """
     second_derivative_str = line1[44:52]
     

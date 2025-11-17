@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=4d28ad59"></script>
+    <script src="../../../../_static/documentation_options.js?v=34976460"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -341,7 +341,16 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;___NPL Modules___&quot;&quot;&quot;</span>
 
 <span class="sd">&quot;&quot;&quot;__Built-In Modules__&quot;&quot;&quot;</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._date_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime64_to_sec_since</span><span class="p">,</span> <span class="n">datetime_to_datetime64</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._date_utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">datetime64_to_sec_since</span><span class="p">,</span>
+    <span class="n">datetime_to_datetime64</span><span class="p">,</span>
+    <span class="n">datetime64_get_year</span><span class="p">,</span>
+    <span class="n">datetime64_get_month</span><span class="p">,</span>
+    <span class="n">datetime64_get_day</span><span class="p">,</span>
+    <span class="n">datetime64_get_hour</span><span class="p">,</span>
+    <span class="n">datetime64_get_minute</span><span class="p">,</span>
+    <span class="n">datetime64_get_second</span>
+<span class="p">)</span>
 
 <span class="sd">&quot;&quot;&quot;___Authorship___&quot;&quot;&quot;</span>
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Zhav Loizeau&quot;</span>
@@ -376,55 +385,21 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">orekit</span><span class="o">.</span><span class="n">getVMEnv</span><span class="p">()</span><span class="o">.</span><span class="n">attachCurrentThread</span><span class="p">()</span>
     <span class="n">extrap_date</span> <span class="o">=</span> <span class="n">AbsoluteDate</span><span class="p">(</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">start_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[Y]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1970</span><span class="p">),</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">start_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[M]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="nb">int</span><span class="p">(</span>
-            <span class="p">(</span>
-                <span class="n">start_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[D]&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">start_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[M]&quot;</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-            <span class="o">+</span> <span class="mi">1</span>
-        <span class="p">),</span>
-        <span class="nb">int</span><span class="p">(</span>
-            <span class="p">(</span>
-                <span class="n">start_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[h]&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">start_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[D]&quot;</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-        <span class="p">),</span>
-        <span class="nb">int</span><span class="p">(</span>
-            <span class="p">(</span>
-                <span class="n">start_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[m]&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">start_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[h]&quot;</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-        <span class="p">),</span>
-        <span class="nb">float</span><span class="p">(</span>
-            <span class="p">(</span>
-                <span class="n">start_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[s]&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">start_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[m]&quot;</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-        <span class="p">),</span>
+        <span class="n">datetime64_get_year</span><span class="p">(</span><span class="n">start_date</span><span class="p">),</span>
+        <span class="n">datetime64_get_month</span><span class="p">(</span><span class="n">start_date</span><span class="p">),</span>
+        <span class="n">datetime64_get_day</span><span class="p">(</span><span class="n">start_date</span><span class="p">),</span>
+        <span class="n">datetime64_get_hour</span><span class="p">(</span><span class="n">start_date</span><span class="p">),</span>
+        <span class="n">datetime64_get_minute</span><span class="p">(</span><span class="n">start_date</span><span class="p">),</span>
+        <span class="n">datetime64_get_second</span><span class="p">(</span><span class="n">start_date</span><span class="p">),</span>
         <span class="n">TimeScalesFactory</span><span class="o">.</span><span class="n">getUTC</span><span class="p">(),</span>
     <span class="p">)</span>  <span class="c1"># when you want to start tracking</span>
     <span class="n">final_date</span> <span class="o">=</span> <span class="n">AbsoluteDate</span><span class="p">(</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">end_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[Y]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1970</span><span class="p">),</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">end_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[M]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="nb">int</span><span class="p">(</span>
-            <span class="p">(</span>
-                <span class="n">end_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[D]&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">end_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[M]&quot;</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-            <span class="o">+</span> <span class="mi">1</span>
-        <span class="p">),</span>
-        <span class="nb">int</span><span class="p">(</span>
-            <span class="p">(</span>
-                <span class="n">end_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[h]&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">end_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[D]&quot;</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-        <span class="p">),</span>
-        <span class="nb">int</span><span class="p">(</span>
-            <span class="p">(</span>
-                <span class="n">end_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[m]&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">end_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[h]&quot;</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-        <span class="p">),</span>
-        <span class="nb">float</span><span class="p">(</span>
-            <span class="p">(</span>
-                <span class="n">end_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[s]&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">end_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;datetime64[m]&quot;</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-        <span class="p">),</span>
+        <span class="n">datetime64_get_year</span><span class="p">(</span><span class="n">end_date</span><span class="p">),</span>
+        <span class="n">datetime64_get_month</span><span class="p">(</span><span class="n">end_date</span><span class="p">),</span>
+        <span class="n">datetime64_get_day</span><span class="p">(</span><span class="n">end_date</span><span class="p">),</span>
+        <span class="n">datetime64_get_hour</span><span class="p">(</span><span class="n">end_date</span><span class="p">),</span>
+        <span class="n">datetime64_get_minute</span><span class="p">(</span><span class="n">end_date</span><span class="p">),</span>
+        <span class="n">datetime64_get_second</span><span class="p">(</span><span class="n">end_date</span><span class="p">),</span>
         <span class="n">TimeScalesFactory</span><span class="o">.</span><span class="n">getUTC</span><span class="p">(),</span>
     <span class="p">)</span>  <span class="c1"># when you want to stop tracking</span>
     <span class="n">propagation_sampling_interval</span> <span class="o">=</span> <span class="n">propagation_sampling_interval</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>

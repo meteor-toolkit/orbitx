@@ -43,9 +43,9 @@ def get_classification(line1: str) -> str:
             classification = get_classification(line1)
             print(classification)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> Unclassified
+            Unclassified
     """
     short_classification = line1[7]
     if short_classification == 'U':

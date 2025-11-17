@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=4d28ad59"></script>
+    <script src="../../../../_static/documentation_options.js?v=34976460"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -333,7 +333,8 @@ document.write(`
 <div class="viewcode-block" id="get_matching_indices">
 <a class="viewcode-back" href="../../../../content/developer/generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html#orbitx.utils._orbit.get_matching_indices.get_matching_indices">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_matching_indices</span><span class="p">(</span>
-    <span class="n">simulation_time</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">tle_time</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">simulation_time</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">tle_time</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and</span>
@@ -343,10 +344,10 @@ document.write(`
 <span class="sd">    :param tle_time: a vector of time containing all tle instances</span>
 <span class="sd">    :return: tuple of lists containing corresponding indices between simulation space and tle references</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">idx_tle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tle_time</span><span class="p">)))</span>
     <span class="n">idx_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">idx_tle</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
     <span class="n">idx_redundant</span> <span class="o">=</span> <span class="p">[]</span>
+    
 
     <span class="c1"># Find corresponding indices of tle and simulation time vectors</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx_tle</span><span class="p">:</span>

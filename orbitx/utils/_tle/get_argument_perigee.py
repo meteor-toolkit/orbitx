@@ -40,9 +40,9 @@ def get_argument_perigee(line2: str) -> float:
             arg_perigee = get_argument_perigee(line2)
             print(arg_perigee)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 130.536
+            130.536
     """
     arg_perigee_str = line2[34:42]
     arg_perigee_str = re.sub(' ', '', arg_perigee_str)

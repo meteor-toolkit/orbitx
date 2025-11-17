@@ -40,9 +40,9 @@ def get_revolution_number(line2: str) -> int:
             revolution_number = get_revolution_number(line2)
             print(revolution_number)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 56353
+            56353
     """
     revolution_number_str = line2[63:68]
     revolution_number_str = re.sub(' ', '', revolution_number_str)

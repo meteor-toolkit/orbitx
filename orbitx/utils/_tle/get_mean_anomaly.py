@@ -40,9 +40,9 @@ def get_mean_anomaly(line2: str) -> float:
             mean_anomaly = get_mean_anomaly(line2)
             print(mean_anomaly)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 325.0288
+            325.0288
     """
     mean_anomaly_str = line2[43:51]
     mean_anomaly_str = re.sub(' ', '', mean_anomaly_str)

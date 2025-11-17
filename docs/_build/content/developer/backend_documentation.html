@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=4d28ad59"></script>
+    <script src="../../_static/documentation_options.js?v=34976460"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -192,7 +192,28 @@
 <li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._date_utils.datetime_to_datetime64.html">orbitx.utils._date_utils.datetime_to_datetime64</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._date_utils.datetime64_to_sec_since.html">orbitx.utils._date_utils.datetime64_to_sec_since</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._date_utils.sec_since_to_datetime64.html">orbitx.utils._date_utils.sec_since_to_datetime64</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.html">orbitx.utils._tle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.create_xarray.html">orbitx.utils._tle.create_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.filter_xarray.html">orbitx.utils._tle.filter_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_argument_perigee.html">orbitx.utils._tle.get_argument_perigee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_ballistic_coefficient.html">orbitx.utils._tle.get_ballistic_coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_catalog_number.html">orbitx.utils._tle.get_catalog_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_classification.html">orbitx.utils._tle.get_classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_drag_term.html">orbitx.utils._tle.get_drag_term</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_eccentricity.html">orbitx.utils._tle.get_eccentricity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_element_set_number.html">orbitx.utils._tle.get_element_set_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_inclination.html">orbitx.utils._tle.get_inclination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_launch_number.html">orbitx.utils._tle.get_launch_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_launch_piece.html">orbitx.utils._tle.get_launch_piece</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_launch_year.html">orbitx.utils._tle.get_launch_year</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_mean_anomaly.html">orbitx.utils._tle.get_mean_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_mean_motion.html">orbitx.utils._tle.get_mean_motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_revolution_number.html">orbitx.utils._tle.get_revolution_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_right_ascension.html">orbitx.utils._tle.get_right_ascension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_second_derivative.html">orbitx.utils._tle.get_second_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_tle_date.html">orbitx.utils._tle.get_tle_date</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_tle_path.html">orbitx.utils._tle.get_tle_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.get_tle.html">orbitx.utils._tle.get_tle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._tle.load_file.html">orbitx.utils._tle.load_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html">orbitx.utils._orbit.form_sample_space.form_sample_space</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html">orbitx.utils._orbit.get_matching_indices.get_matching_indices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/orbitx.utils._orbit.interp_circ.interp_circ.html">orbitx.utils._orbit.interp_circ.interp_circ</a></li>
@@ -397,46 +418,109 @@ Those functionalities are stored in the <code class="code docutils literal notra
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._date_utils.sec_since_to_datetime64.html#orbitx.utils._date_utils.sec_since_to_datetime64" title="orbitx.utils._date_utils.sec_since_to_datetime64"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_date_utils.sec_since_to_datetime64</span></code></a>(...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.html#module-orbitx.utils._tle" title="orbitx.utils._tle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.create_xarray.html#orbitx.utils._tle.create_xarray" title="orbitx.utils._tle.create_xarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.create_xarray</span></code></a>(tle_line_1, tle_line_2, ...)</p></td>
+<td><p>create_xarray Generate an xarray containing all the information from the TLE file</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html#orbitx.utils._orbit.form_sample_space.form_sample_space" title="orbitx.utils._orbit.form_sample_space.form_sample_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.form_sample_space.form_sample_space</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.filter_xarray.html#orbitx.utils._tle.filter_xarray" title="orbitx.utils._tle.filter_xarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.filter_xarray</span></code></a>(tle_xarray)</p></td>
+<td><p>Selecting TLEs that are relevant to the time span of the simulation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_argument_perigee.html#orbitx.utils._tle.get_argument_perigee" title="orbitx.utils._tle.get_argument_perigee"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_argument_perigee</span></code></a>(line2)</p></td>
+<td><p>Finds the argument of the perigee in degrees from the second line of the TLE.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_ballistic_coefficient.html#orbitx.utils._tle.get_ballistic_coefficient" title="orbitx.utils._tle.get_ballistic_coefficient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_ballistic_coefficient</span></code></a>(line1)</p></td>
+<td><p>Finds the ballistic coefficient (first derivate of the mean motion) of the satellite from the first line of the TLE.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_catalog_number.html#orbitx.utils._tle.get_catalog_number" title="orbitx.utils._tle.get_catalog_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_catalog_number</span></code></a>(line1)</p></td>
+<td><p>Finds the catalog number in the first line of the TLE.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_classification.html#orbitx.utils._tle.get_classification" title="orbitx.utils._tle.get_classification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_classification</span></code></a>(line1)</p></td>
+<td><p>Finds the classification of the satellite in the first line of the TLE. The classification corresponds to character eight in the first line of the TLE. The possible values are     - U: unclassified,     - C: classified,     - S: secret.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_drag_term.html#orbitx.utils._tle.get_drag_term" title="orbitx.utils._tle.get_drag_term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_drag_term</span></code></a>(line1)</p></td>
+<td><p>Finds the drag term of the satellite from the first line of the TLE.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_eccentricity.html#orbitx.utils._tle.get_eccentricity" title="orbitx.utils._tle.get_eccentricity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_eccentricity</span></code></a>(line2)</p></td>
+<td><p>Finds the eccentricity from the second line of the TLE.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_element_set_number.html#orbitx.utils._tle.get_element_set_number" title="orbitx.utils._tle.get_element_set_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_element_set_number</span></code></a>(line1)</p></td>
+<td><p>Finds the element set number of the TLE from the first line of the TLE.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_inclination.html#orbitx.utils._tle.get_inclination" title="orbitx.utils._tle.get_inclination"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_inclination</span></code></a>(line2)</p></td>
+<td><p>Finds the inclination of the satellite from the second line of the TLE.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_launch_number.html#orbitx.utils._tle.get_launch_number" title="orbitx.utils._tle.get_launch_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_launch_number</span></code></a>(line1)</p></td>
+<td><p>Finds the launch number of this satellite in the launch year.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_launch_piece.html#orbitx.utils._tle.get_launch_piece" title="orbitx.utils._tle.get_launch_piece"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_launch_piece</span></code></a>(line1)</p></td>
+<td><p>Finds the launch piece identifier of this satellite.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_launch_year.html#orbitx.utils._tle.get_launch_year" title="orbitx.utils._tle.get_launch_year"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_launch_year</span></code></a>(line1)</p></td>
+<td><p>Finds the launch year of the satellite from the first line of the TLE.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_mean_anomaly.html#orbitx.utils._tle.get_mean_anomaly" title="orbitx.utils._tle.get_mean_anomaly"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_mean_anomaly</span></code></a>(line2)</p></td>
+<td><p>Finds the mean anomaly in degrees from the second line of the TLE.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_mean_motion.html#orbitx.utils._tle.get_mean_motion" title="orbitx.utils._tle.get_mean_motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_mean_motion</span></code></a>(line2)</p></td>
+<td><p>Finds the mean motion in revolutions per day from the second line of the TLE.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_revolution_number.html#orbitx.utils._tle.get_revolution_number" title="orbitx.utils._tle.get_revolution_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_revolution_number</span></code></a>(line2)</p></td>
+<td><p>Finds the revolution number from the second line of the TLE.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_right_ascension.html#orbitx.utils._tle.get_right_ascension" title="orbitx.utils._tle.get_right_ascension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_right_ascension</span></code></a>(line2)</p></td>
+<td><p>Finds the right ascension of the ascending node in the ECI reference frame measured from the vernal point from the second line of the TLE.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_second_derivative.html#orbitx.utils._tle.get_second_derivative" title="orbitx.utils._tle.get_second_derivative"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_second_derivative</span></code></a>(line1)</p></td>
+<td><p>Finds the second derivative of the satellite mean motion from the first line of the TLE.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_tle_date.html#orbitx.utils._tle.get_tle_date" title="orbitx.utils._tle.get_tle_date"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_tle_date</span></code></a>(tle_line_1)</p></td>
+<td><p>Date corresponding to this TLE computed from Epoch Date and Julian Date Fraction</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_tle_path.html#orbitx.utils._tle.get_tle_path" title="orbitx.utils._tle.get_tle_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_tle_path</span></code></a>(satellite_name)</p></td>
+<td><p>Returns path for TLE file for defined satellite</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.get_tle.html#module-orbitx.utils._tle.get_tle" title="orbitx.utils._tle.get_tle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.get_tle</span></code></a></p></td>
+<td><p>orbitx.utils._tle.get_tle -</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._tle.load_file.html#orbitx.utils._tle.load_file" title="orbitx.utils._tle.load_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_tle.load_file</span></code></a>(tle_filepath)</p></td>
+<td><p>Getting the list of first lines and the list of second lines of all TLEs in the file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html#orbitx.utils._orbit.form_sample_space.form_sample_space" title="orbitx.utils._orbit.form_sample_space.form_sample_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.form_sample_space.form_sample_space</span></code></a>(...)</p></td>
 <td><p>Return a time vector containing desired orbit simulation timestamps</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html#orbitx.utils._orbit.get_matching_indices.get_matching_indices" title="orbitx.utils._orbit.get_matching_indices.get_matching_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.get_matching_indices.get_matching_indices</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html#orbitx.utils._orbit.get_matching_indices.get_matching_indices" title="orbitx.utils._orbit.get_matching_indices.get_matching_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.get_matching_indices.get_matching_indices</span></code></a>(...)</p></td>
 <td><p>Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and return the matching pointers/indices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.interp_circ.interp_circ.html#orbitx.utils._orbit.interp_circ.interp_circ" title="orbitx.utils._orbit.interp_circ.interp_circ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.interp_circ.interp_circ</span></code></a>(x, y[, period])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.interp_circ.interp_circ.html#orbitx.utils._orbit.interp_circ.interp_circ" title="orbitx.utils._orbit.interp_circ.interp_circ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.interp_circ.interp_circ</span></code></a>(x, y[, period])</p></td>
 <td><p>interp_circ interpolation for periodic-valued data</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.interpolate_orbit.interpolate_orbit.html#orbitx.utils._orbit.interpolate_orbit.interpolate_orbit" title="orbitx.utils._orbit.interpolate_orbit.interpolate_orbit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.interpolate_orbit.interpolate_orbit</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.interpolate_orbit.interpolate_orbit.html#orbitx.utils._orbit.interpolate_orbit.interpolate_orbit" title="orbitx.utils._orbit.interpolate_orbit.interpolate_orbit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.interpolate_orbit.interpolate_orbit</span></code></a>(...)</p></td>
 <td><p>interpolate_orbit Interpolate the orbit at desired time resolution</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray.html#orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray" title="orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.orbit_dict_to_xarray.orbit_dict_to_xarray</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray.html#orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray" title="orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.orbit_dict_to_xarray.orbit_dict_to_xarray</span></code></a>(...)</p></td>
 <td><p>orbit_dict_to_xarray convert the temporary orbit dictionary to an xarray in the simulation pipeline</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.propagate_orbit.propagate_orbit.html#orbitx.utils._orbit.propagate_orbit.propagate_orbit" title="orbitx.utils._orbit.propagate_orbit.propagate_orbit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.propagate_orbit.propagate_orbit</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.propagate_orbit.propagate_orbit.html#orbitx.utils._orbit.propagate_orbit.propagate_orbit" title="orbitx.utils._orbit.propagate_orbit.propagate_orbit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.propagate_orbit.propagate_orbit</span></code></a>(...)</p></td>
 <td><p>Propagate satellite orbit for given two-line-elements and associated time</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.simulate_orbit.simulate_orbit.html#orbitx.utils._orbit.simulate_orbit.simulate_orbit" title="orbitx.utils._orbit.simulate_orbit.simulate_orbit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.simulate_orbit.simulate_orbit</span></code></a>(...[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._orbit.simulate_orbit.simulate_orbit.html#orbitx.utils._orbit.simulate_orbit.simulate_orbit" title="orbitx.utils._orbit.simulate_orbit.simulate_orbit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_orbit.simulate_orbit.simulate_orbit</span></code></a>(...[, ...])</p></td>
 <td><p>Return latitude, longitude and time arrays for full simulated orbit</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.find_matches.find_matches.html#orbitx.utils._matchups.find_matches.find_matches" title="orbitx.utils._matchups.find_matches.find_matches"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.find_matches.find_matches</span></code></a>(orbit, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.find_matches.find_matches.html#orbitx.utils._matchups.find_matches.find_matches" title="orbitx.utils._matchups.find_matches.find_matches"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.find_matches.find_matches</span></code></a>(orbit, ...)</p></td>
 <td><p>find_matches Finds matchups between each pair of satellites</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.get_dist.get_dist.html#orbitx.utils._matchups.get_dist.get_dist" title="orbitx.utils._matchups.get_dist.get_dist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.get_dist.get_dist</span></code></a>(lat1, lon1, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.get_dist.get_dist.html#orbitx.utils._matchups.get_dist.get_dist" title="orbitx.utils._matchups.get_dist.get_dist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.get_dist.get_dist</span></code></a>(lat1, lon1, ...)</p></td>
 <td><p>Calculate the distance in kilometers between two points on the earth (specified in decimal degrees)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask.html#orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask" title="orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.get_land_ocean_mask.get_land_ocean_mask</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask.html#orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask" title="orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.get_land_ocean_mask.get_land_ocean_mask</span></code></a>(...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.is_land.is_land.html#orbitx.utils._matchups.is_land.is_land" title="orbitx.utils._matchups.is_land.is_land"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.is_land.is_land</span></code></a>(x, y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.is_land.is_land.html#orbitx.utils._matchups.is_land.is_land" title="orbitx.utils._matchups.is_land.is_land"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.is_land.is_land</span></code></a>(x, y)</p></td>
 <td><p>Returns boolean land mask for x,y coordinates</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.land_mask.land_mask.html#orbitx.utils._matchups.land_mask.land_mask" title="orbitx.utils._matchups.land_mask.land_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.land_mask.land_mask</span></code></a>(lat_c, lon_c)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.land_mask.land_mask.html#orbitx.utils._matchups.land_mask.land_mask" title="orbitx.utils._matchups.land_mask.land_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.land_mask.land_mask</span></code></a>(lat_c, lon_c)</p></td>
 <td><p>Returns estimate of land fraction for a scene with centre of (lon_c,lat_c) +/- swath width</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray.html#orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray" title="orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.matchup_dict_to_xarray.matchup_dict_to_xarray</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray.html#orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray" title="orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_matchups.matchup_dict_to_xarray.matchup_dict_to_xarray</span></code></a>(...)</p></td>
 <td><p>Convert matchup dictionary to xarray dataset.</p></td>
 </tr>
 </tbody>

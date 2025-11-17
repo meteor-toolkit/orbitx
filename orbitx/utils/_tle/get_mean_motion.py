@@ -40,9 +40,9 @@ def get_mean_motion(line2: str) -> float:
             mean_motion = get_mean_motion(line2)
             print(mean_motion)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 15.72125391
+            15.72125391
     """
     mean_motion_str = line2[52:63]
     mean_motion_str = re.sub(' ', '', mean_motion_str)

@@ -41,9 +41,9 @@ def get_element_set_number(line1: str) -> int:
             element_set_number = get_element_set_number(line1)
             print(element_set_number)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 292
+            292
     """
     element_set_number_str = line1[64:68]
     

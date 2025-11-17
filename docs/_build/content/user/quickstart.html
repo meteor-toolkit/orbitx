@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=4d28ad59"></script>
+    <script src="../../_static/documentation_options.js?v=34976460"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -478,26 +478,25 @@ It contains the following variables:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;xarray.Dataset&gt; Size: 415kB
 </pre></div>
 </div>
-<p>Dimensions:         (time: 8641)
+<p>Dimensions:         (time: 8641, satellites: 2)
 Coordinates:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>time            (time) float64 69kB 6.338e+08 6.338e+08 … 6.339e+08</p></li>
+<li><p>satellites      (satellites) &lt;U2 16B ‘S6’ ‘SA’</p></li>
 </ul>
 </div></blockquote>
 <dl class="simple">
 <dt>Data variables:</dt><dd><p>reference_date  datetime64[s] 8B 2000-01-01
 time_datetime   (time) datetime64[s] 69kB 2020-02-01 … 2020-02-01T12:00:00
-lat1            (time) float64 69kB 13.25 13.49 13.74 … 10.52 10.27 10.03
-lon1            (time) float64 69kB 171.5 171.5 171.6 … 159.3 159.4 159.5
-lat2            (time) float64 69kB -74.64 -74.89 -75.13 … -46.66 -46.37
-lon2            (time) float64 69kB -124.0 -124.6 -125.3 … -81.88 -81.99</p>
+lat             (time, satellites) float64 138kB 13.25 -74.64 … -46.37
+lon             (time, satellites) float64 138kB 171.5 -124.0 … -81.99</p>
 </dd>
 <dt>Attributes:</dt><dd><p>satellites:                       [‘S6’, ‘SA’]
 start_date:                       633830400.0
 end_date:                         633873600.0
-propagation_sampling_interval:    20.0
-interpolation_sampling_interval:  5.0</p>
+propagation_sampling_interval:    20
+interpolation_sampling_interval:  5</p>
 </dd>
 </dl>
 <p>An <code class="code docutils literal notranslate"><span class="pre">Orbit</span></code> object can be exported to netCDF4 format and loaded from such a file as well (as long as the structure is as expected).</p>

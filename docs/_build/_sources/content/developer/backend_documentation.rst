@@ -21,7 +21,28 @@ Those functionalities are stored in the `utils` sub-module.
    _date_utils.datetime64_to_sec_since
    _date_utils.sec_since_to_datetime64
 
-   _tle
+   _tle.create_xarray
+   _tle.filter_xarray
+   _tle.get_argument_perigee
+   _tle.get_ballistic_coefficient
+   _tle.get_catalog_number
+   _tle.get_classification
+   _tle.get_drag_term
+   _tle.get_eccentricity
+   _tle.get_element_set_number
+   _tle.get_inclination
+   _tle.get_launch_number
+   _tle.get_launch_piece
+   _tle.get_launch_year
+   _tle.get_mean_anomaly
+   _tle.get_mean_motion
+   _tle.get_revolution_number
+   _tle.get_right_ascension
+   _tle.get_second_derivative
+   _tle.get_tle_date
+   _tle.get_tle_path
+   _tle.get_tle
+   _tle.load_file
 
    _orbit.form_sample_space.form_sample_space
    _orbit.get_matching_indices.get_matching_indices

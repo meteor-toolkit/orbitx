@@ -126,7 +126,14 @@ class Orbit:
                 reference_date,
             )
             orbit_dict.update(
-                {sat: {"lat": lat, "lon": lon, "time": time, "time_datetime": date}}
+                {sat: {
+                        "lat": lat,
+                        "lon": lon,
+                        "time": time,
+                        "time_datetime": date,
+                        "satellite_name": tle.satellite_name
+                    }
+                }
             )
         
         for sat in custom_satellites:
@@ -156,7 +163,14 @@ class Orbit:
                 reference_date,
             )
             orbit_dict.update(
-                {sat: {"lat": lat, "lon": lon, "time": time, "time_datetime": date}}
+                {sat: {
+                    "lat": lat,
+                    "lon": lon,
+                    "time": time,
+                    "time_datetime": date,
+                    "satellite_name": tle.satellite_name
+                    }
+                }
             )
 
         orbit = orbit_dict_to_xarray(
@@ -186,6 +200,16 @@ class Orbit:
         )
         orbit_xarray["reference_date"] = np.array(orbit_xarray["reference_date"], dtype = "datetime64[s]")
         orbit_xarray["time_datetime"][:] = np.array(orbit_xarray["time_datetime"], dtype = "datetime64[s]")
+        orbit_xarray = orbit_xarray.assign_coords(
+            time = np.array(
+            [
+                datetime64_to_sec_since(
+                    datetime, reference_date=orbit_xarray["reference_date"].values
+                )
+                for datetime in orbit_xarray["time_datetime"].values
+            ], dtype = np.int32
+            )
+        )
         return cls(
             orbit_xarray,
         )
@@ -216,10 +240,10 @@ class Orbit:
         ax.coastlines()
         ax.add_feature(cfeature.LAND)
 
-        for sat_index, sat in enumerate(self.satellites):
+        for sat_index, sat in enumerate(self.satellite_shortname):
             ax.scatter(
-                self.orbits[f"lon"][:, sat_index],
-                self.orbits[f"lat"][:, sat_index],
+                self.orbits["lon"].isel(satellites = sat_index),
+                self.orbits["lat"].isel(satellites = sat_index),
                 label=SATELLITE_DICT[sat],
                 transform=projection,
                 s=0.5,
@@ -262,7 +286,7 @@ class Orbit:
 
     def __str__(self):
         res = f"""
-Orbit object for satellites {[sat for sat in self.satellites]}.
+Orbit object for satellites {[sat for sat in self.satellite_name]}.
 Start date: {self.start_date}
 End date: {self.end_date}
 Propagation sampling interval: {self.propagation_sampling_interval}
@@ -272,12 +296,21 @@ Number of simulated times: {len(self)}"""
         return res
 
     @property
-    def satellites(self)->List[str]:
+    def satellite_name(self)->List[str]:
         """
         :return: Satellites which the orbits are computed for
         :rtype: List[str]
         """
-        return self._orbits.attrs["satellites"]
+        return self._orbits.attrs["satellite_name"]
+    
+    
+    @property
+    def satellite_shortname(self)->List[str]:
+        """
+        :return: Satellites which the orbits are computed for
+        :rtype: List[str]
+        """
+        return self._orbits.attrs["satellite_shortname"]
 
     @property
     def start_date(self) -> np.datetime64:

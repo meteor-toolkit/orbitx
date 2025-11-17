@@ -2,9 +2,8 @@
 
 """___Third-Party Modules___"""
 import numpy as np
-import numpy.typing as npt
 import xarray as xr
-from typing import Dict
+from typing import Dict, List
 
 """___NPL Modules___"""
 
@@ -23,7 +22,7 @@ _get_range = np.vectorize(lambda *delay: max(delay) - min(delay))
 
 
 def matchup_dict_to_xarray(
-    matchups_dict: Dict[str, Dict[str, npt.NDArray]],
+    matchups_list: List[xr.Dataset],
     attributes: Dict,
     reference_date: np.datetime64,
 ) -> xr.Dataset:
@@ -81,77 +80,17 @@ def matchup_dict_to_xarray(
     :param matchups_dict: matchup information dict containing lat, lon, distance and time info for matchup events
     :param attrs: dictionary of attributes to be added to the output dataset, must include "time_threshold"
     """
+    indices = matchups_list[0]["matchup_index"].values
+    for i in range(len(matchups_list)):
+        indices = list(set(matchups_list[i]["matchup_index"].values).intersection(indices))
 
-    ds_list = [
-        xr.Dataset(
-            data_vars={
-                "reference_date": (reference_date),
-                "time_datetime": ("time", matchups_dict[key]["time_datetime"]),
-                "lat1": ("time", matchups_dict[key]["lat1"]),
-                "lon1": ("time", matchups_dict[key]["lon1"]),
-                "lat2": ("time", matchups_dict[key]["lat2"]),
-                "lon2": ("time", matchups_dict[key]["lon2"]),
-                "distance": ("time", matchups_dict[key]["distance"]),
-                "time2": ("time", matchups_dict[key]["time2"]),
-                "time_datetime2": ("time", matchups_dict[key]["time_datetime2"]),
-                "delay": ("time", matchups_dict[key]["delay"]),
-            },
-            coords={"time": matchups_dict[key]["time"]},
-            attrs={
-                "satellites": attributes["satellites"],
-                "start_date": datetime64_to_sec_since(
-                    attributes["start_date"], reference_date
-                ),
-                "end_date": datetime64_to_sec_since(
-                    attributes["end_date"], reference_date
-                ),
-                "propagation_sampling_interval": attributes[
-                    "propagation_sampling_interval"
-                ]
-                .item()
-                .total_seconds(),
-                "interpolation_sampling_interval": attributes[
-                    "interpolation_sampling_interval"
-                ]
-                .item()
-                .total_seconds(),
-                "time_diff_threshold": attributes["time_diff_threshold"]
-                .item()
-                .total_seconds(),
-                "space_diff_threshold": attributes["space_diff_threshold"],
-                "check_before": attributes["check_before"],
-                "check_after": attributes["check_after"],
-                "has_land_ocean_mask": attributes["has_land_ocean_mask"],
-            },
-        )
-        for key in matchups_dict.keys()
-    ]
-
-    times = ds_list[0].time.data
-    for i in range(len(ds_list)):
-        times = list(set(ds_list[i].time.data).intersection(times))
-        ds_list[i] = ds_list[i].rename(
-            {
-                "lat2": f"lat{i + 2}",
-                "lon2": f"lon{i + 2}",
-                "time2": f"time{i + 2}",
-                "time_datetime2": f"time_datetime{i + 2}",
-                "delay": f"delay{i + 2}",
-                "distance": f"distance{i + 2}",
-            }
-        )
-        ds_list[i][f"time{i + 2}"].attrs["units"] = f"seconds since {reference_date}"
-        ds_list[i][f"time"].attrs["units"] = f"seconds since {reference_date}"
-        ds_list[i][f"distance{i + 2}"].attrs["units"] = "km"
-        ds_list[i][f"lat{i + 2}"].attrs["units"] = "degrees"
-        ds_list[i][f"lon{i + 2}"].attrs["units"] = "degrees"
 
     merged_ds = xr.merge(
-        [ds.sel(time=times) for ds in ds_list], combine_attrs="no_conflicts"
+        [ds.sel(matchup_index=indices) for ds in matchups_list], combine_attrs="no_conflicts"
     )
 
     merged_ds = merged_ds.isel(
-        time=np.where(
+        matchup_index=np.where(
             _get_range(*[merged_ds[i] for i in merged_ds if "delay" in str(i)])
             < attributes["time_diff_threshold"]
         )[0]

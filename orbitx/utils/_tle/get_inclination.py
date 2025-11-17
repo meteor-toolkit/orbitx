@@ -40,9 +40,9 @@ def get_inclination(line2: str) -> float:
             inclination = get_inclination(line2)
             print(inclination)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 51.6416
+            51.6416
     """
     inclination_str = line2[8:16]
     

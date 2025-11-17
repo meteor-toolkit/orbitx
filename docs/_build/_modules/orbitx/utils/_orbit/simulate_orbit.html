@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=4d28ad59"></script>
+    <script src="../../../../_static/documentation_options.js?v=34976460"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -322,6 +322,7 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._orbit.form_sample_space</span><span class="w"> </span><span class="kn">import</span> <span class="n">form_sample_space</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._orbit.get_matching_indices</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_matching_indices</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._orbit.propagate_orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">propagate_orbit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx</span><span class="w"> </span><span class="kn">import</span> <span class="n">TLE</span>
 
 <span class="sd">&quot;&quot;&quot;___Authorship___&quot;&quot;&quot;</span>
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Zhav Loizeau&quot;</span>
@@ -337,9 +338,7 @@ document.write(`
 <span class="k">def</span><span class="w"> </span><span class="nf">simulate_orbit</span><span class="p">(</span>
     <span class="n">start_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
     <span class="n">end_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
-    <span class="n">line1</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">line2</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">seconds_since_tle</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">tle</span><span class="p">:</span> <span class="n">TLE</span><span class="p">,</span>
     <span class="n">propagation_sampling_interval</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">,</span>
     <span class="n">reference_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s2">&quot;1970-01-01T00:00:00&quot;</span><span class="p">),</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
@@ -356,7 +355,8 @@ document.write(`
         <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">propagation_sampling_interval</span><span class="p">,</span> <span class="n">reference_date</span>
     <span class="p">)</span>
     <span class="n">sat_smpl_breakup_idx</span><span class="p">,</span> <span class="n">tle_ref_lines</span> <span class="o">=</span> <span class="n">get_matching_indices</span><span class="p">(</span>
-        <span class="n">smpl_space_secs_since</span><span class="p">,</span> <span class="n">seconds_since_tle</span>
+        <span class="n">smpl_space_secs_since</span><span class="p">,</span>
+        <span class="n">tle</span><span class="o">.</span><span class="n">tle_date_seconds_since</span>
     <span class="p">)</span>
     <span class="n">sat_lat_sim</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">sat_lon_sim</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -365,8 +365,8 @@ document.write(`
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tle_ref_lines</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">secsince1</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">propagate_orbit</span><span class="p">(</span>
-            <span class="n">line1</span><span class="p">[</span><span class="n">tle_ref_lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
-            <span class="n">line2</span><span class="p">[</span><span class="n">tle_ref_lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+            <span class="n">tle</span><span class="o">.</span><span class="n">tle_line_1</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">tle_ref_lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+            <span class="n">tle</span><span class="o">.</span><span class="n">tle_line_2</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">tle_ref_lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
             <span class="n">start_date</span><span class="p">,</span>
             <span class="n">end_date</span><span class="p">,</span>
             <span class="n">propagation_sampling_interval</span><span class="p">,</span>
@@ -384,8 +384,8 @@ document.write(`
         <span class="n">smpl_space</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">smpl_space</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tle_ref_lines</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">secsince1</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">propagate_orbit</span><span class="p">(</span>
-                <span class="n">line1</span><span class="p">[</span><span class="n">tle_ref_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
-                <span class="n">line2</span><span class="p">[</span><span class="n">tle_ref_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
+                <span class="n">tle</span><span class="o">.</span><span class="n">tle_line_1</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">tle_ref_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
+                <span class="n">tle</span><span class="o">.</span><span class="n">tle_line_2</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">tle_ref_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
                 <span class="n">smpl_space</span><span class="p">[</span><span class="n">sat_smpl_breakup_idx</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
                 <span class="n">smpl_space</span><span class="p">[</span><span class="n">sat_smpl_breakup_idx</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
                 <span class="n">propagation_sampling_interval</span><span class="p">,</span>

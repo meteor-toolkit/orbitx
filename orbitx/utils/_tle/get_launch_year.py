@@ -39,9 +39,9 @@ def get_launch_year(line1: str) -> int:
             launch_year = get_launch_year(line1)
             print(launch_year)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 1998
+            1998
     """
     short_year_launch = int(line1[9:11])
     if short_year_launch > 70:

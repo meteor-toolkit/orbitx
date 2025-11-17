@@ -47,18 +47,7 @@ class Matchups:
         has_land_ocean_mask: bool = False,
         reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
     ):
-
-        self._satellites = satellites
-        self._start_date = start_date
-        self._end_date = end_date
-        self._time_diff_threshold = time_diff_threshold
-        self._space_diff_threshold = space_diff_threshold
-        self._check_before = check_before
-        self._check_after = check_after
-        self._has_land_ocean_mask = has_land_ocean_mask
-        self._orbit = orbit
         self._matchups = matchups
-        self._reference_date = reference_date
 
     @classmethod
     def find_matchups(
@@ -74,8 +63,9 @@ class Matchups:
         check_after: Optional[bool] = False,
         has_land_ocean_mask: Optional[bool] = False,
         reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
+        custom_satellites: List[Dict[str, str]] = []
     ):
-        """find_matchups Main generator for Matchups object
+        """Main generator for Matchups object
 
         Finds matchups between the satellites specified, between the start and end times specified.
 
@@ -119,6 +109,7 @@ class Matchups:
             propagation_sampling_interval=propagation_sampling_interval,
             interpolation_sampling_interval=interpolation_sampling_interval,
             reference_date=reference_date,
+            custom_satellites=custom_satellites
         )
         # Find the matches between generated orbits
         matchups = find_matches(
@@ -131,7 +122,8 @@ class Matchups:
 
         # Convert the dictionary of matchups to an xarray
         attributes = {
-            "satellites": satellites,
+            "satellite_shortname": orbit.satellite_shortname,
+            "satellite_name": orbit.satellite_name,
             "start_date": start_date,
             "end_date": end_date,
             "time_diff_threshold": time_diff_threshold,

@@ -24,8 +24,7 @@ __status__ = "Development"
 __all__ = ["get_tle_date"]
 
 def get_tle_date(tle_line_1: str) -> np.datetime64:
-    r"""
-    Date corresponding to this TLE computed from Epoch Date and Julian Date Fraction
+    r"""Date corresponding to this TLE computed from Epoch Date and Julian Date Fraction
 
     Example of Epoch date and Julian date fraction: 86 50.28438588
     The Julian day fraction is just the number of days passed in the particular year.
@@ -43,8 +42,11 @@ def get_tle_date(tle_line_1: str) -> np.datetime64:
     
     .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html
 
-    :param tle_line_1: TLE first line
-    :returns: time of TLE
+    Args:
+        tle_line_1 (str): TLE first line
+
+    Returns:
+        np.datetime64: time of TLE
     """
 
     # Extract date time information from TLE line 1

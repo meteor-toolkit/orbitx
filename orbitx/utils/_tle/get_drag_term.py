@@ -41,9 +41,9 @@ def get_drag_term(line1: str) -> float:
             drag_term = get_drag_term(line1)
             print(drag_term)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> -1.1606e-5
+            -1.1606e-5
     """
     drag_term_str = line1[53:61]
     drag_term_str = re.sub(' ', '', drag_term_str)

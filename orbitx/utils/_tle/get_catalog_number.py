@@ -39,8 +39,8 @@ def get_catalog_number(line1: str) -> str:
             catalog_number = get_catalog_number(line1)
             print(catalog_number)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 25544
+            25544
     """
     return line1[2:7]

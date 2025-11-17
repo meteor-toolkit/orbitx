@@ -30,17 +30,13 @@ __all__ = ["filter xarray"]
 def filter_xarray(
         tle_xarray: xr.Dataset
     ) -> Tuple[xr.Dataset, List[str], List[str]]:
-    """Selecting TLEs that are relevant to the time span of the simulation
+    """Selecting TLEs that are relevant to the time span of the simulation.
 
     Args:
         tle_xarray (xr.Dataset): The full TLE xarray
-        tle_line_1 (List[str]): The full list of all first TLE lines contained in the file analysed
-        tle_line_2 (List[str]): The full list of all second TLE lines contained in the file analysed
 
     Returns:
         tle_xarray (xr.Dataset): The TLE xarray filtered
-        tle_line_1 (List[str]): The list of first TLE lines contained in the file analysed filtered
-        tle_line_2 (List[str]): The list of second TLE lines contained in the file analysed filtered
     """
     # Filter time
     lower_bound_tle_time = [t for t in tle_xarray["tle_date"].values if t <= tle_xarray["start_date"].values]

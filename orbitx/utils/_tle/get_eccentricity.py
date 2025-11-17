@@ -41,9 +41,9 @@ def get_eccentricity(line2: str) -> float:
             eccentricity = get_eccentricity(line2)
             print(eccentricity)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 0.0006703
+            0.0006703
     """
     eccentricity_str = line2[26:33]
     eccentricity_str = re.sub(' ', '', eccentricity_str)

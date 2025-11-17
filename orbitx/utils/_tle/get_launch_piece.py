@@ -40,8 +40,8 @@ def get_launch_piece(line1: str) -> str:
             launch_piece = get_launch_piece(line1)
             print(launch_number)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> A
+            A
     """
     return line1[14]

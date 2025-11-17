@@ -63,8 +63,8 @@ def get_launch_number(line1: str) -> int:
             launch_number = get_launch_number(line1)
             print(launch_number)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> 67
+            67
     """
     return int(line1[11:14])

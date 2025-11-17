@@ -39,8 +39,8 @@ def get_ballistic_coefficient(line1: str) -> float:
             ballistic_coefficient = get_ballistic_coefficient(line1)
             print(ballistic_coefficient)
         
-        .. code-block:: bash
+        .. code-block:: text
 
-            >>> -2.182e-05
+            -2.182e-05
     """
     return float(line1[33:43])
