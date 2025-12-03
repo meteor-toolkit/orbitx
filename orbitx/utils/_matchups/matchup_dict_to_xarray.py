@@ -9,6 +9,7 @@ from typing import Dict, List
 
 """__Built-In Modules__"""
 from orbitx.utils._date_utils import datetime64_to_sec_since
+from orbitx.utils._matchups.get_dist import get_distance
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -88,32 +89,37 @@ def matchup_dict_to_xarray(
     merged_ds = xr.merge(
         [ds.sel(matchup_index=indices) for ds in matchups_list], combine_attrs="no_conflicts"
     )
+    satellite_shortnames = merged_ds["satellite"]
+    num_sats = len(satellite_shortnames)
+    for sat_0_ind in range(num_sats - 1):
+        sat_0 = merged_ds["satellite"][sat_0_ind].values
+        for sat_1_ind in range(sat_0_ind + 1, num_sats):
+            sat_1 = merged_ds["satellite"][sat_1_ind].values
+            satellite_pair = f"{sat_0}_{sat_1}"
+            s0_lat = merged_ds["lat"].sel(satellite = sat_0).values
+            s0_lon = merged_ds["lon"].sel(satellite = sat_0).values
+            s1_lat = merged_ds["lat"].sel(satellite = sat_1).values
+            s1_lon = merged_ds["lon"].sel(satellite = sat_1).values
+            position = np.array([s0_lat, s0_lon, s1_lat, s1_lon]).transpose()
+            
+            distance = get_distance(*tuple(position.transpose()))
+            merged_ds["delay"].loc[dict(satellite_pair = satellite_pair)] = merged_ds["time"].sel(satellite = sat_0) - merged_ds["time"].sel(satellite = sat_1)
+            merged_ds["distance"].loc[dict(satellite_pair = satellite_pair)] = distance
 
-    merged_ds = merged_ds.isel(
-        matchup_index=np.where(
-            _get_range(*[merged_ds[i] for i in merged_ds if "delay" in str(i)])
-            < attributes["time_diff_threshold"]
-        )[0]
-    )
-    for sat_index, _ in enumerate(merged_ds.attrs["satellites"][1:]):
-        merged_ds[f"time{sat_index + 2}"].attrs[
-            "units"
-        ] = f"seconds since {reference_date}"
+    # merged_ds = merged_ds.assign(variables={"reference_date": (reference_date)})
 
-    merged_ds = merged_ds.assign(variables={"reference_date": (reference_date)})
+    # merged_ds["time"].attrs["units"] = f"seconds since {reference_date}"
 
-    merged_ds["time"].attrs["units"] = f"seconds since {reference_date}"
+    # merged_ds["lat1"].attrs["units"] = "degrees"
+    # merged_ds["lon1"].attrs["units"] = "degrees"
 
-    merged_ds["lat1"].attrs["units"] = "degrees"
-    merged_ds["lon1"].attrs["units"] = "degrees"
-
-    merged_ds.attrs["start_date"] = datetime64_to_sec_since(
-        attributes["start_date"], reference_date
-    )
-    merged_ds.attrs["end_date"] = datetime64_to_sec_since(
-        attributes["end_date"], reference_date
-    )
-    merged_ds.attrs["check_before"] = str(merged_ds.attrs["check_before"])
-    merged_ds.attrs["check_after"] = str(merged_ds.attrs["check_after"])
-    merged_ds.attrs["has_land_ocean_mask"] = str(merged_ds.attrs["has_land_ocean_mask"])
+    # merged_ds.attrs["start_date"] = datetime64_to_sec_since(
+    #     attributes["start_date"], reference_date
+    # )
+    # merged_ds.attrs["end_date"] = datetime64_to_sec_since(
+    #     attributes["end_date"], reference_date
+    # )
+    # merged_ds.attrs["check_before"] = str(merged_ds.attrs["check_before"])
+    # merged_ds.attrs["check_after"] = str(merged_ds.attrs["check_after"])
+    # merged_ds.attrs["has_land_ocean_mask"] = str(merged_ds.attrs["has_land_ocean_mask"])
     return merged_ds

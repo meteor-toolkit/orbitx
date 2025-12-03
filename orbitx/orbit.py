@@ -221,7 +221,7 @@ class Orbit:
         :type output_path: str
         :return: None
         """
-        satellites_part = "_".join(self.satellites)
+        satellites_part = "_".join(self.satellite_shortname)
         date_part = f"{np.datetime_as_string(self.start_date, unit = "D")}_{np.datetime_as_string(self.end_date, unit = "D")}"
         sampling_part = f"psi{self.propagation_sampling_interval.item().total_seconds()}_isi{self.interpolation_sampling_interval.item().total_seconds()}"
         filename = f"{date_part}_{sampling_part}_orbit_{satellites_part}.nc"
@@ -242,8 +242,8 @@ class Orbit:
 
         for sat_index, sat in enumerate(self.satellite_shortname):
             ax.scatter(
-                self.orbits["lon"].isel(satellites = sat_index),
-                self.orbits["lat"].isel(satellites = sat_index),
+                self.orbits["lon"].isel(satellite = sat_index),
+                self.orbits["lat"].isel(satellite = sat_index),
                 label=SATELLITE_DICT[sat],
                 transform=projection,
                 s=0.5,
@@ -271,7 +271,7 @@ class Orbit:
         if not isinstance(value, Orbit):
             return False
         res = True
-        res = res and (self.satellites == value.satellites)
+        res = res and np.all(self.satellite_name == value.satellite_name)
         res = res and (self.start_date == value.start_date)
         res = res and (self.end_date == value.end_date)
         res = res and (
@@ -292,7 +292,8 @@ End date: {self.end_date}
 Propagation sampling interval: {self.propagation_sampling_interval}
 Interpolation sampling interval: {self.interpolation_sampling_interval}
 Reference date used to represent time in seconds since: {self.reference_date}
-Number of simulated times: {len(self)}"""
+Number of simulated times: {len(self)}.
+Created on {self.creation_date} using the version {self.version} of orbitx."""
         return res
 
     @property
@@ -345,6 +346,16 @@ Number of simulated times: {len(self)}"""
     def interpolation_sampling_interval(self) -> np.timedelta64:
         """The time delta between each interpolated position of the satellite orbit"""
         return np.array(self._orbits.attrs["interpolation_sampling_interval"], dtype = "timedelta64[s]")
+
+    @property
+    def version(self) -> str:
+        """The version of orbitx used to create this object"""
+        return self._orbits.attrs["version"]
+
+    @property
+    def creation_date(self) -> str:
+        """The date when this object was created"""
+        return self._orbits.attrs["creation_date"]
 
     @property
     def orbits(self) -> xr.Dataset:

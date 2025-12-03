@@ -27,6 +27,7 @@ from orbitx.utils._tle import (
     get_tle_date,
 )
 from orbitx.utils._date_utils import datetime64_to_sec_since
+from orbitx import __version__
 """___Authorship___"""
 __author__ = __author__ = [
     "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
@@ -105,6 +106,8 @@ def create_xarray(
             "launch_number": get_launch_number(tle_line_1[0]),
             "launch_piece": get_launch_piece(tle_line_1[0]),
             "launch_year": get_launch_year(tle_line_1[0]),
+            "version": __version__,
+            "creation_date": str(np.datetime64('now'))
         },
     )
     return tle_xarray

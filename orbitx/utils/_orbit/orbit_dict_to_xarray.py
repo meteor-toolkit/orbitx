@@ -10,6 +10,7 @@ import xarray as xr
 
 """__Built-In Modules__"""
 from orbitx.utils._date_utils import datetime64_to_sec_since
+from orbitx import __version__
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -113,6 +114,8 @@ def orbit_dict_to_xarray(
             ),
             "propagation_sampling_interval": int(propagation_sampling_interval.item().total_seconds()),
             "interpolation_sampling_interval": int(interpolation_sampling_interval.item().total_seconds()),
+            "version": __version__,
+            "creation_date": str(np.datetime64("now"))
         },
     )
     

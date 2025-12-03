@@ -21,28 +21,31 @@ __status__ = "Development"
 
 
 def get_land_ocean_mask(matchups: xr.Dataset) -> Dict[str, Dict[str, npt.NDArray]]:
-    matchup_type = np.empty((matchups["lat1"].shape[0],), dtype=str)
-    land_mask_sat = np.empty((matchups["lat1"].shape[0],), dtype=str)
-    for sat_index, _ in enumerate(matchups.attrs["satellites"]):
-        for i in range(land_mask_sat.shape[0]):
+    num_matchups = matchups["matchup_index"].shape[0]
+    num_sat = matchups["satellite"].shape[0]
+    matchup_type = np.empty((num_matchups,), dtype=str)
+    land_mask_sat = np.empty((num_matchups,), dtype=str)
+
+    matchups = matchups.assign(
+        variables={
+            "land_mask": (["matchup_index", "satellite"], np.empty((num_matchups, num_sat), dtype = str)),
+            "matchup_type": (["matchup_index"], np.empty((num_matchups), dtype = str))
+        }
+    )
+    for sat in matchups["satellite"]:
+        lattitudes = matchups[f"lat"].sel(satellite = sat)
+        longitudes = matchups[f"lon"].sel(satellite = sat)
+        for i in range(num_matchups):
+
             land_mask_sat[i] = land_mask(
-                matchups[f"lat{sat_index+1}"].values[i],
-                matchups[f"lon{sat_index+1}"].values[i],
+                lattitudes.values[i],
+                longitudes.values[i],
             )
-        matchups = matchups.assign(
-            variables={f"land_mask{sat_index+1}": ("time", land_mask_sat)}
-        )
-    for matchup_index in range(matchups["lat1"].shape[0]):
-        matchup_types = np.unique(
-            [
-                matchups[f"land_mask{sat_index+1}"].values[matchup_index]
-                for sat_index in range(len(matchups.attrs["satellites"]))
-            ]
-        )
+        matchups["land_mask"].loc[dict(satellite = sat)] = land_mask_sat
+    for matchup_index in matchups["matchup_index"]:
+        matchup_types = np.unique(matchups["land_mask"].sel(matchup_index = matchup_index).values)
         if len(matchup_types) > 1:
-            for sat_pair in matchups.keys():
-                matchup_type[matchup_index] = "COAST"
+            matchups["matchup_type"].loc[dict(matchup_index = matchup_index)] = "COAST"
         else:
-            matchup_type[matchup_index] = matchup_types[0]
-    matchups = matchups.assign(variables={f"matchup_type": ("time", matchup_type)})
+            matchups["matchup_type"].loc[dict(matchup_index = matchup_index)] = matchup_types[0]
     return matchups

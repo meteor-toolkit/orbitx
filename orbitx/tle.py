@@ -2,13 +2,8 @@
 
 """___Third-Party Modules___"""
 import numpy as np
-import os
-from typing import Tuple, List, Optional
-import warnings
+from typing import List
 import xarray as xr
-from matplotlib import pyplot as plt
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
 
 """___NPL Modules___"""
 
@@ -20,7 +15,6 @@ from orbitx.utils._tle import (
     filter_xarray
 ) 
 from orbitx.utils._constants import SATELLITE_DICT, CM
-
 
 
 __author__ = [
@@ -144,6 +138,7 @@ Number of TLEs included: {len(self)}.
 Reference date for dates in 'senconds since reference date': {self.reference_date}.
 Start date for the orbit to simulate: {self.start_date}.
 End date for the orbit to simulate: {self.end_date}.
+Created on {self.creation_date} using the version {self.version} of orbitx.
 """
         return res
     
@@ -366,6 +361,16 @@ End date for the orbit to simulate: {self.end_date}.
     def tle_line_2(self)->List[str]:
         r"""The list of all second TLE lines"""
         return self._tle_xarray["line_2"]
+    
+    @property
+    def version(self)->str:
+        r"""The orbitx version used to create this object"""
+        return self._tle_xarray.attrs["version"]
+    
+    @property
+    def creation_date(self)->str:
+        r"""The date when this object was created"""
+        return self._tle_xarray.attrs["creation_date"]
     
 if __name__ == "__main__":
     pass

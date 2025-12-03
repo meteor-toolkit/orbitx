@@ -35,19 +35,11 @@ class Matchups:
 
     def __init__(
         self,
-        satellites: List[str],
-        start_date: np.datetime64,
-        end_date: np.datetime64,
-        time_diff_threshold: np.timedelta64,
-        space_diff_threshold: np.timedelta64,
-        orbit: Orbit,
-        matchups: Dict[str, Dict[str, npt.NDArray]],
-        check_before: Optional[bool] = False,
-        check_after: Optional[bool] = False,
-        has_land_ocean_mask: bool = False,
-        reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
+        matchups: xr.Dataset,
+        orbit: Orbit
     ):
         self._matchups = matchups
+        self._orbit = orbit
 
     @classmethod
     def find_matchups(
@@ -118,6 +110,9 @@ class Matchups:
             float(space_diff_threshold),
             start_date,
             end_date,
+            check_before,
+            check_after,
+            has_land_ocean_mask
         )
 
         # Convert the dictionary of matchups to an xarray
@@ -142,17 +137,8 @@ class Matchups:
 
         # Create object instance
         result = cls(
-            satellites,
-            start_date,
-            end_date,
-            time_diff_threshold,
-            float(space_diff_threshold),
-            orbit,
             matchups,
-            check_before,
-            check_after,
-            has_land_ocean_mask,
-            reference_date,
+            orbit
         )
         return result
 
@@ -255,17 +241,8 @@ class Matchups:
             reference_date=reference_date,
         )
         loaded_matchup = Matchups(
-            satellites=satellites,
-            start_date=start_date,
-            end_date=end_date,
-            time_diff_threshold=time_diff_threshold,
-            space_diff_threshold=space_diff_threshold,
-            orbit=loaded_orbit,
             matchups=matchups_xarray,
-            check_before=check_before,
-            check_after=check_after,
-            has_land_ocean_mask=has_land_ocean_mask,
-            reference_date=reference_date,
+            orbit=loaded_orbit
         )
         return loaded_matchup
 
@@ -302,22 +279,16 @@ class Matchups:
         ax.coastlines()
         ax.add_feature(cfeature.LAND)
 
-        sat_no = len(self.satellites)
 
-        delays = [self.matchups[i].values for i in self.matchups if "delay" in str(i)]
-        delays = [
-            [delay.item().total_seconds() for delay in delays_sat]
-            for delays_sat in delays
-        ]
-        delay = np.mean(delays, axis=0)
+        mean_delay = np.mean(self.matchups["delay"].values, axis=0)
 
-        for i in range(sat_no):
+        for i_sat, sat in enumerate(self.matchups["satellite"]):
             ax.scatter(
-                self.matchups[f"lon{i + 1}"],
-                self.matchups[f"lat{i + 1}"],
-                s=(self.time_diff_threshold.item().total_seconds() - delay) ** 2
-                / (self.time_diff_threshold.item().total_seconds() / 2) ** 2,
-                label=SATELLITE_DICT[self.satellites[i]],
+                self.matchups[f"lon"].sel(satellite = sat),
+                self.matchups[f"lat"].sel(satellite = sat),
+                # s=(self.time_diff_threshold.item().total_seconds() - mean_delay) ** 2
+                # / (self.time_diff_threshold.item().total_seconds() / 2) ** 2,
+                label=self.satellite_name[i_sat],
                 transform=projection,
                 alpha=0.7,
             )
@@ -334,14 +305,14 @@ class Matchups:
         Date until which matchups are looked for
         Maximum time difference between members of a matchup (seconds)
         Maximum distance between members of a matchup (km)
-        Are matchups in which on of the satellites appears before the start date considered?
-        Are matchups in which on of the satellites appears after the end date considered?
+        Are matchups in which one of the satellites appears before the start date considered?
+        Are matchups in which one of the satellites appears after the end date considered?
         Has this matchup a land/ocean mask?
         Number of matchups found
         """
         result = f"""
 Matchup object with following attributes:
-Satellites considered: {self.satellites}
+Satellites considered: {self.satellite_name}
 Date from which matchups are looked for: {self.start_date}
 Date until which matchups are looked for: {self.end_date}
 Maximum time difference between members of a matchup: {self.time_diff_threshold} (seconds)
@@ -349,7 +320,8 @@ Maximum distance between members of a matchup: {self.space_diff_threshold} (km)
 Are matchups in which on of the satellites appears before the start date considered? {self.check_before}
 Are matchups in which on of the satellites appears after the end date considered? {self.check_after}
 Has this matchup a land/ocean mask? {self.has_land_ocean_mask}
-Number of matchups found: {len(self)}
+Number of matchups found: {len(self)}.
+Created on {self.creation_date} using the version {self.version} of orbitx.
 """
         return result
 
@@ -377,8 +349,8 @@ Number of matchups found: {len(self)}
         return res
 
     @property
-    def satellites(self):
-        return self._satellites
+    def satellite_name(self):
+        return self.matchups.attrs["satellite_name"]
 
     @property
     def orbit(self):
@@ -390,32 +362,40 @@ Number of matchups found: {len(self)}
 
     @property
     def start_date(self):
-        return self._start_date
+        return self.matchups.attrs["start_date"]
 
     @property
     def end_date(self):
-        return self._end_date
+        return self.matchups.attrs["end_date"]
 
     @property
     def time_diff_threshold(self):
-        return self._time_diff_threshold
+        return self.matchups.attrs["time_diff_threshold"]
 
     @property
     def space_diff_threshold(self):
-        return self._space_diff_threshold
+        return self.matchups.attrs["space_diff_threshold"]
 
     @property
     def check_before(self):
-        return self._check_before
+        return self.matchups.attrs["check_before"]
 
     @property
     def check_after(self):
-        return self._check_after
+        return self.matchups.attrs["check_after"]
 
     @property
     def has_land_ocean_mask(self):
-        return self._has_land_ocean_mask
+        return self.matchups.attrs["has_land_ocean_mask"]
 
     @property
     def reference_date(self):
-        return self._reference_date
+        return self.matchups["reference_date"].values
+    
+    @property
+    def creation_date(self):
+        return self.matchups.attrs["creation_date"]
+    
+    @property
+    def version(self):
+        return self.matchups.attrs["version"]
