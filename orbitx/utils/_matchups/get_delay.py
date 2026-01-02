@@ -16,13 +16,13 @@ __version__ = 1.0
 __maintainer__ = "Zhav Loizeau"
 __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
-__all__ = ["get_dist"]
+__all__ = ["get_delay"]
 
-def get_dist(
+def get_delay(
     existing_orbits: xr.Dataset,
     new_orbit: xr.Dataset
 ) -> np.array:
-    """Calculate the largest distance in kilometers on the earth (specified in decimal degrees)
+    """Calculate the largest delay in seconds
     between a collection of orbits and a new orbit at each time stamp
 
     Args:
@@ -30,14 +30,8 @@ def get_dist(
         new_orbit (xr.Dataset): the new orbit
 
     Returns:
-        np.array: at each time stamp, the largest of the distances between the new orbit and each of the existing orbits
+        np.array: at each matchup, the maximal delay between the new orbit and the existing orbits
     """
     # compute the lat and lon difference
-    dlon = (existing_orbits["lon"] - new_orbit["lon"])
-    dlat = (existing_orbits["lat"] - new_orbit["lat"])
-    # haversine formula
-
-    a = np.sin(dlat / 2) ** 2 + np.cos(existing_orbits["lat"]) * np.cos(new_orbit["lat"]) * np.sin(dlon / 2) ** 2
-    c = 2 * np.asin(np.sqrt(a))
-    r = EARTH_RADIUS
-    return c * r
+    delay = np.abs(existing_orbits["time_datetime"] - new_orbit["time_datetime"])
+    return delay

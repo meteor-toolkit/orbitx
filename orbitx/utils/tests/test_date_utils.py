@@ -81,7 +81,7 @@ def datetime64_to_sec_since(
     date64: np.datetime64, reference_date: np.datetime64
 ) -> float:
     timedelta_value: np.timedelta64 = date64 - reference_date
-    return timedelta_value / np.timedelta64(1,'s')
+    return timedelta_value.astype("timedelta64[s]").item().total_seconds()
 
 
 def sec_since_to_datetime64(

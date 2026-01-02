@@ -14,7 +14,7 @@ __version__ = 1.0
 __maintainer__ = ["Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>"]
 __status__ = "Development"
 
-SATELLITE_DICT:Dict[str, str] = {
+SATELLITE_DICT: Dict[str, str] = {
     "LS8": "Landsat-8",
     "LS9": "Landsat-9",
     "S2A": "Sentinel-2A",
@@ -38,9 +38,9 @@ Then, add the `"short_name": "full-name"` pair to the dictionary above.
 
 
 # Radius of earth in kilometers
-EARTH_RADIUS:float = 6371.
+EARTH_RADIUS: float = 6371.0
 """Earth radius in kilometers"""
 
 # inches to cm conversion constant
-CM:float = 1 / 2.54
+CM: float = 1 / 2.54
 """Constant for conversion of inches into centimeters (used for plots)"""

@@ -22,7 +22,7 @@ __all__ = [
     "get_tle_path",
     "load_file",
     "create_xarray",
-    "filter_xarray"
+    "filter_xarray",
 ]
 
 from orbitx.utils._tle.get_argument_perigee import get_argument_perigee
@@ -46,4 +46,3 @@ from orbitx.utils._tle.get_tle_path import get_tle_path
 from orbitx.utils._tle.load_file import load_file
 from orbitx.utils._tle.create_xarray import create_xarray
 from orbitx.utils._tle.filter_xarray import filter_xarray
-
