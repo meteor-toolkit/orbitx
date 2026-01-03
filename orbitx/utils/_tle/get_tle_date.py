@@ -49,6 +49,16 @@ def get_tle_date(tle_line_1: str) -> np.datetime64:
 
     Returns:
         np.datetime64: time of TLE
+        Example:
+        .. code-block:: python3
+
+            line1 = "1 25544U 98067A   08264.51782528 -.00002182  12345-5 -11606-4 0  2927"
+            tle_date = get_tle_date(line1)
+            print(tle_date)
+
+        .. code-block:: text
+
+            0208-09-20T12:25:40.104192
     """
 
     # Extract date time information from TLE line 1
@@ -62,9 +72,11 @@ def get_tle_date(tle_line_1: str) -> np.datetime64:
     # Notice that the reference year here has to do with the TLE conventions as explained in
     # 'celestrak.org/NORAD/documentation/tle-fmt.php' and not the reference year for OrbitX which is 1970.
     if year_tens_and_units > 70:
-        date = np.datetime64(f"19{year_tens_and_units}-01-01T00:00:00")
+        year = 1900 + year_tens_and_units
+        date = np.datetime64(f"{year}-01-01T00:00:00")
     else:
-        date = np.datetime64(f"20{year_tens_and_units}-01-01T00:00:00")
+        year = 2000 + year_tens_and_units
+        date = np.datetime64(f"{year}-01-01T00:00:00")
 
     # Add the necessary number of days to get TLE
     date += day_in_year + date_delta

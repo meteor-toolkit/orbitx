@@ -9,7 +9,7 @@ import xarray as xr
 
 """__Built-In Modules__"""
 from orbitx.utils._tle import get_tle_path, load_file, create_xarray, filter_xarray
-from orbitx.utils._constants import SATELLITE_DICT, CM
+from orbitx.utils._constants import SATELLITE_DICT
 
 
 __author__ = [

@@ -1,49 +1,23 @@
-"""orbitx.utils._tle.get_tle_path -"""
+"""orbitx.tests.test_tle - tests for orbitx.tle"""
 
-"""___Third-Party Modules___"""
-from typing import Optional
+import unittest
 import os
+from pathlib import Path
 
-"""___NPL Modules___"""
+from orbitx.utils._tle import get_tle_path
 
-"""__Built-In Modules__"""
-
-"""___Authorship___"""
-__author__ = __author__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__created__ = "22/09/2025"
-__version__ = 1.0
-__maintainer__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__status__ = "Development"
-__all__ = ["get_tle_path"]
+__author__ = "Sam Hunt <sam.hunt@npl.co.uk>"
 
 
-def get_tle_path(satellite_name: str) -> Optional[str]:
-    r"""Returns path for TLE file for defined satellite
+this_directory = os.path.dirname(__file__)
+example_0 = "S2A"
+result_0 = os.path.abspath((os.path.join(this_directory, "../../../data/tle/TLEset_S2A.txt")))
 
-    :param satellite_name: satellite short name as included in TLE file name ``TLEset_XXX``, where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
-    :type satellite_name: str
-    :return: satellite TLE file path
-    :rtype: Optional[str]
-    """
-    from orbitx import TLE_PATH
+class TestGetTLEPath(unittest.TestCase):
+    def test_example_0(self):
+        """"""
+        self.assertEqual(result_0.lower(), get_tle_path(example_0).lower())
 
-    path = None
 
-    for tle_dir in TLE_PATH:
-        path = os.path.abspath(
-            os.path.join(tle_dir, "TLEset_" + satellite_name + ".txt")
-        )
-        if os.path.isfile(path):
-            break
-
-    return path
+if __name__ == "__main__":
+    unittest.main()

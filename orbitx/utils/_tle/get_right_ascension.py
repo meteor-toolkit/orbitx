@@ -44,7 +44,7 @@ def get_right_ascension(line2: str) -> float:
 
         .. code-block:: text
 
-            51.6416
+            247.4627
     """
     right_ascension_str = line2[17:25]
 

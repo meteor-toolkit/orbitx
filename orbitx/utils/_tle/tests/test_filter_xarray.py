@@ -1,88 +1,30 @@
-"""orbitx.utils._tle.get_argument_perigee -"""
+"""orbitx.tests.test_tle - tests for orbitx.tle"""
 
-"""___Third-Party Modules___"""
-import re
-import xarray as xr
-import warnings
-import numpy as np
-from typing import Tuple, List
+import unittest
 
-"""___NPL Modules___"""
-"""__Built-In Modules__"""
+from orbitx.utils._tle import get_argument_perigee
 
-"""___Authorship___"""
-__author__ = __author__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__created__ = "29/09/2025"
-__version__ = 1.0
-__maintainer__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__status__ = "Development"
-__all__ = ["filter xarray"]
+__author__ = "Sam Hunt <sam.hunt@npl.co.uk>"
 
 
-def filter_xarray(tle_xarray: xr.Dataset) -> Tuple[xr.Dataset, List[str], List[str]]:
-    """Selecting TLEs that are relevant to the time span of the simulation.
+example_0 = "2 25544  51.6416 247.4627 0006703 130.5360 325.0288 15.72125391563537"
+result_0 = 130.5360
+example_1 = "2 25544  51.6416 247.4627 0006703 130.536  325.0288 15.72125391563537"
+result_1 = 130.5360
 
-    Args:
-        tle_xarray (xr.Dataset): The full TLE xarray
 
-    Returns:
-        tle_xarray (xr.Dataset): The TLE xarray filtered
-    """
-    # Filter time
-    lower_bound_tle_time = [
-        t for t in tle_xarray["tle_date"].values if t <= tle_xarray["start_date"].values
-    ]
-    if len(lower_bound_tle_time) == 0:
-        warnings.warn(
-            f"""The oldest TLE file is more recent than the start time requested.
-Oldest TLE file: {np.min(tle_xarray["start_date"].values)}
-Start time requested: {tle_xarray["start_date"].values}"""
-        )
-    lower_bound_tle_time = (
-        tle_xarray["start_date"].values
-        if len(lower_bound_tle_time) == 0
-        else np.max(lower_bound_tle_time)
-    )
+class TestTLE(unittest.TestCase):
+    def test_example_0(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        self.assertEqual(result_0, get_argument_perigee(example_0))
+        
+    def test_example_1(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        self.assertEqual(result_1, get_argument_perigee(example_1))
 
-    upper_bound_tle_time = [
-        t for t in tle_xarray["tle_date"].values if t >= tle_xarray["end_date"].values
-    ]
-    if len(upper_bound_tle_time) == 0:
-        warnings.warn(
-            f"""The most recent TLE file is older than the end time requested.
-Oldest TLE file: {np.max(tle_xarray["tle_date"].values)}
-Start time requested: {tle_xarray["end_date"]}"""
-        )
-    upper_bound_tle_time = (
-        tle_xarray["end_date"].values
-        if len(upper_bound_tle_time) == 0
-        else np.min(upper_bound_tle_time)
-    )
-    idx = [
-        i
-        for i, t_i in enumerate(tle_xarray["tle_date"])
-        if (t_i >= lower_bound_tle_time) and (t_i < upper_bound_tle_time)
-    ]
-
-    if not idx:
-        # If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time
-        closest_tle = np.argmin(
-            np.abs(tle_xarray["tle_date"].values - tle_xarray["start_date"].values)
-        )
-        tle_xarray = tle_xarray.isel(tle_index=[closest_tle])
-
-    else:
-        # Filter TLE set
-        tle_xarray = tle_xarray.isel(tle_index=idx)
-
-    return tle_xarray
+if __name__ == "__main__":
+    unittest.main()

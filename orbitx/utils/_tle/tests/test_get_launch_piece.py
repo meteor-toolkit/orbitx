@@ -1,48 +1,22 @@
-"""orbitx.utils._tle.get_launch_piece -"""
+"""orbitx.tests.test_tle - tests for orbitx.tle"""
 
-"""___Third-Party Modules___"""
-"""___NPL Modules___"""
-"""__Built-In Modules__"""
+import unittest
 
-"""___Authorship___"""
-__author__ = __author__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__created__ = "29/09/2025"
-__version__ = 1.0
-__maintainer__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__status__ = "Development"
-__all__ = ["get_launch_piece"]
+from orbitx.utils._tle import get_launch_piece
+
+__author__ = "Sam Hunt <sam.hunt@npl.co.uk>"
 
 
-def get_launch_piece(line1: str) -> str:
-    r"""Finds the launch piece identifier of this satellite.
-    The launch piece identifier corresponds to the character 15 of the first line.
-    When several objects are launched at once, the launch piece uniquely identifies the different objects launched.
+example_0 = "1 25544U 98067A   08264.51782528 -.00002182  00000-0 -11606-4 0  2927"
+result_0 = "A"
 
-    Args:
-        line1 (str): The first line of the considered TLE
 
-    Returns:
-        str: The launch piece identifier of this satellite
+class TestGetLaunchPiece(unittest.TestCase):
+    def test_example_0(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        self.assertEqual(result_0, get_launch_piece(example_0))
 
-    Example:
-        .. code-block:: python3
-
-            line1 = "1 25544U 98067A   08264.51782528 -.00002182  00000-0 -11606-4 0  2927"
-            launch_piece = get_launch_piece(line1)
-            print(launch_number)
-
-        .. code-block:: text
-
-            A
-    """
-    return line1[14]
+if __name__ == "__main__":
+    unittest.main()

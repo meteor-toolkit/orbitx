@@ -1,88 +1,47 @@
-"""orbitx.utils._tle.get_drag_term -"""
+"""orbitx.tests.test_tle - tests for orbitx.tle"""
 
-"""___Third-Party Modules___"""
-import re
+import unittest
 
-"""___NPL Modules___"""
-"""__Built-In Modules__"""
+from orbitx.utils._tle import get_drag_term
 
-"""___Authorship___"""
-__author__ = __author__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__created__ = "29/09/2025"
-__version__ = 1.0
-__maintainer__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__status__ = "Development"
-__all__ = ["get_drag_term"]
+__author__ = "Sam Hunt <sam.hunt@npl.co.uk>"
 
 
-def get_drag_term(line1: str) -> float:
-    r"""Finds the drag term of the satellite from the first line of the TLE.
-    The drag term corresponds to the characters 54 to 61 of the first line.
-    The drag term is also known as .. math`B^\star` or radiation pressure coefficient (units of 1/(Earth radii))
+example_0 = "1 25544U 98067A   08264.51782528 -.00002182  12345-5 -11606-4 0  2927"
+result_0: float = -1.1606e-5
+example_1 = "1 25544U 98067A   08264.51782528 -.00002182  12345-5 -11606+4 0  2927"
+result_1: float = -1.1606e3
+example_2 = "1 25544U 98067A   08264.51782528 -.00002182  12345-5  11606-4 0  2927"
+result_2: float = 1.1606e-5
+example_3 = "1 25544U 98067A   08264.51782528 -.00002182  12345-5  11606+4 0  2927"
+result_3: float = 1.1606e3
 
-    Args:
-        line1 (str): The first line of the considered TLE
 
-    Returns:
-        float: The drag term
 
-    Example:
-        .. code-block:: python3
+class TestGetDragTerm(unittest.TestCase):
+    def test_example_0(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        self.assertEqual(result_0, get_drag_term(example_0))
 
-            line1 = "1 25544U 98067A   08264.51782528 -.00002182  12345-5 -11606-4 0  2927"
-            drag_term = get_drag_term(line1)
-            print(drag_term)
+    def test_example_1(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        self.assertEqual(result_1, get_drag_term(example_1))
+        
+    def test_example_2(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        self.assertEqual(result_2, get_drag_term(example_2))
+        
+    def test_example_3(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        self.assertEqual(result_3, get_drag_term(example_3))
 
-        .. code-block:: text
-
-            -1.1606e-5
-    """
-    drag_term_str = line1[53:61]
-    drag_term_str = re.sub(" ", "", drag_term_str)
-
-    positions_plus = [i for i, letter in enumerate(drag_term_str) if letter == "+"]
-    number_plus = len(positions_plus)
-    positions_minus = [i for i, letter in enumerate(drag_term_str) if letter == "-"]
-    number_minus = len(positions_minus)
-    if number_minus + number_plus == 1:
-        if number_minus == 1:
-            split_string = drag_term_str.split("-")
-            decimal_part = float(f"0.{split_string[0]}")
-            order_magnitude = -int(split_string[1])
-        else:
-            split_string = drag_term_str.split("+")
-            decimal_part = float(f"0.{split_string[0]}")
-            order_magnitude = int(split_string[1])
-    elif number_minus + number_plus == 2:
-        if number_minus == 2:
-            split_string = drag_term_str.split("-")
-            decimal_part = float(f"-0.{split_string[1]}")
-            order_magnitude = -int(split_string[2])
-        elif number_minus == 1:
-            if positions_minus[0] == 0:
-                split_string = drag_term_str.split("+")
-                order_magnitude = int(split_string[1])
-                split_string = split_string[0].split("-")
-                decimal_part = float(f"-0.{split_string[1]}")
-            else:
-                split_string = drag_term_str.split("-")
-                order_magnitude = -int(split_string[1])
-                split_string = split_string[0].split("+")
-                decimal_part = float(f"0.{split_string[1]}")
-        else:
-            split_string = drag_term_str.split("+")
-            decimal_part = float(f"0.{split_string[1]}")
-            order_magnitude = int(split_string[2])
-    else:
-        raise ValueError(f"Invalid string for drag term: {drag_term_str}")
-    return decimal_part * (10**order_magnitude)
+if __name__ == "__main__":
+    unittest.main()

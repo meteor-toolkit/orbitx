@@ -47,13 +47,13 @@ def get_drag_term(line1: str) -> float:
 
             -1.1606e-5
     """
-    drag_term_str = line1[53:61]
+    drag_term_str: str = line1[53:61]
     drag_term_str = re.sub(" ", "", drag_term_str)
 
-    positions_plus = [i for i, letter in enumerate(drag_term_str) if letter == "+"]
-    number_plus = len(positions_plus)
-    positions_minus = [i for i, letter in enumerate(drag_term_str) if letter == "-"]
-    number_minus = len(positions_minus)
+    positions_plus: list[int] = [i for i, letter in enumerate(drag_term_str) if letter == "+"]
+    number_plus: int = len(positions_plus)
+    positions_minus: list[int] = [i for i, letter in enumerate(drag_term_str) if letter == "-"]
+    number_minus: int = len(positions_minus)
     if number_minus + number_plus == 1:
         if number_minus == 1:
             split_string = drag_term_str.split("-")

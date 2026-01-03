@@ -1,56 +1,112 @@
-"""orbitx.utils._tle.load_file - a function reading the TLEs and returning the list of first lines and the list of second lines"""
+"""orbitx.tests.test_tle - tests for orbitx.tle"""
 
-"""___Third-Party Modules___"""
-from typing import Tuple, List
+import unittest
+import random
+import string
+import os
+import shutil
 import numpy as np
 
-"""___NPL Modules___"""
-"""__Built-In Modules__"""
+from orbitx.utils._tle import load_file
 
-"""___Authorship___"""
-__author__ = __author__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__created__ = "29/09/2025"
-__version__ = 1.0
-__maintainer__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__status__ = "Development"
-__all__ = ["load_file"]
+__author__ = "Sam Hunt <sam.hunt@npl.co.uk>"
 
 
-def load_file(tle_filepath: str) -> Tuple[List[str], List[str]]:
-    """Getting the list of first lines and the list of second lines of all TLEs in the file.
+example_0 = """SENTINEL-2A             
+1 40697U 15028A   15174.15999288 -.00000044  00000+0  00000+0 0  9998
+2 40697  98.5847 248.5254 0000798 283.7898 143.4888 14.31066438    11
+SENTINEL-2A             
+1 40697U 15028A   15174.21686542 -.00000044  00000+0  00000+0 0  9991
+2 40697  98.5822 248.5857 0001125  72.2447 287.8522 14.30945090    27
+SENTINEL-2A             
+1 40697U 15028A   15174.35671963 -.00000044  00000+0  00000+0 0  9997
+2 40697  98.5798 248.7128 0002400 151.8089 208.3654 14.30980662    45
+SENTINEL-2A             
+1 40697U 15028A   15174.84616994 -.00000044  00000+0  00000+0 0  9994
+2 40697  98.5727 249.1811 0001221 155.7341 204.3855 14.30973291   112
+SENTINEL-2A             
+1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994
+2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266
+"""
 
-    Args:
-        tle_filepath (str): The path of the file containing the TLEs
+result_0 = (
+    [
+        "1 40697U 15028A   15174.15999288 -.00000044  00000+0  00000+0 0  9998",
+        "1 40697U 15028A   15174.21686542 -.00000044  00000+0  00000+0 0  9991",
+        "1 40697U 15028A   15174.35671963 -.00000044  00000+0  00000+0 0  9997",
+        "1 40697U 15028A   15174.84616994 -.00000044  00000+0  00000+0 0  9994",
+        "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994"
+    ],
+    [
+        "2 40697  98.5847 248.5254 0000798 283.7898 143.4888 14.31066438    11",
+        "2 40697  98.5822 248.5857 0001125  72.2447 287.8522 14.30945090    27",
+        "2 40697  98.5798 248.7128 0002400 151.8089 208.3654 14.30980662    45",
+        "2 40697  98.5727 249.1811 0001221 155.7341 204.3855 14.30973291   112",
+        "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266"
+    ]
+)
 
-    Returns:
-        tle_line_1 (List[str]): The list of all first TLE lines
-        tle_line_2 (List[str]): The list of all second TLE lines
-    """
-    with open(tle_filepath, "r") as f:
-        lines = np.array(f.read().splitlines(), dtype=str)
-    # endregion
+example_1 = """1 33105U 08032A   10001.56483652 -.00000061  00000+0  00000+0 0  5178
+2 33105  66.0427  18.8487 0007802 268.8400  91.1724 12.80929371 71756
+1 33105U 08032A   10001.95521637 -.00000061  00000+0  00000+0 0  5188
+2 33105  66.0427  18.0378 0007814 269.0188  90.9934 12.80929408 71803
+1 33105U 08032A   10002.65790032 -.00000061  00000+0  00000+0 0  5183
+2 33105  66.0421  16.5778 0007820 268.8949  91.1182 12.80929406 71898
+1 33105U 08032A   10003.82903964 -.00000061  00000+0  00000+0 0  5194
+2 33105  66.0422  14.1456 0007843 269.0908  90.9208 12.80929448 72049
+1 33105U 08032A   10003.82903964 -.00000061  00000+0  00000+0 0  5228
+2 33105  66.0422  14.1456 0007843 269.0908  90.9208 12.80929448 72049
+"""
 
-    # region Access indexes of line-1 and line-2
-    length = len(lines)
-    if (
-        len(lines[0]) < 69
-    ):  # If the file includes the name of the mission at the beginning of each TLE, the name is at position 0, 3, ... (and we do not care about it)
-        line_1_indexes = np.arange(1, length, 3)  # Line 1's are at position 1, 4, ...
-        line_2_indexes = np.arange(2, length, 3)  # Line 2's are at position 2, 5, ...
-    else:  # If the name is not included
-        line_1_indexes = np.arange(0, length, 2)  # Line 1's are at position 0, 2, ...
-        line_2_indexes = np.arange(1, length, 2)  # Line 2's are at position 1, 3, ...
+result_1 = (
+    [
+        "1 33105U 08032A   10001.56483652 -.00000061  00000+0  00000+0 0  5178",
+        "1 33105U 08032A   10001.95521637 -.00000061  00000+0  00000+0 0  5188",
+        "1 33105U 08032A   10002.65790032 -.00000061  00000+0  00000+0 0  5183",
+        "1 33105U 08032A   10003.82903964 -.00000061  00000+0  00000+0 0  5194",
+        "1 33105U 08032A   10003.82903964 -.00000061  00000+0  00000+0 0  5228",
+    ],
+    [
+        "2 33105  66.0427  18.8487 0007802 268.8400  91.1724 12.80929371 71756",
+        "2 33105  66.0427  18.0378 0007814 269.0188  90.9934 12.80929408 71803",
+        "2 33105  66.0421  16.5778 0007820 268.8949  91.1182 12.80929406 71898",
+        "2 33105  66.0422  14.1456 0007843 269.0908  90.9208 12.80929448 72049",
+        "2 33105  66.0422  14.1456 0007843 269.0908  90.9208 12.80929448 72049",
+    ]
+)
 
-    tle_line_1 = lines[line_1_indexes]  # list of all line 1s
-    tle_line_2 = lines[line_2_indexes]  # list of all line 2s
-    return tle_line_1, tle_line_2
+class TestLoadFile(unittest.TestCase):
+    def setUp(self) -> None:
+        tmp_dir_name = "tmp_" + "".join(random.choices(string.ascii_lowercase, k=6))
+
+        self.tmp_tle_path = os.path.join(os.path.dirname(__file__), tmp_dir_name)
+
+        self.path_example_0 = os.path.join(self.tmp_tle_path, "TLEset_0.txt")
+        self.path_example_1 = os.path.join(self.tmp_tle_path, "TLEset_1.txt")
+
+        os.makedirs(self.tmp_tle_path)
+
+        with open(self.path_example_0, "w") as f:
+            f.write(example_0)
+        with open(self.path_example_1, "w") as f:
+            f.write(example_1)
+
+
+    def tearDown(self) -> None:
+        shutil.rmtree(self.tmp_tle_path)
+
+
+    def test_example_0(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        np.testing.assert_equal(result_0, load_file(self.path_example_0))
+        
+    def test_example_1(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        np.testing.assert_equal(result_1, load_file(self.path_example_1))
+
+if __name__ == "__main__":
+    unittest.main()

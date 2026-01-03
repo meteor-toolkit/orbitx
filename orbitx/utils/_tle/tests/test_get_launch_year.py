@@ -1,51 +1,30 @@
-"""orbitx.utils._tle.get_launch_year -"""
+"""orbitx.tests.test_tle - tests for orbitx.tle"""
 
-"""___Third-Party Modules___"""
-"""___NPL Modules___"""
-"""__Built-In Modules__"""
+import unittest
 
-"""___Authorship___"""
-__author__ = __author__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__created__ = "29/09/2025"
-__version__ = 1.0
-__maintainer__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__status__ = "Development"
-__all__ = ["get_launch_year"]
+from orbitx.utils._tle import get_launch_year
+
+__author__ = "Sam Hunt <sam.hunt@npl.co.uk>"
 
 
-def get_launch_year(line1: str) -> int:
-    r"""Finds the launch year of the satellite from the first line of the TLE.
-    The launch year corresponds to the characters ten and eleven of the first line.
+example_0 = "1 25544U 98067A   08264.51782528 -.00002182  00000-0 -11606-4 0  2927"
+result_0 = 1998
+example_1 = "1 25544U 24067A   08264.51782528 -.00002182  00000-0 -11606-4 0  2927"
+result_1 = 2024
 
-    Args:
-        line1 (str): The first line of the considered TLE
 
-    Returns:
-        str: The launch year of the satellite
+class TestGetLaunchYear(unittest.TestCase):
+    def test_example_0(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        self.assertEqual(result_0, get_launch_year(example_0))
+        
+    def test_example_1(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        self.assertEqual(result_1, get_launch_year(example_1))
 
-    Example:
-        .. code-block:: python3
-
-            line1 = "1 25544U 98067A   08264.51782528 -.00002182  00000-0 -11606-4 0  2927"
-            launch_year = get_launch_year(line1)
-            print(launch_year)
-
-        .. code-block:: text
-
-            1998
-    """
-    short_year_launch = int(line1[9:11])
-    if short_year_launch > 70:
-        return 1900 + short_year_launch
-    else:
-        return 2000 + short_year_launch
+if __name__ == "__main__":
+    unittest.main()

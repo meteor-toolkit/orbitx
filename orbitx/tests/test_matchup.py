@@ -7,8 +7,7 @@ import numpy as np
 import xarray as xr
 
 from orbitx import Matchups
-from orbitx.utils._matchups.get_dist import get_dist, get_distance
-from orbitx.utils._matchups.matchup_dict_to_xarray import _get_range
+from orbitx.utils._matchups.get_dist import get_dist
 from orbitx import Orbit
 
 __author__ = "Mattea Goalen <mattea.goalen@npl.co.uk>"

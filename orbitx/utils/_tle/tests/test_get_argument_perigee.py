@@ -1,52 +1,30 @@
-"""orbitx.utils._tle.get_argument_perigee -"""
+"""orbitx.tests.test_tle - tests for orbitx.tle"""
 
-"""___Third-Party Modules___"""
-import re
+import unittest
 
-"""___NPL Modules___"""
-"""__Built-In Modules__"""
+from orbitx.utils._tle import get_argument_perigee
 
-"""___Authorship___"""
-__author__ = __author__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__created__ = "29/09/2025"
-__version__ = 1.0
-__maintainer__ = [
-    "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>",
-    "Sam Hunt <sam.hunt@npl.co.uk>",
-    "Mattea Goalen <mattea.goalen@npl.co.uk>",
-    "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
-]
-__status__ = "Development"
-__all__ = ["get_argument_perigee"]
+__author__ = "Sam Hunt <sam.hunt@npl.co.uk>"
 
 
-def get_argument_perigee(line2: str) -> float:
-    r"""Finds the argument of the perigee in degrees from the second line of the TLE.
-    The the argument of the perigee corresponds to the characters 35 to 42 of the second line.
+example_0 = "2 25544  51.6416 247.4627 0006703 130.5360 325.0288 15.72125391563537"
+result_0 = 130.5360
+example_1 = "2 25544  51.6416 247.4627 0006703 130.536  325.0288 15.72125391563537"
+result_1 = 130.5360
 
-    Args:
-        line2 (str): The second line of the considered TLE
 
-    Returns:
-        float: The argument of the perigee
+class TestGetArgumentPerigee(unittest.TestCase):
+    def test_example_0(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        self.assertEqual(result_0, get_argument_perigee(example_0))
+        
+    def test_example_1(self):
+        """
+        This is to test a situation when there is no TLE within the [start_date, end_date]
+        """
+        self.assertEqual(result_1, get_argument_perigee(example_1))
 
-    Example:
-        .. code-block:: python3
-
-            line2 = "2 25544  51.6416 247.4627 0006703 130.5360 325.0288 15.72125391563537"
-            arg_perigee = get_argument_perigee(line2)
-            print(arg_perigee)
-
-        .. code-block:: text
-
-            130.536
-    """
-    arg_perigee_str = line2[34:42]
-    arg_perigee_str = re.sub(" ", "", arg_perigee_str)
-
-    return float(arg_perigee_str)
+if __name__ == "__main__":
+    unittest.main()
