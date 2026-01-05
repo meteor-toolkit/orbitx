@@ -3,6 +3,7 @@
 """___Third-Party Modules___"""
 import numpy as np
 import numpy.typing as npt
+from numpy import datetime64
 from typing import Dict
 import xarray as xr
 
@@ -141,7 +142,7 @@ def orbit_dict_to_xarray(
                 interpolation_sampling_interval.item().total_seconds()
             ),
             "version": __version__,
-            "creation_date": str(np.datetime64("now")),
+            "creation_date": str(datetime64("now")),
         },
     )
 

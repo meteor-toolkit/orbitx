@@ -315,37 +315,37 @@ Created on {self.creation_date} using the version {self.version} of orbitx.
 
     @property
     def reference_date(self) -> np.datetime64:
-        r"""The xarray containing the information about all TLE's for this satellite"""
+        r"""The reference date used to compute the 'seconds since' representation of the TLE dates, represented as a numpy datetime64"""
         return self._tle_xarray["reference_date"].values
 
     @property
     def start_date(self) -> np.datetime64:
-        r"""The xarray containing the information about all TLE's for this satellite"""
+        r"""The end date for this object, used to filter the TLEs when is was created, represented in numpy datetime64[s]"""
         return self._tle_xarray["start_date"].values
 
     @property
     def end_date(self) -> np.datetime64:
-        r"""The xarray containing the information about all TLE's for this satellite"""
+        r"""The end date for this object, used to filter the TLEs when is was created, represented in numpy datetime64[s]"""
         return self._tle_xarray["end_date"].values
 
     @property
     def reference_date_seconds_since1970(self) -> int:
-        r"""The xarray containing the information about all TLE's for this satellite"""
+        r"""The reference date used to compute the 'seconds since' representation of the TLE dates, represented in seconds since 1970-01-01T00:00:00."""
         return self._tle_xarray["reference_date_seconds_since1970"].values
 
     @property
     def start_date_seconds_since(self) -> int:
-        r"""The xarray containing the information about all TLE's for this satellite"""
+        r"""The start date for this object, used to filter the TLEs when it was created, represented in seconds since the chosen reference date for this object."""
         return self._tle_xarray["start_date_seconds_since"].values
 
     @property
     def end_date_seconds_since(self) -> int:
-        r"""The xarray containing the information about all TLE's for this satellite"""
+        r"""The end date for this object, used to filter the TLEs when is was created, represented in seconds since the chosen reference date for this object."""
         return self._tle_xarray["end_date_seconds_since"].values
 
     @property
     def tle_date_seconds_since(self) -> List[int]:
-        r"""The xarray containing the information about all TLE's for this satellite"""
+        r"""The list of the dates corresponding to each TLE in this object, in seconds since the chosen reference date of this object."""
         return self._tle_xarray["tle_date_seconds_since"].values
 
     @property

@@ -5,6 +5,7 @@ import re
 import xarray as xr
 import numpy as np
 from typing import List
+from numpy import datetime64
 
 """___NPL Modules___"""
 """__Built-In Modules__"""
@@ -170,7 +171,7 @@ def create_xarray(
             "launch_piece": get_launch_piece(tle_line_1[0]),
             "launch_year": get_launch_year(tle_line_1[0]),
             "version": __version__,
-            "creation_date": str(np.datetime64("now")),
+            "creation_date": str(datetime64("now")),
         },
     )
     return tle_xarray

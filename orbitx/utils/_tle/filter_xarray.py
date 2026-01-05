@@ -1,7 +1,6 @@
 """orbitx.utils._tle.get_argument_perigee -"""
 
 """___Third-Party Modules___"""
-import re
 import xarray as xr
 import warnings
 import numpy as np
