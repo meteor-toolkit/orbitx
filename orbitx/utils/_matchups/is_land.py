@@ -1,7 +1,8 @@
 """A python function to compute the distance between two satellites"""
 
 """___Third-Party Modules___"""
-import shapely.vectorized as vectorized
+from numpy import bool_
+from shapely import contains_xy
 
 """___NPL Modules___"""
 
@@ -17,6 +18,14 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 
-def is_land(x, y):
-    """Returns boolean land mask for x,y coordinates"""
-    return vectorized.contains(LAND_GEOM, x, y)
+def is_land(x: float, y: float) -> bool:
+    """Returns boolean land mask for x,y coordinates
+
+    Args:
+        x (float): The longitude of the point
+        y (float): The latitude of the point
+
+    Returns:
+        bool: True if the point is on land, false otherwise
+    """
+    return contains_xy(LAND_GEOM, x, y)

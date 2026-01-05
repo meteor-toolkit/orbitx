@@ -69,15 +69,12 @@ def find_matches(
     satellite_shortnames = orbit.satellite_shortname
     num_sats = len(satellite_shortnames)
     orbit_length = len(orbit)
-    satellite_pairs = np.array(
-        [
-            [
+    satellite_pairs = np.array([], dtype = str)
+    for i in range(num_sats - 1):
+        satellite_pairs = np.append(satellite_pairs, [
                 f"{satellite_shortnames[i]}_{satellite_shortnames[j]}"
                 for j in range(i + 1, num_sats)
-            ]
-            for i in range(num_sats - 1)
-        ]
-    ).flatten()
+            ])
     num_pairs = satellite_pairs.shape[0]
     matchups_xr: xr.Dataset = xr.Dataset(
         data_vars={
@@ -130,7 +127,7 @@ def find_matches(
     # Calculate number of interpolation sampling bins fit into the time difference threshold and generate vector of numbers of bins
     acceptable_bin_shifts = range(
         -abs(int(time_diff_threshold / orbit.interpolation_sampling_interval)),
-        +abs(int(time_diff_threshold / orbit.interpolation_sampling_interval)),
+        1+abs(int(time_diff_threshold / orbit.interpolation_sampling_interval)),
     )
 
     acceptable_bin_shifts = np.array(sorted(acceptable_bin_shifts, key = lambda shift: np.abs(shift)))
@@ -154,35 +151,28 @@ def find_matches(
             if bin_shift <= 0:
                 relevant_indeces = matchups_xr["matchup_index"][
                     np.where(
-                        np.logical_and(
-                            has_matchup,
-                            np.logical_not(found_matchup_other_sat),
-                            matchups_xr.matchup_index.values < orbit_length + bin_shift
-                        )
+                        has_matchup &
+                        np.logical_not(found_matchup_other_sat) &
+                        (matchups_xr.matchup_index.values < (orbit_length + bin_shift))
                     )
                 ].values
             else:
                 relevant_indeces = matchups_xr["matchup_index"][
                     np.where(
-                        np.logical_and(
-                            has_matchup,
-                            np.logical_not(found_matchup_other_sat),
-                            matchups_xr.matchup_index.values > bin_shift
-                        )
+                        has_matchup &
+                        np.logical_not(found_matchup_other_sat) &
+                        (matchups_xr.matchup_index.values >= bin_shift)
                     )
                 ].values
             # extract the coordinate of the other satellite with an appropriate lag
             new_sat_orbit_roll = matchups_xr.sel(satellite = new_sat).roll(matchup_index = bin_shift).sel(matchup_index = relevant_indeces)
             matchups_so_far_roll = matchups_xr.isel({"satellite": range(new_sat_ind)}).sel(matchup_index = relevant_indeces)
-            
             distance = get_dist(matchups_so_far_roll, new_sat_orbit_roll)
             delay = get_delay(matchups_so_far_roll, new_sat_orbit_roll)
-
             distance_max = np.max(distance, axis = 1)
             delay_max = np.max(delay, axis = 1)
             new_matchups = xr.ufuncs.logical_and(distance_max <= space_diff_threshold, delay_max <= time_diff_threshold)
             new_matchup_indeces = relevant_indeces[new_matchups]
-
             if len(new_matchup_indeces) > 0:
                 matchups_xr["lat"].loc[dict(satellite = new_sat, matchup_index = new_matchup_indeces)] = new_sat_orbit_roll["lat"].loc[dict(matchup_index = new_matchup_indeces)].values
                 matchups_xr["lon"].loc[dict(satellite = new_sat, matchup_index = new_matchup_indeces)] = new_sat_orbit_roll["lon"].loc[dict(matchup_index = new_matchup_indeces)].values
