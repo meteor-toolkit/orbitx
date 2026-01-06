@@ -2,6 +2,7 @@
 
 """___Third-Party Modules___"""
 import numpy as np
+import numpy.typing as npt
 from typing import Tuple
 
 """___NPL Modules___"""
@@ -20,7 +21,7 @@ __status__ = "Development"
 
 def get_matching_indices(
     simulation_time: np.ndarray, tle_time: np.ndarray
-) -> Tuple[list, list]:
+) -> Tuple[npt.NDArray[np.uint8], npt.NDArray[np.uint8]]:
     """
     Locate the index of the closest two line element (at a time equal to or smaller than the simulation time) and
     return the matching pointers/indices.

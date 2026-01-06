@@ -4,6 +4,7 @@
 import xarray as xr
 import warnings
 import numpy as np
+import numpy.typing as npt
 from typing import Tuple, List
 
 """___NPL Modules___"""
@@ -28,7 +29,7 @@ __status__ = "Development"
 __all__ = ["filter xarray"]
 
 
-def filter_xarray(tle_xarray: xr.Dataset) -> Tuple[xr.Dataset, List[str], List[str]]:
+def filter_xarray(tle_xarray: xr.Dataset) -> xr.Dataset:
     """Selecting TLEs that are relevant to the time span of the simulation.
 
     Args:
@@ -38,35 +39,33 @@ def filter_xarray(tle_xarray: xr.Dataset) -> Tuple[xr.Dataset, List[str], List[s
         tle_xarray (xr.Dataset): The TLE xarray filtered
     """
     # Filter time
-    lower_bound_tle_time = [
-        t for t in tle_xarray["tle_date"].values if t <= tle_xarray["start_date"].values
-    ]
-    if len(lower_bound_tle_time) == 0:
+    # lower_bound_tle_time = np.array([
+    #     t for t in tle_xarray["tle_date"].values if t <= tle_xarray["start_date"].values
+    # ])
+    previous_tle_times: npt.NDArray[np.datetime64] = tle_xarray.where(lambda x: x["tle_date"] < tle_xarray["start_date"].values)["tle_date"].values
+    if previous_tle_times.shape[0] == 0:
         warnings.warn(
             f"""The oldest TLE file is more recent than the start time requested.
 Oldest TLE file: {np.min(tle_xarray["start_date"].values)}
 Start time requested: {tle_xarray["start_date"].values}"""
         )
-    lower_bound_tle_time = (
-        tle_xarray["start_date"].values
-        if len(lower_bound_tle_time) == 0
-        else np.max(lower_bound_tle_time)
-    )
+        lower_bound_tle_time: np.datetime64 = tle_xarray["start_date"].values
+    else:
+        lower_bound_tle_time = np.max(previous_tle_times)
 
-    upper_bound_tle_time = [
-        t for t in tle_xarray["tle_date"].values if t >= tle_xarray["end_date"].values
-    ]
-    if len(upper_bound_tle_time) == 0:
+    later_tle_times: npt.NDArray[np.datetime64] = tle_xarray.where(lambda x: x["tle_date"] >= tle_xarray["end_date"].values)["tle_date"].values
+    # upper_bound_tle_time = [
+    #     t for t in tle_xarray["tle_date"].values if t >= tle_xarray["end_date"].values
+    # ]
+    if len(later_tle_times) == 0:
         warnings.warn(
             f"""The most recent TLE file is older than the end time requested.
 Oldest TLE file: {np.max(tle_xarray["tle_date"].values)}
 Start time requested: {tle_xarray["end_date"]}"""
         )
-    upper_bound_tle_time = (
-        tle_xarray["end_date"].values
-        if len(upper_bound_tle_time) == 0
-        else np.min(upper_bound_tle_time)
-    )
+        upper_bound_tle_time: np.datetime64 = tle_xarray["end_date"].values
+    else:
+        upper_bound_tle_time = np.min(later_tle_times)
     idx = [
         i
         for i, t_i in enumerate(tle_xarray["tle_date"])

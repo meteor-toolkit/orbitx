@@ -27,7 +27,7 @@ __status__ = "Development"
 __all__ = ["get_tle_path"]
 
 
-def get_tle_path(satellite_name: str) -> Optional[str]:
+def get_tle_path(satellite_name: str) -> str:
     r"""Returns path for TLE file for defined satellite
 
     :param satellite_name: satellite short name as included in TLE file name ``TLEset_XXX``, where ``XXX`` may be ``S2A`` for the Sentinel-2A mission
@@ -37,13 +37,15 @@ def get_tle_path(satellite_name: str) -> Optional[str]:
     """
     from orbitx import TLE_PATH
 
-    path = None
-
+    path = ""
+    found: bool = False
     for tle_dir in TLE_PATH:
         path = os.path.abspath(
             os.path.join(tle_dir, "TLEset_" + satellite_name + ".txt")
         )
         if os.path.isfile(path):
+            found = True
             break
-
+    if not found:
+        raise FileNotFoundError("No TLE file for this satellite. Use a custom satellite argument with your own file.")
     return path

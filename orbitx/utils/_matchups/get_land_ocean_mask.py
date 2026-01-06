@@ -20,7 +20,7 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 
-def get_land_ocean_mask(matchups: xr.Dataset) -> Dict[str, Dict[str, npt.NDArray]]:
+def get_land_ocean_mask(matchups: xr.Dataset) -> xr.Dataset:
     num_matchups = matchups["matchup_index"].shape[0]
     num_sat = matchups["satellite"].shape[0]
     matchup_type = np.empty((num_matchups,), dtype=str)

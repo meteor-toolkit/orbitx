@@ -43,7 +43,7 @@ class TestSimulateOrbit(unittest.TestCase):
     def test_valid_simulate_orbit(self):
         # Read sample Sentinel-6 file
         ds = nc.Dataset(S6_ORBIT_PATH[0], mode="r")
-        exp_time = ds.groups["data_01"].variables["time"][:]
+        exp_time = np.array(ds.groups["data_01"].variables["time"][:])
         reference_date = np.datetime64("2000-01-01T00:00:00")
         exp_date = [
             sec_since_to_datetime64(
@@ -75,9 +75,9 @@ class TestSimulateOrbit(unittest.TestCase):
             propagation_sampling_interval,
             reference_date,
         )
-
-        self.assertCountEqual(sat_secs_since, exp_time)
-        self.assertCountEqual(sat_date, exp_date)
+        
+        np.testing.assert_equal(sat_secs_since, exp_time)
+        np.testing.assert_equal(sat_date, exp_date)
         # Calculate the Haversine distance between simulated and real orbit at 1 Hz sampling rate
         distance = [
             cal_dist_d2m(sat_lat_sim[i], sat_lon_sim[i], exp_lat[i], exp_lon[i])

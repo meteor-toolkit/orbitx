@@ -25,18 +25,18 @@ __status__ = "Development"
 
 
 satellites = ["S3A", "SA"]
-start_date=np.datetime64("2018-01-01T00:00:00")
-end_date=np.datetime64("2019-01-01T00:00:00")
+start_date: np.datetime64=np.datetime64("2018-01-01T00:00:00")
+end_date: np.datetime64=np.datetime64("2019-01-01T00:00:00")
 output_path_sim_orbits = r".\examples\output"
 output_path_matchups = r".\examples\output"
-propagation_sampling_interval = np.array(60, dtype="timedelta64[s]")
-interpolation_sampling_interval = np.array(5, dtype="timedelta64[s]")
+propagation_sampling_interval: np.timedelta64 = np.array(60, dtype="timedelta64[s]")
+interpolation_sampling_interval: np.timedelta64 = np.array(5, dtype="timedelta64[s]")
 space_diff_threshold = 290
-time_diff_threshold = time_diff_threshold = np.array(900, dtype="timedelta64[s]")
+time_diff_threshold: np.timedelta64 = np.array(900, dtype="timedelta64[s]")
 check_before = False
 check_after = True
 has_land_ocean_mask = True
-reference_date=np.datetime64("2000-01-01T00:00:00")
+reference_date: np.datetime64=np.datetime64("2000-01-01T00:00:00")
 
 os.makedirs(output_path_sim_orbits, exist_ok=True)
 os.makedirs(output_path_matchups, exist_ok=True)

@@ -3,7 +3,7 @@
 """___Third-Party Modules___"""
 import numpy as np
 import numpy.typing as npt
-from typing import Tuple, Any
+from typing import Tuple, Any, Callable
 from scipy.interpolate import interp1d
 
 """___NPL Modules___"""
@@ -29,7 +29,12 @@ def interpolate_orbit(
     sat_lon_sim: npt.NDArray,
     interpolation_sampling_interval: np.timedelta64,
     reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
-) -> Tuple[Any, Any, np.ndarray]:
+) -> Tuple[
+    npt.NDArray[np.float64],
+    npt.NDArray[np.datetime64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64]
+    ]:
     """interpolate_orbit Interpolate the orbit at desired time resolution
 
     Used to interpolate the physics-simulated orbits at a sufficiently high resolution
@@ -51,17 +56,17 @@ def interpolate_orbit(
     :return: A tuple containing the interpolated latitude, the interpolated longitude, the times at which the interpolated values are obtained (in seconds since the reference date), and the times at which the interpolated values are obtained (in datetimes format)
     :rtype: Tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray]
     """
-    f1_lat_linear = interp1d(sat_sec_since, sat_lat_sim)
-    f1_lon_linear = interp_circ(sat_sec_since, sat_lon_sim)
+    f1_lat_linear: interp1d[npt.NDArray[np.float64], npt.NDArray[np.float64]] = interp1d(sat_sec_since, sat_lat_sim)
+    f1_lon_linear: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]] = interp_circ(sat_sec_since, sat_lon_sim)
 
     end_date = end_date + interpolation_sampling_interval
-    interpolate_date = np.arange(
+    interpolate_date: npt.NDArray[np.datetime64] = np.arange(
         start=start_date, stop=end_date, step=interpolation_sampling_interval
     )
-    interpolate_time = [
+    interpolate_time = np.array([
         datetime64_to_sec_since(date, reference_date=reference_date)
         for date in interpolate_date
-    ]
+    ], dtype = np.float64)
     return (
         interpolate_time,
         interpolate_date,

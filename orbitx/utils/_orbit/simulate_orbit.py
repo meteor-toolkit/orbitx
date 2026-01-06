@@ -3,6 +3,7 @@
 """___Third-Party Modules___"""
 from typing import List, Tuple
 import numpy as np
+import numpy.typing as npt
 
 """___NPL Modules___"""
 
@@ -27,7 +28,12 @@ def simulate_orbit(
     tle: TLE,
     propagation_sampling_interval: np.timedelta64,
     reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
-) -> Tuple[List[float], List[float], List[float]]:
+) -> Tuple[
+    npt.NDArray[np.float64],
+    npt.NDArray[np.datetime64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    ]:
     """
     Return latitude, longitude and time arrays for full simulated orbit
 
@@ -43,15 +49,15 @@ def simulate_orbit(
     sat_smpl_breakup_idx, tle_ref_lines = get_matching_indices(
         smpl_space_secs_since, tle.tle_date_seconds_since
     )
-    sat_lat_sim: np.ndarray = np.empty((0,), dtype=float)
-    sat_lon_sim: np.ndarray = np.empty((0,), dtype=float)
-    sat_sec_since: np.ndarray = np.empty((0,), dtype=float)
-    sat_date: np.ndarray = np.empty((0,), dtype=np.datetime64)
+    sat_lat_sim: npt.NDArray[np.float64] = np.empty((0,), dtype=np.float64)
+    sat_lon_sim: npt.NDArray[np.float64] = np.empty((0,), dtype=np.float64)
+    sat_sec_since: npt.NDArray[np.float64] = np.empty((0,), dtype=np.float64)
+    sat_date: npt.NDArray[np.datetime64] = np.empty((0,), dtype=np.datetime64)
 
     if len(tle_ref_lines) == 1:
         secsince1, date, lat1, lon1, _, _, _ = propagate_orbit(
-            tle.tle_line_1.values[tle_ref_lines[0]],
-            tle.tle_line_2.values[tle_ref_lines[0]],
+            tle.tle_line_1[tle_ref_lines[0]],
+            tle.tle_line_2[tle_ref_lines[0]],
             start_date,
             end_date,
             propagation_sampling_interval,
@@ -69,8 +75,8 @@ def simulate_orbit(
         smpl_space[-2] = smpl_space[-1]
         for i in range(len(tle_ref_lines) - 1):
             secsince1, date, lat1, lon1, _, _, _ = propagate_orbit(
-                tle.tle_line_1.values[tle_ref_lines[i]],
-                tle.tle_line_2.values[tle_ref_lines[i]],
+                tle.tle_line_1[tle_ref_lines[i]],
+                tle.tle_line_2[tle_ref_lines[i]],
                 smpl_space[sat_smpl_breakup_idx[i]],
                 smpl_space[sat_smpl_breakup_idx[i + 1] - 1],
                 propagation_sampling_interval,

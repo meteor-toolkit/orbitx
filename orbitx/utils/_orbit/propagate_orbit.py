@@ -2,11 +2,13 @@
 
 """___Third-Party Modules___"""
 import numpy as np
+import numpy.typing as npt
 
 from math import pi
 from typing import Tuple, List
 import warnings
 import numbers
+from datetime import timedelta, datetime
 
 import orekit
 from org.orekit.frames import FramesFactory, TopocentricFrame
@@ -57,7 +59,13 @@ def propagate_orbit(
     propagation_sampling_interval: np.timedelta64,
     reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
 ) -> Tuple[
-    List[float], List[float], List[float], List[float], List[float], List[float]
+    npt.NDArray[np.float64],
+    npt.NDArray[np.datetime64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64]
 ]:
     """
     Propagate satellite orbit for given two-line-elements and associated time
@@ -88,7 +96,8 @@ def propagate_orbit(
         datetime64_get_second(end_date),
         TimeScalesFactory.getUTC(),
     )  # when you want to stop tracking
-    propagation_sampling_interval = propagation_sampling_interval.item().total_seconds()
+    propagation_sampling_interval_timedelta: timedelta = propagation_sampling_interval.item()
+    propagation_sampling_interval_float: float = propagation_sampling_interval_timedelta.total_seconds()
 
     # CELLESTIAL BODIES
     sun = CelestialBodyFactory.getSun()
@@ -108,22 +117,22 @@ def propagate_orbit(
     propagator0 = TLEPropagator.selectExtrapolator(mytle)
     propagator0 = PVCoordinatesProvider.cast_(propagator0)
 
-    extrap_date_list = np.empty((1,), dtype=AbsoluteDate)
+    extrap_date_list: npt.NDArray[AbsoluteDate] = np.empty((1,), dtype=AbsoluteDate)
     extrap_date_list[0] = extrap_date
     while extrap_date.compareTo(final_date) < 0.0:
-        extrap_date = extrap_date.shiftedBy(propagation_sampling_interval)
+        extrap_date = extrap_date.shiftedBy(propagation_sampling_interval_float)
         extrap_date_list = np.append(extrap_date_list, extrap_date)
 
-    sel = np.empty(extrap_date_list.shape, dtype=float)
-    saz = np.empty(extrap_date_list.shape, dtype=float)
-    pos_lat = np.empty(extrap_date_list.shape, dtype=float)
-    pos_lon = np.empty(extrap_date_list.shape, dtype=float)
-    pos_alt = np.empty(extrap_date_list.shape, dtype=float)
-    pos_s0_lat = np.empty(extrap_date_list.shape, dtype=float)
-    pos_s0_lon = np.empty(extrap_date_list.shape, dtype=float)
-    pos_s0_alt = np.empty(extrap_date_list.shape, dtype=float)
-    date = np.empty(extrap_date_list.shape, dtype="datetime64[s]")
-    julian_date = np.empty(extrap_date_list.shape, dtype=float)
+    sel: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    saz: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_lat: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_lon: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_alt: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_s0_lat: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_s0_lon: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_s0_alt: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    date: npt.NDArray[np.datetime64[datetime]] = np.empty(extrap_date_list.shape, dtype="datetime64[s]")
+    julian_date: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
 
     for extrap_date_ind, extrap_date in enumerate(extrap_date_list):
         pv0 = propagator0.getPVCoordinates(extrap_date, inertial_frame)
@@ -141,7 +150,7 @@ def propagate_orbit(
 
         pos_s0_lat[extrap_date_ind] = poss0.getLatitude()  # satellite nadir lattitude
         pos_s0_lon[extrap_date_ind] = poss0.getLongitude()  # satellite nadir longitude
-        alt_sat = poss0.getAltitude()
+        alt_sat: float = poss0.getAltitude()
         if not isinstance(alt_sat, numbers.Number):
             warnings.warn("Satellite altitude is not a number: {}".format(alt_sat))
             pos_s0_alt[extrap_date_ind] = np.nan
@@ -150,7 +159,7 @@ def propagate_orbit(
 
         pos_lat[extrap_date_ind] = pos0.getLatitude()  # sun nadir Lattitude
         pos_lon[extrap_date_ind] = pos0.getLongitude()  # sun nadir Longitude
-        alt_sun = pos0.getAltitude()
+        alt_sun: float = pos0.getAltitude()
         if not isinstance(alt_sun, numbers.Number):
             warnings.warn("Satellite altitude is not a number: {}".format(alt_sun))
             pos_alt[extrap_date_ind] = np.nan

@@ -1,11 +1,11 @@
 """A python function that finds the matchups in orbits"""
 
 """___Third-Party Modules___"""
+from datetime import timedelta
 import numpy as np
-from typing import Dict, Any
-from numbers import Number
+import numpy.typing as npt
 import xarray as xr
-from typing import List
+from typing import SupportsFloat
 from math import pi
 
 """___NPL Modules___"""
@@ -29,7 +29,7 @@ __status__ = "Development"
 def find_matches(
     orbit: Orbit,
     time_diff_threshold: np.timedelta64,
-    space_diff_threshold: Number,
+    space_diff_threshold: SupportsFloat,
     check_before: bool,
     check_after: bool,
     has_land_ocean_mask: bool,
@@ -76,6 +76,11 @@ def find_matches(
                 for j in range(i + 1, num_sats)
             ])
     num_pairs = satellite_pairs.shape[0]
+
+    time_diff_threshold_timedelta: timedelta = time_diff_threshold.item()
+    time_diff_threshold_float: float = time_diff_threshold_timedelta.total_seconds()
+
+
     matchups_xr: xr.Dataset = xr.Dataset(
         data_vars={
             "reference_date": (orbit.reference_date),
@@ -114,7 +119,7 @@ def find_matches(
             "end_date": datetime64_to_sec_since(orbit.end_date, reference_date=orbit.reference_date),
             "propagation_sampling_interval": orbit._orbits.attrs["propagation_sampling_interval"],
             "interpolation_sampling_interval": orbit._orbits.attrs["interpolation_sampling_interval"],
-            "time_diff_threshold": time_diff_threshold.item().total_seconds(),
+            "time_diff_threshold": time_diff_threshold_float,
             "space_diff_threshold": space_diff_threshold,
             "check_before": int(check_before),
             "check_after": int(check_after),
@@ -125,12 +130,12 @@ def find_matches(
     )
     
     # Calculate number of interpolation sampling bins fit into the time difference threshold and generate vector of numbers of bins
-    acceptable_bin_shifts = range(
+    acceptable_bin_shifts_unsorted: range = range(
         -abs(int(time_diff_threshold / orbit.interpolation_sampling_interval)),
         1+abs(int(time_diff_threshold / orbit.interpolation_sampling_interval)),
     )
 
-    acceptable_bin_shifts = np.array(sorted(acceptable_bin_shifts, key = lambda shift: np.abs(shift)))
+    acceptable_bin_shifts: npt.NDArray[np.int64] = np.array(sorted(acceptable_bin_shifts_unsorted, key = lambda shift: np.abs(shift)))
 
     # Vector indicating which entries have a matchup:
     has_matchup = np.array([True for _ in range(matchups_xr["matchup_index"].shape[0])])
@@ -153,7 +158,7 @@ def find_matches(
                     np.where(
                         has_matchup &
                         np.logical_not(found_matchup_other_sat) &
-                        (matchups_xr.matchup_index.values < (orbit_length + bin_shift))
+                        (matchups_xr["matchup_index"].values < (orbit_length + bin_shift))
                     )
                 ].values
             else:
@@ -161,7 +166,7 @@ def find_matches(
                     np.where(
                         has_matchup &
                         np.logical_not(found_matchup_other_sat) &
-                        (matchups_xr.matchup_index.values >= bin_shift)
+                        (matchups_xr["matchup_index"].values >= bin_shift)
                     )
                 ].values
             # extract the coordinate of the other satellite with an appropriate lag

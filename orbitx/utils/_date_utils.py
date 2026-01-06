@@ -116,7 +116,7 @@ def datetime64_get_minute(date: np.datetime64) -> int:
     )
 
 
-def datetime64_get_second(date: np.datetime64) -> int:
+def datetime64_get_second(date: np.datetime64) -> float:
     return float(
         (date.astype("datetime64[s]") - date.astype("datetime64[m]")).astype(float)
     )

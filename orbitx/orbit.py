@@ -9,6 +9,7 @@ from matplotlib import pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import numpy as np
+from datetime import timedelta
 
 """___NPL Modules___"""
 
@@ -58,7 +59,7 @@ class Orbit:
         end_date: np.datetime64,
         propagation_sampling_interval: np.timedelta64,
         interpolation_sampling_interval: np.timedelta64,
-        reference_date: np.timedelta64 = np.datetime64("1970-01-01T00:00:00"),
+        reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
         custom_satellites: List[Dict[str, str]] = [],
     ):
         """Main generator for the Orbit class
@@ -132,11 +133,11 @@ class Orbit:
                 }
             )
 
-        for sat in custom_satellites:
+        for sat_dict in custom_satellites:
             tle = TLE.from_filepath(
-                sat["tle_filepath"],
-                sat["satellite_shortname"],
-                sat["satellite_name"],
+                sat_dict["tle_filepath"],
+                sat_dict["satellite_shortname"],
+                sat_dict["satellite_name"],
                 start_date,
                 end_date,
                 reference_date,
@@ -160,7 +161,7 @@ class Orbit:
             )
             orbit_dict.update(
                 {
-                    sat: {
+                    sat_dict["satellite_shortname"]: {
                         "lat": lat,
                         "lon": lon,
                         "time": time,
@@ -201,15 +202,16 @@ class Orbit:
         orbit_xarray["time_datetime"][:] = np.array(
             orbit_xarray["time_datetime"], dtype="datetime64[s]"
         )
+        reference_date: np.datetime64 = orbit_xarray["reference_date"].values
         orbit_xarray = orbit_xarray.assign_coords(
             time=np.array(
                 [
                     datetime64_to_sec_since(
-                        datetime, reference_date=orbit_xarray["reference_date"].values
+                        datetime, reference_date=reference_date
                     )
                     for datetime in orbit_xarray["time_datetime"].values
                 ],
-                dtype=np.int32,
+                dtype=np.float64,
             )
         )
         return cls(
@@ -225,7 +227,14 @@ class Orbit:
         """
         satellites_part = "_".join(self.satellite_shortname)
         date_part = f"{np.datetime_as_string(self.start_date, unit = "D")}_{np.datetime_as_string(self.end_date, unit = "D")}"
-        sampling_part = f"psi{self.propagation_sampling_interval.item().total_seconds()}_isi{self.interpolation_sampling_interval.item().total_seconds()}"
+
+        propagation_sampling_interval_timedelta: timedelta = self.propagation_sampling_interval.item()
+        propagation_sampling_interval_float: float = propagation_sampling_interval_timedelta.total_seconds()
+
+        interpolation_sampling_interval_timedelta: timedelta = self.interpolation_sampling_interval.item()
+        interpolation_sampling_interval_float: float = interpolation_sampling_interval_timedelta.total_seconds()
+
+        sampling_part = f"psi{propagation_sampling_interval_float}_isi{interpolation_sampling_interval_float}"
         filename = f"{date_part}_{sampling_part}_orbit_{satellites_part}.nc"
 
         # Save as netCDF4
@@ -262,7 +271,7 @@ class Orbit:
         """
         return len(self.orbits["time"])
 
-    def __eq__(self, value: "Orbit") -> bool:
+    def __eq__(self, value: object) -> bool:
         """Checks if two orbit objects are identical
 
         :param value: Orbit object to be compared to
@@ -271,9 +280,9 @@ class Orbit:
         :rtype: bool
         """
         if not isinstance(value, Orbit):
-            return False
+            return NotImplemented
         res = True
-        res = res and np.all(self.satellite_name == value.satellite_name)
+        res = res and bool(np.all(self.satellite_name == value.satellite_name))
         res = res and (self.start_date == value.start_date)
         res = res and (self.end_date == value.end_date)
         res = res and (
@@ -315,7 +324,7 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
         return self._orbits.attrs["satellite_shortname"]
 
     @property
-    def start_date(self) -> np.datetime64:
+    def start_date(self) -> npt.NDArray[np.datetime64]:
         """
         :return: Date from which the orbits are computed
         :rtype: np.datetime64
@@ -328,7 +337,7 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
         )
 
     @property
-    def end_date(self) -> np.datetime64:
+    def end_date(self) -> npt.NDArray[np.datetime64]:
         """
         :return: Date until which the orbits are computed
         :rtype: np.datetime64
@@ -341,14 +350,14 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
         )
 
     @property
-    def propagation_sampling_interval(self) -> np.timedelta64:
+    def propagation_sampling_interval(self) -> npt.NDArray[np.timedelta64]:
         """The time delta between each physics-based simulations of the satellite orbit"""
         return np.array(
             self._orbits.attrs["propagation_sampling_interval"], dtype="timedelta64[s]"
         )
 
     @property
-    def interpolation_sampling_interval(self) -> np.timedelta64:
+    def interpolation_sampling_interval(self) -> npt.NDArray[np.timedelta64]:
         """The time delta between each interpolated position of the satellite orbit"""
         return np.array(
             self._orbits.attrs["interpolation_sampling_interval"],
@@ -393,6 +402,6 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
         return self._orbits
 
     @property
-    def reference_date(self) -> np.datetime64:
+    def reference_date(self) -> npt.NDArray[np.datetime64]:
         """The reference date used for the representation of time in seconds since reference date"""
         return self._orbits["reference_date"].values

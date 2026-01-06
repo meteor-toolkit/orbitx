@@ -2,6 +2,8 @@
 
 """___Third-Party Modules___"""
 import numpy as np
+from numpy._typing._array_like import NDArray
+import numpy.typing as npt
 import xarray as xr
 
 """___NPL Modules___"""
@@ -21,7 +23,7 @@ __all__ = ["get_delay"]
 def get_delay(
     existing_orbits: xr.Dataset,
     new_orbit: xr.Dataset
-) -> np.array:
+) -> npt.NDArray[np.float64]:
     """Calculate the largest delay in seconds
     between a collection of orbits and a new orbit at each time stamp
 
@@ -33,5 +35,5 @@ def get_delay(
         np.array: at each matchup, the maximal delay between the new orbit and the existing orbits
     """
     # compute the lat and lon difference
-    delay = np.abs(existing_orbits["time_datetime"] - new_orbit["time_datetime"])
+    delay: npt.NDArray[np.float64] = np.abs(existing_orbits["time_datetime"] - new_orbit["time_datetime"])
     return delay

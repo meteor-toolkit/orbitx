@@ -2,6 +2,7 @@
 
 """___Third-Party Modules___"""
 import numpy as np
+import numpy.typing as npt
 import xarray as xr
 
 """___NPL Modules___"""
@@ -21,7 +22,7 @@ __all__ = ["get_dist"]
 def get_dist(
     existing_orbits: xr.Dataset,
     new_orbit: xr.Dataset
-) -> np.array:
+) -> npt.NDArray[np.float64]:
     """Calculate the largest distance in kilometers on the earth (specified in decimal degrees)
     between a collection of orbits and a new orbit at each time stamp
 
@@ -33,11 +34,11 @@ def get_dist(
         np.array: at each time stamp, the largest of the distances between the new orbit and each of the existing orbits
     """
     # compute the lat and lon difference
-    dlon = (existing_orbits["lon"] - new_orbit["lon"])
-    dlat = (existing_orbits["lat"] - new_orbit["lat"])
+    dlon: xr.DataArray = (existing_orbits["lon"] - new_orbit["lon"])
+    dlat: xr.DataArray = (existing_orbits["lat"] - new_orbit["lat"])
     # haversine formula
 
-    a = np.sin(dlat / 2) ** 2 + np.cos(existing_orbits["lat"]) * np.cos(new_orbit["lat"]) * np.sin(dlon / 2) ** 2
-    c = 2 * np.asin(np.sqrt(a))
-    r = EARTH_RADIUS
+    a: npt.NDArray[np.float64] = np.sin(dlat / 2) ** 2 + np.cos(existing_orbits["lat"]) * np.cos(new_orbit["lat"]) * np.sin(dlon / 2) ** 2
+    c: npt.NDArray[np.float64] = 2 * np.asin(np.sqrt(a))
+    r: float = EARTH_RADIUS
     return c * r

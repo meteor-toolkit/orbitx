@@ -3,6 +3,7 @@
 import unittest
 import xarray as xr
 import numpy as np
+import numpy.typing as npt
 
 from orbitx.utils._tle import filter_xarray
 from orbitx import __version__
@@ -14,7 +15,7 @@ example_reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00")
 example_satellite_shortname = "S2A"
 example_satellite_name = "Sentinel-2A"
 time_delta: np.timedelta64 = (np.datetime64("2010-01-03T00:00:00") - np.datetime64("2010-01-01T00:00:00")) / 10
-example_tle_date = np.arange(
+example_tle_date: npt.NDArray[np.datetime64] = np.arange(
     np.datetime64("2010-01-01T00:00:00"),
     np.datetime64("2010-01-03T00:00:00") + time_delta,
     time_delta
