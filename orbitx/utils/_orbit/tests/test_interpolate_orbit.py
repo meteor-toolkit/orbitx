@@ -7,6 +7,7 @@ from orbitx.utils._orbit.interpolate_orbit import interpolate_orbit
 
 __author__ = "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>"
 
+
 class TestInterpolateOrbit(unittest.TestCase):
     @mock.patch(
         "orbitx.utils._orbit.interp_circ.interp_circ_",
@@ -68,6 +69,7 @@ class TestInterpolateOrbit(unittest.TestCase):
         self.assertCountEqual(exp_lon, lon)
         self.assertTrue((exp_time == time).all())
         self.assertTrue((exp_date == date).all())
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -30,7 +30,7 @@ class TestGetTLEDate(unittest.TestCase):
         0.668403200000057 minutes x 60 seconds/minute = 40.10419200000342 seconds (Seconds = 30.94)
         """
         self.assertEqual(result_0, get_tle_date(example_0))
-        
+
     def test_example_1(self):
         """
         The line is
@@ -46,6 +46,7 @@ class TestGetTLEDate(unittest.TestCase):
         0.5157 minutes x 60 seconds/minute = 30.94 seconds (Seconds = 30.94)
         """
         self.assertEqual(result_1, get_tle_date(example_1))
+
 
 if __name__ == "__main__":
     unittest.main()

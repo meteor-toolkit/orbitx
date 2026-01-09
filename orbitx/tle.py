@@ -9,9 +9,9 @@ import xarray as xr
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._tle.get_tle_path import get_tle_path 
-from orbitx.utils._tle.load_file import load_file 
-from orbitx.utils._tle.create_xarray import create_xarray 
+from orbitx.utils._tle.get_tle_path import get_tle_path
+from orbitx.utils._tle.load_file import load_file
+from orbitx.utils._tle.create_xarray import create_xarray
 from orbitx.utils._tle.filter_xarray import filter_xarray
 from orbitx.utils._constants import SATELLITE_DICT
 
@@ -52,19 +52,19 @@ class TLE:
             satellite_shortname (str): The shortname of the satellite. Supported shortnames are the following:
             .. code-block:: text
 
+                "CS2": "CryoSat-2",
+                "J2": "JASON-2",
+                "J3": "JASON-3",
                 "LS8": "Landsat-8",
                 "LS9": "Landsat-9",
+                "N20": "NOAA-20",
                 "S2A": "Sentinel-2A",
                 "S2B": "Sentinel-2B",
                 "S3A": "Sentinel-3A",
                 "S3B": "Sentinel-3B",
                 "S6": "Sentinel-6",
-                "J2": "JASON-2",
-                "J3": "JASON-3",
-                "SA": "Saral-AltiKa",
-                "CS2": "CryoSat-2",
-                "LINCS2": "Lin-CryoSat-2",
-                "N20": "NOAA-20"
+                "SA": "Saral-AltiKa"
+            
             start_date (np.datetime64): The date from which the orbit needs to be simulated
             end_date (np.datetime64): The date until which the orbit needs to be simulated
             reference_date (np.datetime64, optional): The reference date used to represent dates as "seconds since". Defaults to np.datetime64("1970-01-01T00:00:00").
@@ -130,8 +130,7 @@ class TLE:
         return cls(tle_xarray)
 
     def __str__(self):
-        res = f"""
-TLE object for the satellite {self.satellite_name} with short name {self.satellite_shortname}.
+        res = f"""TLE object for the satellite {self.satellite_name} with short name {self.satellite_shortname}.
 Satellite catalog number: {self.satellite_catalog_number}.
 Satellite classification: {self.classification}.
 Launch year: {self.launch_year}.
@@ -348,7 +347,7 @@ Created on {self.creation_date} using the version {self.version} of orbitx.
         return self._tle_xarray["end_date_seconds_since"].values
 
     @property
-    def tle_date_seconds_since(self) ->npt.NDArray[np.float64]:
+    def tle_date_seconds_since(self) -> npt.NDArray[np.float64]:
         r"""The list of the dates corresponding to each TLE in this object, in seconds since the chosen reference date of this object."""
         return self._tle_xarray["tle_date_seconds_since"].values
 

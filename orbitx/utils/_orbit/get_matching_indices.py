@@ -34,7 +34,6 @@ def get_matching_indices(
     idx_sim = np.empty(idx_tle.shape, int)
     idx_redundant = []
 
-
     # Find corresponding indices of tle and simulation time vectors
     for i in idx_tle:
         idx_sim[i] = np.argmax(

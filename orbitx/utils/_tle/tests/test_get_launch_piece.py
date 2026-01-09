@@ -18,5 +18,6 @@ class TestGetLaunchPiece(unittest.TestCase):
         """
         self.assertEqual(result_0, get_launch_piece(example_0))
 
+
 if __name__ == "__main__":
     unittest.main()

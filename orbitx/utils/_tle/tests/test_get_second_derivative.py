@@ -23,24 +23,25 @@ class TestGetSecondDerivative(unittest.TestCase):
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertAlmostEqual(result_0, get_second_derivative(example_0))
-        
+
     def test_example_1(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_1, get_second_derivative(example_1))
-        
+
     def test_example_2(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertAlmostEqual(result_2, get_second_derivative(example_2))
-        
+
     def test_example_3(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_3, get_second_derivative(example_3))
+
 
 if __name__ == "__main__":
     unittest.main()

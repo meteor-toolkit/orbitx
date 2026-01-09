@@ -18,5 +18,6 @@ class TestGetRightAscension(unittest.TestCase):
         """
         self.assertEqual(result_0, get_right_ascension(example_0))
 
+
 if __name__ == "__main__":
     unittest.main()

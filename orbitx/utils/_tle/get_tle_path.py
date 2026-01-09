@@ -47,5 +47,7 @@ def get_tle_path(satellite_name: str) -> str:
             found = True
             break
     if not found:
-        raise FileNotFoundError("No TLE file for this satellite. Use a custom satellite argument with your own file.")
+        raise FileNotFoundError(
+            "No TLE file for this satellite. Use a custom satellite argument with your own file."
+        )
     return path

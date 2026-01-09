@@ -205,9 +205,7 @@ class Orbit:
         orbit_xarray = orbit_xarray.assign_coords(
             time=np.array(
                 [
-                    datetime64_to_sec_since(
-                        datetime, reference_date=reference_date
-                    )
+                    datetime64_to_sec_since(datetime, reference_date=reference_date)
                     for datetime in orbit_xarray["time_datetime"].values
                 ],
                 dtype=np.float64,
@@ -227,11 +225,19 @@ class Orbit:
         satellites_part = "_".join(self.satellite_shortname)
         date_part = f"{np.datetime_as_string(self.start_date, unit = "D")}_{np.datetime_as_string(self.end_date, unit = "D")}"
 
-        propagation_sampling_interval_timedelta: timedelta = self.propagation_sampling_interval.item()
-        propagation_sampling_interval_float: float = propagation_sampling_interval_timedelta.total_seconds()
+        propagation_sampling_interval_timedelta: timedelta = (
+            self.propagation_sampling_interval.item()
+        )
+        propagation_sampling_interval_float: float = (
+            propagation_sampling_interval_timedelta.total_seconds()
+        )
 
-        interpolation_sampling_interval_timedelta: timedelta = self.interpolation_sampling_interval.item()
-        interpolation_sampling_interval_float: float = interpolation_sampling_interval_timedelta.total_seconds()
+        interpolation_sampling_interval_timedelta: timedelta = (
+            self.interpolation_sampling_interval.item()
+        )
+        interpolation_sampling_interval_float: float = (
+            interpolation_sampling_interval_timedelta.total_seconds()
+        )
 
         sampling_part = f"psi{propagation_sampling_interval_float}_isi{interpolation_sampling_interval_float}"
         filename = f"{date_part}_{sampling_part}_orbit_{satellites_part}.nc"
@@ -295,8 +301,7 @@ class Orbit:
         return res
 
     def __str__(self):
-        res = f"""
-Orbit object for satellites {[sat for sat in self.satellite_name]}.
+        res = f"""Orbit object for satellites {[sat for sat in self.satellite_name]}.
 Start date: {self.start_date}
 End date: {self.end_date}
 Propagation sampling interval: {self.propagation_sampling_interval}

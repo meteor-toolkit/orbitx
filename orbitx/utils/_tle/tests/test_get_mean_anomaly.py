@@ -18,5 +18,6 @@ class TestGetMeanAnomaly(unittest.TestCase):
         """
         self.assertEqual(result_0, get_mean_anomaly(example_0))
 
+
 if __name__ == "__main__":
     unittest.main()

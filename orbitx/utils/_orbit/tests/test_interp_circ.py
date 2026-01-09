@@ -7,7 +7,6 @@ from orbitx.utils._orbit.interp_circ import interp_circ
 __author__ = "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>"
 
 
-
 class TestInterpCirc(unittest.TestCase):
     def test_interp_circ(self):
         x = np.linspace(0, 86400, 33)
@@ -18,8 +17,8 @@ class TestInterpCirc(unittest.TestCase):
                 [-180],
             )
         )
-        
-        x_new = np.arange(0, 86400 + 675, 675.)
+
+        x_new = np.arange(0, 86400 + 675, 675.0)
 
         exp_res = np.concatenate(
             (
@@ -33,6 +32,7 @@ class TestInterpCirc(unittest.TestCase):
         res = f_interp(x_new)
 
         self.assertCountEqual(exp_res, res)
+
 
 if __name__ == "__main__":
     unittest.main()

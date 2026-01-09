@@ -96,10 +96,18 @@ def orbit_dict_to_xarray(
     satellite_shortname = list(orbit_dict.keys())
     satellite_name = [orbit_dict[key]["satellite_name"] for key in satellite_shortname]
 
-    propagation_sampling_interval_timedelta: timedelta = propagation_sampling_interval.item()
-    propagation_sampling_interval_int: int = int(propagation_sampling_interval_timedelta.total_seconds())
-    interpolation_sampling_interval_timedelta: timedelta = interpolation_sampling_interval.item()
-    interpolation_sampling_interval_int: int = int(interpolation_sampling_interval_timedelta.total_seconds())
+    propagation_sampling_interval_timedelta: timedelta = (
+        propagation_sampling_interval.item()
+    )
+    propagation_sampling_interval_int: int = int(
+        propagation_sampling_interval_timedelta.total_seconds()
+    )
+    interpolation_sampling_interval_timedelta: timedelta = (
+        interpolation_sampling_interval.item()
+    )
+    interpolation_sampling_interval_int: int = int(
+        interpolation_sampling_interval_timedelta.total_seconds()
+    )
     orbit_xarray = xr.Dataset(
         data_vars={
             "reference_date": (reference_date),

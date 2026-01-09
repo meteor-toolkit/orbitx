@@ -197,36 +197,6 @@ pdf_compile_all:
     - if: '$CI_COMMIT_BRANCH == "main"'
 # Copied contents of Gitlab's Code-Quality.gitlab-ci.yml so I can edit the rules
 
-code_quality:
-  stage: Static Analysis
-  needs: []
-  image: docker:19.03.5
-  allow_failure: true
-  services:
-    - docker:19.03.5-dind
-  variables:
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-    CODE_QUALITY_IMAGE: "registry.gitlab.com/gitlab-org/ci-cd/codequality:0.85.9"
-  script:
-    - |
-      if ! docker info &>/dev/null; then
-        if [ -z "$DOCKER_HOST" -a "$KUBERNETES_PORT" ]; then
-          export DOCKER_HOST='tcp://localhost:2375'
-        fi
-      fi
-    - docker pull --quiet "$CODE_QUALITY_IMAGE"
-    - docker run
-        --env SOURCE_CODE="$PWD"
-        --volume "$PWD":/code
-        --volume /var/run/docker.sock:/var/run/docker.sock
-        "$CODE_QUALITY_IMAGE" /code
-  artifacts:
-    reports:
-      codequality: gl-code-quality-report.json
-    expire_in: 1 week
-  dependencies: []
-
 build-package:
   extends: .py_venv
   stage: build-package

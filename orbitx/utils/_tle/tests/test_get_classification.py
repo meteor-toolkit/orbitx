@@ -16,14 +16,13 @@ result_2 = "Secret"
 example_error = "1 25544X 98067A   08264.51782528 -.00002182  00000-0 -11606-4 0  2927"
 
 
-
 class TestGetClassification(unittest.TestCase):
     def test_example_0(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_0, get_classification(example_0))
-        
+
     def test_example_1(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
@@ -40,10 +39,8 @@ class TestGetClassification(unittest.TestCase):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
-        self.assertRaises(
-            ValueError,
-            lambda: get_classification(example_error)
-        )
+        self.assertRaises(ValueError, lambda: get_classification(example_error))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -65,7 +65,7 @@ def propagate_orbit(
     npt.NDArray[np.float64],
     npt.NDArray[np.float64],
     npt.NDArray[np.float64],
-    npt.NDArray[np.float64]
+    npt.NDArray[np.float64],
 ]:
     """
     Propagate satellite orbit for given two-line-elements and associated time
@@ -96,8 +96,12 @@ def propagate_orbit(
         datetime64_get_second(end_date),
         TimeScalesFactory.getUTC(),
     )  # when you want to stop tracking
-    propagation_sampling_interval_timedelta: timedelta = propagation_sampling_interval.item()
-    propagation_sampling_interval_float: float = propagation_sampling_interval_timedelta.total_seconds()
+    propagation_sampling_interval_timedelta: timedelta = (
+        propagation_sampling_interval.item()
+    )
+    propagation_sampling_interval_float: float = (
+        propagation_sampling_interval_timedelta.total_seconds()
+    )
 
     # CELLESTIAL BODIES
     sun = CelestialBodyFactory.getSun()
@@ -125,14 +129,30 @@ def propagate_orbit(
 
     sel: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
     saz: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
-    pos_lat: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
-    pos_lon: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
-    pos_alt: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
-    pos_s0_lat: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
-    pos_s0_lon: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
-    pos_s0_alt: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
-    date: npt.NDArray[np.datetime64[datetime]] = np.empty(extrap_date_list.shape, dtype="datetime64[s]")
-    julian_date: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_lat: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    pos_lon: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    pos_alt: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    pos_s0_lat: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    pos_s0_lon: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    pos_s0_alt: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    date: npt.NDArray[np.datetime64[datetime]] = np.empty(
+        extrap_date_list.shape, dtype="datetime64[s]"
+    )
+    julian_date: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
 
     for extrap_date_ind, extrap_date in enumerate(extrap_date_list):
         pv0 = propagator0.getPVCoordinates(extrap_date, inertial_frame)

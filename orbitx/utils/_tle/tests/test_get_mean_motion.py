@@ -17,6 +17,7 @@ class TestGetMeanMotion(unittest.TestCase):
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_0, get_mean_motion(example_0))
-        
+
+
 if __name__ == "__main__":
     unittest.main()

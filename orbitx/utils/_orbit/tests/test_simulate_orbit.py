@@ -46,9 +46,7 @@ class TestSimulateOrbit(unittest.TestCase):
         exp_time = np.array(ds.groups["data_01"].variables["time"][:])
         reference_date = np.datetime64("2000-01-01T00:00:00")
         exp_date = [
-            sec_since_to_datetime64(
-                exp_sec_since, reference_date=reference_date
-            )
+            sec_since_to_datetime64(exp_sec_since, reference_date=reference_date)
             for exp_sec_since in exp_time
         ]
         exp_lat = ds.groups["data_01"].variables["latitude"][:]
@@ -62,12 +60,7 @@ class TestSimulateOrbit(unittest.TestCase):
         sat = "S6"
         propagation_sampling_interval = np.array(1, dtype="timedelta64[s]")
 
-        tle = TLE.from_sat_shortname(
-            sat,
-            S6_start_date,
-            S6_end_date,
-            reference_date
-        )
+        tle = TLE.from_sat_shortname(sat, S6_start_date, S6_end_date, reference_date)
         sat_secs_since, sat_date, sat_lat_sim, sat_lon_sim = simulate_orbit(
             S6_start_date,
             S6_end_date,
@@ -75,7 +68,7 @@ class TestSimulateOrbit(unittest.TestCase):
             propagation_sampling_interval,
             reference_date,
         )
-        
+
         np.testing.assert_equal(sat_secs_since, exp_time)
         np.testing.assert_equal(sat_date, exp_date)
         # Calculate the Haversine distance between simulated and real orbit at 1 Hz sampling rate
@@ -83,7 +76,7 @@ class TestSimulateOrbit(unittest.TestCase):
             cal_dist_d2m(sat_lat_sim[i], sat_lon_sim[i], exp_lat[i], exp_lon[i])
             for i in range(len(sat_lat_sim))
         ]
-        
+
         # Make sure that at all instances, the distance is less than 1 km (which is an acceptable deviation for S6)
         self.assertTrue((np.array(distance) < 1).all())
 
@@ -101,7 +94,7 @@ class TestSimulateOrbit(unittest.TestCase):
     def test_simulate_orbit_1_tle_ref(self, mock_form_ss, mock_match_idx, mock_prop):
         start_date = np.datetime64("1970-01-01T00:00:00")
         end_date = np.datetime64("1970-01-01T00:00:05")
-        
+
         tle = TLE(
             xr.Dataset(
                 data_vars={
@@ -176,23 +169,22 @@ class TestSimulateOrbit(unittest.TestCase):
         return_value=([7], [0]),
     )
     @mock.patch(
-        "orbitx.utils._orbit.simulate_orbit.form_sample_space", return_value=(
+        "orbitx.utils._orbit.simulate_orbit.form_sample_space",
+        return_value=(
             [
                 np.datetime64("1970-01-01T00:00:00"),
                 np.datetime64("1970-01-01T00:00:30"),
-                np.datetime64("1970-01-01T00:01:00")
+                np.datetime64("1970-01-01T00:01:00"),
             ],
-            [
-                314
-            ]
-        )
+            [314],
+        ),
     )
     def test_simulate_orbit_2_tle_ref(
         self, mock_form_smpl, mock_get_mtch_idx, mock_prop_orb
     ):
         start_date = np.datetime64("1970-01-01T00:00:00")
         end_date = np.datetime64("1970-01-01T00:01:00")
-        propagation_sampling_interval=np.array(30, dtype="timedelta64[s]")
+        propagation_sampling_interval = np.array(30, dtype="timedelta64[s]")
 
         tle = TLE(
             xr.Dataset(
@@ -238,7 +230,7 @@ class TestSimulateOrbit(unittest.TestCase):
             simulate_orbit(
                 start_date=start_date,
                 end_date=end_date,
-                tle = tle,
+                tle=tle,
                 propagation_sampling_interval=propagation_sampling_interval,
                 reference_date=np.datetime64("1970-01-01T00:00:00"),
             ),
@@ -251,10 +243,7 @@ class TestSimulateOrbit(unittest.TestCase):
             np.datetime64("1970-01-01T00:00:00"),
         )
         mock_form_smpl.assert_called_once()
-        mock_get_mtch_idx.assert_called_with(
-            [314],
-            [13]
-        )
+        mock_get_mtch_idx.assert_called_with([314], [13])
         mock_get_mtch_idx.assert_called_once()
         mock_prop_orb.assert_called_with(
             np.str_("1"),
@@ -265,6 +254,7 @@ class TestSimulateOrbit(unittest.TestCase):
             np.datetime64("1970-01-01T00:00:00"),
         )
         mock_prop_orb.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main()

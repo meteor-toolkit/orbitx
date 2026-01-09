@@ -33,7 +33,7 @@ def simulate_orbit(
     npt.NDArray[np.datetime64],
     npt.NDArray[np.float64],
     npt.NDArray[np.float64],
-    ]:
+]:
     """
     Return latitude, longitude and time arrays for full simulated orbit
 

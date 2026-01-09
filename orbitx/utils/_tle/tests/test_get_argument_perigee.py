@@ -19,12 +19,13 @@ class TestGetArgumentPerigee(unittest.TestCase):
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_0, get_argument_perigee(example_0))
-        
+
     def test_example_1(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_1, get_argument_perigee(example_1))
+
 
 if __name__ == "__main__":
     unittest.main()

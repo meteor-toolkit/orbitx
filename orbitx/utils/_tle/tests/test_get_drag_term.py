@@ -17,7 +17,6 @@ example_3 = "1 25544U 98067A   08264.51782528 -.00002182  12345-5  11606+4 0  29
 result_3: float = 1.1606e3
 
 
-
 class TestGetDragTerm(unittest.TestCase):
     def test_example_0(self):
         """
@@ -30,18 +29,19 @@ class TestGetDragTerm(unittest.TestCase):
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_1, get_drag_term(example_1))
-        
+
     def test_example_2(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_2, get_drag_term(example_2))
-        
+
     def test_example_3(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_3, get_drag_term(example_3))
+
 
 if __name__ == "__main__":
     unittest.main()

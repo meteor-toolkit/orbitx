@@ -18,5 +18,6 @@ class TestGetCatalogNumber(unittest.TestCase):
         """
         self.assertEqual(result_0, get_catalog_number(example_0))
 
+
 if __name__ == "__main__":
     unittest.main()

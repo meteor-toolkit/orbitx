@@ -14,7 +14,6 @@ from orbitx import Orbit
 __author__ = "Mattea Goalen <mattea.goalen@npl.co.uk>"
 
 
-
 class TestMatchups(unittest.TestCase):
     def test_from_orbit(self):
         satellites = ["CS2", "J3"]
@@ -45,26 +44,25 @@ class TestMatchups(unittest.TestCase):
             time_diff_threshold=time_diff_threshold,
             check_after=check_after,
             check_before=check_before,
-            has_land_ocean_mask=has_land_ocean_mask
+            has_land_ocean_mask=has_land_ocean_mask,
         )
         matchups_ds = matchups.matchups
 
         for sat in satellites:
-            matchup_sat = matchups_ds.sel(satellite = sat)
-            orbit_sat = orbit_ds.sel(satellite = sat)
+            matchup_sat = matchups_ds.sel(satellite=sat)
+            orbit_sat = orbit_ds.sel(satellite=sat)
             match_time = matchup_sat["time"].values
             orbit_time = orbit_sat["time"].values
             self.assertTrue(np.all([mtime in orbit_time for mtime in match_time]))
             for matchup_index in matchups_ds["matchup_index"].values:
                 time = match_time[matchup_index]
-                lat_match = matchup_sat.sel(matchup_index = matchup_index)["lat"].values
-                lon_match = matchup_sat.sel(matchup_index = matchup_index)["lon"].values
+                lat_match = matchup_sat.sel(matchup_index=matchup_index)["lat"].values
+                lon_match = matchup_sat.sel(matchup_index=matchup_index)["lon"].values
 
-                lat_orbit = orbit_sat.sel(time = time)["lat"].values
-                lon_orbit = orbit_sat.sel(time = time)["lon"].values
+                lat_orbit = orbit_sat.sel(time=time)["lat"].values
+                lon_orbit = orbit_sat.sel(time=time)["lon"].values
                 np.testing.assert_almost_equal(lat_match, lat_orbit)
                 np.testing.assert_almost_equal(lon_match, lon_orbit)
-
 
 
 if __name__ == "__main__":

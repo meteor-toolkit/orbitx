@@ -42,7 +42,7 @@ class TestOrbit(unittest.TestCase):
     )
     @mock.patch(
         "orbitx.TLE.from_sat_shortname",
-        return_value= TLE(
+        return_value=TLE(
             xr.Dataset(
                 data_vars={
                     "tle_date": ("tle_index", [1]),
@@ -50,7 +50,7 @@ class TestOrbit(unittest.TestCase):
                     "line_2": ("tle_index", ["line_2"]),
                 },
                 coords={"tle_index": [0]},
-                attrs = {
+                attrs={
                     "satellite_shortname": "",
                     "satellite_name": "",
                     "catalog_number": "",
@@ -60,13 +60,13 @@ class TestOrbit(unittest.TestCase):
                     "launch_year": "",
                     "version": __version__,
                     "creation_date": str(np.datetime64("1980-01-01T00:00:00")),
-                }
+                },
             )
-        )
+        ),
     )
     @mock.patch(
-        'orbitx.utils._orbit.orbit_dict_to_xarray.datetime64',
-        return_value = np.datetime64("1980-01-01T00:00:00")
+        "orbitx.utils._orbit.orbit_dict_to_xarray.datetime64",
+        return_value=np.datetime64("1980-01-01T00:00:00"),
     )
     def test_simulate(self, mock_datetime64, mock_TLE, mock_sim_orb, mock_interp_orb):
         expected_result = Orbit(
@@ -84,7 +84,7 @@ class TestOrbit(unittest.TestCase):
                                 np.linspace(-70, 70, 65, dtype=float),
                                 np.linspace(70, -70, 65, dtype=float)[1:],
                             )
-                        )[:,np.newaxis],
+                        )[:, np.newaxis],
                     ),
                     "lon": (
                         ["time", "satellite"],
@@ -94,7 +94,7 @@ class TestOrbit(unittest.TestCase):
                                 np.linspace(-180, 180, 65, dtype=float)[:-1],
                                 [-180],
                             )
-                        )[:,np.newaxis],
+                        )[:, np.newaxis],
                     ),
                 },
                 coords={

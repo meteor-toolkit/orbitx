@@ -42,18 +42,22 @@ def filter_xarray(tle_xarray: xr.Dataset) -> xr.Dataset:
     # lower_bound_tle_time = np.array([
     #     t for t in tle_xarray["tle_date"].values if t <= tle_xarray["start_date"].values
     # ])
-    previous_tle_times: npt.NDArray[np.datetime64] = tle_xarray.where(lambda x: x["tle_date"] < tle_xarray["start_date"].values)["tle_date"].values
+    previous_tle_times: npt.NDArray[np.datetime64] = tle_xarray.where(
+        lambda x: x["tle_date"] < tle_xarray["start_date"].values
+    )["tle_date"].values
     if previous_tle_times.shape[0] == 0:
         warnings.warn(
             f"""The oldest TLE file is more recent than the start time requested.
 Oldest TLE file: {np.min(tle_xarray["start_date"].values)}
 Start time requested: {tle_xarray["start_date"].values}"""
         )
-        lower_bound_tle_time: np.datetime64 = tle_xarray["start_date"].values
+        lower_bound_tle_time: npt.NDArray[np.datetime64] = tle_xarray["start_date"].values
     else:
         lower_bound_tle_time = np.max(previous_tle_times)
 
-    later_tle_times: npt.NDArray[np.datetime64] = tle_xarray.where(lambda x: x["tle_date"] >= tle_xarray["end_date"].values)["tle_date"].values
+    later_tle_times: npt.NDArray[np.datetime64] = tle_xarray.where(
+        lambda x: x["tle_date"] >= tle_xarray["end_date"].values
+    )["tle_date"].values
     # upper_bound_tle_time = [
     #     t for t in tle_xarray["tle_date"].values if t >= tle_xarray["end_date"].values
     # ]
@@ -63,7 +67,7 @@ Start time requested: {tle_xarray["start_date"].values}"""
 Oldest TLE file: {np.max(tle_xarray["tle_date"].values)}
 Start time requested: {tle_xarray["end_date"]}"""
         )
-        upper_bound_tle_time: np.datetime64 = tle_xarray["end_date"].values
+        upper_bound_tle_time: npt.NDArray[np.datetime64] = tle_xarray["end_date"].values
     else:
         upper_bound_tle_time = np.min(later_tle_times)
     idx = [

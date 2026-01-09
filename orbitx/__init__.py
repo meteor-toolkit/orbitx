@@ -39,7 +39,7 @@ S6_ORBIT_PATH = [
 SHP_PATH = os.path.join(data_directory, "land_mask", "ne_50m_land.shp")
 __geoms_with_multipol = list(shpreader.Reader(SHP_PATH).geometries())
 
-__geoms = np.empty((0,), dtype = sgeom.Polygon)
+__geoms = np.empty((0,), dtype=sgeom.Polygon)
 for geom in __geoms_with_multipol:
     if isinstance(geom, sgeom.MultiPolygon):
         multipol = list(geom.geoms)

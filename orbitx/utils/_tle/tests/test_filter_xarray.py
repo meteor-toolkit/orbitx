@@ -14,11 +14,13 @@ __author__ = "Sam Hunt <sam.hunt@npl.co.uk>"
 example_reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00")
 example_satellite_shortname = "S2A"
 example_satellite_name = "Sentinel-2A"
-time_delta: np.timedelta64 = (np.datetime64("2010-01-03T00:00:00") - np.datetime64("2010-01-01T00:00:00")) / 10
+time_delta: np.timedelta64 = (
+    np.datetime64("2010-01-03T00:00:00") - np.datetime64("2010-01-01T00:00:00")
+) / 10
 example_tle_date: npt.NDArray[np.datetime64] = np.arange(
     np.datetime64("2010-01-01T00:00:00"),
     np.datetime64("2010-01-03T00:00:00") + time_delta,
-    time_delta
+    time_delta,
 )
 example_num_tle = example_tle_date.shape[0]
 example_line_1 = ["" for _ in range(example_num_tle)]
@@ -497,42 +499,44 @@ result_5 = xr.Dataset(
     },
 )
 
+
 class TestFilterXarray(unittest.TestCase):
     def test_example_0(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_0, filter_xarray(example_0))
-        
+
     def test_example_1(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_1, filter_xarray(example_1))
-        
+
     def test_example_2(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_2, filter_xarray(example_2))
-        
+
     def test_example_3(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_3, filter_xarray(example_3))
-        
+
     def test_example_4(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_4, filter_xarray(example_4))
-        
+
     def test_example_5(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_5, filter_xarray(example_5))
+
 
 if __name__ == "__main__":
     unittest.main()

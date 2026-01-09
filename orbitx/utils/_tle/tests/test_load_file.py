@@ -35,15 +35,15 @@ result_0 = (
         "1 40697U 15028A   15174.21686542 -.00000044  00000+0  00000+0 0  9991",
         "1 40697U 15028A   15174.35671963 -.00000044  00000+0  00000+0 0  9997",
         "1 40697U 15028A   15174.84616994 -.00000044  00000+0  00000+0 0  9994",
-        "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994"
+        "1 40697U 15028A   15175.89500181 -.00000501  00000+0 -17382-3 0  9994",
     ],
     [
         "2 40697  98.5847 248.5254 0000798 283.7898 143.4888 14.31066438    11",
         "2 40697  98.5822 248.5857 0001125  72.2447 287.8522 14.30945090    27",
         "2 40697  98.5798 248.7128 0002400 151.8089 208.3654 14.30980662    45",
         "2 40697  98.5727 249.1811 0001221 155.7341 204.3855 14.30973291   112",
-        "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266"
-    ]
+        "2 40697  98.5715 250.2152 0000954 179.7525 180.3523 14.30975526   266",
+    ],
 )
 
 example_1 = """1 33105U 08032A   10001.56483652 -.00000061  00000+0  00000+0 0  5178
@@ -72,8 +72,9 @@ result_1 = (
         "2 33105  66.0421  16.5778 0007820 268.8949  91.1182 12.80929406 71898",
         "2 33105  66.0422  14.1456 0007843 269.0908  90.9208 12.80929448 72049",
         "2 33105  66.0422  14.1456 0007843 269.0908  90.9208 12.80929448 72049",
-    ]
+    ],
 )
+
 
 class TestLoadFile(unittest.TestCase):
     def setUp(self) -> None:
@@ -91,22 +92,21 @@ class TestLoadFile(unittest.TestCase):
         with open(self.path_example_1, "w") as f:
             f.write(example_1)
 
-
     def tearDown(self) -> None:
         shutil.rmtree(self.tmp_tle_path)
-
 
     def test_example_0(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         np.testing.assert_equal(result_0, load_file(self.path_example_0))
-        
+
     def test_example_1(self):
         """
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         np.testing.assert_equal(result_1, load_file(self.path_example_1))
+
 
 if __name__ == "__main__":
     unittest.main()

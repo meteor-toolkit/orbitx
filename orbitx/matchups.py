@@ -19,7 +19,11 @@ from orbitx import Orbit
 from orbitx.utils._matchups.find_matches import find_matches
 from orbitx.utils._matchups.get_land_ocean_mask import get_land_ocean_mask
 from orbitx.utils._constants import SATELLITE_DICT, CM
-from orbitx.utils._date_utils import sec_since_to_datetime64, datetime64_to_sec_since, datetime64_get_second
+from orbitx.utils._date_utils import (
+    sec_since_to_datetime64,
+    datetime64_to_sec_since,
+    datetime64_get_second,
+)
 
 __author__ = [
     "Mattea Goalen <mattea.goalen@npl.co.uk>",
@@ -51,7 +55,7 @@ class Matchups:
         has_land_ocean_mask: bool = False,
         reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
         custom_satellites: List[Dict[str, str]] = [],
-        dump_orbit: bool = False
+        dump_orbit: bool = False,
     ):
         """Main generator for Matchups object
 
@@ -115,14 +119,18 @@ class Matchups:
                     "satellite_name": matchups.attrs["satellite_name"],
                     "start_date": orbit._orbits.attrs["start_date"],
                     "end_date": orbit._orbits.attrs["end_date"],
-                    "propagation_sampling_interval": orbit._orbits.attrs["propagation_sampling_interval"],
-                    "interpolation_sampling_interval": orbit._orbits.attrs["interpolation_sampling_interval"],
+                    "propagation_sampling_interval": orbit._orbits.attrs[
+                        "propagation_sampling_interval"
+                    ],
+                    "interpolation_sampling_interval": orbit._orbits.attrs[
+                        "interpolation_sampling_interval"
+                    ],
                     "version": orbit._orbits.attrs["version"],
-                    "creation_date": orbit._orbits.attrs["creation_date"]
+                    "creation_date": orbit._orbits.attrs["creation_date"],
                 }
             )
         # Create object instance
-        data["matchups"] = xr.DataTree(dataset = matchups)
+        data["matchups"] = xr.DataTree(dataset=matchups)
         data["orbits"] = xr.DataTree(orbit_data)
         result = cls(data)
         return result
@@ -138,7 +146,7 @@ class Matchups:
         check_before: bool = False,
         check_after: bool = False,
         has_land_ocean_mask: bool = False,
-        dump_orbit: bool = False
+        dump_orbit: bool = False,
     ):
         """Generator for Matchups object if orbits were already generated.
 
@@ -168,9 +176,13 @@ class Matchups:
             needed_orbit_end_date = needed_orbit_end_date + time_diff_threshold
 
         if orbit.start_date > needed_orbit_start_date:
-            raise ValueError(f"Orbit submitted starts after the requested start date. Orbit start: {orbit.start_date}, requested start date: {needed_orbit_start_date}")
+            raise ValueError(
+                f"Orbit submitted starts after the requested start date. Orbit start: {orbit.start_date}, requested start date: {needed_orbit_start_date}"
+            )
         if orbit.end_date < needed_orbit_end_date:
-            raise ValueError(f"Orbit submitted ends beofre the requested end date. Orbit end: {orbit.end_date}, requested end date: {needed_orbit_end_date}")
+            raise ValueError(
+                f"Orbit submitted ends beofre the requested end date. Orbit end: {orbit.end_date}, requested end date: {needed_orbit_end_date}"
+            )
 
         # Find the matches between generated orbits
         matchups: xr.Dataset = find_matches(
@@ -194,18 +206,21 @@ class Matchups:
                     "satellite_name": matchups.attrs["satellite_name"],
                     "start_date": orbit._orbits.attrs["start_date"],
                     "end_date": orbit._orbits.attrs["end_date"],
-                    "propagation_sampling_interval": orbit._orbits.attrs["propagation_sampling_interval"],
-                    "interpolation_sampling_interval": orbit._orbits.attrs["interpolation_sampling_interval"],
+                    "propagation_sampling_interval": orbit._orbits.attrs[
+                        "propagation_sampling_interval"
+                    ],
+                    "interpolation_sampling_interval": orbit._orbits.attrs[
+                        "interpolation_sampling_interval"
+                    ],
                     "version": orbit._orbits.attrs["version"],
-                    "creation_date": orbit._orbits.attrs["creation_date"]
+                    "creation_date": orbit._orbits.attrs["creation_date"],
                 }
             )
         # Create object instance
-        data["matchups"] = xr.DataTree(dataset = matchups)
+        data["matchups"] = xr.DataTree(dataset=matchups)
         data["orbits"] = xr.DataTree(orbit_data)
         result = cls(data)
         return result
-
 
     @classmethod
     def from_netcdf(cls, input_path: str) -> "Matchups":
@@ -227,28 +242,32 @@ class Matchups:
             matchups_xarray["reference_date"], dtype="datetime64[s]"
         )
         matchups_xarray = matchups_xarray.assign(
-            time_datetime = (
+            time_datetime=(
                 ["matchup_index", "satellite"],
-                np.array(
-                    matchups_xarray["time_datetime"], dtype="datetime64[s]"
-                )
+                np.array(matchups_xarray["time_datetime"], dtype="datetime64[s]"),
             )
         )
 
-        reference_date_matchups: np.datetime64 = matchups_xarray["reference_date"].values
+        reference_date_matchups: np.datetime64 = matchups_xarray[
+            "reference_date"
+        ].values
 
         matchups_xarray = matchups_xarray.assign(
-            time = (
+            time=(
                 ["matchup_index", "satellite"],
                 xr.apply_ufunc(
-                    lambda datetime: datetime64_to_sec_since(datetime, reference_date=reference_date_matchups),
+                    lambda datetime: datetime64_to_sec_since(
+                        datetime, reference_date=reference_date_matchups
+                    ),
                     matchups_xarray["time_datetime"],
-                    vectorize = True
-                ).data
+                    vectorize=True,
+                ).data,
             )
         )
-        matchups_xarray["time"].attrs["units"] = f"seconds since {reference_date_matchups}"
-        
+        matchups_xarray["time"].attrs[
+            "units"
+        ] = f"seconds since {reference_date_matchups}"
+
         orbits_xarray: xr.Dataset = data["orbits"].to_dataset()
 
         if len(orbits_xarray.variables) > 0:
@@ -257,25 +276,27 @@ class Matchups:
             )
             reference_date_orbit: np.datetime64 = orbits_xarray["reference_date"].values
             orbits_xarray = orbits_xarray.assign_coords(
-                {"time": np.array(
-                    [
-                        datetime64_to_sec_since(
-                            datetime, reference_date=reference_date_orbit
-                        )
-                        for datetime in orbits_xarray["time_datetime"].values
-                    ],
-                )}
+                {
+                    "time": np.array(
+                        [
+                            datetime64_to_sec_since(
+                                datetime, reference_date=reference_date_orbit
+                            )
+                            for datetime in orbits_xarray["time_datetime"].values
+                        ],
+                    )
+                }
             )
             orbits_xarray = orbits_xarray.assign(
-                time_datetime = (
+                time_datetime=(
                     ["time"],
-                    np.array(
-                        orbits_xarray["time_datetime"], dtype="datetime64[s]"
-                    )
+                    np.array(orbits_xarray["time_datetime"], dtype="datetime64[s]"),
                 )
             )
 
-            orbits_xarray["time"].attrs["units"] = f"seconds since {reference_date_orbit}"
+            orbits_xarray["time"].attrs[
+                "units"
+            ] = f"seconds since {reference_date_orbit}"
         data["orbits"] = xr.DataTree(orbits_xarray)
         data["matchups"] = xr.DataTree(matchups_xarray)
 
@@ -286,7 +307,7 @@ class Matchups:
         """Exports a matchup object to a netcdf file
 
         Saves the xarray.DataTree object containing the data about matchups and orbits.
-        Such file can be loaded as a matchup object using the from_netcdf classmethod. 
+        Such file can be loaded as a matchup object using the from_netcdf classmethod.
 
         :param output_path: The directory where the file should be created (make sure the directory already exists). The file name is generated automatically
         :type output_path: str
@@ -296,11 +317,19 @@ class Matchups:
 
         date_part = f"{np.datetime_as_string(self.start_date, unit = "D")}_{np.datetime_as_string(self.end_date, unit = "D")}"
 
-        propagation_sampling_interval_datetime: timedelta = self.orbit.propagation_sampling_interval.item()
-        propagation_sampling_interval_float: float = propagation_sampling_interval_datetime.total_seconds()
-        interpolation_sampling_interval_datetime: timedelta = self.orbit.interpolation_sampling_interval.item()
-        interpolation_sampling_interval_float: float = interpolation_sampling_interval_datetime.total_seconds()
-        sampling_part = f"psi{propagation_sampling_interval_float}_isi{interpolation_sampling_interval_float}"
+        propagation_sampling_interval_datetime: timedelta = (
+            self.orbit.propagation_sampling_interval.item()
+        )
+        propagation_sampling_interval_float: float = (
+            propagation_sampling_interval_datetime.total_seconds()
+        )
+        interpolation_sampling_interval_datetime: timedelta = (
+            self.orbit.interpolation_sampling_interval.item()
+        )
+        interpolation_sampling_interval_float: float = (
+            interpolation_sampling_interval_datetime.total_seconds()
+        )
+        sampling_part = f"psi{int(propagation_sampling_interval_float)}_isi{int(interpolation_sampling_interval_float)}"
         matchup_part = f"c2c{int(self.space_diff_threshold)}_tdt{int(self.time_diff_threshold.item().total_seconds())}"
         filename = f"{date_part}_{sampling_part}_matchups_{sat_part}_{matchup_part}.nc"
         matchup_output_copy: xr.DataTree = self._data.copy()
@@ -320,10 +349,8 @@ class Matchups:
         time_diff_threshold_seconds = self.time_diff_threshold.item().total_seconds()
         mean_delay = np.array(
             [
-                m.item().total_seconds() for m in np.mean(
-                    self.matchups["delay"].values,
-                    axis=1
-                )
+                m.item().total_seconds()
+                for m in np.mean(self.matchups["delay"].values, axis=1)
             ]
         )
 
@@ -355,8 +382,7 @@ class Matchups:
         Has this matchup a land/ocean mask?
         Number of matchups found
         """
-        result = f"""
-Matchup object with following attributes:
+        result = f"""Matchup object with following attributes:
 Satellites considered: {self.satellite_name}
 Date from which matchups are looked for: {self.start_date}
 Date until which matchups are looked for: {self.end_date}
@@ -423,7 +449,7 @@ Created on {self.creation_date} using the version {self.version} of orbitx.
             ),
             dtype="datetime64[s]",
         )
-    
+
     @property
     def end_date(self):
         return np.array(
@@ -435,7 +461,9 @@ Created on {self.creation_date} using the version {self.version} of orbitx.
 
     @property
     def time_diff_threshold(self):
-        return np.array(int(self.matchups.attrs["time_diff_threshold"]), dtype = "timedelta64[s]")
+        return np.array(
+            int(self.matchups.attrs["time_diff_threshold"]), dtype="timedelta64[s]"
+        )
 
     @property
     def space_diff_threshold(self) -> float:

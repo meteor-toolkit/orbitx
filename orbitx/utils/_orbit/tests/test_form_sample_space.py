@@ -6,6 +6,7 @@ from orbitx.utils._orbit.form_sample_space import form_sample_space
 
 __author__ = "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>"
 
+
 class TestFormSampleSpace(unittest.TestCase):
     def test_form_sample_space(self):
         # Start at 1st of Jan. 1970, and sample every 12 hours until 2nd of Jan. 1970, one o'clock am.
@@ -30,6 +31,7 @@ class TestFormSampleSpace(unittest.TestCase):
         self.assertCountEqual(
             exp_smpl_space_secs_since_1970, smpl_space_secs_since_1970
         )
+
 
 if __name__ == "__main__":
     unittest.main()

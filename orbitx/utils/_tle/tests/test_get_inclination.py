@@ -17,7 +17,7 @@ class TestGetInclination(unittest.TestCase):
         This is to test a situation when there is no TLE within the [start_date, end_date]
         """
         self.assertEqual(result_0, get_inclination(example_0))
-        
+
 
 if __name__ == "__main__":
     unittest.main()
