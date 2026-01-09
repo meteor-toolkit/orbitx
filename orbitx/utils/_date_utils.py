@@ -3,7 +3,9 @@
 """___Third-Party Modules___"""
 import datetime
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
+from typing import List
 
 """___NPL Modules___"""
 
@@ -65,12 +67,16 @@ def sec_since_to_datetime(
     return ref_date + datetime.timedelta(seconds=date)
 
 
-def datetime64_to_datetime(date64: np.datetime64) -> datetime.datetime:
+def datetime64_to_datetime(
+    date64: np.datetime64 | npt.NDArray[np.datetime64],
+) -> datetime.datetime:
     timestamp = pd.Timestamp(date64)
     return pd.to_datetime(timestamp)
 
 
-def datetime_to_datetime64(date: datetime.datetime) -> np.datetime64:
+def datetime_to_datetime64(
+    date: datetime.datetime,
+) -> np.datetime64 | npt.NDArray[np.datetime64]:
     sec_since = datetime_to_sec_since(date, datetime.datetime(1970, 1, 1, 0, 0, 0))
     return sec_since_to_datetime64(
         sec_since=sec_since, reference_date=np.datetime64("1970-01-01T00:00:00")
@@ -78,11 +84,47 @@ def datetime_to_datetime64(date: datetime.datetime) -> np.datetime64:
 
 
 def datetime64_to_sec_since(
-    date64: np.datetime64, reference_date: np.datetime64
-) -> float:
-    timedelta_value:np.timedelta64 = date64 - reference_date
-    return timedelta_value.item().total_seconds()
+    date64: np.datetime64 | npt.NDArray[np.datetime64], reference_date: np.datetime64
+) -> float | npt.NDArray[np.float64]:
+    timedelta_value: np.timedelta64 | npt.NDArray[np.timedelta64] = (
+        date64 - reference_date
+    )
+    return timedelta_value / np.timedelta64(1, "s")
 
 
-def sec_since_to_datetime64(sec_since: float, reference_date: np.datetime64) -> np.datetime64:
+def sec_since_to_datetime64(
+    sec_since: float | npt.NDArray[np.float64], reference_date: np.datetime64
+) -> np.datetime64 | npt.NDArray[np.datetime64]:
     return reference_date + np.array([int(sec_since)], dtype="timedelta64[s]")[0]
+
+
+def datetime64_get_year(date: np.datetime64) -> int:
+    return int(date.astype("datetime64[Y]").astype(int) + 1970)
+
+
+def datetime64_get_month(date: np.datetime64) -> int:
+    return int(date.astype("datetime64[M]").astype(int) % 12 + 1)
+
+
+def datetime64_get_day(date: np.datetime64) -> int:
+    return int(
+        (date.astype("datetime64[D]") - date.astype("datetime64[M]")).astype(int) + 1
+    )
+
+
+def datetime64_get_hour(date: np.datetime64) -> int:
+    return int(
+        (date.astype("datetime64[h]") - date.astype("datetime64[D]")).astype(int)
+    )
+
+
+def datetime64_get_minute(date: np.datetime64) -> int:
+    return int(
+        (date.astype("datetime64[m]") - date.astype("datetime64[h]")).astype(int)
+    )
+
+
+def datetime64_get_second(date: np.datetime64) -> float:
+    return float(
+        (date.astype("datetime64[s]") - date.astype("datetime64[m]")).astype(float)
+    )

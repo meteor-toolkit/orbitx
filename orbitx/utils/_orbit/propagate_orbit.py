@@ -2,11 +2,13 @@
 
 """___Third-Party Modules___"""
 import numpy as np
+import numpy.typing as npt
 
 from math import pi
 from typing import Tuple, List
 import warnings
 import numbers
+from datetime import timedelta, datetime
 
 import orekit
 from org.orekit.frames import FramesFactory, TopocentricFrame
@@ -29,7 +31,16 @@ from orekit.pyhelpers import absolutedate_to_datetime
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._date_utils import datetime64_to_sec_since, datetime_to_datetime64
+from orbitx.utils._date_utils import (
+    datetime64_to_sec_since,
+    datetime_to_datetime64,
+    datetime64_get_year,
+    datetime64_get_month,
+    datetime64_get_day,
+    datetime64_get_hour,
+    datetime64_get_minute,
+    datetime64_get_second,
+)
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -48,72 +59,52 @@ def propagate_orbit(
     propagation_sampling_interval: np.timedelta64,
     reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
 ) -> Tuple[
-    List[float], List[float], List[float], List[float], List[float], List[float]
+    npt.NDArray[np.float64],
+    npt.NDArray[np.datetime64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
 ]:
-    """
-    Propagate satellite orbit for given two-line-elements and associated time
+    """Propagate satellite orbit for given two-line-elements and associated time
 
-    :param tle_line1: first line of the reference two-line-element
-    :param tle_line2: first line of the reference two-line-element
-    :param start_date: start time of orbit propagation
-    :param end_date: end time of orbit propagation
-    :param propagation_sampling_interval: sampling interval in seconds
-    :return: Tuple containing the date in seconds from 1970, the date in datetime, orbit latitude, longitude, altitude, elevation angle, and azimuth angle
+    Args:
+        tle_line1 (str): first line of the reference two-line-element
+        tle_line2 (str): second line of the reference two-line-element
+        start_date (np.datetime64): start time of orbit propagation
+        end_date (np.datetime64): end time of orbit propagation
+        propagation_sampling_interval (np.timedelta64): sampling interval in seconds
+        reference_date (np.datetime64, optional): The reference date used to represent time in seconds since. Defaults to np.datetime64("1970-01-01T00:00:00").
+
+    Returns:
+        Tuple[ npt.NDArray[np.float64], npt.NDArray[np.datetime64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], ]: Tuple containing the date in seconds from 1970, the date in datetime, orbit latitude, longitude, altitude, elevation angle, and azimuth angle
     """
     orekit.getVMEnv().attachCurrentThread()
     extrap_date = AbsoluteDate(
-        int(start_date.astype("datetime64[Y]").astype(int) + 1970),
-        int(start_date.astype("datetime64[M]").astype(int) % 12 + 1),
-        int(
-            (
-                start_date.astype("datetime64[D]") - start_date.astype("datetime64[M]")
-            ).astype(int)
-            + 1
-        ),
-        int(
-            (
-                start_date.astype("datetime64[h]") - start_date.astype("datetime64[D]")
-            ).astype(int)
-        ),
-        int(
-            (
-                start_date.astype("datetime64[m]") - start_date.astype("datetime64[h]")
-            ).astype(int)
-        ),
-        float(
-            (
-                start_date.astype("datetime64[s]") - start_date.astype("datetime64[m]")
-            ).astype(float)
-        ),
+        datetime64_get_year(start_date),
+        datetime64_get_month(start_date),
+        datetime64_get_day(start_date),
+        datetime64_get_hour(start_date),
+        datetime64_get_minute(start_date),
+        datetime64_get_second(start_date),
         TimeScalesFactory.getUTC(),
     )  # when you want to start tracking
     final_date = AbsoluteDate(
-        int(end_date.astype("datetime64[Y]").astype(int) + 1970),
-        int(end_date.astype("datetime64[M]").astype(int) % 12 + 1),
-        int(
-            (
-                end_date.astype("datetime64[D]") - end_date.astype("datetime64[M]")
-            ).astype(int)
-            + 1
-        ),
-        int(
-            (
-                end_date.astype("datetime64[h]") - end_date.astype("datetime64[D]")
-            ).astype(int)
-        ),
-        int(
-            (
-                end_date.astype("datetime64[m]") - end_date.astype("datetime64[h]")
-            ).astype(int)
-        ),
-        float(
-            (
-                end_date.astype("datetime64[s]") - end_date.astype("datetime64[m]")
-            ).astype(float)
-        ),
+        datetime64_get_year(end_date),
+        datetime64_get_month(end_date),
+        datetime64_get_day(end_date),
+        datetime64_get_hour(end_date),
+        datetime64_get_minute(end_date),
+        datetime64_get_second(end_date),
         TimeScalesFactory.getUTC(),
     )  # when you want to stop tracking
-    propagation_sampling_interval = propagation_sampling_interval.item().total_seconds()
+    propagation_sampling_interval_timedelta: timedelta = (
+        propagation_sampling_interval.item()
+    )
+    propagation_sampling_interval_float: float = (
+        propagation_sampling_interval_timedelta.total_seconds()
+    )
 
     # CELLESTIAL BODIES
     sun = CelestialBodyFactory.getSun()
@@ -133,22 +124,38 @@ def propagate_orbit(
     propagator0 = TLEPropagator.selectExtrapolator(mytle)
     propagator0 = PVCoordinatesProvider.cast_(propagator0)
 
-    extrap_date_list = np.empty((1,), dtype=AbsoluteDate)
+    extrap_date_list: npt.NDArray[AbsoluteDate] = np.empty((1,), dtype=AbsoluteDate)
     extrap_date_list[0] = extrap_date
     while extrap_date.compareTo(final_date) < 0.0:
-        extrap_date = extrap_date.shiftedBy(propagation_sampling_interval)
+        extrap_date = extrap_date.shiftedBy(propagation_sampling_interval_float)
         extrap_date_list = np.append(extrap_date_list, extrap_date)
 
-    sel = np.empty(extrap_date_list.shape, dtype=float)
-    saz = np.empty(extrap_date_list.shape, dtype=float)
-    pos_lat = np.empty(extrap_date_list.shape, dtype=float)
-    pos_lon = np.empty(extrap_date_list.shape, dtype=float)
-    pos_alt = np.empty(extrap_date_list.shape, dtype=float)
-    pos_s0_lat = np.empty(extrap_date_list.shape, dtype=float)
-    pos_s0_lon = np.empty(extrap_date_list.shape, dtype=float)
-    pos_s0_alt = np.empty(extrap_date_list.shape, dtype=float)
-    date = np.empty(extrap_date_list.shape, dtype="datetime64[s]")
-    julian_date = np.empty(extrap_date_list.shape, dtype=float)
+    sel: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    saz: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_lat: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    pos_lon: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    pos_alt: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    pos_s0_lat: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    pos_s0_lon: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    pos_s0_alt: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
+    date: npt.NDArray[np.datetime64[datetime]] = np.empty(
+        extrap_date_list.shape, dtype="datetime64[s]"
+    )
+    julian_date: npt.NDArray[np.float64] = np.empty(
+        extrap_date_list.shape, dtype=np.float64
+    )
 
     for extrap_date_ind, extrap_date in enumerate(extrap_date_list):
         pv0 = propagator0.getPVCoordinates(extrap_date, inertial_frame)
@@ -166,7 +173,7 @@ def propagate_orbit(
 
         pos_s0_lat[extrap_date_ind] = poss0.getLatitude()  # satellite nadir lattitude
         pos_s0_lon[extrap_date_ind] = poss0.getLongitude()  # satellite nadir longitude
-        alt_sat = poss0.getAltitude()
+        alt_sat: float = poss0.getAltitude()
         if not isinstance(alt_sat, numbers.Number):
             warnings.warn("Satellite altitude is not a number: {}".format(alt_sat))
             pos_s0_alt[extrap_date_ind] = np.nan
@@ -175,7 +182,7 @@ def propagate_orbit(
 
         pos_lat[extrap_date_ind] = pos0.getLatitude()  # sun nadir Lattitude
         pos_lon[extrap_date_ind] = pos0.getLongitude()  # sun nadir Longitude
-        alt_sun = pos0.getAltitude()
+        alt_sun: float = pos0.getAltitude()
         if not isinstance(alt_sun, numbers.Number):
             warnings.warn("Satellite altitude is not a number: {}".format(alt_sun))
             pos_alt[extrap_date_ind] = np.nan

@@ -14,13 +14,6 @@ Propagate satellite orbits to identify matchups.
       The user guide provides information on how to get started with orbitx,
       as well as some more detailed information about its features.
 
-   .. grid-item-card::  ATBD
-      :link: content/user/atbd
-      :link-type: doc
-
-      The algorithm theoretical basis documentation describes the science underpinning
-      orbitx
-
    .. grid-item-card::  API Reference
       :link: content/user/api
       :link-type: doc
@@ -51,7 +44,6 @@ orbitx is under active development. It is beta software.
    :caption: For users
 
    User Guide <content/user/user_guide>
-   ATBD <content/user/atbd>
    API Reference <content/user/api>
 
 .. toctree::
@@ -60,3 +52,4 @@ orbitx is under active development. It is beta software.
    :caption: For developers/contributors
 
    Developer Guide <content/developer/developer_guide>
+   Backend documentation <content/developer/backend_documentation>

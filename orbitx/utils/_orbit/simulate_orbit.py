@@ -3,6 +3,7 @@
 """___Third-Party Modules___"""
 from typing import List, Tuple
 import numpy as np
+import numpy.typing as npt
 
 """___NPL Modules___"""
 
@@ -10,6 +11,7 @@ import numpy as np
 from orbitx.utils._orbit.form_sample_space import form_sample_space
 from orbitx.utils._orbit.get_matching_indices import get_matching_indices
 from orbitx.utils._orbit.propagate_orbit import propagate_orbit
+from orbitx import TLE
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -23,36 +25,42 @@ __status__ = "Development"
 def simulate_orbit(
     start_date: np.datetime64,
     end_date: np.datetime64,
-    line1: List[str],
-    line2: List[str],
-    seconds_since_tle: np.ndarray,
+    tle: TLE,
     propagation_sampling_interval: np.timedelta64,
     reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
-) -> Tuple[List[float], List[float], List[float]]:
-    """
-    Return latitude, longitude and time arrays for full simulated orbit
+) -> Tuple[
+    npt.NDArray[np.float64],
+    npt.NDArray[np.datetime64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+]:
+    """Return latitude, longitude and time arrays for full simulated orbit
 
-    :param line1: first lines of TLE set
-    :param line2: second lines of TLE set
-    :param seconds_since_tle: timing of TLE set in seconds since 1970
-    :param propagation_sampling_interval: propagation sampling interval in seconds
-    :return: tuple containing elements - time of simulation, simulated latitude, simulated longitude
+    Args:
+        start_date (np.datetime64): The date from which the orbit needs to be simulated
+        end_date (np.datetime64): The date until which the orbit needs to be simulated
+        tle (TLE): The TLE object containing relevant information
+        propagation_sampling_interval (np.timedelta64): propagation sampling interval in seconds
+        reference_date (_type_, optional): _description_. Defaults to np.datetime64("1970-01-01T00:00:00").
+
+    Returns:
+        Tuple[ npt.NDArray[np.float64], npt.NDArray[np.datetime64], npt.NDArray[np.float64], npt.NDArray[np.float64], ]: A tuple containing the simultation times in seconds since the reference date, the simulation time in numpy datetime64, latitudes and longitudes.
     """
     smpl_space, smpl_space_secs_since = form_sample_space(
         start_date, end_date, propagation_sampling_interval, reference_date
     )
     sat_smpl_breakup_idx, tle_ref_lines = get_matching_indices(
-        smpl_space_secs_since, seconds_since_tle
+        smpl_space_secs_since, tle.tle_date_seconds_since
     )
-    sat_lat_sim: np.ndarray = np.empty((0,), dtype=float)
-    sat_lon_sim: np.ndarray = np.empty((0,), dtype=float)
-    sat_sec_since: np.ndarray = np.empty((0,), dtype=float)
-    sat_date: np.ndarray = np.empty((0,), dtype=np.datetime64)
+    sat_lat_sim: npt.NDArray[np.float64] = np.empty((0,), dtype=np.float64)
+    sat_lon_sim: npt.NDArray[np.float64] = np.empty((0,), dtype=np.float64)
+    sat_sec_since: npt.NDArray[np.float64] = np.empty((0,), dtype=np.float64)
+    sat_date: npt.NDArray[np.datetime64] = np.empty((0,), dtype=np.datetime64)
 
     if len(tle_ref_lines) == 1:
         secsince1, date, lat1, lon1, _, _, _ = propagate_orbit(
-            line1[tle_ref_lines[0]],
-            line2[tle_ref_lines[0]],
+            tle.tle_line_1[tle_ref_lines[0]],
+            tle.tle_line_2[tle_ref_lines[0]],
             start_date,
             end_date,
             propagation_sampling_interval,
@@ -70,8 +78,8 @@ def simulate_orbit(
         smpl_space[-2] = smpl_space[-1]
         for i in range(len(tle_ref_lines) - 1):
             secsince1, date, lat1, lon1, _, _, _ = propagate_orbit(
-                line1[tle_ref_lines[i]],
-                line2[tle_ref_lines[i]],
+                tle.tle_line_1[tle_ref_lines[i]],
+                tle.tle_line_2[tle_ref_lines[i]],
                 smpl_space[sat_smpl_breakup_idx[i]],
                 smpl_space[sat_smpl_breakup_idx[i + 1] - 1],
                 propagation_sampling_interval,

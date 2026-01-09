@@ -15,21 +15,23 @@ documentation.
 .. autosummary::
    :toctree: generated/
 
-   tle.TLEInfo
-   tle.TLEInfo.return_tle_path
-   tle.TLEInfo.return_date_from_tle
-   tle.TLEInfo.return_seconds_since_1970
-   tle.TLEInfo.get_tle
+   TLE
+   TLE.from_sat_shortname
+   TLE.from_filepath
+   TLE.__len__
 
-   orbit.Orbit
-   orbit.Orbit.form_sample_space
-   orbit.Orbit.get_matching_indices
-   orbit.Orbit.propagate_orbit
-   orbit.Orbit.simulate_orbit
-   orbit.Orbit.interpolate_orbit
-   orbit.Orbit.run
+   Orbit
+   Orbit.simulate
+   Orbit.from_netcdf
+   Orbit.to_netcdf
+   Orbit.plot
+   Orbit.__len__
+   Orbit.__eq__
 
-   matchups.get_dist
-   matchups.Matchups
-   matchups.Matchups.matchup
-   matchups.Matchups.to_ds
+   Matchups
+   Matchups.find_matchups
+   Matchups.from_netcdf
+   Matchups.to_netcdf
+   Matchups.plot
+   Matchups.__len__
+   Matchups.__eq__

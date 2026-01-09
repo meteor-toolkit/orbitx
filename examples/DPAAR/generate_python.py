@@ -67,13 +67,10 @@ dates_list = [
 
 
 def generate_python_content(sats: List[str], dates: List[int]) -> str:
-    descrption = '"""Script to obtain matchups between {} and {}"""'.format(
-        sats[0], sats[1]
-    )
+    descrption = f'"""Script to obtain matchups between {sats[0]} and {sats[1]}"""'
     modules_import = """
 \"\"\"___Third-Party Modules___\"\"\"
 import faulthandler
-import datetime
 import numpy as np
 import calendar
 from functools import partial
@@ -89,7 +86,7 @@ import os
 
 \"\"\"__Built-In Modules__\"\"\"
 faulthandler.enable()
-from orbitx.interface import return_matchups
+from orbitx import Matchups
 """
     authorship = f"""
 \"\"\"___Authorship___\"\"\"
@@ -100,15 +97,15 @@ __maintainer__ = "Zhav Loizeau"
 __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 """
-    parameters = """
-sats = ["{}", "{}"]
-years = range({}, {})
-output_path_sim_orbits = "/home/xl3/Documents/output/orbitx/{{}}_{{}}/orbits/".format(sats[0], sats[1])
-output_path_matchups = "/home/xl3/Documents/output/orbitx/{{}}_{{}}/matchups/".format(sats[0], sats[1])
+    parameters = f"""
+satellites = ["{sats[0]}", "{sats[1]}"]
+years = range({dates[0]}, {dates[1] + 1})
+output_path_sim_orbits = "/home/xl3/Documents/output/orbitx/{sats[0]}_{sats[1]}/orbits/"
+output_path_matchups = "/home/xl3/Documents/output/orbitx/{sats[0]}_{sats[1]}/matchups/"
 propagation_sampling_interval = np.array(60, dtype="timedelta64[s]")
 interpolation_sampling_interval = np.array(5, dtype="timedelta64[s]")
 space_diff_threshold = 290
-time_diff_threshold = time_diff_threshold = np.array(900, dtype="timedelta64[s]")
+time_diff_threshold = np.array(900, dtype="timedelta64[s]")
 check_before = False
 check_after = True
 has_land_ocean_mask = True
@@ -116,9 +113,7 @@ reference_date=np.datetime64("2000-01-01T00:00:00")
 
 os.makedirs(output_path_sim_orbits, exist_ok=True)
 os.makedirs(output_path_matchups, exist_ok=True)
-""".format(
-        sats[0], sats[1], dates[0], dates[1] + 1
-    )
+"""
 
     execute = """
 arguments = np.empty((len(years), 2), dtype = object)
@@ -169,21 +164,28 @@ def return_matchups_(
 
     return
 
-partial_matchup = partial(return_matchups_,
-                        satellites = satellites,
-                        propagation_sampling_interval = propagation_sampling_interval,
-                        interpolation_sampling_interval = interpolation_sampling_interval,
-                        space_diff_threshold = space_diff_threshold,
-                        time_diff_threshold = time_diff_threshold)
+partial_matchup = partial(
+    return_matchups_,
+    satellites = satellites,
+    propagation_sampling_interval = propagation_sampling_interval,
+    interpolation_sampling_interval = interpolation_sampling_interval,
+    space_diff_threshold = space_diff_threshold,
+    time_diff_threshold = time_diff_threshold,
+    check_before = check_before,
+    check_after = check_after,
+    has_land_ocean_mask = has_land_ocean_mask,
+    reference_date=reference_date
+)
 
 n_cores = multiprocessing.cpu_count()
 res = []
 with concurrent.futures.ThreadPoolExecutor(max_workers = n_cores) as pool:
     for arg in arguments:
-        call = partial(partial_matchup,
-                    start_time = arg[0],
-                    end_time = arg[1],
-                    )
+        call = partial(
+            partial_matchup,
+            start_time = arg[0],
+            end_time = arg[1],
+        )
         res.append(pool.submit(call))
     for r in res:
         print(r.result())
@@ -195,9 +197,7 @@ if __name__ == "__main__":
 
 
 def generate_python_title(sats: List[str]) -> str:
-    return "/home/xl3/Documents/projects/orbitx/examples/DPAAR/python/{}_{}.py".format(
-        sats[0], sats[1]
-    )
+    return rf"C:\Users\xl3\Documents\projects\orbitx\examples\DPAAR\python/{sats[0]}_{sats[1]}.py"
 
 
 for idx in range(len(sats_list)):

@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=f4b5b424"></script>
+    <script src="../../_static/documentation_options.js?v=4866ad6f"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -158,25 +158,81 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">For users</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../content/user/user_guide.html">User Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/matchup.html">Finding matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/orbit.html">Generating orbits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/tle.html">Reading TLEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/parallel.html">Parallel programming</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../content/user/atbd.html">ATBD</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../content/user/api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.interface.return_matchups.html">orbitx.interface.return_matchups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.html">orbitx.tle.TLEInfo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_tle_path.html">orbitx.tle.TLEInfo.return_tle_path</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_date_from_tle.html">orbitx.tle.TLEInfo.return_date_from_tle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.return_seconds_since_1970.html">orbitx.tle.TLEInfo.return_seconds_since_1970</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.tle.TLEInfo.get_tle.html">orbitx.tle.TLEInfo.get_tle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.orbit.Orbit.html">orbitx.orbit.Orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.matchup.Matchups.html">orbitx.matchup.Matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.TLE.html">orbitx.TLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.TLE.from_sat_shortname.html">orbitx.TLE.from_sat_shortname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.TLE.from_filepath.html">orbitx.TLE.from_filepath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.TLE.__len__.html">orbitx.TLE.__len__</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Orbit.html">orbitx.Orbit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Orbit.simulate.html">orbitx.Orbit.simulate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Orbit.from_netcdf.html">orbitx.Orbit.from_netcdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Orbit.to_netcdf.html">orbitx.Orbit.to_netcdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Orbit.plot.html">orbitx.Orbit.plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Orbit.__len__.html">orbitx.Orbit.__len__</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Orbit.__eq__.html">orbitx.Orbit.__eq__</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Matchups.html">orbitx.Matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Matchups.find_matchups.html">orbitx.Matchups.find_matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Matchups.from_netcdf.html">orbitx.Matchups.from_netcdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Matchups.to_netcdf.html">orbitx.Matchups.to_netcdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Matchups.plot.html">orbitx.Matchups.plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Matchups.__len__.html">orbitx.Matchups.__len__</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Matchups.__eq__.html">orbitx.Matchups.__eq__</a></li>
 </ul>
 </details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">For developers/contributors</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../content/developer/developer_guide.html">Developer Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../content/developer/backend_documentation.html">Backend documentation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._date_utils.datetime_to_sec_since.html">orbitx.utils._date_utils.datetime_to_sec_since</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._date_utils.sec_since_change_ref.html">orbitx.utils._date_utils.sec_since_change_ref</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._date_utils.sec_since_to_datetime.html">orbitx.utils._date_utils.sec_since_to_datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._date_utils.datetime64_to_datetime.html">orbitx.utils._date_utils.datetime64_to_datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._date_utils.datetime_to_datetime64.html">orbitx.utils._date_utils.datetime_to_datetime64</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._date_utils.datetime64_to_sec_since.html">orbitx.utils._date_utils.datetime64_to_sec_since</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._date_utils.sec_since_to_datetime64.html">orbitx.utils._date_utils.sec_since_to_datetime64</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.create_xarray.html">orbitx.utils._tle.create_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.filter_xarray.html">orbitx.utils._tle.filter_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_argument_perigee.html">orbitx.utils._tle.get_argument_perigee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_ballistic_coefficient.html">orbitx.utils._tle.get_ballistic_coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_catalog_number.html">orbitx.utils._tle.get_catalog_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_classification.html">orbitx.utils._tle.get_classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_drag_term.html">orbitx.utils._tle.get_drag_term</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_eccentricity.html">orbitx.utils._tle.get_eccentricity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_element_set_number.html">orbitx.utils._tle.get_element_set_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_inclination.html">orbitx.utils._tle.get_inclination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_launch_number.html">orbitx.utils._tle.get_launch_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_launch_piece.html">orbitx.utils._tle.get_launch_piece</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_launch_year.html">orbitx.utils._tle.get_launch_year</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_mean_anomaly.html">orbitx.utils._tle.get_mean_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_mean_motion.html">orbitx.utils._tle.get_mean_motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_revolution_number.html">orbitx.utils._tle.get_revolution_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_right_ascension.html">orbitx.utils._tle.get_right_ascension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_second_derivative.html">orbitx.utils._tle.get_second_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_tle_date.html">orbitx.utils._tle.get_tle_date</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_tle_path.html">orbitx.utils._tle.get_tle_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.load_file.html">orbitx.utils._tle.load_file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html">orbitx.utils._orbit.form_sample_space.form_sample_space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html">orbitx.utils._orbit.get_matching_indices.get_matching_indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.interp_circ.interp_circ.html">orbitx.utils._orbit.interp_circ.interp_circ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.interpolate_orbit.interpolate_orbit.html">orbitx.utils._orbit.interpolate_orbit.interpolate_orbit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray.html">orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.propagate_orbit.propagate_orbit.html">orbitx.utils._orbit.propagate_orbit.propagate_orbit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.simulate_orbit.simulate_orbit.html">orbitx.utils._orbit.simulate_orbit.simulate_orbit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.find_matches.find_matches.html">orbitx.utils._matchups.find_matches.find_matches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.get_delay.get_delay.html">orbitx.utils._matchups.get_delay.get_delay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.get_dist.get_dist.html">orbitx.utils._matchups.get_dist.get_dist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask.html">orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.is_land.is_land.html">orbitx.utils._matchups.is_land.is_land</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.land_mask.land_mask.html">orbitx.utils._matchups.land_mask.land_mask</a></li>
+</ul>
+</details></li>
 </ul>
 
     </div>
@@ -282,200 +338,398 @@ document.write(`
   <h1>Source code for orbitx.tle</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;orbitx.get_2LEs - module for accessing mission two line element data&quot;&quot;&quot;</span>
 
+<span class="sd">&quot;&quot;&quot;___Third-Party Modules___&quot;&quot;&quot;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+
+<span class="sd">&quot;&quot;&quot;___NPL Modules___&quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;__Built-In Modules__&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._tle.get_tle_path</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tle_path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._tle.load_file</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._tle.create_xarray</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_xarray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._tle.filter_xarray</span><span class="w"> </span><span class="kn">import</span> <span class="n">filter_xarray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">orbitx.utils._constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">SATELLITE_DICT</span>
+
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;Sajedeh Behnia &lt;sajedeh.behnia@npl.co.uk&gt;&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Sam Hunt &lt;sam.hunt@npl.co.uk&gt;&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TLEInfo&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TLE&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="TLEInfo">
-<a class="viewcode-back" href="../../content/user/generated/orbitx.tle.TLEInfo.html#orbitx.tle.TLEInfo">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">TLEInfo</span><span class="p">:</span>
+<div class="viewcode-block" id="TLE">
+<a class="viewcode-back" href="../../content/user/generated/orbitx.TLE.html#orbitx.TLE">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TLE</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to retrieve satellite TLEs.</span>
 <span class="sd">    For more information on Two line elements, see the [Wikipedia page](https://en.wikipedia.org/wiki/Two-line_element_set)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="TLEInfo.return_tle_path">
-<a class="viewcode-back" href="../../content/user/generated/orbitx.tle.TLEInfo.return_tle_path.html#orbitx.tle.TLEInfo.return_tle_path">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">return_tle_path</span><span class="p">(</span><span class="n">satellite_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns path for TLE file for defined satellite</span>
+<div class="viewcode-block" id="TLE.__init__">
+<a class="viewcode-back" href="../../content/user/generated/orbitx.TLE.html#orbitx.TLE.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tle_xarray</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span> <span class="o">=</span> <span class="n">tle_xarray</span></div>
 
-<span class="sd">        :param satellite_name: satellite short name as included in TLE file name ``TLEset_XXX``,</span>
-<span class="sd">        where ``XXX`` may be ``S2A`` for the Sentinel-2A mission</span>
 
-<span class="sd">        :return: satellite TLE file path</span>
+<div class="viewcode-block" id="TLE.from_sat_shortname">
+<a class="viewcode-back" href="../../content/user/generated/orbitx.TLE.from_sat_shortname.html#orbitx.TLE.from_sat_shortname">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_sat_shortname</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">satellite_shortname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">start_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
+        <span class="n">end_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
+        <span class="n">reference_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s2">&quot;1970-01-01T00:00:00&quot;</span><span class="p">),</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates a TLE object from the satellite shortname</span>
+
+<span class="sd">        If the shortname provided is not supported by OrbitX a ValueError is raised and the user is invited to use a TLE file of their own.</span>
+<span class="sd">        </span>
+<span class="sd">        Supported shortnames are the following:</span>
+<span class="sd">        </span>
+<span class="sd">            .. code-block:: text</span>
+
+<span class="sd">                &quot;CS2&quot;: &quot;CryoSat-2&quot;,</span>
+<span class="sd">                &quot;J2&quot;: &quot;JASON-2&quot;,</span>
+<span class="sd">                &quot;J3&quot;: &quot;JASON-3&quot;,</span>
+<span class="sd">                &quot;LS8&quot;: &quot;Landsat-8&quot;,</span>
+<span class="sd">                &quot;LS9&quot;: &quot;Landsat-9&quot;,</span>
+<span class="sd">                &quot;N20&quot;: &quot;NOAA-20&quot;,</span>
+<span class="sd">                &quot;S2A&quot;: &quot;Sentinel-2A&quot;,</span>
+<span class="sd">                &quot;S2B&quot;: &quot;Sentinel-2B&quot;,</span>
+<span class="sd">                &quot;S3A&quot;: &quot;Sentinel-3A&quot;,</span>
+<span class="sd">                &quot;S3B&quot;: &quot;Sentinel-3B&quot;,</span>
+<span class="sd">                &quot;S6&quot;: &quot;Sentinel-6&quot;,</span>
+<span class="sd">                &quot;SA&quot;: &quot;Saral-AltiKa&quot;</span>
+<span class="sd">            </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            satellite_shortname (str): The shortname of the satellite.</span>
+<span class="sd">            start_date (np.datetime64): The date from which the orbit needs to be simulated</span>
+<span class="sd">            end_date (np.datetime64): The date until which the orbit needs to be simulated</span>
+<span class="sd">            reference_date (np.datetime64, optional): The reference date used to represent dates as &quot;seconds since&quot;. Defaults to np.datetime64(&quot;1970-01-01T00:00:00&quot;).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: When the shortname provided is not supported by OrbitX</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            TLE: A TLE Object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">orbitx</span><span class="w"> </span><span class="kn">import</span> <span class="n">TLE_PATH</span>
-
-        <span class="n">path</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="k">for</span> <span class="n">tle_dir</span> <span class="ow">in</span> <span class="n">TLE_PATH</span><span class="p">:</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tle_dir</span><span class="p">,</span> <span class="s2">&quot;TLEset_&quot;</span> <span class="o">+</span> <span class="n">satellite_name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">satellite_shortname</span> <span class="ow">in</span> <span class="n">SATELLITE_DICT</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;No TLE file found for &#39;</span><span class="si">{</span><span class="n">satellite_shortname</span><span class="si">}</span><span class="s2">&#39;. Consider using the `from_filepath` method with your own TLE file.&quot;</span>
             <span class="p">)</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-                <span class="k">break</span>
+        <span class="n">satellite_name</span> <span class="o">=</span> <span class="n">SATELLITE_DICT</span><span class="p">[</span><span class="n">satellite_shortname</span><span class="p">]</span>
+        <span class="c1"># Read TLE file.</span>
+        <span class="n">tle_filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">get_tle_path</span><span class="p">(</span><span class="n">satellite_shortname</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">path</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_filepath</span><span class="p">(</span>
+            <span class="n">tle_filepath</span><span class="p">,</span>
+            <span class="n">satellite_shortname</span><span class="p">,</span>
+            <span class="n">satellite_name</span><span class="p">,</span>
+            <span class="n">start_date</span><span class="p">,</span>
+            <span class="n">end_date</span><span class="p">,</span>
+            <span class="n">reference_date</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TLEInfo.return_date_from_tle">
-<a class="viewcode-back" href="../../content/user/generated/orbitx.tle.TLEInfo.return_date_from_tle.html#orbitx.tle.TLEInfo.return_date_from_tle">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">return_date_from_tle</span><span class="p">(</span><span class="n">tle_line_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns date time from TLE first line</span>
+<div class="viewcode-block" id="TLE.from_filepath">
+<a class="viewcode-back" href="../../content/user/generated/orbitx.TLE.from_filepath.html#orbitx.TLE.from_filepath">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_filepath</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">tle_filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">satellite_shortname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">satellite_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">start_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
+        <span class="n">end_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
+        <span class="n">reference_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s2">&quot;1970-01-01T00:00:00&quot;</span><span class="p">),</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates a TLE object from a TLE file.</span>
 
-<span class="sd">        :param tle_line_1: TLE first line</span>
-<span class="sd">        :returns: time of TLE</span>
+<span class="sd">        Args:</span>
+<span class="sd">            tle_filepath (str): The file containing the TLE</span>
+<span class="sd">            satellite_shortname (str): The shortname of the satellite (e.g., S3A).</span>
+<span class="sd">            satellite_name (str): The name of the satellite (e.g., Sentinel-3A).</span>
+<span class="sd">            start_date (np.datetime64): The date from which the orbit needs to be simulated</span>
+<span class="sd">            end_date (np.datetime64): The date until which the orbit needs to be simulated</span>
+<span class="sd">            reference_date (np.datetime64, optional): The reference date used to represent dates as &quot;seconds since&quot;. Defaults to np.datetime64(&quot;1970-01-01T00:00:00&quot;).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tle_line_1</span><span class="p">,</span> <span class="n">tle_line_2</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">tle_filepath</span><span class="p">)</span>
 
-        <span class="c1"># Extract date time information from TLE line 1</span>
-        <span class="n">year_tens_and_units</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tle_line_1</span><span class="p">[</span><span class="mi">18</span><span class="p">:</span><span class="mi">20</span><span class="p">])</span>
-        <span class="n">decimal_day</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tle_line_1</span><span class="p">[</span><span class="mi">20</span><span class="p">:</span><span class="mi">32</span><span class="p">])</span>
-
-        <span class="c1"># TODO: Test the code with any TLE dated before 2000.</span>
-        <span class="c1"># Create date time object at start of relevant year.</span>
-        <span class="c1"># Notice that the reference year here has to do with the TLE conventions as explained in</span>
-        <span class="c1"># &#39;celestrak.org/NORAD/documentation/tle-fmt.php&#39; and not the reference year for OrbitX which is 1970.</span>
-        <span class="k">if</span> <span class="n">tle_line_1</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span> <span class="ow">or</span> <span class="n">tle_line_1</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span> <span class="ow">or</span> <span class="n">tle_line_1</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span>
-            <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2000</span> <span class="o">+</span> <span class="n">year_tens_and_units</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">1900</span> <span class="o">+</span> <span class="n">year_tens_and_units</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="c1"># Add the necessary number of days to get TLE</span>
-        <span class="n">date</span> <span class="o">+=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">decimal_day</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">date</span></div>
-
-
-<div class="viewcode-block" id="TLEInfo.return_seconds_since_1970">
-<a class="viewcode-back" href="../../content/user/generated/orbitx.tle.TLEInfo.return_seconds_since_1970.html#orbitx.tle.TLEInfo.return_seconds_since_1970">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">return_seconds_since_1970</span><span class="p">(</span><span class="n">date_time</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns seconds since 1970 to defined date time</span>
-
-<span class="sd">        :param date_time: time of interest</span>
-<span class="sd">        :returns: seconds since 1970</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="p">(</span><span class="n">date_time</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1970</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="TLEInfo.get_tle">
-<a class="viewcode-back" href="../../content/user/generated/orbitx.tle.TLEInfo.get_tle.html#orbitx.tle.TLEInfo.get_tle">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_tle</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">satellite</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_time</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="n">end_time</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns two-line elements within defined time window, with seconds since 1970</span>
-
-<span class="sd">        :param satellite: satellite short name as included in TLE file name ``TLEset_XXX``,</span>
-<span class="sd">                where ``XXX`` may be ``S2A`` for the Sentinel-2A mission</span>
-<span class="sd">        :param start_time: start of time window</span>
-<span class="sd">        :param end_time: end of time window</span>
-
-<span class="sd">        :return: tuple containing elements - first TLE lines, second TLE lines, times of TLEs in seconds since 1970</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># region Read TLE file.</span>
-        <span class="n">tle_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_tle_path</span><span class="p">(</span><span class="n">satellite</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">tle_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No TLE file found for &#39;</span><span class="si">{</span><span class="n">satellite</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tle_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">lines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
         <span class="c1"># endregion</span>
-
-        <span class="c1"># region Access indexes of line-1 and line-2</span>
-        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">69</span>
-        <span class="p">):</span>  <span class="c1"># If the file includes the name of the mission at the beginning of each TLE, the name is at position 0, 3, ... (and we do not care about it)</span>
-            <span class="n">line_1_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-                <span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">3</span>
-            <span class="p">)</span>  <span class="c1"># Line 1&#39;s are at position 1, 4, ...</span>
-            <span class="n">line_2_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-                <span class="mi">2</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">3</span>
-            <span class="p">)</span>  <span class="c1"># Line 2&#39;s are at position 2, 5, ...</span>
-        <span class="k">else</span><span class="p">:</span>  <span class="c1"># If the name is not included</span>
-            <span class="n">line_1_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-                <span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">2</span>
-            <span class="p">)</span>  <span class="c1"># Line 1&#39;s are at position 0, 2, ...</span>
-            <span class="n">line_2_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-                <span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="mi">2</span>
-            <span class="p">)</span>  <span class="c1"># Line 2&#39;s are at position 1, 3, ...</span>
-
-        <span class="n">tle_line_1</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_1_indexes</span><span class="p">]</span>  <span class="c1"># list of all line 1s</span>
-        <span class="n">tle_line_2</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_2_indexes</span><span class="p">]</span>  <span class="c1"># list of all line 2s</span>
-        <span class="c1"># endregion</span>
-
-        <span class="c1"># Get date times</span>
-        <span class="n">tle_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">return_date_from_tle</span><span class="p">(</span><span class="n">tle_line_1_i</span><span class="p">)</span> <span class="k">for</span> <span class="n">tle_line_1_i</span> <span class="ow">in</span> <span class="n">tle_line_1</span><span class="p">]</span>
+        <span class="n">tle_xarray</span> <span class="o">=</span> <span class="n">create_xarray</span><span class="p">(</span>
+            <span class="n">tle_line_1</span><span class="p">,</span>
+            <span class="n">tle_line_2</span><span class="p">,</span>
+            <span class="n">reference_date</span><span class="p">,</span>
+            <span class="n">start_date</span><span class="p">,</span>
+            <span class="n">end_date</span><span class="p">,</span>
+            <span class="n">satellite_shortname</span><span class="p">,</span>
+            <span class="n">satellite_name</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">tle_time_s1970</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">return_seconds_since_1970</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">tle_time</span><span class="p">])</span>
-        <span class="n">start_time_s1970</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_seconds_since_1970</span><span class="p">(</span><span class="n">start_time</span><span class="p">)</span>
-        <span class="n">end_time_s1970</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_seconds_since_1970</span><span class="p">(</span><span class="n">end_time</span><span class="p">)</span>
 
-        <span class="c1"># Filter time</span>
-        <span class="n">lower_bound_tle_time</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tle_time_s1970</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">start_time_s1970</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lower_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;The oldest TLE file is more recent than the start time requested.</span><span class="se">\n</span><span class="s2"> Oldest TLE file: </span><span class="si">{}</span><span class="se">\n</span><span class="s2"> Start time requested: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tle_time</span><span class="p">),</span> <span class="n">start_time</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-        <span class="n">lower_bound_tle_time</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">start_time_s1970</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lower_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-            <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">lower_bound_tle_time</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">upper_bound_tle_time</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tle_time_s1970</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="n">end_time_s1970</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">upper_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;The most recent TLE file is older than the end time requested.</span><span class="se">\n</span><span class="s2"> Oldest TLE file: </span><span class="si">{}</span><span class="se">\n</span><span class="s2"> Start time requested: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tle_time</span><span class="p">),</span> <span class="n">end_time</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-        <span class="n">upper_bound_tle_time</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">end_time_s1970</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">upper_bound_tle_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-            <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">upper_bound_tle_time</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">i</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tle_time_s1970</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">t_i</span> <span class="o">&gt;=</span> <span class="n">lower_bound_tle_time</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t_i</span> <span class="o">&lt;</span> <span class="n">upper_bound_tle_time</span><span class="p">)</span>
-        <span class="p">]</span>
+        <span class="n">tle_xarray</span> <span class="o">=</span> <span class="n">filter_xarray</span><span class="p">(</span><span class="n">tle_xarray</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">idx</span><span class="p">:</span>
-            <span class="c1"># If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time</span>
-            <span class="n">closest_tle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tle_time_s1970</span> <span class="o">-</span> <span class="n">start_time_s1970</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">tle_xarray</span><span class="p">)</span></div>
 
-            <span class="n">tle_line_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">tle_line_1</span><span class="p">[</span><span class="n">closest_tle</span><span class="p">]]</span>
-            <span class="n">tle_line_2</span> <span class="o">=</span> <span class="p">[</span><span class="n">tle_line_2</span><span class="p">[</span><span class="n">closest_tle</span><span class="p">]]</span>
-            <span class="n">tle_time_s1970</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tle_time_s1970</span><span class="p">[</span><span class="n">closest_tle</span><span class="p">]])</span>
 
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Filter TLE set</span>
-            <span class="n">tle_line_1</span> <span class="o">=</span> <span class="n">tle_line_1</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-            <span class="n">tle_line_2</span> <span class="o">=</span> <span class="n">tle_line_2</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-            <span class="n">tle_time_s1970</span> <span class="o">=</span> <span class="n">tle_time_s1970</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;TLE object for the satellite </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">satellite_name</span><span class="si">}</span><span class="s2"> with short name </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">satellite_shortname</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">Satellite catalog number: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">satellite_catalog_number</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">Satellite classification: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">classification</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">Launch year: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">launch_year</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">Launch number: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">launch_number</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">Launch piece: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">launch_piece</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">Number of TLEs included: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">Reference date for dates in &#39;senconds since reference date&#39;: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">reference_date</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">Start date for the orbit to simulate: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">End date for the orbit to simulate: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">end_date</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">Created on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">creation_date</span><span class="si">}</span><span class="s2"> using the version </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> of orbitx.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">res</span>
 
-        <span class="k">return</span> <span class="n">tle_line_1</span><span class="p">,</span> <span class="n">tle_line_2</span><span class="p">,</span> <span class="n">tle_time_s1970</span></div>
-</div>
+<div class="viewcode-block" id="TLE.__len__">
+<a class="viewcode-back" href="../../content/user/generated/orbitx.TLE.__len__.html#orbitx.TLE.__len__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The number of TLEs included in this object&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tle_xarray</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;tle_index&quot;</span><span class="p">])</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">satellite_shortname</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The short name associated with the satellite (e.g., CS2).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;satellite_shortname&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">satellite_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The name associated with the satellite (e.g., Cryosat-2).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;satellite_name&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">satellite_catalog_number</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;This is the catalog number USSPACECOM has designated for this object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;catalog_number&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">classification</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Classification (U: unclassified, C: classified, S: secret)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;classification&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">launch_year</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Year in which the satellite was launched&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;launch_year&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">launch_number</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Number of this launch in the year (how many launches happened this year before this one, plus one)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;launch_number&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">launch_piece</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Index of this object in the launch (in a launch that results in three objects orbiting, the second one is indexed B)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;launch_piece&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tle_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Date corresponding to this TLE&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;tle_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ballistic_coefficient</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Also called the first derivative of mean motion, the ballistic coefficient is the daily rate of change in the number of revs the object completes each day, divided by 2.</span>
+<span class="sd">        Units are :math:`revs \cdot day^{-1}`.</span>
+<span class="sd">        This is &quot;catch all&quot; drag term used in the Simplified General Perturbations (SGP4) USSPACECOM predictor.</span>
+
+<span class="sd">        Description adapted from `spaceflight.nasa`_</span>
+
+<span class="sd">        .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;ballistic_coefficient&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">second_derivative</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The second derivative of mean motion is a second order drag term in the Simplified General Perturbations (SGP4) predictor used to model terminal orbit decay.</span>
+<span class="sd">        It measures the second time derivative in daily mean motion, divided by 6.</span>
+<span class="sd">        Units are :math:`revs\cdot day^{-3}`.</span>
+
+<span class="sd">        Description adapted from `spaceflight.nasa`_</span>
+
+<span class="sd">        .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;second_derivative&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">drag_term</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Also called the radiation pressure coefficient (or BSTAR), the parameter is another drag term in the SGP4 predictor.</span>
+<span class="sd">        Units are earth radii^-1.</span>
+<span class="sd">        The last two characters define an applicable power of 10.</span>
+<span class="sd">        Do not confuse this parameter with &quot;B-Term&quot;, the USSPACECOM special perturbations factor of drag coefficient, multiplied by reference area, divided by weight.</span>
+<span class="sd">        Description adapted from `spaceflight.nasa`_</span>
+
+<span class="sd">        .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;drag_term&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">element_set_number</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The element set number is a running count of all 2 line element sets generated by USSPACECOM for this object (in this example, 529).</span>
+<span class="sd">        Since multiple agencies perform this function, numbers are skipped on occasion to avoid ambiguities.</span>
+<span class="sd">        The counter should always increase with time until it exceeds 999, when it reverts to 1.</span>
+<span class="sd">        Description adapted from `spaceflight.nasa`_</span>
+
+<span class="sd">        .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;element_set_number&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">inclination</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The angle between the equator and the orbit plane. The value provided is the TEME mean inclination.</span>
+
+<span class="sd">        Description adapted from `spaceflight.nasa`_</span>
+
+<span class="sd">        .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;inclination&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">right_ascension</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The angle between vernal equinox and the point where the orbit crosses the equatorial plane (going north).</span>
+<span class="sd">        The value provided is the TEME mean right ascension of the ascending node.</span>
+
+<span class="sd">        Description adapted from `spaceflight.nasa`_</span>
+
+<span class="sd">        .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;right_ascension&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eccentricity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A constant defining the shape of the orbit (0=circular, Less than 1=elliptical).</span>
+<span class="sd">        The value provided is the mean eccentricity.</span>
+
+<span class="sd">        Description adapted from `spaceflight.nasa`_</span>
+
+<span class="sd">        .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;eccentricity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">argument_perigee</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The angle between the ascending node and the orbit&#39;s point of closest approach to the earth (perigee).</span>
+<span class="sd">        The value provided is the TEME mean argument of perigee.</span>
+
+<span class="sd">        Description adapted from `spaceflight.nasa`_</span>
+
+<span class="sd">        .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;argument_perigee&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mean_anomaly</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The angle, measured from perigee, of the satellite location in the orbit referenced to a circular orbit with radius equal to the semi-major axis.</span>
+
+<span class="sd">        Description adapted from `spaceflight.nasa`_</span>
+
+<span class="sd">        .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;mean_anomaly&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mean_motion</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The value is the mean number of orbits per day the object completes.</span>
+<span class="sd">        There are 8 digits after the decimal, leaving no trailing space(s) when the following element exceeds 9999.</span>
+
+<span class="sd">        Description adapted from `spaceflight.nasa`_</span>
+
+<span class="sd">        .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;mean_motion&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">revolution_number</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The orbit number at Epoch Time.</span>
+<span class="sd">        This time is chosen very near the time of true ascending node passage as a matter of routine.</span>
+
+<span class="sd">        Description adapted from `spaceflight.nasa`_</span>
+
+<span class="sd">        .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;revolution_number&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reference_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The reference date used to compute the &#39;seconds since&#39; representation of the TLE dates, represented as a numpy datetime64&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;reference_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The end date for this object, used to filter the TLEs when is was created, represented in numpy datetime64[s]&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;start_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">end_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The end date for this object, used to filter the TLEs when is was created, represented in numpy datetime64[s]&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;end_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reference_date_seconds_since1970</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The reference date used to compute the &#39;seconds since&#39; representation of the TLE dates, represented in seconds since 1970-01-01T00:00:00.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;reference_date_seconds_since1970&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_date_seconds_since</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The start date for this object, used to filter the TLEs when it was created, represented in seconds since the chosen reference date for this object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;start_date_seconds_since&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">end_date_seconds_since</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The end date for this object, used to filter the TLEs when is was created, represented in seconds since the chosen reference date for this object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;end_date_seconds_since&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tle_date_seconds_since</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The list of the dates corresponding to each TLE in this object, in seconds since the chosen reference date of this object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;tle_date_seconds_since&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tle_xarray</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The xarray containing the information about all TLE&#39;s for this satellite&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tle_line_1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">str_</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The list of all first TLE lines&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;line_1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tle_line_2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">str_</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The list of all second TLE lines&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="p">[</span><span class="s2">&quot;line_2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The orbitx version used to create this object&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">creation_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The date when this object was created&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tle_xarray</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;creation_date&quot;</span><span class="p">]</span></div>
 
 
 

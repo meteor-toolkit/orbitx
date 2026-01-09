@@ -2,6 +2,7 @@
 
 """___Third-Party Modules___"""
 import numpy as np
+import numpy.typing as npt
 from typing import Tuple, Union
 
 """___NPL Modules___"""
@@ -23,18 +24,17 @@ def form_sample_space(
     end_date: np.datetime64,
     propagation_sampling_interval: np.timedelta64,
     reference_date: np.datetime64 = np.datetime64("1970-01-01T00:00:00"),
-) -> Tuple[list, np.ndarray]:
+) -> Tuple[npt.NDArray[np.datetime64], npt.NDArray[np.uint16]]:
     """
-    Return a time vector containing desired orbit simulation timestamps
+    Return a numpy array of numpy datetime64 of desired orbit simulation timestamps and a second numpy array of those times represented as floats (seconds since reference date).
 
     :param start_time: start of time window
     :param end_time: end of time window
     :param prop_smpl_interval: propagation sampling interval in seconds
-    :return: tuple containing elements - list of temporal sampling space in datetime, and list of temporal sampling
-    space in 'seconds since 1970'
+    :return: tuple containing elements - list of temporal sampling space in datetime, and list of temporal sampling space in 'seconds since 1970'
     """
     end_date = end_date + propagation_sampling_interval
-    sample_space_date = np.arange(
+    sample_space_date: npt.NDArray[np.datetime64] = np.arange(
         start=start_date,
         stop=end_date,
         step=propagation_sampling_interval,

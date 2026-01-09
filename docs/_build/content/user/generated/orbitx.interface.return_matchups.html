@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=f4b5b424"></script>
+    <script src="../../../_static/documentation_options.js?v=4d28ad59"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -164,13 +164,20 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../atbd.html">ATBD</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.html">orbitx.tle.TLEInfo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_tle_path.html">orbitx.tle.TLEInfo.return_tle_path</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_date_from_tle.html">orbitx.tle.TLEInfo.return_date_from_tle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.return_seconds_since_1970.html">orbitx.tle.TLEInfo.return_seconds_since_1970</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.tle.TLEInfo.get_tle.html">orbitx.tle.TLEInfo.get_tle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.orbit.Orbit.html">orbitx.orbit.Orbit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.matchups.Matchups.html">orbitx.matchups.Matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Orbit.html">orbitx.Orbit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Orbit.simulate.html">orbitx.Orbit.simulate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Orbit.from_netcdf.html">orbitx.Orbit.from_netcdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Orbit.to_netcdf.html">orbitx.Orbit.to_netcdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Orbit.plot.html">orbitx.Orbit.plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Orbit.__len__.html">orbitx.Orbit.__len__</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Orbit.__eq__.html">orbitx.Orbit.__eq__</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Matchups.html">orbitx.Matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Matchups.find_matchups.html">orbitx.Matchups.find_matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Matchups.from_netcdf.html">orbitx.Matchups.from_netcdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Matchups.to_netcdf.html">orbitx.Matchups.to_netcdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Matchups.plot.html">orbitx.Matchups.plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Matchups.__len__.html">orbitx.Matchups.__len__</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.Matchups.__eq__.html">orbitx.Matchups.__eq__</a></li>
 </ul>
 </details></li>
 </ul>
@@ -302,9 +309,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -320,14 +325,6 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orbitx.interface.return_matchups"><code class="docutils literal notranslate"><span class="pre">return_matchups()</span></code></a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -339,55 +336,6 @@ document.write(`
                   
   <section id="orbitx-interface-return-matchups">
 <h1>orbitx.interface.return_matchups<a class="headerlink" href="#orbitx-interface-return-matchups" title="Link to this heading">#</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="orbitx.interface.return_matchups">
-<span class="sig-prename descclassname"><span class="pre">orbitx.interface.</span></span><span class="sig-name descname"><span class="pre">return_matchups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propagation_sampling_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation_sampling_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cntr2cntr_dist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_diff_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_land_ocean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path_sim_orbits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path_matchups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dataset</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/orbitx/interface.html#return_matchups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.interface.return_matchups" title="Link to this definition">#</a></dt>
-<dd><p>Matchup event identification between multiple satellites. Creates an xr.Dataset
-containing position and time information for satellite matchups.</p>
-<p>If no output paths are specified, the dataset will be returned.
-If output paths are specified the data will be saved.
-If <code class="code docutils literal notranslate"><span class="pre">output</span></code> is set to <code class="code docutils literal notranslate"><span class="pre">True</span></code> the dataset will be returned regardless of whether or not it has been saved.</p>
-<dl class="simple">
-<dt>Currently accepted satellites:</dt><dd><ul class="simple">
-<li><p>LS8 (Landsat-8)</p></li>
-<li><p>LS9 (Landsat-9)</p></li>
-<li><p>S2A (Sentinel-2A)</p></li>
-<li><p>S2B (Sentinel-2B)</p></li>
-<li><p>S3A (Sentinel-3A)</p></li>
-<li><p>S3B (Sentinel-3B)</p></li>
-<li><p>S6 (Sentinel-6)</p></li>
-<li><p>J3 (Jason-3)</p></li>
-<li><p>SA (Saral-Altika)</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sats</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – list of satellites</p></li>
-<li><p><strong>start_time</strong> (<em>datetime.datetime</em>) – start of time period of interest</p></li>
-<li><p><strong>end_time</strong> (<em>datetime.datetime</em>) – end of time period of interest</p></li>
-<li><p><strong>propagation_sampling_interval</strong> (<em>float</em>) – sampling rate of orbit propagation per sensor</p></li>
-<li><p><strong>interpolation_sampling_interval</strong> (<em>float</em>) – subsampling rate of orbit propagation per sensor by interpolation</p></li>
-<li><p><strong>cntr2cntr_dist</strong> (<em>float</em>) – matchup threshold for distance between the nadir position of the two satellites (kilometres)</p></li>
-<li><p><strong>time_diff_threshold</strong> (<em>float</em>) – matchup threshold for time difference between the two satellites (seconds)</p></li>
-<li><p><strong>check_before</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – whether matchups where strictly one of the two satellites appears before the start date, defaults to False</p></li>
-<li><p><strong>check_after</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – whether matchups where strictly one of the two satellites appears after the end date, defaults to False</p></li>
-<li><p><strong>get_land_ocean</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – whether the output should contain a land - ocean - coast label, defaults to False</p></li>
-<li><p><strong>output_path_sim_orbits</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – path to write evaluated propagated orbits to, defaults to None</p></li>
-<li><p><strong>output_path_matchups</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – path to write matchups to (as a netcdf file), defaults to None</p></li>
-<li><p><strong>output</strong> (<em>bool</em><em>, </em><em>optional</em>) – whether or not to output the matchup dataset, if no output_path defined defaults to True else False, defaults to False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>_description_</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Optional[xr.Dataset]</p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 
 
@@ -407,21 +355,6 @@ If <code class="code docutils literal notranslate"><span class="pre">output</spa
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orbitx.interface.return_matchups"><code class="docutils literal notranslate"><span class="pre">return_matchups()</span></code></a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
