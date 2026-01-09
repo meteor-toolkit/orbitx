@@ -34,7 +34,7 @@ def simulate_orbit(
     npt.NDArray[np.float64],
     npt.NDArray[np.float64],
 ]:
-    """    Return latitude, longitude and time arrays for full simulated orbit
+    """Return latitude, longitude and time arrays for full simulated orbit
 
     Args:
         start_date (np.datetime64): The date from which the orbit needs to be simulated

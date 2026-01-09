@@ -19,9 +19,8 @@ __status__ = "Development"
 
 
 def land_mask(
-        lat_c: float,
-        lon_c: float,
-        swath_width: float=1.) -> Literal['OCEAN'] | Literal['LAND'] | Literal['COAST']:
+    lat_c: float, lon_c: float, swath_width: float = 1.0
+) -> Literal["OCEAN"] | Literal["LAND"] | Literal["COAST"]:
     """Computes an estimate of land fraction for a scene with centre of (lon_c,lat_c) +/- swath width to deduce whether the correct mask is "LAND", "OCEAN", or "COAST"
 
     Returns:

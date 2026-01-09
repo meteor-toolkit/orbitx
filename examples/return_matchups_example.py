@@ -31,7 +31,7 @@ output_path_sim_orbits = r".\examples\output"
 output_path_matchups = r".\examples\output"
 propagation_sampling_interval: np.timedelta64 = np.array(60, dtype="timedelta64[s]")
 interpolation_sampling_interval: np.timedelta64 = np.array(5, dtype="timedelta64[s]")
-space_diff_threshold = 290.
+space_diff_threshold = 290.0
 time_diff_threshold: np.timedelta64 = np.array(900, dtype="timedelta64[s]")
 check_before = False
 check_after = True

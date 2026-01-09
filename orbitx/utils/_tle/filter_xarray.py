@@ -51,7 +51,9 @@ def filter_xarray(tle_xarray: xr.Dataset) -> xr.Dataset:
 Oldest TLE file: {np.min(tle_xarray["start_date"].values)}
 Start time requested: {tle_xarray["start_date"].values}"""
         )
-        lower_bound_tle_time: npt.NDArray[np.datetime64] = tle_xarray["start_date"].values
+        lower_bound_tle_time: npt.NDArray[np.datetime64] = tle_xarray[
+            "start_date"
+        ].values
     else:
         lower_bound_tle_time = np.max(previous_tle_times)
 

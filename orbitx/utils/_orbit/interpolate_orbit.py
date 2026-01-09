@@ -39,21 +39,21 @@ def interpolate_orbit(
 
     Used to interpolate the physics-simulated orbits at a sufficiently high resolution
 
-    :param start_date: 
+    :param start_date:
     :type start_date: datetime.datetime
-    :param end_date: 
+    :param end_date:
     :type end_date: datetime.datetime
-    :param sat_sec_since: 
+    :param sat_sec_since:
     :type sat_sec_since: npt.NDArray
-    :param sat_lat_sim: 
+    :param sat_lat_sim:
     :type sat_lat_sim: npt.NDArray
-    :param sat_lon_sim: 
+    :param sat_lon_sim:
     :type sat_lon_sim: npt.NDArray
-    :param interpolation_sampling_interval: 
+    :param interpolation_sampling_interval:
     :type interpolation_sampling_interval: float
-    :param reference_date: 
+    :param reference_date:
     :type reference_date: datetime.datetime, optional
-    :return: 
+    :return:
     :rtype: Tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray]
 
     Args:

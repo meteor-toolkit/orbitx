@@ -47,9 +47,9 @@ class TLE:
         """Generates a TLE object from the satellite shortname
 
         If the shortname provided is not supported by OrbitX a ValueError is raised and the user is invited to use a TLE file of their own.
-        
+
         Supported shortnames are the following:
-        
+
             .. code-block:: text
 
                 "CS2": "CryoSat-2",
@@ -64,7 +64,7 @@ class TLE:
                 "S3B": "Sentinel-3B",
                 "S6": "Sentinel-6",
                 "SA": "Saral-AltiKa"
-            
+
 
         Args:
             satellite_shortname (str): The shortname of the satellite.
