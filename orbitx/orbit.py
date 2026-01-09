@@ -69,19 +69,18 @@ class Orbit:
 
         .. code-block:: bash
 
-            "LS8": "Landsat-8",
-            "LS9": "Landsat-9",
-            "S2A": "Sentinel-2A",
-            "S2B": "Sentinel-2B",
-            "S3A": "Sentinel-3A",
-            "S3B": "Sentinel-3B",
-            "S6": "Sentinel-6",
-            "J2": "JASON-2",
-            "J3": "JASON-3",
-            "SA": "Saral-AltiKa",
-            "CS2": "CryoSat-2",
-            "LINCS2": "Lin-CryoSat-2",
-            "N20": "NOAA-20"
+                "CS2": "CryoSat-2",
+                "J2": "JASON-2",
+                "J3": "JASON-3",
+                "LS8": "Landsat-8",
+                "LS9": "Landsat-9",
+                "N20": "NOAA-20",
+                "S2A": "Sentinel-2A",
+                "S2B": "Sentinel-2B",
+                "S3A": "Sentinel-3A",
+                "S3B": "Sentinel-3B",
+                "S6": "Sentinel-6",
+                "SA": "Saral-AltiKa"
 
         If the satellite you are interested in is not in this list, you may use the `custom_satellites` argument.
 
