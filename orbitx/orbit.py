@@ -313,25 +313,28 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
 
     @property
     def satellite_name(self) -> List[str]:
-        """
-        :return: Satellites which the orbits are computed for
-        :rtype: List[str]
+        """Long name (e.g., Sentinel-6) of the satellites which the orbits are computed for
+
+        Returns:
+            List[str]: Long name of the satellites which the orbits are computed for
         """
         return self._orbits.attrs["satellite_name"]
 
     @property
     def satellite_shortname(self) -> List[str]:
-        """
-        :return: Satellites which the orbits are computed for
-        :rtype: List[str]
+        """Short name (e.g., S6) of the satellites which the orbits are computed for
+
+        Returns:
+            List[str]: Short name (e.g., S6) of the satellites which the orbits are computed for
         """
         return self._orbits.attrs["satellite_shortname"]
 
     @property
     def start_date(self) -> npt.NDArray[np.datetime64]:
-        """
-        :return: Date from which the orbits are computed
-        :rtype: np.datetime64
+        """Date from which the orbits are computed
+
+        Returns:
+            npt.NDArray[np.datetime64]: Date from which the orbits are computed
         """
         return np.array(
             sec_since_to_datetime64(
@@ -342,9 +345,10 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
 
     @property
     def end_date(self) -> npt.NDArray[np.datetime64]:
-        """
-        :return: Date until which the orbits are computed
-        :rtype: np.datetime64
+        """Date until which the orbits are computed
+
+        Returns:
+            npt.NDArray[np.datetime64]: Date until which the orbits are computed
         """
         return np.array(
             sec_since_to_datetime64(
@@ -355,14 +359,22 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
 
     @property
     def propagation_sampling_interval(self) -> npt.NDArray[np.timedelta64]:
-        """The time delta between each physics-based simulations of the satellite orbit"""
+        """The time delta between each physics-based simulations of the satellite orbit
+
+        Returns:
+            npt.NDArray[np.timedelta64]: The time delta between each physics-based simulations of the satellite orbit
+        """
         return np.array(
             self._orbits.attrs["propagation_sampling_interval"], dtype="timedelta64[s]"
         )
 
     @property
     def interpolation_sampling_interval(self) -> npt.NDArray[np.timedelta64]:
-        """The time delta between each interpolated position of the satellite orbit"""
+        """The time delta between each interpolated position of the satellite orbit
+
+        Returns:
+            npt.NDArray[np.timedelta64]: The time delta between each interpolated position of the satellite orbit
+        """
         return np.array(
             self._orbits.attrs["interpolation_sampling_interval"],
             dtype="timedelta64[s]",
@@ -370,12 +382,20 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
 
     @property
     def version(self) -> str:
-        """The version of orbitx used to create this object"""
+        """The version of orbitx used to create this object
+
+        Returns:
+            str: The version of orbitx used to create this object
+        """
         return self._orbits.attrs["version"]
 
     @property
     def creation_date(self) -> str:
-        """The date when this object was created"""
+        """The date when this object was created
+
+        Returns:
+            str: The date when this object was created
+        """
         return self._orbits.attrs["creation_date"]
 
     @property
@@ -386,26 +406,33 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
         .. code-block::
 
             <xarray.Dataset> Size: 415kB
-            Dimensions:         (time: 8641, satellites: 2)
+            Dimensions:         (time: 8641, satellite: 2)
             Coordinates:
             * time            (time) float64 69kB 6.338e+08 6.338e+08 ... 6.339e+08
-            * satellites      (satellites) <U2 16B 'S6' 'SA'
+            * satellite       (satellite) <U2 16B 'S6' 'SA'
             Data variables:
                 reference_date  datetime64[s] 8B 2000-01-01
                 time_datetime   (time) datetime64[s] 69kB 2020-02-01 ... 2020-02-01T12:00:00
-                lat             (time, satellites) float64 138kB 13.25 -74.64 ... -46.37
-                lon             (time, satellites) float64 138kB 171.5 -124.0 ... -81.99
+                lat             (time, satellite) float64 138kB 13.25 -74.64 ... -46.37
+                lon             (time, satellite) float64 138kB 171.5 -124.0 ... -81.99
             Attributes:
-                satellites:                       ['S6', 'SA']
+                satellite_shortname:              ['S6', 'SA']
+                satellite_name:                   ['Sentinel-6', 'Saral-AltiKa']
                 start_date:                       633830400.0
                 end_date:                         633873600.0
                 propagation_sampling_interval:    20
                 interpolation_sampling_interval:  5
+                version:                          1.0
+                creation_date:                    2026-01-06T13:20:34
 
         """
         return self._orbits
 
     @property
     def reference_date(self) -> npt.NDArray[np.datetime64]:
-        """The reference date used for the representation of time in seconds since reference date"""
+        """The reference date used for the representation of time in seconds since reference date
+
+        Returns:
+            npt.NDArray[np.datetime64]: The reference date used for the representation of time in seconds since reference date
+        """
         return self._orbits["reference_date"].values

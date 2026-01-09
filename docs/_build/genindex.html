@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=34976460"></script>
+    <script src="_static/documentation_options.js?v=4866ad6f"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -158,11 +158,17 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">For users</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="content/user/user_guide.html">User Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="content/user/quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/user/matchup.html">Finding matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/user/orbit.html">Generating orbits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/user/tle.html">Reading TLEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/user/parallel.html">Parallel programming</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="content/user/atbd.html">ATBD</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="content/user/api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="content/user/generated/orbitx.TLE.html">orbitx.TLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/user/generated/orbitx.TLE.from_sat_shortname.html">orbitx.TLE.from_sat_shortname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/user/generated/orbitx.TLE.from_filepath.html">orbitx.TLE.from_filepath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/user/generated/orbitx.TLE.__len__.html">orbitx.TLE.__len__</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/user/generated/orbitx.Orbit.html">orbitx.Orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/user/generated/orbitx.Orbit.simulate.html">orbitx.Orbit.simulate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/user/generated/orbitx.Orbit.from_netcdf.html">orbitx.Orbit.from_netcdf</a></li>
@@ -211,7 +217,6 @@
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._tle.get_second_derivative.html">orbitx.utils._tle.get_second_derivative</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._tle.get_tle_date.html">orbitx.utils._tle.get_tle_date</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._tle.get_tle_path.html">orbitx.utils._tle.get_tle_path</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._tle.get_tle.html">orbitx.utils._tle.get_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._tle.load_file.html">orbitx.utils._tle.load_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html">orbitx.utils._orbit.form_sample_space.form_sample_space</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html">orbitx.utils._orbit.get_matching_indices.get_matching_indices</a></li>
@@ -221,11 +226,11 @@
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._orbit.propagate_orbit.propagate_orbit.html">orbitx.utils._orbit.propagate_orbit.propagate_orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._orbit.simulate_orbit.simulate_orbit.html">orbitx.utils._orbit.simulate_orbit.simulate_orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._matchups.find_matches.find_matches.html">orbitx.utils._matchups.find_matches.find_matches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._matchups.get_delay.get_delay.html">orbitx.utils._matchups.get_delay.get_delay</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._matchups.get_dist.get_dist.html">orbitx.utils._matchups.get_dist.get_dist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask.html">orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._matchups.is_land.is_land.html">orbitx.utils._matchups.is_land.is_land</a></li>
 <li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._matchups.land_mask.land_mask.html">orbitx.utils._matchups.land_mask.land_mask</a></li>
-<li class="toctree-l2"><a class="reference internal" href="content/developer/generated/orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray.html">orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray</a></li>
 </ul>
 </details></li>
 </ul>
@@ -363,6 +368,8 @@ document.write(`
       <ul>
         <li><a href="content/user/generated/orbitx.Orbit.html#orbitx.Orbit.__init__">(orbitx.Orbit method)</a>
 </li>
+        <li><a href="content/user/generated/orbitx.TLE.html#orbitx.TLE.__init__">(orbitx.TLE method)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -370,6 +377,8 @@ document.write(`
 
       <ul>
         <li><a href="content/user/generated/orbitx.Orbit.__len__.html#orbitx.Orbit.__len__">(orbitx.Orbit method)</a>
+</li>
+        <li><a href="content/user/generated/orbitx.TLE.__len__.html#orbitx.TLE.__len__">(orbitx.TLE method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -420,9 +429,11 @@ document.write(`
 </li>
       <li><a href="content/user/generated/orbitx.Matchups.find_matchups.html#orbitx.Matchups.find_matchups">find_matchups() (orbitx.Matchups class method)</a>
 </li>
+      <li><a href="content/developer/generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html#orbitx.utils._orbit.form_sample_space.form_sample_space">form_sample_space() (in module orbitx.utils._orbit.form_sample_space)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="content/developer/generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html#orbitx.utils._orbit.form_sample_space.form_sample_space">form_sample_space() (in module orbitx.utils._orbit.form_sample_space)</a>
+      <li><a href="content/user/generated/orbitx.TLE.from_filepath.html#orbitx.TLE.from_filepath">from_filepath() (orbitx.TLE class method)</a>
 </li>
       <li><a href="content/user/generated/orbitx.Matchups.from_netcdf.html#orbitx.Matchups.from_netcdf">from_netcdf() (orbitx.Matchups class method)</a>
 
@@ -430,6 +441,8 @@ document.write(`
         <li><a href="content/user/generated/orbitx.Orbit.from_netcdf.html#orbitx.Orbit.from_netcdf">(orbitx.Orbit class method)</a>
 </li>
       </ul></li>
+      <li><a href="content/user/generated/orbitx.TLE.from_sat_shortname.html#orbitx.TLE.from_sat_shortname">from_sat_shortname() (orbitx.TLE class method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -443,6 +456,8 @@ document.write(`
       <li><a href="content/developer/generated/orbitx.utils._tle.get_catalog_number.html#orbitx.utils._tle.get_catalog_number">get_catalog_number() (in module orbitx.utils._tle)</a>
 </li>
       <li><a href="content/developer/generated/orbitx.utils._tle.get_classification.html#orbitx.utils._tle.get_classification">get_classification() (in module orbitx.utils._tle)</a>
+</li>
+      <li><a href="content/developer/generated/orbitx.utils._matchups.get_delay.get_delay.html#orbitx.utils._matchups.get_delay.get_delay">get_delay() (in module orbitx.utils._matchups.get_delay)</a>
 </li>
       <li><a href="content/developer/generated/orbitx.utils._matchups.get_dist.get_dist.html#orbitx.utils._matchups.get_dist.get_dist">get_dist() (in module orbitx.utils._matchups.get_dist)</a>
 </li>
@@ -512,21 +527,8 @@ document.write(`
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="content/developer/generated/orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray.html#orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray">matchup_dict_to_xarray() (in module orbitx.utils._matchups.matchup_dict_to_xarray)</a>
-</li>
       <li><a href="content/user/generated/orbitx.Matchups.html#orbitx.Matchups">Matchups (class in orbitx)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    module
-
-      <ul>
-        <li><a href="content/developer/generated/orbitx.utils._tle.html#module-orbitx.utils._tle">orbitx.utils._tle</a>
-</li>
-        <li><a href="content/developer/generated/orbitx.utils._tle.get_tle.html#module-orbitx.utils._tle.get_tle">orbitx.utils._tle.get_tle</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -535,24 +537,10 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="content/user/generated/orbitx.Orbit.html#orbitx.Orbit">Orbit (class in orbitx)</a>
 </li>
-      <li><a href="content/developer/generated/orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray.html#orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray">orbit_dict_to_xarray() (in module orbitx.utils._orbit.orbit_dict_to_xarray)</a>
-</li>
-      <li>
-    orbitx.utils._tle
-
-      <ul>
-        <li><a href="content/developer/generated/orbitx.utils._tle.html#module-orbitx.utils._tle">module</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    orbitx.utils._tle.get_tle
-
-      <ul>
-        <li><a href="content/developer/generated/orbitx.utils._tle.get_tle.html#module-orbitx.utils._tle.get_tle">module</a>
+      <li><a href="content/developer/generated/orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray.html#orbitx.utils._orbit.orbit_dict_to_xarray.orbit_dict_to_xarray">orbit_dict_to_xarray() (in module orbitx.utils._orbit.orbit_dict_to_xarray)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -594,6 +582,10 @@ document.write(`
 
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="content/user/generated/orbitx.TLE.html#orbitx.TLE">TLE (class in orbitx)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="content/user/generated/orbitx.Matchups.to_netcdf.html#orbitx.Matchups.to_netcdf">to_netcdf() (orbitx.Matchups method)</a>
 

@@ -21,6 +21,14 @@ __status__ = "Development"
 
 
 def get_land_ocean_mask(matchups: xr.Dataset) -> xr.Dataset:
+    """Adds a matchup_type variable to a matchups dataset corresponding to the land / ocean / coast mask for each matchup
+
+    Args:
+        matchups (xr.Dataset): a matchup Dataset
+
+    Returns:
+        xr.Dataset: The matchup dataset augmented with a land / ocean / coast mask variable
+    """
     num_matchups = matchups["matchup_index"].shape[0]
     num_sat = matchups["satellite"].shape[0]
     matchup_type = np.empty((num_matchups,), dtype=str)

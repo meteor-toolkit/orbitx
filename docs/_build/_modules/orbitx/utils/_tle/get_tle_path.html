@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=34976460"></script>
+    <script src="../../../../_static/documentation_options.js?v=4866ad6f"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -211,7 +211,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_second_derivative.html">orbitx.utils._tle.get_second_derivative</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_tle_date.html">orbitx.utils._tle.get_tle_date</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_tle_path.html">orbitx.utils._tle.get_tle_path</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_tle.html">orbitx.utils._tle.get_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.load_file.html">orbitx.utils._tle.load_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html">orbitx.utils._orbit.form_sample_space.form_sample_space</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html">orbitx.utils._orbit.get_matching_indices.get_matching_indices</a></li>
@@ -225,7 +224,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask.html">orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.is_land.is_land.html">orbitx.utils._matchups.is_land.is_land</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.land_mask.land_mask.html">orbitx.utils._matchups.land_mask.land_mask</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray.html">orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray</a></li>
 </ul>
 </details></li>
 </ul>
@@ -331,7 +329,7 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for orbitx.utils._tle.get_tle_path</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;orbitx.utils._tle.get_tle_path - &quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;orbitx.utils._tle.get_tle_path -&quot;&quot;&quot;</span>
 
 <span class="sd">&quot;&quot;&quot;___Third-Party Modules___&quot;&quot;&quot;</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
@@ -362,7 +360,7 @@ document.write(`
 
 <div class="viewcode-block" id="get_tle_path">
 <a class="viewcode-back" href="../../../../content/developer/generated/orbitx.utils._tle.get_tle_path.html#orbitx.utils._tle.get_tle_path">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_tle_path</span><span class="p">(</span><span class="n">satellite_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_tle_path</span><span class="p">(</span><span class="n">satellite_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns path for TLE file for defined satellite</span>
 
 <span class="sd">    :param satellite_name: satellite short name as included in TLE file name ``TLEset_XXX``, where ``XXX`` may be ``S2A`` for the Sentinel-2A mission</span>
@@ -372,15 +370,19 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">orbitx</span><span class="w"> </span><span class="kn">import</span> <span class="n">TLE_PATH</span>
 
-    <span class="n">path</span> <span class="o">=</span> <span class="kc">None</span>
-
+    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">found</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">tle_dir</span> <span class="ow">in</span> <span class="n">TLE_PATH</span><span class="p">:</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tle_dir</span><span class="p">,</span> <span class="s2">&quot;TLEset_&quot;</span> <span class="o">+</span> <span class="n">satellite_name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">break</span>
-
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+            <span class="s2">&quot;No TLE file for this satellite. Use a custom satellite argument with your own file.&quot;</span>
+        <span class="p">)</span>
     <span class="k">return</span> <span class="n">path</span></div>
 
 </pre></div>

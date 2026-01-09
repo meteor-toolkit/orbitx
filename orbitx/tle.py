@@ -46,10 +46,10 @@ class TLE:
     ):
         """Generates a TLE object from the satellite shortname
 
-        If the shortname provided is not supported by OrbitX a ValueError is raised and the used is invited to use a TLE file of their own.
-
-        Args:
-            satellite_shortname (str): The shortname of the satellite. Supported shortnames are the following:
+        If the shortname provided is not supported by OrbitX a ValueError is raised and the user is invited to use a TLE file of their own.
+        
+        Supported shortnames are the following:
+        
             .. code-block:: text
 
                 "CS2": "CryoSat-2",
@@ -65,6 +65,9 @@ class TLE:
                 "S6": "Sentinel-6",
                 "SA": "Saral-AltiKa"
             
+
+        Args:
+            satellite_shortname (str): The shortname of the satellite.
             start_date (np.datetime64): The date from which the orbit needs to be simulated
             end_date (np.datetime64): The date until which the orbit needs to be simulated
             reference_date (np.datetime64, optional): The reference date used to represent dates as "seconds since". Defaults to np.datetime64("1970-01-01T00:00:00").

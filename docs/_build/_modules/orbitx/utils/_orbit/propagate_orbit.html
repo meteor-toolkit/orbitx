@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=34976460"></script>
+    <script src="../../../../_static/documentation_options.js?v=4866ad6f"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -158,11 +158,17 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">For users</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../content/user/user_guide.html">User Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../content/user/quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/user/matchup.html">Finding matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/user/orbit.html">Generating orbits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/user/tle.html">Reading TLEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/user/parallel.html">Parallel programming</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../content/user/atbd.html">ATBD</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../content/user/api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/user/generated/orbitx.TLE.html">orbitx.TLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/user/generated/orbitx.TLE.from_sat_shortname.html">orbitx.TLE.from_sat_shortname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/user/generated/orbitx.TLE.from_filepath.html">orbitx.TLE.from_filepath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/user/generated/orbitx.TLE.__len__.html">orbitx.TLE.__len__</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/user/generated/orbitx.Orbit.html">orbitx.Orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/user/generated/orbitx.Orbit.simulate.html">orbitx.Orbit.simulate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/user/generated/orbitx.Orbit.from_netcdf.html">orbitx.Orbit.from_netcdf</a></li>
@@ -191,7 +197,27 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._date_utils.datetime_to_datetime64.html">orbitx.utils._date_utils.datetime_to_datetime64</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._date_utils.datetime64_to_sec_since.html">orbitx.utils._date_utils.datetime64_to_sec_since</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._date_utils.sec_since_to_datetime64.html">orbitx.utils._date_utils.sec_since_to_datetime64</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.html">orbitx.utils._tle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.create_xarray.html">orbitx.utils._tle.create_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.filter_xarray.html">orbitx.utils._tle.filter_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_argument_perigee.html">orbitx.utils._tle.get_argument_perigee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_ballistic_coefficient.html">orbitx.utils._tle.get_ballistic_coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_catalog_number.html">orbitx.utils._tle.get_catalog_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_classification.html">orbitx.utils._tle.get_classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_drag_term.html">orbitx.utils._tle.get_drag_term</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_eccentricity.html">orbitx.utils._tle.get_eccentricity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_element_set_number.html">orbitx.utils._tle.get_element_set_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_inclination.html">orbitx.utils._tle.get_inclination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_launch_number.html">orbitx.utils._tle.get_launch_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_launch_piece.html">orbitx.utils._tle.get_launch_piece</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_launch_year.html">orbitx.utils._tle.get_launch_year</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_mean_anomaly.html">orbitx.utils._tle.get_mean_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_mean_motion.html">orbitx.utils._tle.get_mean_motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_revolution_number.html">orbitx.utils._tle.get_revolution_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_right_ascension.html">orbitx.utils._tle.get_right_ascension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_second_derivative.html">orbitx.utils._tle.get_second_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_tle_date.html">orbitx.utils._tle.get_tle_date</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_tle_path.html">orbitx.utils._tle.get_tle_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.load_file.html">orbitx.utils._tle.load_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html">orbitx.utils._orbit.form_sample_space.form_sample_space</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html">orbitx.utils._orbit.get_matching_indices.get_matching_indices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._orbit.interp_circ.interp_circ.html">orbitx.utils._orbit.interp_circ.interp_circ</a></li>
@@ -200,11 +226,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._orbit.propagate_orbit.propagate_orbit.html">orbitx.utils._orbit.propagate_orbit.propagate_orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._orbit.simulate_orbit.simulate_orbit.html">orbitx.utils._orbit.simulate_orbit.simulate_orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.find_matches.find_matches.html">orbitx.utils._matchups.find_matches.find_matches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.get_delay.get_delay.html">orbitx.utils._matchups.get_delay.get_delay</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.get_dist.get_dist.html">orbitx.utils._matchups.get_dist.get_dist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask.html">orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.is_land.is_land.html">orbitx.utils._matchups.is_land.is_land</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.land_mask.land_mask.html">orbitx.utils._matchups.land_mask.land_mask</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray.html">orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray</a></li>
 </ul>
 </details></li>
 </ul>
@@ -314,11 +340,13 @@ document.write(`
 
 <span class="sd">&quot;&quot;&quot;___Third-Party Modules___&quot;&quot;&quot;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npt</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">pi</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numbers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">datetime</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">orekit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">org.orekit.frames</span><span class="w"> </span><span class="kn">import</span> <span class="n">FramesFactory</span><span class="p">,</span> <span class="n">TopocentricFrame</span>
@@ -349,7 +377,7 @@ document.write(`
     <span class="n">datetime64_get_day</span><span class="p">,</span>
     <span class="n">datetime64_get_hour</span><span class="p">,</span>
     <span class="n">datetime64_get_minute</span><span class="p">,</span>
-    <span class="n">datetime64_get_second</span>
+    <span class="n">datetime64_get_second</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="sd">&quot;&quot;&quot;___Authorship___&quot;&quot;&quot;</span>
@@ -371,17 +399,26 @@ document.write(`
     <span class="n">propagation_sampling_interval</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">,</span>
     <span class="n">reference_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s2">&quot;1970-01-01T00:00:00&quot;</span><span class="p">),</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span>
-    <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+    <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">],</span>
+    <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+    <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+    <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+    <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
+    <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
 <span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Propagate satellite orbit for given two-line-elements and associated time</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Propagate satellite orbit for given two-line-elements and associated time</span>
 
-<span class="sd">    :param tle_line1: first line of the reference two-line-element</span>
-<span class="sd">    :param tle_line2: first line of the reference two-line-element</span>
-<span class="sd">    :param start_date: start time of orbit propagation</span>
-<span class="sd">    :param end_date: end time of orbit propagation</span>
-<span class="sd">    :param propagation_sampling_interval: sampling interval in seconds</span>
-<span class="sd">    :return: Tuple containing the date in seconds from 1970, the date in datetime, orbit latitude, longitude, altitude, elevation angle, and azimuth angle</span>
+<span class="sd">    Args:</span>
+<span class="sd">        tle_line1 (str): first line of the reference two-line-element</span>
+<span class="sd">        tle_line2 (str): second line of the reference two-line-element</span>
+<span class="sd">        start_date (np.datetime64): start time of orbit propagation</span>
+<span class="sd">        end_date (np.datetime64): end time of orbit propagation</span>
+<span class="sd">        propagation_sampling_interval (np.timedelta64): sampling interval in seconds</span>
+<span class="sd">        reference_date (np.datetime64, optional): The reference date used to represent time in seconds since. Defaults to np.datetime64(&quot;1970-01-01T00:00:00&quot;).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple[ npt.NDArray[np.float64], npt.NDArray[np.datetime64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], ]: Tuple containing the date in seconds from 1970, the date in datetime, orbit latitude, longitude, altitude, elevation angle, and azimuth angle</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">orekit</span><span class="o">.</span><span class="n">getVMEnv</span><span class="p">()</span><span class="o">.</span><span class="n">attachCurrentThread</span><span class="p">()</span>
     <span class="n">extrap_date</span> <span class="o">=</span> <span class="n">AbsoluteDate</span><span class="p">(</span>
@@ -402,7 +439,12 @@ document.write(`
         <span class="n">datetime64_get_second</span><span class="p">(</span><span class="n">end_date</span><span class="p">),</span>
         <span class="n">TimeScalesFactory</span><span class="o">.</span><span class="n">getUTC</span><span class="p">(),</span>
     <span class="p">)</span>  <span class="c1"># when you want to stop tracking</span>
-    <span class="n">propagation_sampling_interval</span> <span class="o">=</span> <span class="n">propagation_sampling_interval</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+    <span class="n">propagation_sampling_interval_timedelta</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">propagation_sampling_interval</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">propagation_sampling_interval_float</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">propagation_sampling_interval_timedelta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+    <span class="p">)</span>
 
     <span class="c1"># CELLESTIAL BODIES</span>
     <span class="n">sun</span> <span class="o">=</span> <span class="n">CelestialBodyFactory</span><span class="o">.</span><span class="n">getSun</span><span class="p">()</span>
@@ -422,22 +464,38 @@ document.write(`
     <span class="n">propagator0</span> <span class="o">=</span> <span class="n">TLEPropagator</span><span class="o">.</span><span class="n">selectExtrapolator</span><span class="p">(</span><span class="n">mytle</span><span class="p">)</span>
     <span class="n">propagator0</span> <span class="o">=</span> <span class="n">PVCoordinatesProvider</span><span class="o">.</span><span class="n">cast_</span><span class="p">(</span><span class="n">propagator0</span><span class="p">)</span>
 
-    <span class="n">extrap_date_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">AbsoluteDate</span><span class="p">)</span>
+    <span class="n">extrap_date_list</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">AbsoluteDate</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">AbsoluteDate</span><span class="p">)</span>
     <span class="n">extrap_date_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">extrap_date</span>
     <span class="k">while</span> <span class="n">extrap_date</span><span class="o">.</span><span class="n">compareTo</span><span class="p">(</span><span class="n">final_date</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
-        <span class="n">extrap_date</span> <span class="o">=</span> <span class="n">extrap_date</span><span class="o">.</span><span class="n">shiftedBy</span><span class="p">(</span><span class="n">propagation_sampling_interval</span><span class="p">)</span>
+        <span class="n">extrap_date</span> <span class="o">=</span> <span class="n">extrap_date</span><span class="o">.</span><span class="n">shiftedBy</span><span class="p">(</span><span class="n">propagation_sampling_interval_float</span><span class="p">)</span>
         <span class="n">extrap_date_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="p">,</span> <span class="n">extrap_date</span><span class="p">)</span>
 
-    <span class="n">sel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">saz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">pos_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">pos_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">pos_alt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">pos_s0_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">pos_s0_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">pos_s0_alt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">date</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;datetime64[s]&quot;</span><span class="p">)</span>
-    <span class="n">julian_date</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">sel</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">saz</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">pos_lat</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+        <span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="p">)</span>
+    <span class="n">pos_lon</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+        <span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="p">)</span>
+    <span class="n">pos_alt</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+        <span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="p">)</span>
+    <span class="n">pos_s0_lat</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+        <span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="p">)</span>
+    <span class="n">pos_s0_lon</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+        <span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="p">)</span>
+    <span class="n">pos_s0_alt</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+        <span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="p">)</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">[</span><span class="n">datetime</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+        <span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;datetime64[s]&quot;</span>
+    <span class="p">)</span>
+    <span class="n">julian_date</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+        <span class="n">extrap_date_list</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">extrap_date_ind</span><span class="p">,</span> <span class="n">extrap_date</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">extrap_date_list</span><span class="p">):</span>
         <span class="n">pv0</span> <span class="o">=</span> <span class="n">propagator0</span><span class="o">.</span><span class="n">getPVCoordinates</span><span class="p">(</span><span class="n">extrap_date</span><span class="p">,</span> <span class="n">inertial_frame</span><span class="p">)</span>
@@ -455,7 +513,7 @@ document.write(`
 
         <span class="n">pos_s0_lat</span><span class="p">[</span><span class="n">extrap_date_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">poss0</span><span class="o">.</span><span class="n">getLatitude</span><span class="p">()</span>  <span class="c1"># satellite nadir lattitude</span>
         <span class="n">pos_s0_lon</span><span class="p">[</span><span class="n">extrap_date_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">poss0</span><span class="o">.</span><span class="n">getLongitude</span><span class="p">()</span>  <span class="c1"># satellite nadir longitude</span>
-        <span class="n">alt_sat</span> <span class="o">=</span> <span class="n">poss0</span><span class="o">.</span><span class="n">getAltitude</span><span class="p">()</span>
+        <span class="n">alt_sat</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">poss0</span><span class="o">.</span><span class="n">getAltitude</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alt_sat</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Number</span><span class="p">):</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Satellite altitude is not a number: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alt_sat</span><span class="p">))</span>
             <span class="n">pos_s0_alt</span><span class="p">[</span><span class="n">extrap_date_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -464,7 +522,7 @@ document.write(`
 
         <span class="n">pos_lat</span><span class="p">[</span><span class="n">extrap_date_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos0</span><span class="o">.</span><span class="n">getLatitude</span><span class="p">()</span>  <span class="c1"># sun nadir Lattitude</span>
         <span class="n">pos_lon</span><span class="p">[</span><span class="n">extrap_date_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos0</span><span class="o">.</span><span class="n">getLongitude</span><span class="p">()</span>  <span class="c1"># sun nadir Longitude</span>
-        <span class="n">alt_sun</span> <span class="o">=</span> <span class="n">pos0</span><span class="o">.</span><span class="n">getAltitude</span><span class="p">()</span>
+        <span class="n">alt_sun</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">pos0</span><span class="o">.</span><span class="n">getAltitude</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alt_sun</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Number</span><span class="p">):</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Satellite altitude is not a number: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alt_sun</span><span class="p">))</span>
             <span class="n">pos_alt</span><span class="p">[</span><span class="n">extrap_date_ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>

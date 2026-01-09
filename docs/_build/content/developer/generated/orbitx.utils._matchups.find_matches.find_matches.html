@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=34976460"></script>
+    <script src="../../../_static/documentation_options.js?v=4866ad6f"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -45,7 +45,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'content/developer/generated/orbitx.utils._matchups.find_matches.find_matches';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="orbitx.utils._matchups.get_dist.get_dist" href="orbitx.utils._matchups.get_dist.get_dist.html" />
+    <link rel="next" title="orbitx.utils._matchups.get_delay.get_delay" href="orbitx.utils._matchups.get_delay.get_delay.html" />
     <link rel="prev" title="orbitx.utils._orbit.simulate_orbit.simulate_orbit" href="orbitx.utils._orbit.simulate_orbit.simulate_orbit.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -159,11 +159,17 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">For users</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../user/user_guide.html">User Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../user/quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/matchup.html">Finding matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/orbit.html">Generating orbits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/tle.html">Reading TLEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/parallel.html">Parallel programming</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user/atbd.html">ATBD</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../user/api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../user/generated/orbitx.TLE.html">orbitx.TLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/generated/orbitx.TLE.from_sat_shortname.html">orbitx.TLE.from_sat_shortname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/generated/orbitx.TLE.from_filepath.html">orbitx.TLE.from_filepath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../user/generated/orbitx.TLE.__len__.html">orbitx.TLE.__len__</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user/generated/orbitx.Orbit.html">orbitx.Orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user/generated/orbitx.Orbit.simulate.html">orbitx.Orbit.simulate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../user/generated/orbitx.Orbit.from_netcdf.html">orbitx.Orbit.from_netcdf</a></li>
@@ -192,7 +198,27 @@
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._date_utils.datetime_to_datetime64.html">orbitx.utils._date_utils.datetime_to_datetime64</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._date_utils.datetime64_to_sec_since.html">orbitx.utils._date_utils.datetime64_to_sec_since</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._date_utils.sec_since_to_datetime64.html">orbitx.utils._date_utils.sec_since_to_datetime64</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.html">orbitx.utils._tle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.create_xarray.html">orbitx.utils._tle.create_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.filter_xarray.html">orbitx.utils._tle.filter_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_argument_perigee.html">orbitx.utils._tle.get_argument_perigee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_ballistic_coefficient.html">orbitx.utils._tle.get_ballistic_coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_catalog_number.html">orbitx.utils._tle.get_catalog_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_classification.html">orbitx.utils._tle.get_classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_drag_term.html">orbitx.utils._tle.get_drag_term</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_eccentricity.html">orbitx.utils._tle.get_eccentricity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_element_set_number.html">orbitx.utils._tle.get_element_set_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_inclination.html">orbitx.utils._tle.get_inclination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_launch_number.html">orbitx.utils._tle.get_launch_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_launch_piece.html">orbitx.utils._tle.get_launch_piece</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_launch_year.html">orbitx.utils._tle.get_launch_year</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_mean_anomaly.html">orbitx.utils._tle.get_mean_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_mean_motion.html">orbitx.utils._tle.get_mean_motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_revolution_number.html">orbitx.utils._tle.get_revolution_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_right_ascension.html">orbitx.utils._tle.get_right_ascension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_second_derivative.html">orbitx.utils._tle.get_second_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_tle_date.html">orbitx.utils._tle.get_tle_date</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.get_tle_path.html">orbitx.utils._tle.get_tle_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._tle.load_file.html">orbitx.utils._tle.load_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._orbit.form_sample_space.form_sample_space.html">orbitx.utils._orbit.form_sample_space.form_sample_space</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._orbit.get_matching_indices.get_matching_indices.html">orbitx.utils._orbit.get_matching_indices.get_matching_indices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._orbit.interp_circ.interp_circ.html">orbitx.utils._orbit.interp_circ.interp_circ</a></li>
@@ -201,11 +227,11 @@
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._orbit.propagate_orbit.propagate_orbit.html">orbitx.utils._orbit.propagate_orbit.propagate_orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._orbit.simulate_orbit.simulate_orbit.html">orbitx.utils._orbit.simulate_orbit.simulate_orbit</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">orbitx.utils._matchups.find_matches.find_matches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._matchups.get_delay.get_delay.html">orbitx.utils._matchups.get_delay.get_delay</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._matchups.get_dist.get_dist.html">orbitx.utils._matchups.get_dist.get_dist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask.html">orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._matchups.is_land.is_land.html">orbitx.utils._matchups.is_land.is_land</a></li>
 <li class="toctree-l2"><a class="reference internal" href="orbitx.utils._matchups.land_mask.land_mask.html">orbitx.utils._matchups.land_mask.land_mask</a></li>
-<li class="toctree-l2"><a class="reference internal" href="orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray.html">orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray</a></li>
 </ul>
 </details></li>
 </ul>
@@ -372,39 +398,58 @@ document.write(`
 <h1>orbitx.utils._matchups.find_matches.find_matches<a class="headerlink" href="#orbitx-utils-matchups-find-matches-find-matches" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="orbitx.utils._matchups.find_matches.find_matches">
-<span class="sig-prename descclassname"><span class="pre">orbitx.utils._matchups.find_matches.</span></span><span class="sig-name descname"><span class="pre">find_matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orbit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../user/generated/orbitx.Orbit.html#orbitx.Orbit" title="orbitx.orbit.Orbit"><span class="pre">Orbit</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_diff_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">timedelta64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_diff_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime64</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/orbitx/utils/_matchups/find_matches.html#find_matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.utils._matchups.find_matches.find_matches" title="Link to this definition">#</a></dt>
-<dd><p>find_matches Finds matchups between each pair of satellites</p>
-<p>Provided with the simulated orbit of each satellite (as an Orbit object), will return a Dictionary where each entry has the name of the two satellites as key, and a dictionnary as value.
-The dictionnary associated with a pair of satellites has the following structure:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">matchups_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="s2">&quot;S2A_LS8&quot;</span>:
-<span class="w">                        </span><span class="o">{</span>
-<span class="w">                            </span><span class="s2">&quot;lat1&quot;</span>:<span class="w"> </span>npt.NDArray,
-<span class="w">                            </span><span class="s2">&quot;lon1&quot;</span>:<span class="w"> </span>npt.NDArray,
-<span class="w">                            </span><span class="s2">&quot;lat2&quot;</span>:<span class="w"> </span>npt.NDArray,
-<span class="w">                            </span><span class="s2">&quot;lon2&quot;</span>:<span class="w"> </span>npt.NDArray,
-<span class="w">                            </span><span class="s2">&quot;delay&quot;</span>:<span class="w"> </span>npt.NDArray,
-<span class="w">                            </span><span class="s2">&quot;time&quot;</span>:<span class="w"> </span>npt.NDArray,
-<span class="w">                            </span><span class="s2">&quot;time_datetime&quot;</span>:<span class="w"> </span>npt.NDArray,
-<span class="w">                            </span><span class="s2">&quot;distance&quot;</span>:<span class="w"> </span>npt.NDArray,
-<span class="w">                        </span><span class="o">}</span>,
-<span class="w">                    </span><span class="o">}</span>
+<span class="sig-prename descclassname"><span class="pre">orbitx.utils._matchups.find_matches.</span></span><span class="sig-name descname"><span class="pre">find_matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orbit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../user/generated/orbitx.Orbit.html#orbitx.Orbit" title="orbitx.orbit.Orbit"><span class="pre">Orbit</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_diff_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">timedelta64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_diff_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_land_ocean_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dataset</span></span></span><a class="reference internal" href="../../../_modules/orbitx/utils/_matchups/find_matches.html#find_matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orbitx.utils._matchups.find_matches.find_matches" title="Link to this definition">#</a></dt>
+<dd><p>Finds matchups between each pair of satellites</p>
+<p>Provided with the simulated orbit of each satellite (as an Orbit object), will return an xarray Dataset of matchups between the different orbits.
+The structure of the returned xarray is as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;xarray.DatasetView&gt;<span class="w"> </span>Size:<span class="w"> </span>5kB
+Dimensions:<span class="w">         </span><span class="o">(</span>matchup_index:<span class="w"> </span><span class="m">53</span>,<span class="w"> </span>satellite:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span>satellite_pair:<span class="w"> </span><span class="m">1</span><span class="o">)</span>
+Coordinates:
+*<span class="w"> </span>satellite<span class="w">       </span><span class="o">(</span>satellite<span class="o">)</span><span class="w"> </span>&lt;U3<span class="w"> </span>24B<span class="w"> </span><span class="s1">&#39;CS2&#39;</span><span class="w"> </span><span class="s1">&#39;J3&#39;</span>
+*<span class="w"> </span>satellite_pair<span class="w">  </span><span class="o">(</span>satellite_pair<span class="o">)</span><span class="w"> </span>&lt;U6<span class="w"> </span>24B<span class="w"> </span><span class="s1">&#39;CS2_J3&#39;</span>
+*<span class="w"> </span>matchup_index<span class="w">   </span><span class="o">(</span>matchup_index<span class="o">)</span><span class="w"> </span>int64<span class="w"> </span>424B<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="m">5</span><span class="w"> </span>...<span class="w"> </span><span class="m">47</span><span class="w"> </span><span class="m">48</span><span class="w"> </span><span class="m">49</span><span class="w"> </span><span class="m">50</span><span class="w"> </span><span class="m">51</span><span class="w"> </span><span class="m">52</span>
+Data<span class="w"> </span>variables:
+<span class="w">    </span>reference_date<span class="w">  </span>datetime64<span class="o">[</span>s<span class="o">]</span><span class="w"> </span>8B<span class="w"> </span><span class="m">2000</span>-01-01
+<span class="w">    </span>time_datetime<span class="w">   </span><span class="o">(</span>matchup_index,<span class="w"> </span>satellite<span class="o">)</span><span class="w"> </span>datetime64<span class="o">[</span>s<span class="o">]</span><span class="w"> </span>848B<span class="w"> </span><span class="m">2012</span>-01-01T...
+<span class="w">    </span><span class="nb">time</span><span class="w">            </span><span class="o">(</span>matchup_index,<span class="w"> </span>satellite<span class="o">)</span><span class="w"> </span>float64<span class="w"> </span>848B<span class="w"> </span><span class="m">3</span>.787e+08<span class="w"> </span>...<span class="w"> </span><span class="m">3</span>.7...
+<span class="w">    </span>lat<span class="w">             </span><span class="o">(</span>matchup_index,<span class="w"> </span>satellite<span class="o">)</span><span class="w"> </span>float64<span class="w"> </span>848B<span class="w"> </span><span class="m">63</span>.72<span class="w"> </span><span class="m">66</span>.12<span class="w"> </span>...<span class="w"> </span><span class="m">66</span>.1
+<span class="w">    </span>lon<span class="w">             </span><span class="o">(</span>matchup_index,<span class="w"> </span>satellite<span class="o">)</span><span class="w"> </span>float64<span class="w"> </span>848B<span class="w"> </span>-173.1<span class="w"> </span>...<span class="w"> </span><span class="m">159</span>.0
+<span class="w">    </span>distance<span class="w">        </span><span class="o">(</span>matchup_index,<span class="w"> </span>satellite_pair<span class="o">)</span><span class="w"> </span>float64<span class="w"> </span>424B<span class="w"> </span><span class="m">279</span>.4<span class="w"> </span>...<span class="w"> </span><span class="m">287</span>.3
+<span class="w">    </span>delay<span class="w">           </span><span class="o">(</span>matchup_index,<span class="w"> </span>satellite_pair<span class="o">)</span><span class="w"> </span>timedelta64<span class="o">[</span>s<span class="o">]</span><span class="w"> </span>424B<span class="w"> </span><span class="m">00</span>:09...
+<span class="w">    </span>land_mask<span class="w">       </span><span class="o">(</span>matchup_index,<span class="w"> </span>satellite<span class="o">)</span><span class="w"> </span>&lt;U1<span class="w"> </span>424B<span class="w"> </span><span class="s1">&#39;O&#39;</span><span class="w"> </span><span class="s1">&#39;O&#39;</span><span class="w"> </span><span class="s1">&#39;O&#39;</span><span class="w"> </span>...<span class="w"> </span><span class="s1">&#39;O&#39;</span><span class="w"> </span><span class="s1">&#39;O&#39;</span>
+<span class="w">    </span>matchup_type<span class="w">    </span><span class="o">(</span>matchup_index<span class="o">)</span><span class="w"> </span>&lt;U1<span class="w"> </span>212B<span class="w"> </span><span class="s1">&#39;O&#39;</span><span class="w"> </span><span class="s1">&#39;O&#39;</span><span class="w"> </span><span class="s1">&#39;O&#39;</span><span class="w"> </span><span class="s1">&#39;O&#39;</span><span class="w"> </span>...<span class="w"> </span><span class="s1">&#39;O&#39;</span><span class="w"> </span><span class="s1">&#39;O&#39;</span><span class="w"> </span><span class="s1">&#39;O&#39;</span><span class="w"> </span><span class="s1">&#39;O&#39;</span>
+Attributes:<span class="w"> </span><span class="o">(</span><span class="m">12</span>/13<span class="o">)</span>
+<span class="w">    </span>satellite_shortname:<span class="w">              </span><span class="o">[</span><span class="s1">&#39;CS2&#39;</span>,<span class="w"> </span><span class="s1">&#39;J3&#39;</span><span class="o">]</span>
+<span class="w">    </span>satellite_name:<span class="w">                   </span><span class="o">[</span><span class="s1">&#39;CryoSat-2&#39;</span>,<span class="w"> </span><span class="s1">&#39;Jason-3&#39;</span><span class="o">]</span>
+<span class="w">    </span>start_date:<span class="w">                       </span><span class="m">378690300</span>.0
+<span class="w">    </span>end_date:<span class="w">                         </span><span class="m">378735300</span>.0
+<span class="w">    </span>propagation_sampling_interval:<span class="w">    </span><span class="m">60</span>
+<span class="w">    </span>interpolation_sampling_interval:<span class="w">  </span><span class="m">5</span>
+<span class="w">    </span>...<span class="w">                               </span>...
+<span class="w">    </span>space_diff_threshold:<span class="w">             </span><span class="m">290</span>.0
+<span class="w">    </span>check_before:<span class="w">                     </span><span class="m">1</span>
+<span class="w">    </span>check_after:<span class="w">                      </span><span class="m">1</span>
+<span class="w">    </span>has_land_ocean_mask:<span class="w">              </span><span class="m">1</span>
+<span class="w">    </span>version:<span class="w">                          </span><span class="m">1</span>.0
+<span class="w">    </span>creation_date:<span class="w">                    </span><span class="m">2026</span>-01-09T16:31:31
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>orbit</strong> (<a class="reference internal" href="../../user/generated/orbitx.Orbit.html#orbitx.Orbit" title="orbitx.Orbit"><em>Orbit</em></a>) – _description_</p></li>
-<li><p><strong>time_diff_threshold</strong> (<em>Number</em>) – _description_</p></li>
-<li><p><strong>space_diff_threshold</strong> (<em>Number</em>) – _description_</p></li>
-<li><p><strong>start_date</strong> (<em>datetime.datetime</em>) – _description_</p></li>
-<li><p><strong>end_date</strong> (<em>datetime.datetime</em>) – _description_</p></li>
+<li><p><strong>orbit</strong> (<a class="reference internal" href="../../user/generated/orbitx.Orbit.html#orbitx.Orbit" title="orbitx.Orbit"><em>Orbit</em></a>) – The orbit which to look for matchups in</p></li>
+<li><p><strong>time_diff_threshold</strong> (<em>np.timedelta64</em>) – The maximum time difference between to satellites in a matchup that is tolerated</p></li>
+<li><p><strong>space_diff_threshold</strong> (<em>Number</em>) – The maximum distance between two satellites in a matchup that is tolerated</p></li>
+<li><p><strong>check_before</strong> (<em>bool</em>) – Whether matchup events in which one of the satellites is before the start date should be considered</p></li>
+<li><p><strong>check_after</strong> (<em>bool</em>) – Whether matchup events in which one of the satellites is after the end should be considered</p></li>
+<li><p><strong>has_land_ocean_mask</strong> (<em>bool</em>) – Whether the land / ocean / coast masks should be generated</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>_description_</p>
+<dd class="field-even"><p>The matchups dataset</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dict[str, Dict[str, Any]]</p>
+<dd class="field-odd"><p>xr.Dataset</p>
 </dd>
 </dl>
 </dd></dl>
@@ -432,11 +477,11 @@ The dictionnary associated with a pair of satellites has the following structure
       </div>
     </a>
     <a class="right-next"
-       href="orbitx.utils._matchups.get_dist.get_dist.html"
+       href="orbitx.utils._matchups.get_delay.get_delay.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">orbitx.utils._matchups.get_dist.get_dist</p>
+        <p class="prev-next-title">orbitx.utils._matchups.get_delay.get_delay</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

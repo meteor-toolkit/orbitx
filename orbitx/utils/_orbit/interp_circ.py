@@ -45,20 +45,16 @@ def interp_circ(
 def interp_circ_(
     x_new: np.ndarray, x: np.ndarray, y: np.ndarray, period: float = 360.0
 ) -> np.ndarray:
-    """interp_circ_ _summary_
+    """For a quantity Y that is circular and dependent on a quantity X that is not circular, interpolates the vactor of x, y pairs for X, Y to the new values of X x_new.
 
-    _extended_summary_
+    Args:
+        x_new (np.ndarray): The new values for X at which we want the value of Y
+        x (np.ndarray): The values of X at which we have observed the pair X, Y
+        y (np.ndarray): The values of Y at which we have observed the pair X, Y
+        period (float, optional): The period of the quantity Y. Defaults to 360.0.
 
-    :param x: The values of the time-axis variable for the data to interpolate (not periodic)
-    :type x: np.ndarray
-    :param y: The values to interpolate (periodic)
-    :type y: np.ndarray
-    :param x_new: New locations at which to evaluate y
-    :type x_new: np.ndarray
-    :param period: The preiod of the variable y
-    :type period: float
-    :return: The estimated values of y at the requested values of x
-    :rtype: np.ndarray
+    Returns:
+        np.ndarray: The values of Y for X in x_new
     """
     f = interpolate.interp1d(x, y, kind="linear", bounds_error=False, fill_value=None)
     complement_interp = f(x_new)

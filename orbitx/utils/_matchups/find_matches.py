@@ -41,29 +41,47 @@ def find_matches(
 
     .. code-block:: bash
 
-        matchups_dict = {"S2A_LS8":
-                                {
-                                    "lat1": npt.NDArray,
-                                    "lon1": npt.NDArray,
-                                    "lat2": npt.NDArray,
-                                    "lon2": npt.NDArray,
-                                    "delay": npt.NDArray,
-                                    "time": npt.NDArray,
-                                    "time_datetime": npt.NDArray,
-                                    "distance": npt.NDArray,
-                                },
-                            }
+        <xarray.DatasetView> Size: 5kB
+        Dimensions:         (matchup_index: 53, satellite: 2, satellite_pair: 1)
+        Coordinates:
+        * satellite       (satellite) <U3 24B 'CS2' 'J3'
+        * satellite_pair  (satellite_pair) <U6 24B 'CS2_J3'
+        * matchup_index   (matchup_index) int64 424B 0 1 2 3 4 5 ... 47 48 49 50 51 52
+        Data variables:
+            reference_date  datetime64[s] 8B 2000-01-01
+            time_datetime   (matchup_index, satellite) datetime64[s] 848B 2012-01-01T...
+            time            (matchup_index, satellite) float64 848B 3.787e+08 ... 3.7...
+            lat             (matchup_index, satellite) float64 848B 63.72 66.12 ... 66.1
+            lon             (matchup_index, satellite) float64 848B -173.1 ... 159.0
+            distance        (matchup_index, satellite_pair) float64 424B 279.4 ... 287.3
+            delay           (matchup_index, satellite_pair) timedelta64[s] 424B 00:09...
+            land_mask       (matchup_index, satellite) <U1 424B 'O' 'O' 'O' ... 'O' 'O'
+            matchup_type    (matchup_index) <U1 212B 'O' 'O' 'O' 'O' ... 'O' 'O' 'O' 'O'
+        Attributes: (12/13)
+            satellite_shortname:              ['CS2', 'J3']
+            satellite_name:                   ['CryoSat-2', 'Jason-3']
+            start_date:                       378690300.0
+            end_date:                         378735300.0
+            propagation_sampling_interval:    60
+            interpolation_sampling_interval:  5
+            ...                               ...
+            space_diff_threshold:             290.0
+            check_before:                     1
+            check_after:                      1
+            has_land_ocean_mask:              1
+            version:                          1.0
+            creation_date:                    2026-01-09T16:31:31
 
     Args:
-        orbit (Orbit): _description_
-        time_diff_threshold (np.timedelta64): _description_
-        space_diff_threshold (Number): _description_
-        check_before (bool): _description_
-        check_after (bool): _description_
-        has_land_ocean_mask (bool): _description_
+        orbit (Orbit): The orbit which to look for matchups in
+        time_diff_threshold (np.timedelta64): The maximum time difference between to satellites in a matchup that is tolerated
+        space_diff_threshold (Number): The maximum distance between two satellites in a matchup that is tolerated
+        check_before (bool): Whether matchup events in which one of the satellites is before the start date should be considered
+        check_after (bool): Whether matchup events in which one of the satellites is after the end should be considered
+        has_land_ocean_mask (bool): Whether the land / ocean / coast masks should be generated
 
     Returns:
-        xr.Dataset: _description_
+        xr.Dataset: The matchups dataset
     """
     # choose one satellite to remain stable and loop through the rest with respect to it
     satellite_shortnames = orbit.satellite_shortname

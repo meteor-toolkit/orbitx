@@ -23,7 +23,7 @@ __all__ = ["get_dist"]
 def get_dist(
     existing_orbits: xr.Dataset, new_orbit: xr.Dataset
 ) -> npt.NDArray[np.float64]:
-    """Calculate the largest distance in kilometers on the earth (specified in decimal degrees)
+    """Calculate the distance in kilometers on the earth (specified in decimal degrees)
     between a collection of orbits and a new orbit at each time stamp
 
     Args:
@@ -31,7 +31,7 @@ def get_dist(
         new_orbit (xr.Dataset): the new orbit
 
     Returns:
-        np.array: at each time stamp, the largest of the distances between the new orbit and each of the existing orbits
+        np.array: at each time stamp, the distances between the new orbit and each of the existing orbits
     """
     # compute the lat and lon difference
     dlon: xr.DataArray = existing_orbits["lon"] - new_orbit["lon"]

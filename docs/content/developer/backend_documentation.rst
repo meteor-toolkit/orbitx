@@ -41,7 +41,6 @@ Those functionalities are stored in the `utils` sub-module.
    _tle.get_second_derivative
    _tle.get_tle_date
    _tle.get_tle_path
-   _tle.get_tle
    _tle.load_file
 
    _orbit.form_sample_space.form_sample_space
@@ -53,11 +52,11 @@ Those functionalities are stored in the `utils` sub-module.
    _orbit.simulate_orbit.simulate_orbit
 
    _matchups.find_matches.find_matches
+   _matchups.get_delay.get_delay
    _matchups.get_dist.get_dist
    _matchups.get_land_ocean_mask.get_land_ocean_mask
    _matchups.is_land.is_land
    _matchups.land_mask.land_mask
-   _matchups.matchup_dict_to_xarray.matchup_dict_to_xarray
 
 .. autodata::
    orbitx.utils._constants.SATELLITE_DICT

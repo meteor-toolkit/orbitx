@@ -67,15 +67,18 @@ def propagate_orbit(
     npt.NDArray[np.float64],
     npt.NDArray[np.float64],
 ]:
-    """
-    Propagate satellite orbit for given two-line-elements and associated time
+    """Propagate satellite orbit for given two-line-elements and associated time
 
-    :param tle_line1: first line of the reference two-line-element
-    :param tle_line2: first line of the reference two-line-element
-    :param start_date: start time of orbit propagation
-    :param end_date: end time of orbit propagation
-    :param propagation_sampling_interval: sampling interval in seconds
-    :return: Tuple containing the date in seconds from 1970, the date in datetime, orbit latitude, longitude, altitude, elevation angle, and azimuth angle
+    Args:
+        tle_line1 (str): first line of the reference two-line-element
+        tle_line2 (str): second line of the reference two-line-element
+        start_date (np.datetime64): start time of orbit propagation
+        end_date (np.datetime64): end time of orbit propagation
+        propagation_sampling_interval (np.timedelta64): sampling interval in seconds
+        reference_date (np.datetime64, optional): The reference date used to represent time in seconds since. Defaults to np.datetime64("1970-01-01T00:00:00").
+
+    Returns:
+        Tuple[ npt.NDArray[np.float64], npt.NDArray[np.datetime64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], ]: Tuple containing the date in seconds from 1970, the date in datetime, orbit latitude, longitude, altitude, elevation angle, and azimuth angle
     """
     orekit.getVMEnv().attachCurrentThread()
     extrap_date = AbsoluteDate(

@@ -27,12 +27,15 @@
 
    .. autosummary::
    
+      ~Orbit.creation_date
       ~Orbit.end_date
       ~Orbit.interpolation_sampling_interval
       ~Orbit.orbits
       ~Orbit.propagation_sampling_interval
       ~Orbit.reference_date
-      ~Orbit.satellites
+      ~Orbit.satellite_name
+      ~Orbit.satellite_shortname
       ~Orbit.start_date
+      ~Orbit.version
    
    

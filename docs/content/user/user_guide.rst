@@ -34,6 +34,7 @@ Clone this package
 navigate with your terminal to the location where you cloned this package, and install it:
 
 .. code-block:: bash
+
    cd ./orbitx
    pip install -e .
 
@@ -50,11 +51,13 @@ Then, run the following command in your terminal
 .. add your user guide pages to this toctree
 
 .. toctree::
-   :maxdepth: 2
    :hidden:
+   
+   Finding matchups <matchup>
+   Generating orbits <orbit>
+   Reading TLEs <tle>
+   Parallel programming <parallel>
 
-   quickstart
-   exmaple_1
 
 
 .. _miniforge: https://conda-forge.org/miniforge/

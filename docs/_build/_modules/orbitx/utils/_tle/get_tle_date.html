@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=34976460"></script>
+    <script src="../../../../_static/documentation_options.js?v=4866ad6f"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -211,7 +211,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_second_derivative.html">orbitx.utils._tle.get_second_derivative</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_tle_date.html">orbitx.utils._tle.get_tle_date</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_tle_path.html">orbitx.utils._tle.get_tle_path</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.get_tle.html">orbitx.utils._tle.get_tle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._tle.load_file.html">orbitx.utils._tle.load_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html">orbitx.utils._orbit.form_sample_space.form_sample_space</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html">orbitx.utils._orbit.get_matching_indices.get_matching_indices</a></li>
@@ -225,7 +224,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask.html">orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.is_land.is_land.html">orbitx.utils._matchups.is_land.is_land</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.land_mask.land_mask.html">orbitx.utils._matchups.land_mask.land_mask</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../content/developer/generated/orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray.html">orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray</a></li>
 </ul>
 </details></li>
 </ul>
@@ -331,10 +329,11 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for orbitx.utils._tle.get_tle_date</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;orbitx.utils._tle.get_tle_date - &quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;orbitx.utils._tle.get_tle_date -&quot;&quot;&quot;</span>
 
 <span class="sd">&quot;&quot;&quot;___Third-Party Modules___&quot;&quot;&quot;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
 <span class="sd">&quot;&quot;&quot;___NPL Modules___&quot;&quot;&quot;</span>
 <span class="sd">&quot;&quot;&quot;__Built-In Modules__&quot;&quot;&quot;</span>
 
@@ -356,6 +355,7 @@ document.write(`
 <span class="n">__status__</span> <span class="o">=</span> <span class="s2">&quot;Development&quot;</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_tle_date&quot;</span><span class="p">]</span>
 
+
 <div class="viewcode-block" id="get_tle_date">
 <a class="viewcode-back" href="../../../../content/developer/generated/orbitx.utils._tle.get_tle_date.html#orbitx.utils._tle.get_tle_date">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_tle_date</span><span class="p">(</span><span class="n">tle_line_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">:</span>
@@ -372,9 +372,9 @@ document.write(`
 <span class="sd">    0.8253 hours x 60 minutes/hour = 49.5157 minutes (Minutes = 49)</span>
 <span class="sd">    49.5157 - 49 = 0.5157 minutes</span>
 <span class="sd">    0.5157 minutes x 60 seconds/minute = 30.94 seconds (Seconds = 30.94)</span>
-<span class="sd">    </span>
+
 <span class="sd">    Description adapted from `spaceflight.nasa`_</span>
-<span class="sd">    </span>
+
 <span class="sd">    .. _spaceflight.nasa: https://web.archive.org/web/20000301052035/http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/tle_def.html</span>
 
 <span class="sd">    Args:</span>
@@ -382,6 +382,16 @@ document.write(`
 
 <span class="sd">    Returns:</span>
 <span class="sd">        np.datetime64: time of TLE</span>
+<span class="sd">        Example:</span>
+<span class="sd">        .. code-block:: python3</span>
+
+<span class="sd">            line1 = &quot;1 25544U 98067A   08264.51782528 -.00002182  12345-5 -11606-4 0  2927&quot;</span>
+<span class="sd">            tle_date = get_tle_date(line1)</span>
+<span class="sd">            print(tle_date)</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            0208-09-20T12:25:40.104192</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Extract date time information from TLE line 1</span>
@@ -395,9 +405,11 @@ document.write(`
     <span class="c1"># Notice that the reference year here has to do with the TLE conventions as explained in</span>
     <span class="c1"># &#39;celestrak.org/NORAD/documentation/tle-fmt.php&#39; and not the reference year for OrbitX which is 1970.</span>
     <span class="k">if</span> <span class="n">year_tens_and_units</span> <span class="o">&gt;</span> <span class="mi">70</span><span class="p">:</span>
-        <span class="n">date</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;19</span><span class="si">{</span><span class="n">year_tens_and_units</span><span class="si">}</span><span class="s2">-01-01T00:00:00&quot;</span><span class="p">)</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="mi">1900</span> <span class="o">+</span> <span class="n">year_tens_and_units</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">-01-01T00:00:00&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">date</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;20</span><span class="si">{</span><span class="n">year_tens_and_units</span><span class="si">}</span><span class="s2">-01-01T00:00:00&quot;</span><span class="p">)</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="mi">2000</span> <span class="o">+</span> <span class="n">year_tens_and_units</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">-01-01T00:00:00&quot;</span><span class="p">)</span>
 
     <span class="c1"># Add the necessary number of days to get TLE</span>
     <span class="n">date</span> <span class="o">+=</span> <span class="n">day_in_year</span> <span class="o">+</span> <span class="n">date_delta</span>

@@ -150,7 +150,7 @@ class Matchups:
     ):
         """Generator for Matchups object if orbits were already generated.
 
-        Finds matchups within the orbits submitted.
+        Finds matchups within the orbits provided.
 
         Args:
             orbit (Orbit): Orbits in which the matchups must be found
@@ -368,20 +368,6 @@ class Matchups:
         return fig
 
     def __str__(self) -> str:
-        """__str__ Gives a short summary of the characteristics of a Matchup object
-
-        The information displayed is the following:
-        Matchup object with following attributes:
-        Satellites considered
-        Date from which matchups are looked for
-        Date until which matchups are looked for
-        Maximum time difference between members of a matchup (seconds)
-        Maximum distance between members of a matchup (km)
-        Are matchups in which one of the satellites appears before the start date considered?
-        Are matchups in which one of the satellites appears after the end date considered?
-        Has this matchup a land/ocean mask?
-        Number of matchups found
-        """
         result = f"""Matchup object with following attributes:
 Satellites considered: {self.satellite_name}
 Date from which matchups are looked for: {self.start_date}
@@ -422,27 +408,48 @@ Created on {self.creation_date} using the version {self.version} of orbitx.
         return res
 
     @property
-    def satellite_name(self):
+    def satellite_name(self) -> List[str]:
+        """Long name (e.g. Sentinel-6) of the satellites considered in this matchup
+
+        Returns:
+            List[str]: Long name (e.g. Sentinel-6) of the satellites considered in this matchup
+        """
         return self.matchups.attrs["satellite_name"]
 
     @property
     def satellite_shortname(self) -> List[str]:
-        """
-        :return: Satellites which the orbits are computed for
-        :rtype: List[str]
+        """Short name (e.g. S6) of the satellites considered in this matchup
+
+        Returns:
+            List[str]: Short name (e.g. S6) of the satellites considered in this matchup
         """
         return self.matchups.attrs["satellite_shortname"]
 
     @property
     def orbit(self) -> Orbit:
+        """Orbit object from which matchups were found
+
+        Returns:
+            Orbit: Orbit object from which matchups were found
+        """
         return Orbit(self._data["orbits"].dataset)
 
     @property
     def matchups(self) -> xr.Dataset:
+        """The xarray dataset underpinning this object
+
+        Returns:
+            xr.Dataset: The xarray dataset underpinning this object
+        """
         return self._data["matchups"].dataset
 
     @property
     def start_date(self):
+        """Date from which the orbits are computed
+
+        Returns:
+            npt.NDArray[np.datetime64]: Date from which the orbits are computed
+        """
         return np.array(
             sec_since_to_datetime64(
                 self.matchups.attrs["start_date"], self.reference_date
@@ -452,6 +459,11 @@ Created on {self.creation_date} using the version {self.version} of orbitx.
 
     @property
     def end_date(self):
+        """Date until which the orbits are computed
+
+        Returns:
+            npt.NDArray[np.datetime64]: Date until which the orbits are computed
+        """
         return np.array(
             sec_since_to_datetime64(
                 self.matchups.attrs["end_date"], self.reference_date
@@ -460,35 +472,75 @@ Created on {self.creation_date} using the version {self.version} of orbitx.
         )
 
     @property
-    def time_diff_threshold(self):
+    def time_diff_threshold(self) -> npt.NDArray[np.timedelta64]:
+        """The maximum time delay between two satellites for a pair of space - time positions to be considered a matchup
+
+        Returns:
+            npt.NDArray[np.timedelta64]: The maximum time delay between two satellites for a pair of space - time positions to be considered a matchup
+        """
         return np.array(
             int(self.matchups.attrs["time_diff_threshold"]), dtype="timedelta64[s]"
         )
 
     @property
     def space_diff_threshold(self) -> float:
+        """The maximum spatial distance (in kilometers between projected position on Earth surface) between two satellites for a pair of space - time positions to be considered a matchup
+
+        Returns:
+            float: The maximum spatial distance (in kilometers between projected position on Earth surface) between two satellites for a pair of space - time positions to be considered a matchup
+        """
         return self.matchups.attrs["space_diff_threshold"]
 
     @property
-    def check_before(self):
+    def check_before(self) -> bool:
+        """Whether matchups where one of the space - time positions considered is before the considered time space should be considered
+
+        Returns:
+            bool: Whether matchups where one of the space - time positions considered is before the considered time should be considered
+        """
         return bool(self.matchups.attrs["check_before"])
 
     @property
-    def check_after(self):
+    def check_after(self) -> bool:
+        """Whether matchups where one of the space - time positions considered is after the considered time should be considered
+
+        Returns:
+            bool: Whether matchups where one of the space - time positions considered is after the considered time should be considered
+        """
         return bool(self.matchups.attrs["check_after"])
 
     @property
-    def has_land_ocean_mask(self):
+    def has_land_ocean_mask(self) -> bool:
+        """Whether the matchup object contain information about the land / ocean / coast mask
+
+        Returns:
+            bool: Whether the matchup object contain information about the land / ocean / coast mask
+        """
         return bool(self.matchups.attrs["has_land_ocean_mask"])
 
     @property
-    def reference_date(self):
+    def reference_date(self) -> np.datetime64:
+        """The date used as reference for time representation in "seconds since"
+
+        Returns:
+            np.datetime64: The date used as reference for time representation in "seconds since"
+        """
         return self.matchups["reference_date"].values
 
     @property
-    def creation_date(self):
+    def creation_date(self) -> str:
+        """When this object was created
+
+        Returns:
+            str: When this object was created
+        """
         return self.matchups.attrs["creation_date"]
 
     @property
-    def version(self):
+    def version(self) -> str:
+        """The OrbitX version used to create this object
+
+        Returns:
+            str: The OrbitX version used to create this object
+        """
         return self.matchups.attrs["version"]

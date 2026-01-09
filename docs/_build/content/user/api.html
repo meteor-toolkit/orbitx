@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=34976460"></script>
+    <script src="../../_static/documentation_options.js?v=4866ad6f"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -45,8 +45,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'content/user/api';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="orbitx.Orbit" href="generated/orbitx.Orbit.html" />
-    <link rel="prev" title="Algorithm Theoretical Basis Documentation" href="atbd.html" />
+    <link rel="next" title="orbitx.TLE" href="generated/orbitx.TLE.html" />
+    <link rel="prev" title="Using OrbitX in parallel" href="parallel.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -159,11 +159,17 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">For users</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="user_guide.html">User Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matchup.html">Finding matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orbit.html">Generating orbits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tle.html">Reading TLEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parallel.html">Parallel programming</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="atbd.html">ATBD</a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.TLE.html">orbitx.TLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.TLE.from_sat_shortname.html">orbitx.TLE.from_sat_shortname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.TLE.from_filepath.html">orbitx.TLE.from_filepath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/orbitx.TLE.__len__.html">orbitx.TLE.__len__</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/orbitx.Orbit.html">orbitx.Orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/orbitx.Orbit.simulate.html">orbitx.Orbit.simulate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/orbitx.Orbit.from_netcdf.html">orbitx.Orbit.from_netcdf</a></li>
@@ -192,7 +198,27 @@
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._date_utils.datetime_to_datetime64.html">orbitx.utils._date_utils.datetime_to_datetime64</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._date_utils.datetime64_to_sec_since.html">orbitx.utils._date_utils.datetime64_to_sec_since</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._date_utils.sec_since_to_datetime64.html">orbitx.utils._date_utils.sec_since_to_datetime64</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.html">orbitx.utils._tle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.create_xarray.html">orbitx.utils._tle.create_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.filter_xarray.html">orbitx.utils._tle.filter_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_argument_perigee.html">orbitx.utils._tle.get_argument_perigee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_ballistic_coefficient.html">orbitx.utils._tle.get_ballistic_coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_catalog_number.html">orbitx.utils._tle.get_catalog_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_classification.html">orbitx.utils._tle.get_classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_drag_term.html">orbitx.utils._tle.get_drag_term</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_eccentricity.html">orbitx.utils._tle.get_eccentricity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_element_set_number.html">orbitx.utils._tle.get_element_set_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_inclination.html">orbitx.utils._tle.get_inclination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_launch_number.html">orbitx.utils._tle.get_launch_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_launch_piece.html">orbitx.utils._tle.get_launch_piece</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_launch_year.html">orbitx.utils._tle.get_launch_year</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_mean_anomaly.html">orbitx.utils._tle.get_mean_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_mean_motion.html">orbitx.utils._tle.get_mean_motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_revolution_number.html">orbitx.utils._tle.get_revolution_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_right_ascension.html">orbitx.utils._tle.get_right_ascension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_second_derivative.html">orbitx.utils._tle.get_second_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_tle_date.html">orbitx.utils._tle.get_tle_date</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.get_tle_path.html">orbitx.utils._tle.get_tle_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._tle.load_file.html">orbitx.utils._tle.load_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html">orbitx.utils._orbit.form_sample_space.form_sample_space</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html">orbitx.utils._orbit.get_matching_indices.get_matching_indices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.interp_circ.interp_circ.html">orbitx.utils._orbit.interp_circ.interp_circ</a></li>
@@ -201,11 +227,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.propagate_orbit.propagate_orbit.html">orbitx.utils._orbit.propagate_orbit.propagate_orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._orbit.simulate_orbit.simulate_orbit.html">orbitx.utils._orbit.simulate_orbit.simulate_orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.find_matches.find_matches.html">orbitx.utils._matchups.find_matches.find_matches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.get_delay.get_delay.html">orbitx.utils._matchups.get_delay.get_delay</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.get_dist.get_dist.html">orbitx.utils._matchups.get_dist.get_dist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask.html">orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.is_land.is_land.html">orbitx.utils._matchups.is_land.is_land</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.land_mask.land_mask.html">orbitx.utils._matchups.land_mask.land_mask</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/generated/orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray.html">orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray</a></li>
 </ul>
 </details></li>
 </ul>
@@ -365,6 +391,18 @@ For more details and examples, refer to the relevant chapters in the main part o
 documentation.</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.TLE.html#orbitx.TLE" title="orbitx.TLE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TLE</span></code></a>(tle_xarray)</p></td>
+<td><p>Class to retrieve satellite TLEs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.TLE.from_sat_shortname.html#orbitx.TLE.from_sat_shortname" title="orbitx.TLE.from_sat_shortname"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TLE.from_sat_shortname</span></code></a>(satellite_shortname, ...)</p></td>
+<td><p>Generates a TLE object from the satellite shortname</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.TLE.from_filepath.html#orbitx.TLE.from_filepath" title="orbitx.TLE.from_filepath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TLE.from_filepath</span></code></a>(tle_filepath, ...[, ...])</p></td>
+<td><p>Generates a TLE object from a TLE file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.TLE.__len__.html#orbitx.TLE.__len__" title="orbitx.TLE.__len__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TLE.__len__</span></code></a>()</p></td>
+<td><p>The number of TLEs included in this object</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.Orbit.html#orbitx.Orbit" title="orbitx.Orbit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Orbit</span></code></a>(orbit)</p></td>
 <td><p>Class to simulate satellite orbits</p></td>
 </tr>
@@ -386,17 +424,17 @@ documentation.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.Orbit.__eq__.html#orbitx.Orbit.__eq__" title="orbitx.Orbit.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Orbit.__eq__</span></code></a>(value)</p></td>
 <td><p>Checks if two orbit objects are identical</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.Matchups.html#orbitx.Matchups" title="orbitx.Matchups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Matchups</span></code></a>(satellites, start_date, end_date, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.Matchups.html#orbitx.Matchups" title="orbitx.Matchups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Matchups</span></code></a>(data)</p></td>
 <td><p>Class to find matchup events between multiple satellites</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.Matchups.find_matchups.html#orbitx.Matchups.find_matchups" title="orbitx.Matchups.find_matchups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Matchups.find_matchups</span></code></a>(satellites, ...[, ...])</p></td>
-<td><p>find_matchups Main generator for Matchups object</p></td>
+<td><p>Main generator for Matchups object</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.Matchups.from_netcdf.html#orbitx.Matchups.from_netcdf" title="orbitx.Matchups.from_netcdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Matchups.from_netcdf</span></code></a>(input_path)</p></td>
-<td><p>from_netcdf Loads a Matchup object from a netCDF4 file</p></td>
+<td><p>Loads a Matchup object from a netCDF4 file</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/orbitx.Matchups.to_netcdf.html#orbitx.Matchups.to_netcdf" title="orbitx.Matchups.to_netcdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Matchups.to_netcdf</span></code></a>(output_path)</p></td>
-<td><p>to_netcdf Exports a matchup object to a netcdf file</p></td>
+<td><p>Exports a matchup object to a netcdf file</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/orbitx.Matchups.plot.html#orbitx.Matchups.plot" title="orbitx.Matchups.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Matchups.plot</span></code></a>([projection])</p></td>
 <td><p>Plot the matchup dataset generated from orbitx.interface.return_matchups</p></td>
@@ -424,20 +462,20 @@ documentation.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="atbd.html"
+       href="parallel.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Algorithm Theoretical Basis Documentation</p>
+        <p class="prev-next-title">Using OrbitX in parallel</p>
       </div>
     </a>
     <a class="right-next"
-       href="generated/orbitx.Orbit.html"
+       href="generated/orbitx.TLE.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">orbitx.Orbit</p>
+        <p class="prev-next-title">orbitx.TLE</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

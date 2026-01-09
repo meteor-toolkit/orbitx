@@ -15,6 +15,11 @@ documentation.
 .. autosummary::
    :toctree: generated/
 
+   TLE
+   TLE.from_sat_shortname
+   TLE.from_filepath
+   TLE.__len__
+
    Orbit
    Orbit.simulate
    Orbit.from_netcdf

@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=34976460"></script>
+    <script src="../../_static/documentation_options.js?v=4866ad6f"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -158,11 +158,17 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">For users</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../content/user/user_guide.html">User Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../content/user/quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/matchup.html">Finding matchups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/orbit.html">Generating orbits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/tle.html">Reading TLEs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/parallel.html">Parallel programming</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="../../content/user/atbd.html">ATBD</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../content/user/api.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.TLE.html">orbitx.TLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.TLE.from_sat_shortname.html">orbitx.TLE.from_sat_shortname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.TLE.from_filepath.html">orbitx.TLE.from_filepath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.TLE.__len__.html">orbitx.TLE.__len__</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Orbit.html">orbitx.Orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Orbit.simulate.html">orbitx.Orbit.simulate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/user/generated/orbitx.Orbit.from_netcdf.html">orbitx.Orbit.from_netcdf</a></li>
@@ -191,7 +197,27 @@
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._date_utils.datetime_to_datetime64.html">orbitx.utils._date_utils.datetime_to_datetime64</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._date_utils.datetime64_to_sec_since.html">orbitx.utils._date_utils.datetime64_to_sec_since</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._date_utils.sec_since_to_datetime64.html">orbitx.utils._date_utils.sec_since_to_datetime64</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.html">orbitx.utils._tle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.create_xarray.html">orbitx.utils._tle.create_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.filter_xarray.html">orbitx.utils._tle.filter_xarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_argument_perigee.html">orbitx.utils._tle.get_argument_perigee</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_ballistic_coefficient.html">orbitx.utils._tle.get_ballistic_coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_catalog_number.html">orbitx.utils._tle.get_catalog_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_classification.html">orbitx.utils._tle.get_classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_drag_term.html">orbitx.utils._tle.get_drag_term</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_eccentricity.html">orbitx.utils._tle.get_eccentricity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_element_set_number.html">orbitx.utils._tle.get_element_set_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_inclination.html">orbitx.utils._tle.get_inclination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_launch_number.html">orbitx.utils._tle.get_launch_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_launch_piece.html">orbitx.utils._tle.get_launch_piece</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_launch_year.html">orbitx.utils._tle.get_launch_year</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_mean_anomaly.html">orbitx.utils._tle.get_mean_anomaly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_mean_motion.html">orbitx.utils._tle.get_mean_motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_revolution_number.html">orbitx.utils._tle.get_revolution_number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_right_ascension.html">orbitx.utils._tle.get_right_ascension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_second_derivative.html">orbitx.utils._tle.get_second_derivative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_tle_date.html">orbitx.utils._tle.get_tle_date</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.get_tle_path.html">orbitx.utils._tle.get_tle_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._tle.load_file.html">orbitx.utils._tle.load_file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.form_sample_space.form_sample_space.html">orbitx.utils._orbit.form_sample_space.form_sample_space</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.get_matching_indices.get_matching_indices.html">orbitx.utils._orbit.get_matching_indices.get_matching_indices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.interp_circ.interp_circ.html">orbitx.utils._orbit.interp_circ.interp_circ</a></li>
@@ -200,11 +226,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.propagate_orbit.propagate_orbit.html">orbitx.utils._orbit.propagate_orbit.propagate_orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._orbit.simulate_orbit.simulate_orbit.html">orbitx.utils._orbit.simulate_orbit.simulate_orbit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.find_matches.find_matches.html">orbitx.utils._matchups.find_matches.find_matches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.get_delay.get_delay.html">orbitx.utils._matchups.get_delay.get_delay</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.get_dist.get_dist.html">orbitx.utils._matchups.get_dist.get_dist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask.html">orbitx.utils._matchups.get_land_ocean_mask.get_land_ocean_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.is_land.is_land.html">orbitx.utils._matchups.is_land.is_land</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.land_mask.land_mask.html">orbitx.utils._matchups.land_mask.land_mask</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../content/developer/generated/orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray.html">orbitx.utils._matchups.matchup_dict_to_xarray.matchup_dict_to_xarray</a></li>
 </ul>
 </details></li>
 </ul>
@@ -321,6 +347,7 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.crs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ccrs</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.feature</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cfeature</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="sd">&quot;&quot;&quot;___NPL Modules___&quot;&quot;&quot;</span>
 
@@ -377,8 +404,8 @@ document.write(`
         <span class="n">end_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">,</span>
         <span class="n">propagation_sampling_interval</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">,</span>
         <span class="n">interpolation_sampling_interval</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">,</span>
-        <span class="n">reference_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s2">&quot;1970-01-01T00:00:00&quot;</span><span class="p">),</span>
-        <span class="n">custom_satellites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">reference_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s2">&quot;1970-01-01T00:00:00&quot;</span><span class="p">),</span>
+        <span class="n">custom_satellites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[],</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Main generator for the Orbit class</span>
 
@@ -387,20 +414,19 @@ document.write(`
 
 <span class="sd">        .. code-block:: bash</span>
 
-<span class="sd">            &quot;LS8&quot;: &quot;Landsat-8&quot;,</span>
-<span class="sd">            &quot;LS9&quot;: &quot;Landsat-9&quot;,</span>
-<span class="sd">            &quot;S2A&quot;: &quot;Sentinel-2A&quot;,</span>
-<span class="sd">            &quot;S2B&quot;: &quot;Sentinel-2B&quot;,</span>
-<span class="sd">            &quot;S3A&quot;: &quot;Sentinel-3A&quot;,</span>
-<span class="sd">            &quot;S3B&quot;: &quot;Sentinel-3B&quot;,</span>
-<span class="sd">            &quot;S6&quot;: &quot;Sentinel-6&quot;,</span>
-<span class="sd">            &quot;J2&quot;: &quot;JASON-2&quot;,</span>
-<span class="sd">            &quot;J3&quot;: &quot;JASON-3&quot;,</span>
-<span class="sd">            &quot;SA&quot;: &quot;Saral-AltiKa&quot;,</span>
-<span class="sd">            &quot;CS2&quot;: &quot;CryoSat-2&quot;,</span>
-<span class="sd">            &quot;LINCS2&quot;: &quot;Lin-CryoSat-2&quot;,</span>
-<span class="sd">            &quot;N20&quot;: &quot;NOAA-20&quot;</span>
-<span class="sd">        </span>
+<span class="sd">                &quot;CS2&quot;: &quot;CryoSat-2&quot;,</span>
+<span class="sd">                &quot;J2&quot;: &quot;JASON-2&quot;,</span>
+<span class="sd">                &quot;J3&quot;: &quot;JASON-3&quot;,</span>
+<span class="sd">                &quot;LS8&quot;: &quot;Landsat-8&quot;,</span>
+<span class="sd">                &quot;LS9&quot;: &quot;Landsat-9&quot;,</span>
+<span class="sd">                &quot;N20&quot;: &quot;NOAA-20&quot;,</span>
+<span class="sd">                &quot;S2A&quot;: &quot;Sentinel-2A&quot;,</span>
+<span class="sd">                &quot;S2B&quot;: &quot;Sentinel-2B&quot;,</span>
+<span class="sd">                &quot;S3A&quot;: &quot;Sentinel-3A&quot;,</span>
+<span class="sd">                &quot;S3B&quot;: &quot;Sentinel-3B&quot;,</span>
+<span class="sd">                &quot;S6&quot;: &quot;Sentinel-6&quot;,</span>
+<span class="sd">                &quot;SA&quot;: &quot;Saral-AltiKa&quot;</span>
+
 <span class="sd">        If the satellite you are interested in is not in this list, you may use the `custom_satellites` argument.</span>
 
 <span class="sd">        The simulation starts by finding relevant Two Line Elements (TLE).</span>
@@ -421,12 +447,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">orbit_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">sat</span> <span class="ow">in</span> <span class="n">satellites</span><span class="p">:</span>
-            <span class="n">tle</span> <span class="o">=</span> <span class="n">TLE</span><span class="o">.</span><span class="n">from_sat_shortname</span><span class="p">(</span>
-                <span class="n">sat</span><span class="p">,</span>
-                <span class="n">start_date</span><span class="p">,</span>
-                <span class="n">end_date</span><span class="p">,</span>
-                <span class="n">reference_date</span>
-            <span class="p">)</span>
+            <span class="n">tle</span> <span class="o">=</span> <span class="n">TLE</span><span class="o">.</span><span class="n">from_sat_shortname</span><span class="p">(</span><span class="n">sat</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">reference_date</span><span class="p">)</span>
             <span class="n">sat_secs_since</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">sat_lat_sim</span><span class="p">,</span> <span class="n">sat_lon_sim</span> <span class="o">=</span> <span class="n">simulate_orbit</span><span class="p">(</span>
                 <span class="n">start_date</span><span class="p">,</span>
                 <span class="n">end_date</span><span class="p">,</span>
@@ -445,17 +466,25 @@ document.write(`
                 <span class="n">reference_date</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">orbit_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span><span class="n">sat</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span> <span class="s2">&quot;time_datetime&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">}}</span>
+                <span class="p">{</span>
+                    <span class="n">sat</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span>
+                        <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span>
+                        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span>
+                        <span class="s2">&quot;time_datetime&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+                        <span class="s2">&quot;satellite_name&quot;</span><span class="p">:</span> <span class="n">tle</span><span class="o">.</span><span class="n">satellite_name</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
             <span class="p">)</span>
-        
-        <span class="k">for</span> <span class="n">sat</span> <span class="ow">in</span> <span class="n">custom_satellites</span><span class="p">:</span>
+
+        <span class="k">for</span> <span class="n">sat_dict</span> <span class="ow">in</span> <span class="n">custom_satellites</span><span class="p">:</span>
             <span class="n">tle</span> <span class="o">=</span> <span class="n">TLE</span><span class="o">.</span><span class="n">from_filepath</span><span class="p">(</span>
-                <span class="n">sat</span><span class="p">[</span><span class="s2">&quot;tle_filepath&quot;</span><span class="p">],</span>
-                <span class="n">sat</span><span class="p">[</span><span class="s2">&quot;satellite_shortname&quot;</span><span class="p">],</span>
-                <span class="n">sat</span><span class="p">[</span><span class="s2">&quot;satellite_name&quot;</span><span class="p">],</span>
+                <span class="n">sat_dict</span><span class="p">[</span><span class="s2">&quot;tle_filepath&quot;</span><span class="p">],</span>
+                <span class="n">sat_dict</span><span class="p">[</span><span class="s2">&quot;satellite_shortname&quot;</span><span class="p">],</span>
+                <span class="n">sat_dict</span><span class="p">[</span><span class="s2">&quot;satellite_name&quot;</span><span class="p">],</span>
                 <span class="n">start_date</span><span class="p">,</span>
                 <span class="n">end_date</span><span class="p">,</span>
-                <span class="n">reference_date</span>
+                <span class="n">reference_date</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">sat_secs_since</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">sat_lat_sim</span><span class="p">,</span> <span class="n">sat_lon_sim</span> <span class="o">=</span> <span class="n">simulate_orbit</span><span class="p">(</span>
                 <span class="n">start_date</span><span class="p">,</span>
@@ -475,7 +504,15 @@ document.write(`
                 <span class="n">reference_date</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">orbit_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span><span class="n">sat</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span> <span class="s2">&quot;time_datetime&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">}}</span>
+                <span class="p">{</span>
+                    <span class="n">sat_dict</span><span class="p">[</span><span class="s2">&quot;satellite_shortname&quot;</span><span class="p">]:</span> <span class="p">{</span>
+                        <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span>
+                        <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span>
+                        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span>
+                        <span class="s2">&quot;time_datetime&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+                        <span class="s2">&quot;satellite_name&quot;</span><span class="p">:</span> <span class="n">tle</span><span class="o">.</span><span class="n">satellite_name</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
             <span class="p">)</span>
 
         <span class="n">orbit</span> <span class="o">=</span> <span class="n">orbit_dict_to_xarray</span><span class="p">(</span>
@@ -506,8 +543,22 @@ document.write(`
         <span class="n">orbit_xarray</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
             <span class="n">input_path</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;netcdf4&quot;</span><span class="p">,</span> <span class="n">decode_times</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">decode_timedelta</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
-        <span class="n">orbit_xarray</span><span class="p">[</span><span class="s2">&quot;reference_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">orbit_xarray</span><span class="p">[</span><span class="s2">&quot;reference_date&quot;</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;datetime64[s]&quot;</span><span class="p">)</span>
-        <span class="n">orbit_xarray</span><span class="p">[</span><span class="s2">&quot;time_datetime&quot;</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">orbit_xarray</span><span class="p">[</span><span class="s2">&quot;time_datetime&quot;</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;datetime64[s]&quot;</span><span class="p">)</span>
+        <span class="n">orbit_xarray</span><span class="p">[</span><span class="s2">&quot;reference_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="n">orbit_xarray</span><span class="p">[</span><span class="s2">&quot;reference_date&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;datetime64[s]&quot;</span>
+        <span class="p">)</span>
+        <span class="n">orbit_xarray</span><span class="p">[</span><span class="s2">&quot;time_datetime&quot;</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="n">orbit_xarray</span><span class="p">[</span><span class="s2">&quot;time_datetime&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;datetime64[s]&quot;</span>
+        <span class="p">)</span>
+        <span class="n">reference_date</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span> <span class="o">=</span> <span class="n">orbit_xarray</span><span class="p">[</span><span class="s2">&quot;reference_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">orbit_xarray</span> <span class="o">=</span> <span class="n">orbit_xarray</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span>
+            <span class="n">time</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">datetime64_to_sec_since</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="n">reference_date</span><span class="o">=</span><span class="n">reference_date</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">datetime</span> <span class="ow">in</span> <span class="n">orbit_xarray</span><span class="p">[</span><span class="s2">&quot;time_datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+                <span class="p">],</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">orbit_xarray</span><span class="p">,</span>
         <span class="p">)</span></div>
@@ -522,9 +573,24 @@ document.write(`
 <span class="sd">        :type output_path: str</span>
 <span class="sd">        :return: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">satellites_part</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">satellites</span><span class="p">)</span>
+        <span class="n">satellites_part</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">satellite_shortname</span><span class="p">)</span>
         <span class="n">date_part</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">datetime_as_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;D&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">datetime_as_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_date</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;D&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">sampling_part</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;psi</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">propagation_sampling_interval</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="si">}</span><span class="s2">_isi</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolation_sampling_interval</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">propagation_sampling_interval_timedelta</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">propagation_sampling_interval</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">propagation_sampling_interval_float</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">propagation_sampling_interval_timedelta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="n">interpolation_sampling_interval_timedelta</span><span class="p">:</span> <span class="n">timedelta</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interpolation_sampling_interval</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">interpolation_sampling_interval_float</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">interpolation_sampling_interval_timedelta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="n">sampling_part</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;psi</span><span class="si">{</span><span class="n">propagation_sampling_interval_float</span><span class="si">}</span><span class="s2">_isi</span><span class="si">{</span><span class="n">interpolation_sampling_interval_float</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">date_part</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">sampling_part</span><span class="si">}</span><span class="s2">_orbit_</span><span class="si">{</span><span class="n">satellites_part</span><span class="si">}</span><span class="s2">.nc&quot;</span>
 
         <span class="c1"># Save as netCDF4</span>
@@ -544,10 +610,10 @@ document.write(`
         <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">LAND</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">sat_index</span><span class="p">,</span> <span class="n">sat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">satellites</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">sat_index</span><span class="p">,</span> <span class="n">sat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">satellite_shortname</span><span class="p">):</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">orbits</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;lon&quot;</span><span class="p">][:,</span> <span class="n">sat_index</span><span class="p">],</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">orbits</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;lat&quot;</span><span class="p">][:,</span> <span class="n">sat_index</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">orbits</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">satellite</span><span class="o">=</span><span class="n">sat_index</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">orbits</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">satellite</span><span class="o">=</span><span class="n">sat_index</span><span class="p">),</span>
                 <span class="n">label</span><span class="o">=</span><span class="n">SATELLITE_DICT</span><span class="p">[</span><span class="n">sat</span><span class="p">],</span>
                 <span class="n">transform</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
                 <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
@@ -570,7 +636,7 @@ document.write(`
 
 <div class="viewcode-block" id="Orbit.__eq__">
 <a class="viewcode-back" href="../../content/user/generated/orbitx.Orbit.__eq__.html#orbitx.Orbit.__eq__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Orbit&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if two orbit objects are identical</span>
 
 <span class="sd">        :param value: Orbit object to be compared to</span>
@@ -579,9 +645,9 @@ document.write(`
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Orbit</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="n">res</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">satellites</span> <span class="o">==</span> <span class="n">value</span><span class="o">.</span><span class="n">satellites</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">satellite_name</span> <span class="o">==</span> <span class="n">value</span><span class="o">.</span><span class="n">satellite_name</span><span class="p">))</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span> <span class="o">==</span> <span class="n">value</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_date</span> <span class="o">==</span> <span class="n">value</span><span class="o">.</span><span class="n">end_date</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="p">(</span>
@@ -596,88 +662,140 @@ document.write(`
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Orbit object for satellites </span><span class="si">{</span><span class="p">[</span><span class="n">sat</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">sat</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">satellites</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Orbit object for satellites </span><span class="si">{</span><span class="p">[</span><span class="n">sat</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">sat</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">satellite_name</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span>
 <span class="s2">Start date: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="si">}</span>
 <span class="s2">End date: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">end_date</span><span class="si">}</span>
 <span class="s2">Propagation sampling interval: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">propagation_sampling_interval</span><span class="si">}</span>
 <span class="s2">Interpolation sampling interval: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolation_sampling_interval</span><span class="si">}</span>
 <span class="s2">Reference date used to represent time in seconds since: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">reference_date</span><span class="si">}</span>
-<span class="s2">Number of simulated times: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Number of simulated times: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">Created on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">creation_date</span><span class="si">}</span><span class="s2"> using the version </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2"> of orbitx.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">res</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">satellites</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :return: Satellites which the orbits are computed for</span>
-<span class="sd">        :rtype: List[str]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">satellite_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Long name (e.g., Sentinel-6) of the satellites which the orbits are computed for</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[str]: Long name of the satellites which the orbits are computed for</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;satellites&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;satellite_name&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">start_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :return: Date from which the orbits are computed</span>
-<span class="sd">        :rtype: np.datetime64</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">satellite_shortname</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Short name (e.g., S6) of the satellites which the orbits are computed for</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[str]: Short name (e.g., S6) of the satellites which the orbits are computed for</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;satellite_shortname&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Date from which the orbits are computed</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            npt.NDArray[np.datetime64]: Date from which the orbits are computed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
             <span class="n">sec_since_to_datetime64</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;start_date&quot;</span><span class="p">],</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">reference_date</span>
-            <span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;datetime64[s]&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;start_date&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_date</span>
+            <span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;datetime64[s]&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">end_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :return: Date until which the orbits are computed</span>
-<span class="sd">        :rtype: np.datetime64</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">end_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Date until which the orbits are computed</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            npt.NDArray[np.datetime64]: Date until which the orbits are computed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
             <span class="n">sec_since_to_datetime64</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;end_date&quot;</span><span class="p">],</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">reference_date</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;datetime64[s]&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;end_date&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_date</span>
+            <span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;datetime64[s]&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">propagation_sampling_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">propagation_sampling_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The time delta between each physics-based simulations of the satellite orbit</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            npt.NDArray[np.timedelta64]: The time delta between each physics-based simulations of the satellite orbit</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;propagation_sampling_interval&quot;</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;timedelta64[s]&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;propagation_sampling_interval&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;timedelta64[s]&quot;</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">interpolation_sampling_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The time delta between each interpolated position of the satellite orbit&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;interpolation_sampling_interval&quot;</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;timedelta64[s]&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interpolation_sampling_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The time delta between each interpolated position of the satellite orbit</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            npt.NDArray[np.timedelta64]: The time delta between each interpolated position of the satellite orbit</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;interpolation_sampling_interval&quot;</span><span class="p">],</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;timedelta64[s]&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The version of orbitx used to create this object</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The version of orbitx used to create this object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">creation_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The date when this object was created</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The date when this object was created</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;creation_date&quot;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">orbits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The xarray containing all the satellite orbits.</span>
 <span class="sd">        The structure of the array is as follows:</span>
-<span class="sd">        </span>
+
 <span class="sd">        .. code-block::</span>
-<span class="sd">        </span>
+
 <span class="sd">            &lt;xarray.Dataset&gt; Size: 415kB</span>
-<span class="sd">            Dimensions:         (time: 8641, satellites: 2)</span>
+<span class="sd">            Dimensions:         (time: 8641, satellite: 2)</span>
 <span class="sd">            Coordinates:</span>
 <span class="sd">            * time            (time) float64 69kB 6.338e+08 6.338e+08 ... 6.339e+08</span>
-<span class="sd">            * satellites      (satellites) &lt;U2 16B &#39;S6&#39; &#39;SA&#39;</span>
+<span class="sd">            * satellite       (satellite) &lt;U2 16B &#39;S6&#39; &#39;SA&#39;</span>
 <span class="sd">            Data variables:</span>
 <span class="sd">                reference_date  datetime64[s] 8B 2000-01-01</span>
 <span class="sd">                time_datetime   (time) datetime64[s] 69kB 2020-02-01 ... 2020-02-01T12:00:00</span>
-<span class="sd">                lat             (time, satellites) float64 138kB 13.25 -74.64 ... -46.37</span>
-<span class="sd">                lon             (time, satellites) float64 138kB 171.5 -124.0 ... -81.99</span>
+<span class="sd">                lat             (time, satellite) float64 138kB 13.25 -74.64 ... -46.37</span>
+<span class="sd">                lon             (time, satellite) float64 138kB 171.5 -124.0 ... -81.99</span>
 <span class="sd">            Attributes:</span>
-<span class="sd">                satellites:                       [&#39;S6&#39;, &#39;SA&#39;]</span>
+<span class="sd">                satellite_shortname:              [&#39;S6&#39;, &#39;SA&#39;]</span>
+<span class="sd">                satellite_name:                   [&#39;Sentinel-6&#39;, &#39;Saral-AltiKa&#39;]</span>
 <span class="sd">                start_date:                       633830400.0</span>
 <span class="sd">                end_date:                         633873600.0</span>
 <span class="sd">                propagation_sampling_interval:    20</span>
 <span class="sd">                interpolation_sampling_interval:  5</span>
+<span class="sd">                version:                          1.0</span>
+<span class="sd">                creation_date:                    2026-01-06T13:20:34</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">reference_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The reference date used for the representation of time in seconds since reference date&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reference_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The reference date used for the representation of time in seconds since reference date</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            npt.NDArray[np.datetime64]: The reference date used for the representation of time in seconds since reference date</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orbits</span><span class="p">[</span><span class="s2">&quot;reference_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span></div>
 
 </pre></div>

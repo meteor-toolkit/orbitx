@@ -24,7 +24,7 @@ __all__ = ["get_delay"]
 def get_delay(
     existing_orbits: xr.Dataset, new_orbit: xr.Dataset
 ) -> npt.NDArray[np.float64]:
-    """Calculate the largest delay in seconds
+    """Calculate the delay in seconds
     between a collection of orbits and a new orbit at each time stamp
 
     Args:
@@ -32,7 +32,7 @@ def get_delay(
         new_orbit (xr.Dataset): the new orbit
 
     Returns:
-        np.array: at each matchup, the maximal delay between the new orbit and the existing orbits
+        np.array: at each matchup, the delay between the new orbit and the existing orbits
     """
     # compute the lat and lon difference
     delay: npt.NDArray[np.float64] = np.abs(
