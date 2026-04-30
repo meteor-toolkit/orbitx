@@ -71,7 +71,7 @@ release = orbitx.__version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -92,7 +92,7 @@ todo_include_todos = False
 #
 html_theme = "sphinx_book_theme"
 
-html_logo = "orbitx_name.png"
+html_logo = "_static/orbitx_name.png"
 html_title = "orbitx"
 
 # Theme options are theme-specific and customize the look and feel of a

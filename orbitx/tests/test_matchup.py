@@ -2,88 +2,67 @@
 
 import unittest
 import unittest.mock as mock
+import os
 
 import numpy as np
-import datetime as dt
+import xarray as xr
 
-from orbitx.matchup import Matchups, get_range, get_distance, get_dist
+from orbitx import Matchups
+from orbitx.utils._matchups.get_dist import get_dist
+from orbitx import Orbit
 
 __author__ = "Mattea Goalen <mattea.goalen@npl.co.uk>"
 
 
 class TestMatchups(unittest.TestCase):
-    def test_get_range(self):
-        array_1 = np.array([1, 2, 5, 3, 6, 7])
-        array_2 = np.array([4, 6, 2, 4, 6, 2])
-        array_3 = np.array([5, 4, 2, 9, 4, 3])
-        output_array = np.array([4, 4, 3, 6, 2, 4])
-        np.array_equal(get_range(array_1, array_2, array_3), output_array)
-
-    def test_get_dist(self):
-        input_1 = (40, 60)
-        input_2 = (50, 70)
-
-        self.assertEqual(round(get_dist(*input_1, *input_2), 3), 1203.538)
-
-    def test_get_distance(self):
-        lon1 = np.array([40, 45, 50, 55, 60])
-        lat1 = np.array([60, 65, 70, 75, 80])
-        lon2 = np.array([50, 55, 60, 65, 70])
-        lat2 = np.array([70, 75, 80, 85, 90])
-
-        np.array_equal(
-            get_distance(lon1, lat1, lon2, lat2).round(3),
-            np.array([1203.538, 1171.348, 1144.580, 1124.453, 1111.949]),
+    def test_from_orbit(self):
+        satellites = ["CS2", "J3"]
+        start_date = np.datetime64("2012-01-01T00:00:00")
+        end_date = np.datetime64("2012-01-01T12:00:00")
+        propagation_sampling_interval = np.array(60, dtype="timedelta64[s]")
+        interpolation_sampling_interval = np.array(5, dtype="timedelta64[s]")
+        time_diff_threshold = np.array(900, dtype="timedelta64[s]")
+        space_diff_threshold = 290
+        check_before = False
+        check_after = False
+        has_land_ocean_mask = False
+        orbit = Orbit.simulate(
+            satellites=satellites,
+            start_date=start_date,
+            end_date=end_date,
+            propagation_sampling_interval=propagation_sampling_interval,
+            interpolation_sampling_interval=interpolation_sampling_interval,
+            reference_date=np.datetime64("1970-01-01T00:00:00"),
         )
+        orbit_ds = orbit.orbits
 
-    @mock.patch("orbitx.matchup.Matchups.to_ds")
-    @mock.patch("orbitx.matchup.get_distance")
-    def test_matchup(self, mock_get_dist, mock_to_ds):
-        def mock_get_distance(lon1, lat1, lon2, lat2):
-            dlon = abs(lon1 - lon2)
-            dlat = abs(lat1 - lat2)
-            return dlon + dlat
-
-        mock_get_dist.side_effect = np.vectorize(mock_get_distance)
-
-        input_orbits = {
-            "S3A": {
-                "lat": np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-                "lon": np.array([3, 2, 0, 3, 6, 5, 8, 6, 10, 11]),
-                "time": [float(i) for i in np.arange(10)],
-            },
-            "LS8": {
-                "lat": np.array([1, 3, 5, 7, 9, 11, 13, 15, 17, 19]),
-                "lon": np.array([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6]),
-                "time": [float(i) for i in np.arange(10)],
-            },
-        }
-        time_diff_threshold = 3
-        cntr2cntr_dist = 4
-        matchup = Matchups()
-        matchup.matchup(input_orbits, time_diff_threshold, cntr2cntr_dist)
-
-        mock_to_ds.assert_called_with(
-            {
-                "S3A_LS8": {
-                    "lat1": np.array([3.0]),
-                    "lon1": np.array([0.0]),
-                    "lat2": np.array([7.0]),
-                    "lon2": np.array([0.0]),
-                    "delay": np.array([-1.0]),
-                    "time": np.array([dt.datetime(1970, 1, 1, 0, 0, 2)], dtype=object),
-                    "distance": np.array([4.0]),
-                }
-            },
-            {
-                "time_threshold": 3,
-                "distance_threshold": 4,
-                "interpolation_sampling_interval": 1.0,
-            },
+        matchups = Matchups.from_orbit(
+            orbit=orbit,
+            start_date=start_date,
+            end_date=end_date,
+            space_diff_threshold=space_diff_threshold,
+            time_diff_threshold=time_diff_threshold,
+            check_after=check_after,
+            check_before=check_before,
+            has_land_ocean_mask=has_land_ocean_mask,
         )
+        matchups_ds = matchups.matchups
 
-    def test_to_ds(self):
-        pass
+        for sat in satellites:
+            matchup_sat = matchups_ds.sel(satellite=sat)
+            orbit_sat = orbit_ds.sel(satellite=sat)
+            match_time = matchup_sat["time"].values
+            orbit_time = orbit_sat["time"].values
+            self.assertTrue(np.all([mtime in orbit_time for mtime in match_time]))
+            for matchup_index in matchups_ds["matchup_index"].values:
+                time = match_time[matchup_index]
+                lat_match = matchup_sat.sel(matchup_index=matchup_index)["lat"].values
+                lon_match = matchup_sat.sel(matchup_index=matchup_index)["lon"].values
+
+                lat_orbit = orbit_sat.sel(time=time)["lat"].values
+                lon_orbit = orbit_sat.sel(time=time)["lon"].values
+                np.testing.assert_almost_equal(lat_match, lat_orbit)
+                np.testing.assert_almost_equal(lon_match, lon_orbit)
 
 
 if __name__ == "__main__":

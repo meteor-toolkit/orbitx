@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=80", "wheel", "versioneer"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "orbitx"
+dynamic = ["version"]
+description = "Propagate satellite orbits to identify matchups."
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+  {name = "Sajedeh Behnia", email = "sajedeh.behnia@npl.co.uk"}
+]
+license = "MIT AND (Apache-2.0 OR BSD-2-Clause)"
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Natural Language :: English"
+]
+dependencies = [
+    "numpy==2.3.1",
+    "scipy==1.16.0",
+    "Cartopy==0.24.1",
+    "matplotlib==3.10.3",
+    "netCDF4==1.7.2",
+    "xarray==2025.7.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "black[jupyter]",
+    "build",
+    "ipython",
+    "mypy",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+    "pytest-html",
+    "setuptools",
+    "sphinx",
+    "sphinx_book_theme",
+    "sphinx_design",
+    "tox",
+    "twine",
+]
+
+[project.urls]
+Homepage = "https://gitlab.npl.co.uk/altimetry/orbitx"
+
+[tool.black]
+line-length = 88
+
+[tool.setuptools]
+py-modules = []
+packages = ["orbitx"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+orbitx = [    
+    "data/orekit-data.zip",
+    "data/tle/*",
+    "data/land_mask/ne_50m_land.shp",
+]
