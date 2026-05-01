@@ -18,8 +18,7 @@ import numpy as np
 from ._version import get_versions
 import os
 from typing import Optional
-import orekit
-from orekit.pyhelpers import setup_orekit_curdir
+from orbitx.deps import init_orekit
 
 
 __version__ = get_versions()["version"]
@@ -72,11 +71,4 @@ def add_to_tle_path(new_tle_path: str, prepend: bool = True) -> None:
 
 
 def setup_orekit(orekit_data_path: Optional[str] = None) -> None:
-    vm = orekit.initVM()
-    if orekit_data_path:
-        setup_orekit_curdir(filename=orekit_data_path)
-    else:
-        setup_orekit_curdir()
-
-
-setup_orekit(os.path.join(data_directory, "orekit-data.zip"))
+    init_orekit(data_path=orekit_data_path)

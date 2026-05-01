@@ -55,15 +55,15 @@ class TestInit(unittest.TestCase):
             ],
         )
 
-    @mock.patch("orbitx.setup_orekit_curdir")
-    def test_setup_orekit_none(self, mock_setup):
+    @mock.patch("orbitx.deps.init_orekit")
+    def test_setup_orekit_none(self, mock_init):
         setup_orekit()
-        mock_setup.assert_called_with()
+        mock_init.assert_called_with(data_path=None)
 
-    @mock.patch("orbitx.setup_orekit_curdir")
-    def test_setup_orekit_path(self, mock_setup):
+    @mock.patch("orbitx.deps.init_orekit")
+    def test_setup_orekit_path(self, mock_init):
         setup_orekit("path_to_file")
-        mock_setup.assert_called_with(filename="path_to_file")
+        mock_init.assert_called_with(data_path="path_to_file")
 
 
 if __name__ == "__main__":
