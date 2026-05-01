@@ -65,5 +65,124 @@ class TestMatchups(unittest.TestCase):
                 np.testing.assert_almost_equal(lon_match, lon_orbit)
 
 
+class TestMatchupsEvents(unittest.TestCase):
+    """Tests for Matchups.events — uses synthetic data, no orekit required."""
+
+    _ATTRS = {
+        "satellite_name": ["Sat1", "Sat2"],
+        "satellite_shortname": ["S1", "S2"],
+        "start_date": 0.0,
+        "end_date": 86400.0,
+        "time_diff_threshold": 900,
+        "space_diff_threshold": 290.0,
+        "check_before": 0,
+        "check_after": 0,
+        "has_land_ocean_mask": 0,
+        "creation_date": "2024-01-01",
+        "version": "test",
+    }
+
+    def _make_matchups(self, times_sat1, times_sat2, lats, lons):
+        n = len(times_sat1)
+        time_datetime = np.stack([times_sat1, times_sat2], axis=1)
+        ds = xr.Dataset(
+            {
+                "time_datetime": (["matchup_index", "satellite"], time_datetime),
+                "lat": (["matchup_index", "satellite"], lats),
+                "lon": (["matchup_index", "satellite"], lons),
+                "reference_date": np.datetime64("1970-01-01T00:00:00"),
+            },
+            coords={"matchup_index": np.arange(n), "satellite": ["S1", "S2"]},
+            attrs=self._ATTRS,
+        )
+        data = xr.DataTree()
+        data["matchups"] = xr.DataTree(dataset=ds)
+        data["orbits"] = xr.DataTree()
+        return Matchups(data)
+
+    def _make_empty_matchups(self):
+        ds = xr.Dataset(
+            {
+                "time_datetime": (
+                    ["matchup_index", "satellite"],
+                    np.empty((0, 2), dtype="datetime64[s]"),
+                ),
+                "lat": (["matchup_index", "satellite"], np.empty((0, 2))),
+                "lon": (["matchup_index", "satellite"], np.empty((0, 2))),
+                "reference_date": np.datetime64("1970-01-01T00:00:00"),
+            },
+            coords={"matchup_index": np.arange(0), "satellite": ["S1", "S2"]},
+            attrs=self._ATTRS,
+        )
+        data = xr.DataTree()
+        data["matchups"] = xr.DataTree(dataset=ds)
+        data["orbits"] = xr.DataTree()
+        return Matchups(data)
+
+    def test_events_empty(self):
+        m = self._make_empty_matchups()
+        self.assertEqual(m.events, [])
+
+    def test_events_single_event(self):
+        t0 = np.datetime64("2020-01-01T00:00:00")
+        times_sat1 = np.array([t0, t0 + np.timedelta64(2, "m"), t0 + np.timedelta64(4, "m")])
+        times_sat2 = np.array([t0 + np.timedelta64(5, "m"), t0 + np.timedelta64(7, "m"), t0 + np.timedelta64(9, "m")])
+        lats = np.array([[40.0, 41.0], [41.0, 42.0], [42.0, 43.0]])
+        lons = np.array([[10.0, 11.0], [11.0, 12.0], [12.0, 13.0]])
+        m = self._make_matchups(times_sat1, times_sat2, lats, lons)
+
+        events = m.events
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["start_time"], t0)
+        self.assertEqual(events[0]["stop_time"], t0 + np.timedelta64(9, "m"))
+        self.assertEqual(events[0]["bbox"], (10.0, 40.0, 13.0, 43.0))
+        self.assertEqual(events[0]["n_matchups"], 3)
+        self.assertFalse(events[0]["crosses_antimeridian"])
+
+    def test_events_crosses_antimeridian(self):
+        t0 = np.datetime64("2020-01-01T00:00:00")
+        times_sat1 = np.array([t0, t0 + np.timedelta64(2, "m")])
+        times_sat2 = np.array([t0 + np.timedelta64(5, "m"), t0 + np.timedelta64(7, "m")])
+        lats = np.array([[10.0, 11.0], [11.0, 12.0]])
+        lons = np.array([[-179.0, 179.0], [-178.0, 178.0]])
+        m = self._make_matchups(times_sat1, times_sat2, lats, lons)
+
+        self.assertTrue(m.events[0]["crosses_antimeridian"])
+
+    def test_events_multiple_events(self):
+        t0 = np.datetime64("2020-01-01T00:00:00")
+        t1 = t0 + np.timedelta64(2, "h")
+        times_sat1 = np.array([t0, t0 + np.timedelta64(5, "m"), t1, t1 + np.timedelta64(5, "m")])
+        times_sat2 = np.array([t0 + np.timedelta64(3, "m"), t0 + np.timedelta64(8, "m"), t1 + np.timedelta64(3, "m"), t1 + np.timedelta64(8, "m")])
+        lats = np.array([[40.0, 41.0], [41.0, 42.0], [50.0, 51.0], [51.0, 52.0]])
+        lons = np.array([[10.0, 11.0], [11.0, 12.0], [20.0, 21.0], [21.0, 22.0]])
+        m = self._make_matchups(times_sat1, times_sat2, lats, lons)
+
+        events = m.events
+        self.assertEqual(len(events), 2)
+
+        self.assertEqual(events[0]["start_time"], t0)
+        self.assertEqual(events[0]["stop_time"], t0 + np.timedelta64(8, "m"))
+        self.assertEqual(events[0]["bbox"], (10.0, 40.0, 12.0, 42.0))
+        self.assertEqual(events[0]["n_matchups"], 2)
+        self.assertFalse(events[0]["crosses_antimeridian"])
+
+        self.assertEqual(events[1]["start_time"], t1)
+        self.assertEqual(events[1]["stop_time"], t1 + np.timedelta64(8, "m"))
+        self.assertEqual(events[1]["bbox"], (20.0, 50.0, 22.0, 52.0))
+        self.assertEqual(events[1]["n_matchups"], 2)
+        self.assertFalse(events[1]["crosses_antimeridian"])
+
+    def test_events_cached(self):
+        t0 = np.datetime64("2020-01-01T00:00:00")
+        times_sat1 = np.array([t0, t0 + np.timedelta64(2, "m")])
+        times_sat2 = np.array([t0 + np.timedelta64(5, "m"), t0 + np.timedelta64(7, "m")])
+        lats = np.array([[40.0, 41.0], [41.0, 42.0]])
+        lons = np.array([[10.0, 11.0], [11.0, 12.0]])
+        m = self._make_matchups(times_sat1, times_sat2, lats, lons)
+
+        self.assertIs(m.events, m.events)
+
+
 if __name__ == "__main__":
     unittest.main()

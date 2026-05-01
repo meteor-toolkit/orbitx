@@ -19,6 +19,7 @@ from orbitx.utils._orbit.interpolate_orbit import interpolate_orbit
 from orbitx.utils._orbit.orbit_dict_to_xarray import orbit_dict_to_xarray
 from orbitx.utils._constants import CM, SATELLITE_DICT
 from orbitx.utils._date_utils import datetime64_to_sec_since, sec_since_to_datetime64
+from orbitx.utils._xarray_utils import ds_approx_equal
 from orbitx.tle import TLE
 
 """___Authorship___"""
@@ -297,7 +298,7 @@ class Orbit:
             self.interpolation_sampling_interval
             == value.interpolation_sampling_interval
         )
-        res = res and (self.orbits.equals(value.orbits))
+        res = res and ds_approx_equal(self.orbits, value.orbits)
         return res
 
     def __str__(self):
