@@ -6,8 +6,7 @@ import os
 import xarray as xr
 import numpy.typing as npt
 from matplotlib import pyplot as plt
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
+from orbitx.deps import lazy_cartopy
 import numpy as np
 from datetime import timedelta
 
@@ -246,12 +245,15 @@ class Orbit:
         # Save as netCDF4
         self.orbits.to_netcdf(os.path.join(output_path, filename))
 
-    def plot(self, projection=ccrs.PlateCarree()) -> plt.Figure:
+    def plot(self, projection=None) -> plt.Figure:
         """
         Plots the simulated orbits
 
         :param projection: cartopy.crs projection to use to plot, defaults to cartopy.crs.PlateCarree()
         """
+        crs, cfeature = lazy_cartopy()
+        if projection is None:
+            projection = crs.PlateCarree()
         fig = plt.figure(figsize=(16 * CM, 9 * CM), dpi=400)
         ax = fig.add_subplot(1, 1, 1, projection=projection)
         ax.coastlines()

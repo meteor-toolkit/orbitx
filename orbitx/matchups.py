@@ -4,9 +4,8 @@
 import numpy as np
 import xarray as xr
 from matplotlib import pyplot as plt
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-from typing import Optional, List, Dict, Tuple, TypedDict
+from orbitx.deps import lazy_cartopy
+from typing import Optional, List, Dict
 import numpy.typing as npt
 import os
 import netCDF4 as nc
@@ -345,13 +344,16 @@ class Matchups:
         matchup_output_copy: xr.DataTree = self._data.copy()
         matchup_output_copy.to_netcdf(os.path.join(output_path, filename))
 
-    def plot(self, projection=ccrs.PlateCarree(), show_events: bool = False) -> plt.Figure:
+    def plot(self, projection=None, show_events: bool = False) -> plt.Figure:
         """
         Plot the matchup dataset generated from orbitx.interface.return_matchups
 
         :param projection: cartopy.crs projection to use to plot, defaults to cartopy.crs.PlateCarree()
         :param show_events: if True, draw bounding boxes for each crossover event behind the matchup scatter points, defaults to False
         """
+        crs, cfeature = lazy_cartopy()
+        if projection is None:
+            projection = crs.PlateCarree()
         fig: plt.Figure = plt.figure(figsize=(16 * CM, 9 * CM), dpi=400)
         ax = fig.add_subplot(1, 1, 1, projection=projection)
         ax.coastlines()
