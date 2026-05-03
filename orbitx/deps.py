@@ -23,6 +23,18 @@ def lazy_orekit():
     return orekit
 
 
+def lazy_cartopy():
+    try:
+        import cartopy.crs as crs
+        import cartopy.feature as cfeature
+    except ModuleNotFoundError:
+        raise ModuleNotFoundError(
+            "Dependency 'cartopy' is required for plotting. "
+            "Please see the 'cartopy' instructions at: https://cartopy.readthedocs.io/stable/installing.html"
+        )
+    return crs, cfeature
+
+
 def init_orekit(data_path: str | None = None) -> None:
     global _initialised
     if _initialised:
