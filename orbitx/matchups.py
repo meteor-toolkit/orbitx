@@ -369,6 +369,52 @@ class Matchups:
         ax.legend(loc="lower right")
         return fig
 
+    def animate(
+        self,
+        trail_length: int = 15,
+        step: int = 6,
+        interval: Optional[int] = None,
+        projection=None,
+        start_time: Optional[np.datetime64] = None,
+        end_time: Optional[np.datetime64] = None,
+        duration: Optional[float] = None,
+        lat_limit: Optional[float] = None,
+        show_events: bool = True,
+    ):
+        """Animate satellite orbits with progressive matchup discovery.
+
+        Plays through the orbit time series showing a fading trail for each
+        satellite. Matchup points appear as darker-shaded dots when the animation
+        clock reaches their time, and event bounding boxes are drawn when their
+        last matchup point is reached.
+
+        :param trail_length: Trailing orbit positions shown per satellite. Defaults to 15.
+        :param step: Subsample every N orbit time steps (higher = faster playback). Defaults to 6.
+        :param interval: Milliseconds between frames. Mutually exclusive with ``duration``. Defaults to 50 ms if neither is given.
+        :param projection: Cartopy projection. Defaults to ``ccrs.PlateCarree()``.
+        :param start_time: Start of the animated time window. Defaults to the start of the orbit.
+        :param end_time: End of the animated time window. Defaults to the end of the orbit.
+        :param duration: Desired total video length in seconds. Mutually exclusive with ``interval``.
+        :param lat_limit: If given, the map is clipped symmetrically to ±``lat_limit`` degrees latitude, trimming the poles from view.
+        :param show_events: Whether to draw event bounding boxes when their stop time is reached. Defaults to True.
+        :return: Call ``.save()`` to export or display inline in a notebook with ``IPython.display.HTML(anim.to_jshtml())``.
+        :rtype: matplotlib.animation.FuncAnimation
+        """
+        from orbitx.utils._matchups.animate_matchups import animate_matchups
+
+        return animate_matchups(
+            self,
+            trail_length=trail_length,
+            step=step,
+            interval=interval,
+            projection=projection,
+            start_time=start_time,
+            end_time=end_time,
+            duration=duration,
+            lat_limit=lat_limit,
+            show_events=show_events,
+        )
+
     def __str__(self) -> str:
         result = f"""Matchup object with following attributes:
 Satellites considered: {self.satellite_name}
