@@ -15,6 +15,7 @@ from datetime import timedelta
 
 """__Built-In Modules__"""
 from orbitx import Orbit
+from typing import TypedDict, Tuple
 from orbitx.utils._matchups.find_matches import find_matches
 from orbitx.utils._matchups.get_land_ocean_mask import get_land_ocean_mask
 from orbitx.utils._constants import SATELLITE_DICT, CM
