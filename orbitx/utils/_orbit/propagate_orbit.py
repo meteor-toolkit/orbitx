@@ -10,23 +10,7 @@ import warnings
 import numbers
 from datetime import timedelta, datetime
 
-import orekit
-from org.orekit.frames import FramesFactory, TopocentricFrame
-from org.orekit.bodies import (
-    OneAxisEllipsoid,
-    GeodeticPoint,
-    CelestialBodyFactory,
-    FieldGeodeticPoint,
-)
-from org.orekit.time import TimeScalesFactory, AbsoluteDate
-from org.orekit.utils import (
-    IERSConventions,
-    Constants,
-    PVCoordinatesProvider,
-    TimeStampedFieldPVCoordinates,
-)
-from org.orekit.propagation.analytical.tle import TLE, TLEPropagator
-from orekit.pyhelpers import absolutedate_to_datetime
+from orbitx.deps import init_orekit, lazy_orekit
 
 """___NPL Modules___"""
 
@@ -80,7 +64,24 @@ def propagate_orbit(
     Returns:
         Tuple[ npt.NDArray[np.float64], npt.NDArray[np.datetime64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], ]: Tuple containing the date in seconds from 1970, the date in datetime, orbit latitude, longitude, altitude, elevation angle, and azimuth angle
     """
-    orekit.getVMEnv().attachCurrentThread()
+    init_orekit()
+    from org.orekit.frames import FramesFactory, TopocentricFrame
+    from org.orekit.bodies import (
+        OneAxisEllipsoid,
+        GeodeticPoint,
+        CelestialBodyFactory,
+        FieldGeodeticPoint,
+    )
+    from org.orekit.time import TimeScalesFactory, AbsoluteDate
+    from org.orekit.utils import (
+        IERSConventions,
+        Constants,
+        PVCoordinatesProvider,
+        TimeStampedFieldPVCoordinates,
+    )
+    from org.orekit.propagation.analytical.tle import TLE, TLEPropagator
+    from orekit.pyhelpers import absolutedate_to_datetime
+    lazy_orekit().getVMEnv().attachCurrentThread()
     extrap_date = AbsoluteDate(
         datetime64_get_year(start_date),
         datetime64_get_month(start_date),
