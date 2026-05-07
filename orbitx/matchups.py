@@ -18,6 +18,7 @@ from orbitx import Orbit
 from orbitx.utils._matchups.find_matches import find_matches
 from orbitx.utils._matchups.get_land_ocean_mask import get_land_ocean_mask
 from orbitx.utils._constants import SATELLITE_DICT, CM
+from orbitx.utils._xarray_utils import ds_approx_equal
 from orbitx.utils._date_utils import (
     sec_since_to_datetime64,
     datetime64_to_sec_since,
@@ -28,7 +29,15 @@ __author__ = [
     "Mattea Goalen <mattea.goalen@npl.co.uk>",
 ]
 
-__all__ = ["Matchups"]
+__all__ = ["Matchups", "MatchupEvent"]
+
+
+class MatchupEvent(TypedDict):
+    start_time: np.datetime64
+    stop_time: np.datetime64
+    bbox: Tuple[float, float, float, float]  # (min_lon, min_lat, max_lon, max_lat)
+    n_matchups: int
+    crosses_antimeridian: bool
 
 
 class Matchups:
@@ -38,6 +47,7 @@ class Matchups:
 
     def __init__(self, data: xr.DataTree):
         self._data = data
+        self._events: Optional[List[MatchupEvent]] = None
 
     @classmethod
     def find_matchups(
@@ -339,6 +349,7 @@ class Matchups:
         Plot the matchup dataset generated from orbitx.interface.return_matchups
 
         :param projection: cartopy.crs projection to use to plot, defaults to cartopy.crs.PlateCarree()
+        :param show_events: if True, draw bounding boxes for each crossover event behind the matchup scatter points, defaults to False
         """
         crs, cfeature = lazy_cartopy()
         if projection is None:
@@ -347,6 +358,25 @@ class Matchups:
         ax = fig.add_subplot(1, 1, 1, projection=projection)
         ax.coastlines()
         ax.add_feature(cfeature.LAND)
+
+        if show_events:
+            for event in self.events:
+                if event["crosses_antimeridian"]:
+                    continue
+                min_lon, min_lat, max_lon, max_lat = event["bbox"]
+                ax.add_patch(
+                    plt.Rectangle(
+                        xy=(min_lon, min_lat),
+                        width=max_lon - min_lon,
+                        height=max_lat - min_lat,
+                        transform=projection,
+                        linewidth=0.5,
+                        edgecolor="grey",
+                        facecolor="yellow",
+                        alpha=0.3,
+                        zorder=0,
+                    )
+                )
 
         time_diff_threshold_seconds = self.time_diff_threshold.item().total_seconds()
         mean_delay = np.array(
@@ -370,6 +400,11 @@ class Matchups:
         return fig
 
     def __str__(self) -> str:
+        events_line = (
+            f"Number of crossover events: {len(self._events)}.\n"
+            if self._events is not None
+            else ""
+        )
         result = f"""Matchup object with following attributes:
 Satellites considered: {self.satellite_name}
 Date from which matchups are looked for: {self.start_date}
@@ -380,7 +415,7 @@ Are matchups in which on of the satellites appears before the start date conside
 Are matchups in which on of the satellites appears after the end date considered? {self.check_after}
 Has this matchup a land/ocean mask? {self.has_land_ocean_mask}
 Number of matchups found: {len(self)}.
-Created on {self.creation_date} using the version {self.version} of orbitx.
+{events_line}Created on {self.creation_date} using the version {self.version} of orbitx.
 """
         return result
 
@@ -402,7 +437,7 @@ Created on {self.creation_date} using the version {self.version} of orbitx.
         res = res and (self.time_diff_threshold == other.time_diff_threshold)
         res = res and (self.space_diff_threshold == other.space_diff_threshold)
         res = res and (self.orbit == other.orbit)
-        res = res and (self.matchups.equals(other.matchups))
+        res = res and ds_approx_equal(self.matchups, other.matchups)
         res = res and (self.check_before == other.check_before)
         res = res and (self.check_after == other.check_after)
         res = res and (self.has_land_ocean_mask == other.has_land_ocean_mask)
@@ -546,3 +581,57 @@ Created on {self.creation_date} using the version {self.version} of orbitx.
             str: The OrbitX version used to create this object
         """
         return self.matchups.attrs["version"]
+
+    @property
+    def events(self) -> List[MatchupEvent]:
+        """Individual crossover events derived from the matchup points.
+
+        Consecutive matchup points separated by a gap of less than
+        ``time_diff_threshold * 2`` are grouped into the same event.
+        Each event summarises the time window and spatial extent of one
+        satellite crossover.
+
+        Note:
+            Longitude bounds are unreliable for events that cross the
+            antimeridian (±180°).
+
+        Returns:
+            List[MatchupEvent]: One entry per event. See :class:`MatchupEvent` for field definitions.
+        """
+        if self._events is not None:
+            return self._events
+
+        if len(self) == 0:
+            self._events = []
+            return self._events
+
+        times = self.matchups["time_datetime"].values  # (matchup_index, satellite)
+        # Representative time per matchup: whichever satellite arrived first
+        ref_times = np.min(times, axis=1)
+
+        sort_idx = np.argsort(ref_times)
+        ref_times_sorted = ref_times[sort_idx]
+
+        gaps = np.diff(ref_times_sorted).astype("timedelta64[s]")
+        event_gap_threshold = self.time_diff_threshold * 2
+        event_breaks = np.where(gaps > event_gap_threshold)[0] + 1
+        event_groups = np.split(sort_idx, event_breaks)
+
+        lats = self.matchups["lat"].values  # (matchup_index, satellite)
+        lons = self.matchups["lon"].values
+
+        self._events = []
+        for idx in event_groups:
+            event_times = times[idx]
+            min_lon = float(np.min(lons[idx]))
+            max_lon = float(np.max(lons[idx]))
+            self._events.append(
+                {
+                    "start_time": np.min(event_times),
+                    "stop_time": np.max(event_times),
+                    "bbox": (min_lon, float(np.min(lats[idx])), max_lon, float(np.max(lats[idx]))),
+                    "n_matchups": len(idx),
+                    "crosses_antimeridian": max_lon - min_lon > 180,
+                }
+            )
+        return self._events
