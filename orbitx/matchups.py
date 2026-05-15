@@ -14,6 +14,7 @@ from datetime import timedelta
 
 """__Built-In Modules__"""
 from orbitx import Orbit
+from typing import TypedDict, Tuple
 from orbitx.utils._matchups.find_matches import find_matches
 from orbitx.utils._matchups.get_land_ocean_mask import get_land_ocean_mask
 from orbitx.utils._constants import CM
@@ -22,7 +23,6 @@ from orbitx.utils._date_utils import (
     sec_since_to_datetime64,
     datetime64_to_sec_since,
 )
-
 __author__ = [
     "Mattea Goalen <mattea.goalen@npl.co.uk>",
 ]
@@ -342,7 +342,7 @@ class Matchups:
         matchup_output_copy: xr.DataTree = self._data.copy()
         matchup_output_copy.to_netcdf(os.path.join(output_path, filename))
 
-    def plot(self, projection=None) -> plt.Figure:
+    def plot(self, projection=None, show_events: bool = False) -> plt.Figure:
         """
         Plot the matchup dataset generated from orbitx.interface.return_matchups
 
@@ -396,6 +396,52 @@ class Matchups:
             )
         ax.legend(loc="lower right")
         return fig
+
+    def animate(
+        self,
+        trail_length: int = 15,
+        step: int = 6,
+        interval: Optional[int] = None,
+        projection=None,
+        start_time: Optional[np.datetime64] = None,
+        end_time: Optional[np.datetime64] = None,
+        duration: Optional[float] = None,
+        lat_limit: Optional[float] = None,
+        show_events: bool = True,
+    ):
+        """Animate satellite orbits with progressive matchup discovery.
+
+        Plays through the orbit time series showing a fading trail for each
+        satellite. Matchup points appear as darker-shaded dots when the animation
+        clock reaches their time, and event bounding boxes are drawn when their
+        last matchup point is reached.
+
+        :param trail_length: Trailing orbit positions shown per satellite. Defaults to 15.
+        :param step: Subsample every N orbit time steps (higher = faster playback). Defaults to 6.
+        :param interval: Milliseconds between frames. Mutually exclusive with ``duration``. Defaults to 50 ms if neither is given.
+        :param projection: Cartopy projection. Defaults to ``ccrs.PlateCarree()``.
+        :param start_time: Start of the animated time window. Defaults to the start of the orbit.
+        :param end_time: End of the animated time window. Defaults to the end of the orbit.
+        :param duration: Desired total video length in seconds. Mutually exclusive with ``interval``.
+        :param lat_limit: If given, the map is clipped symmetrically to ±``lat_limit`` degrees latitude, trimming the poles from view.
+        :param show_events: Whether to draw event bounding boxes when their stop time is reached. Defaults to True.
+        :return: Call ``.save()`` to export or display inline in a notebook with ``IPython.display.HTML(anim.to_jshtml())``.
+        :rtype: matplotlib.animation.FuncAnimation
+        """
+        from orbitx.utils._matchups.animate_matchups import animate_matchups
+
+        return animate_matchups(
+            self,
+            trail_length=trail_length,
+            step=step,
+            interval=interval,
+            projection=projection,
+            start_time=start_time,
+            end_time=end_time,
+            duration=duration,
+            lat_limit=lat_limit,
+            show_events=show_events,
+        )
 
     def __str__(self) -> str:
         events_line = (
@@ -580,12 +626,82 @@ Number of matchups found: {len(self)}.
         """
         return self.matchups.attrs["version"]
 
+    def _get_events(
+        self, event_gap_threshold: Optional[npt.NDArray[np.timedelta64]] = None
+    ) -> List[MatchupEvent]:
+        """Compute crossover events, optionally with a custom gap threshold.
+
+        Consecutive matchup points separated by a gap of less than
+        ``event_gap_threshold`` are grouped into the same event.
+        Each event summarises the time window and spatial extent of one
+        satellite crossover.
+
+        If ``event_gap_threshold`` is not supplied it defaults to
+        ``10 * propagation_sampling_interval``.  This threshold sits cleanly
+        above the within-crossing gap (≈ ``interpolation_sampling_interval``)
+        and below the typical inter-crossing gap, so each distinct orbital-pass
+        crossover becomes one event.
+
+        Note:
+            Longitude bounds are unreliable for events that cross the
+            antimeridian (±180°).
+
+        Args:
+            event_gap_threshold (optional): Minimum time gap between consecutive
+                matchup points that starts a new event.  Defaults to
+                ``10 * propagation_sampling_interval``.
+
+        Returns:
+            List[MatchupEvent]: One entry per event. See :class:`MatchupEvent` for field definitions.
+        """
+        if len(self) == 0:
+            return []
+
+        if event_gap_threshold is None:
+            try:
+                event_gap_threshold = self.orbit.propagation_sampling_interval * 10
+            except Exception:
+                # Fallback for synthetic or missing orbit data: use the
+                # matchup time-difference threshold when propagation
+                # sampling interval is unavailable.
+                event_gap_threshold = self.time_diff_threshold
+
+        times = self.matchups["time_datetime"].values  # (matchup_index, satellite)
+        # Representative time per matchup: whichever satellite arrived first
+        ref_times = np.min(times, axis=1)
+
+        sort_idx = np.argsort(ref_times)
+        ref_times_sorted = ref_times[sort_idx]
+
+        gaps = np.diff(ref_times_sorted).astype("timedelta64[s]")
+        event_breaks = np.where(gaps > event_gap_threshold)[0] + 1
+        event_groups = np.split(sort_idx, event_breaks)
+
+        lats = self.matchups["lat"].values  # (matchup_index, satellite)
+        lons = self.matchups["lon"].values
+
+        result = []
+        for idx in event_groups:
+            event_times = times[idx]
+            min_lon = float(np.min(lons[idx]))
+            max_lon = float(np.max(lons[idx]))
+            result.append(
+                {
+                    "start_time": np.min(event_times),
+                    "stop_time": np.max(event_times),
+                    "bbox": (min_lon, float(np.min(lats[idx])), max_lon, float(np.max(lats[idx]))),
+                    "n_matchups": len(idx),
+                    "crosses_antimeridian": max_lon - min_lon > 180,
+                }
+            )
+        return result
+
     @property
     def events(self) -> List[MatchupEvent]:
         """Individual crossover events derived from the matchup points.
 
-        Consecutive matchup points separated by a gap of less than
-        ``time_diff_threshold * 2`` are grouped into the same event.
+        Consecutive matchup points separated by a gap of more than
+        ``10 * propagation_sampling_interval`` are grouped into separate events.
         Each event summarises the time window and spatial extent of one
         satellite crossover.
 
@@ -598,38 +714,5 @@ Number of matchups found: {len(self)}.
         """
         if self._events is not None:
             return self._events
-
-        if len(self) == 0:
-            self._events = []
-            return self._events
-
-        times = self.matchups["time_datetime"].values  # (matchup_index, satellite)
-        # Representative time per matchup: whichever satellite arrived first
-        ref_times = np.min(times, axis=1)
-
-        sort_idx = np.argsort(ref_times)
-        ref_times_sorted = ref_times[sort_idx]
-
-        gaps = np.diff(ref_times_sorted).astype("timedelta64[s]")
-        event_gap_threshold = self.time_diff_threshold * 2
-        event_breaks = np.where(gaps > event_gap_threshold)[0] + 1
-        event_groups = np.split(sort_idx, event_breaks)
-
-        lats = self.matchups["lat"].values  # (matchup_index, satellite)
-        lons = self.matchups["lon"].values
-
-        self._events = []
-        for idx in event_groups:
-            event_times = times[idx]
-            min_lon = float(np.min(lons[idx]))
-            max_lon = float(np.max(lons[idx]))
-            self._events.append(
-                {
-                    "start_time": np.min(event_times),
-                    "stop_time": np.max(event_times),
-                    "bbox": (min_lon, float(np.min(lats[idx])), max_lon, float(np.max(lats[idx]))),
-                    "n_matchups": len(idx),
-                    "crosses_antimeridian": max_lon - min_lon > 180,
-                }
-            )
+        self._events = self._get_events()
         return self._events

@@ -18,7 +18,7 @@ import cartopy.io.shapereader as shpreader
 import numpy as np
 import shapely.geometry as sgeom
 
-from orbitx.deps import init_orekit
+import orbitx.deps as deps
 
 try:
     __version__ = version("orbitx")
@@ -72,4 +72,4 @@ def add_to_tle_path(new_tle_path: str, prepend: bool = True) -> None:
 
 
 def setup_orekit(orekit_data_path: Optional[str] = None) -> None:
-    init_orekit(data_path=orekit_data_path)
+    deps.init_orekit(data_path=orekit_data_path)

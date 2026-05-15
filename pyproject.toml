@@ -48,7 +48,7 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://gitlab.npl.co.uk/altimetry/orbitx"
+Homepage = "https://gitlab.npl.co.uk/tools/orbitx"
 
 [tool.setuptools.packages.find]
 include = ["orbitx*"]
