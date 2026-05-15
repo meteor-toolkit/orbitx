@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from math import pi
-from typing import Tuple
+from typing import Tuple, cast
 import warnings
 import numbers
 from datetime import timedelta, datetime
@@ -81,6 +81,7 @@ def propagate_orbit(
     )
     from org.orekit.propagation.analytical.tle import TLE, TLEPropagator
     from orekit.pyhelpers import absolutedate_to_datetime
+
     lazy_orekit().getVMEnv().attachCurrentThread()
     extrap_date = AbsoluteDate(
         datetime64_get_year(start_date),
@@ -100,16 +101,12 @@ def propagate_orbit(
         datetime64_get_second(end_date),
         TimeScalesFactory.getUTC(),
     )  # when you want to stop tracking
-    propagation_sampling_interval_timedelta: timedelta = (
-        propagation_sampling_interval.item()
-    )
-    propagation_sampling_interval_float: float = (
-        propagation_sampling_interval_timedelta.total_seconds()
-    )
+    propagation_sampling_interval_timedelta: timedelta = cast(timedelta, propagation_sampling_interval.item())
+    propagation_sampling_interval_float: float = propagation_sampling_interval_timedelta.total_seconds()
 
     # CELLESTIAL BODIES
     sun = CelestialBodyFactory.getSun()
-    sun = PVCoordinatesProvider.cast_(sun)
+    sun = PVCoordinatesProvider.cast_(sun)  # type: ignore[attr-defined]
 
     # Preparing the Coordinate systems
     itrf = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
@@ -123,7 +120,7 @@ def propagate_orbit(
     # OPERATIONAL SATELLITE
     mytle = TLE(tle_line1, tle_line2)
     propagator0 = TLEPropagator.selectExtrapolator(mytle)
-    propagator0 = PVCoordinatesProvider.cast_(propagator0)
+    propagator0 = PVCoordinatesProvider.cast_(propagator0)  # type: ignore[attr-defined]
 
     extrap_date_list: npt.NDArray[AbsoluteDate] = np.empty((1,), dtype=AbsoluteDate)
     extrap_date_list[0] = extrap_date
@@ -133,41 +130,21 @@ def propagate_orbit(
 
     sel: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
     saz: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
-    pos_lat: npt.NDArray[np.float64] = np.empty(
-        extrap_date_list.shape, dtype=np.float64
-    )
-    pos_lon: npt.NDArray[np.float64] = np.empty(
-        extrap_date_list.shape, dtype=np.float64
-    )
-    pos_alt: npt.NDArray[np.float64] = np.empty(
-        extrap_date_list.shape, dtype=np.float64
-    )
-    pos_s0_lat: npt.NDArray[np.float64] = np.empty(
-        extrap_date_list.shape, dtype=np.float64
-    )
-    pos_s0_lon: npt.NDArray[np.float64] = np.empty(
-        extrap_date_list.shape, dtype=np.float64
-    )
-    pos_s0_alt: npt.NDArray[np.float64] = np.empty(
-        extrap_date_list.shape, dtype=np.float64
-    )
-    date: npt.NDArray[np.datetime64[datetime]] = np.empty(
-        extrap_date_list.shape, dtype="datetime64[s]"
-    )
-    julian_date: npt.NDArray[np.float64] = np.empty(
-        extrap_date_list.shape, dtype=np.float64
-    )
+    pos_lat: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_lon: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_alt: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_s0_lat: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_s0_lon: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    pos_s0_alt: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
+    date: npt.NDArray[np.datetime64[datetime]] = np.empty(extrap_date_list.shape, dtype="datetime64[s]")
+    julian_date: npt.NDArray[np.float64] = np.empty(extrap_date_list.shape, dtype=np.float64)
 
     for extrap_date_ind, extrap_date in enumerate(extrap_date_list):
         pv0 = propagator0.getPVCoordinates(extrap_date, inertial_frame)
-        psun: TimeStampedFieldPVCoordinates = sun.getPVCoordinates(
-            extrap_date, inertial_frame
-        )
+        psun: TimeStampedFieldPVCoordinates = sun.getPVCoordinates(extrap_date, inertial_frame)
         pos_tmp0 = pv0.getPosition()
         pos_sun = psun.getPosition()
-        pos0 = earth.transform(
-            pos_sun, inertial_frame, extrap_date
-        )  # position of the sun on the earth surface
+        pos0 = earth.transform(pos_sun, inertial_frame, extrap_date)  # position of the sun on the earth surface
         poss0: FieldGeodeticPoint = earth.transform(
             pos_tmp0, inertial_frame, extrap_date
         )  # position of the satellite on the earth surface
@@ -196,24 +173,14 @@ def propagate_orbit(
         # observation and illumination values
         station_frame = TopocentricFrame(earth, station, "Esrange")
 
-        saz_tmp = (
-            station_frame.getAzimuth(pos_sun, inertial_frame, extrap_date) * 180.0 / pi
-        )
-        sel_tmp = (
-            station_frame.getElevation(pos_sun, inertial_frame, extrap_date)
-            * 180.0
-            / pi
-        )
+        saz_tmp = station_frame.getAzimuth(pos_sun, inertial_frame, extrap_date) * 180.0 / pi
+        sel_tmp = station_frame.getElevation(pos_sun, inertial_frame, extrap_date) * 180.0 / pi
 
         sel[extrap_date_ind] = sel_tmp
         saz[extrap_date_ind] = saz_tmp
 
-        date[extrap_date_ind] = datetime_to_datetime64(
-            absolutedate_to_datetime(extrap_date)
-        )
-        julian_date[extrap_date_ind] = datetime64_to_sec_since(
-            date[extrap_date_ind], reference_date
-        )
+        date[extrap_date_ind] = datetime_to_datetime64(absolutedate_to_datetime(extrap_date))
+        julian_date[extrap_date_ind] = datetime64_to_sec_since(date[extrap_date_ind], reference_date)
 
     pos_s0_lat = np.array([i * 180.0 / pi for i in pos_s0_lat])
     pos_s0_lon = np.array([i * 180.0 / pi for i in pos_s0_lon])

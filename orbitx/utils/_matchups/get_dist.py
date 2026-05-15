@@ -2,7 +2,6 @@
 
 """___Third-Party Modules___"""
 import numpy as np
-import numpy.typing as npt
 import xarray as xr
 
 """___NPL Modules___"""
@@ -20,9 +19,7 @@ __status__ = "Development"
 __all__ = ["get_dist"]
 
 
-def get_dist(
-    existing_orbits: xr.Dataset, new_orbit: xr.Dataset
-) -> npt.NDArray[np.float64]:
+def get_dist(existing_orbits: xr.Dataset, new_orbit: xr.Dataset) -> xr.DataArray:
     """Calculate the distance in kilometers on the earth (specified in decimal degrees)
     between a collection of orbits and a new orbit at each time stamp
 
@@ -38,12 +35,9 @@ def get_dist(
     dlat: xr.DataArray = existing_orbits["lat"] - new_orbit["lat"]
     # haversine formula
 
-    a: npt.NDArray[np.float64] = (
-        np.sin(dlat / 2) ** 2
-        + np.cos(existing_orbits["lat"])
-        * np.cos(new_orbit["lat"])
-        * np.sin(dlon / 2) ** 2
+    a: xr.DataArray = (
+        np.sin(dlat / 2) ** 2 + np.cos(existing_orbits["lat"]) * np.cos(new_orbit["lat"]) * np.sin(dlon / 2) ** 2
     )
-    c: npt.NDArray[np.float64] = 2 * np.asin(np.sqrt(a))
+    c: xr.DataArray = 2 * np.asin(np.sqrt(a))
     r: float = EARTH_RADIUS
     return c * r

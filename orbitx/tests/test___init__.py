@@ -14,13 +14,7 @@ class TestInit(unittest.TestCase):
 
         self.assertCountEqual(
             TLE_PATH,
-            [
-                os.path.abspath(
-                    os.path.join(
-                        os.path.dirname(os.path.dirname(__file__)), "data", "tle"
-                    )
-                )
-            ],
+            [os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "tle"))],
         )
 
     def test_add_to_tle_path(self):
@@ -31,11 +25,7 @@ class TestInit(unittest.TestCase):
             TLE_PATH,
             [
                 "test",
-                os.path.abspath(
-                    os.path.join(
-                        os.path.dirname(os.path.dirname(__file__)), "data", "tle"
-                    )
-                ),
+                os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "tle")),
             ],
         )
 
@@ -46,11 +36,7 @@ class TestInit(unittest.TestCase):
             TLE_PATH,
             [
                 "test",
-                os.path.abspath(
-                    os.path.join(
-                        os.path.dirname(os.path.dirname(__file__)), "data", "tle"
-                    )
-                ),
+                os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "tle")),
                 "test",
             ],
         )

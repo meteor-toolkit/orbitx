@@ -1,6 +1,8 @@
 """A python function to compute the distance between two satellites"""
 
 """___Third-Party Modules___"""
+import numpy as np
+import numpy.typing as npt
 from shapely import contains_xy
 
 """___NPL Modules___"""
@@ -17,7 +19,7 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 
-def is_land(x: float, y: float) -> bool:
+def is_land(x: npt.ArrayLike, y: npt.ArrayLike) -> npt.NDArray[np.bool_]:
     """Returns boolean land mask for x,y coordinates
 
     Args:

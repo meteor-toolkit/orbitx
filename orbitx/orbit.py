@@ -1,7 +1,7 @@
 """orbitx.orbit - class to simulate satellite orbits"""
 
 """___Third-Party Modules___"""
-from typing import List, Dict
+from typing import List, Dict, cast
 import os
 import xarray as xr
 import numpy.typing as npt
@@ -192,16 +192,10 @@ class Orbit:
         :return: An orbit object with data corresponding to the content of the file.
         :rtype: Orbit
         """
-        orbit_xarray = xr.open_dataset(
-            input_path, engine="netcdf4", decode_times=True, decode_timedelta=True
-        )
-        orbit_xarray["reference_date"] = np.array(
-            orbit_xarray["reference_date"], dtype="datetime64[s]"
-        )
-        orbit_xarray["time_datetime"][:] = np.array(
-            orbit_xarray["time_datetime"], dtype="datetime64[s]"
-        )
-        reference_date: np.datetime64 = orbit_xarray["reference_date"].values
+        orbit_xarray = xr.open_dataset(input_path, engine="netcdf4", decode_times=True, decode_timedelta=True)
+        orbit_xarray["reference_date"] = np.array(orbit_xarray["reference_date"], dtype="datetime64[s]")
+        orbit_xarray["time_datetime"][:] = np.array(orbit_xarray["time_datetime"], dtype="datetime64[s]")
+        reference_date: np.datetime64 = cast(np.datetime64, orbit_xarray["reference_date"].values)
         orbit_xarray = orbit_xarray.assign_coords(
             time=np.array(
                 [
@@ -223,21 +217,17 @@ class Orbit:
         :return: None
         """
         satellites_part = "_".join(self.satellite_shortname)
-        date_part = f"{np.datetime_as_string(self.start_date, unit = "D")}_{np.datetime_as_string(self.end_date, unit = "D")}"
-
-        propagation_sampling_interval_timedelta: timedelta = (
-            self.propagation_sampling_interval.item()
-        )
-        propagation_sampling_interval_float: float = (
-            propagation_sampling_interval_timedelta.total_seconds()
+        date_part = (
+            f"{np.datetime_as_string(self.start_date, unit='D')}_{np.datetime_as_string(self.end_date, unit='D')}"
         )
 
-        interpolation_sampling_interval_timedelta: timedelta = (
-            self.interpolation_sampling_interval.item()
+        propagation_sampling_interval_timedelta: timedelta = cast(timedelta, self.propagation_sampling_interval.item())
+        propagation_sampling_interval_float: float = propagation_sampling_interval_timedelta.total_seconds()
+
+        interpolation_sampling_interval_timedelta: timedelta = cast(
+            timedelta, self.interpolation_sampling_interval.item()
         )
-        interpolation_sampling_interval_float: float = (
-            interpolation_sampling_interval_timedelta.total_seconds()
-        )
+        interpolation_sampling_interval_float: float = interpolation_sampling_interval_timedelta.total_seconds()
 
         sampling_part = f"psi{propagation_sampling_interval_float}_isi{interpolation_sampling_interval_float}"
         filename = f"{date_part}_{sampling_part}_orbit_{satellites_part}.nc"
@@ -256,8 +246,8 @@ class Orbit:
             projection = crs.PlateCarree()
         fig = plt.figure(figsize=(16 * CM, 9 * CM), dpi=400)
         ax = fig.add_subplot(1, 1, 1, projection=projection)
-        ax.coastlines()
-        ax.add_feature(cfeature.LAND)
+        ax.coastlines()  # type: ignore[attr-defined]
+        ax.add_feature(cfeature.LAND)  # type: ignore[attr-defined]
 
         for sat_index, sat in enumerate(self.satellite_shortname):
             ax.scatter(
@@ -293,13 +283,8 @@ class Orbit:
         res = res and bool(np.all(self.satellite_name == value.satellite_name))
         res = res and (self.start_date == value.start_date)
         res = res and (self.end_date == value.end_date)
-        res = res and (
-            self.propagation_sampling_interval == value.propagation_sampling_interval
-        )
-        res = res and (
-            self.interpolation_sampling_interval
-            == value.interpolation_sampling_interval
-        )
+        res = res and (self.propagation_sampling_interval == value.propagation_sampling_interval)
+        res = res and (self.interpolation_sampling_interval == value.interpolation_sampling_interval)
         res = res and ds_approx_equal(self.orbits, value.orbits)
         return res
 
@@ -340,9 +325,7 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
             npt.NDArray[np.datetime64]: Date from which the orbits are computed
         """
         return np.array(
-            sec_since_to_datetime64(
-                self._orbits.attrs["start_date"], self.reference_date
-            ),
+            sec_since_to_datetime64(self._orbits.attrs["start_date"], self.reference_date),
             dtype="datetime64[s]",
         )
 
@@ -354,9 +337,7 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
             npt.NDArray[np.datetime64]: Date until which the orbits are computed
         """
         return np.array(
-            sec_since_to_datetime64(
-                self._orbits.attrs["end_date"], self.reference_date
-            ),
+            sec_since_to_datetime64(self._orbits.attrs["end_date"], self.reference_date),
             dtype="datetime64[s]",
         )
 
@@ -367,9 +348,7 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
         Returns:
             npt.NDArray[np.timedelta64]: The time delta between each physics-based simulations of the satellite orbit
         """
-        return np.array(
-            self._orbits.attrs["propagation_sampling_interval"], dtype="timedelta64[s]"
-        )
+        return np.array(self._orbits.attrs["propagation_sampling_interval"], dtype="timedelta64[s]")
 
     @property
     def interpolation_sampling_interval(self) -> npt.NDArray[np.timedelta64]:
@@ -432,10 +411,10 @@ Created on {self.creation_date} using the version {self.version} of orbitx."""
         return self._orbits
 
     @property
-    def reference_date(self) -> npt.NDArray[np.datetime64]:
+    def reference_date(self) -> np.datetime64:
         """The reference date used for the representation of time in seconds since reference date
 
         Returns:
-            npt.NDArray[np.datetime64]: The reference date used for the representation of time in seconds since reference date
+            np.datetime64: The reference date used for the representation of time in seconds since reference date
         """
-        return self._orbits["reference_date"].values
+        return cast(np.datetime64, self._orbits["reference_date"].values)

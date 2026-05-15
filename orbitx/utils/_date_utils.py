@@ -34,9 +34,7 @@ def datetime_to_sec_since(
     return (date - ref_date).total_seconds()
 
 
-def sec_since_change_ref(
-    date: float, ref_date_old: datetime.datetime, ref_date_new: datetime.datetime
-) -> float:
+def sec_since_change_ref(date: float, ref_date_old: datetime.datetime, ref_date_new: datetime.datetime) -> float:
     """sec_since_change_ref Converts a date in seconds since reference date format to a seconds since a different date
 
     :param date: The date to be converted, as a float representing the number of seconds since the former reference date
@@ -77,17 +75,13 @@ def datetime_to_datetime64(
     date: datetime.datetime,
 ) -> np.datetime64 | npt.NDArray[np.datetime64]:
     sec_since = datetime_to_sec_since(date, datetime.datetime(1970, 1, 1, 0, 0, 0))
-    return sec_since_to_datetime64(
-        sec_since=sec_since, reference_date=np.datetime64("1970-01-01T00:00:00")
-    )
+    return sec_since_to_datetime64(sec_since=sec_since, reference_date=np.datetime64("1970-01-01T00:00:00"))
 
 
 def datetime64_to_sec_since(
     date64: np.datetime64 | npt.NDArray[np.datetime64], reference_date: np.datetime64
 ) -> float | npt.NDArray[np.float64]:
-    timedelta_value: np.timedelta64 | npt.NDArray[np.timedelta64] = (
-        date64 - reference_date
-    )
+    timedelta_value: np.timedelta64 | npt.NDArray[np.timedelta64] = date64 - reference_date
     return timedelta_value / np.timedelta64(1, "s")
 
 
@@ -106,24 +100,16 @@ def datetime64_get_month(date: np.datetime64) -> int:
 
 
 def datetime64_get_day(date: np.datetime64) -> int:
-    return int(
-        (date.astype("datetime64[D]") - date.astype("datetime64[M]")).astype(int) + 1
-    )
+    return int((date.astype("datetime64[D]") - date.astype("datetime64[M]")).astype(int) + 1)
 
 
 def datetime64_get_hour(date: np.datetime64) -> int:
-    return int(
-        (date.astype("datetime64[h]") - date.astype("datetime64[D]")).astype(int)
-    )
+    return int((date.astype("datetime64[h]") - date.astype("datetime64[D]")).astype(int))
 
 
 def datetime64_get_minute(date: np.datetime64) -> int:
-    return int(
-        (date.astype("datetime64[m]") - date.astype("datetime64[h]")).astype(int)
-    )
+    return int((date.astype("datetime64[m]") - date.astype("datetime64[h]")).astype(int))
 
 
 def datetime64_get_second(date: np.datetime64) -> float:
-    return float(
-        (date.astype("datetime64[s]") - date.astype("datetime64[m]")).astype(float)
-    )
+    return float((date.astype("datetime64[s]") - date.astype("datetime64[m]")).astype(float))

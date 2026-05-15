@@ -21,7 +21,7 @@ class TestInterpolateOrbit(unittest.TestCase):
     )
     def test_interpolate_orbit(self, mock_interp_circ):
         sat_sec_since = np.linspace(0, 86400, 33)
-        sat_date = np.linspace(0, 86400, 33, dtype="datetime64[s]")
+        _sat_date = np.linspace(0, 86400, 33, dtype="datetime64[s]")
         sat_lat_sim = np.concatenate(
             (
                 np.linspace(-70, 70, 17, dtype=float),

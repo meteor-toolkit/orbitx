@@ -42,5 +42,6 @@ def init_orekit(data_path: str | None = None) -> None:
     orekit = lazy_orekit()
     orekit.initVM()
     from orekit.pyhelpers import setup_orekit_curdir
+
     setup_orekit_curdir(filename=data_path or _DEFAULT_OREKIT_DATA)
     _initialised = True

@@ -27,7 +27,6 @@ from orbitx.utils._tle.get_second_derivative import get_second_derivative
 from orbitx.utils._tle.get_tle_date import get_tle_date
 
 from orbitx.utils._date_utils import datetime64_to_sec_since
-from orbitx import __version__
 
 """___Authorship___"""
 __author__ = __author__ = [
@@ -71,12 +70,8 @@ def create_xarray(
     Returns:
         xr.Dataset: An xarray containing all information from the TLE file
     """
-    tle_dates = np.array(
-        [get_tle_date(line1) for line1 in tle_line_1], dtype="datetime64[s]"
-    )
-    tle_dates_seconds_since = np.array(
-        [datetime64_to_sec_since(d, reference_date) for d in tle_dates]
-    )
+    tle_dates = np.array([get_tle_date(line1) for line1 in tle_line_1], dtype="datetime64[s]")
+    tle_dates_seconds_since = np.array([datetime64_to_sec_since(d, reference_date) for d in tle_dates])
     tle_xarray = xr.Dataset(
         data_vars={
             "reference_date": (reference_date),
@@ -86,22 +81,14 @@ def create_xarray(
             "line_1": ("tle_index", tle_line_1),
             "line_2": ("tle_index", tle_line_2),
             "reference_date_seconds_since1970": (
-                datetime64_to_sec_since(
-                    reference_date, np.datetime64("1970-01-01T00:00:00")
-                )
+                datetime64_to_sec_since(reference_date, np.datetime64("1970-01-01T00:00:00"))
             ),
-            "start_date_seconds_since": (
-                datetime64_to_sec_since(start_date, reference_date)
-            ),
-            "end_date_seconds_since": (
-                datetime64_to_sec_since(end_date, reference_date)
-            ),
+            "start_date_seconds_since": (datetime64_to_sec_since(start_date, reference_date)),
+            "end_date_seconds_since": (datetime64_to_sec_since(end_date, reference_date)),
             "tle_date_seconds_since": ("tle_index", tle_dates_seconds_since),
             "argument_perigee": (
                 "tle_index",
-                np.array(
-                    [get_argument_perigee(line2) for line2 in tle_line_2], dtype=float
-                ),
+                np.array([get_argument_perigee(line2) for line2 in tle_line_2], dtype=float),
             ),
             "balistic_coefficient": (
                 "tle_index",
@@ -116,15 +103,11 @@ def create_xarray(
             ),
             "eccentricity": (
                 "tle_index",
-                np.array(
-                    [get_eccentricity(line2) for line2 in tle_line_2], dtype=float
-                ),
+                np.array([get_eccentricity(line2) for line2 in tle_line_2], dtype=float),
             ),
             "element_set_number": (
                 "tle_index",
-                np.array(
-                    [get_element_set_number(line1) for line1 in tle_line_1], dtype=float
-                ),
+                np.array([get_element_set_number(line1) for line1 in tle_line_1], dtype=float),
             ),
             "inclination": (
                 "tle_index",
@@ -132,9 +115,7 @@ def create_xarray(
             ),
             "mean_anomaly": (
                 "tle_index",
-                np.array(
-                    [get_mean_anomaly(line2) for line2 in tle_line_2], dtype=float
-                ),
+                np.array([get_mean_anomaly(line2) for line2 in tle_line_2], dtype=float),
             ),
             "mean_motion": (
                 "tle_index",
@@ -142,21 +123,15 @@ def create_xarray(
             ),
             "revolution_number": (
                 "tle_index",
-                np.array(
-                    [get_revolution_number(line2) for line2 in tle_line_2], dtype=float
-                ),
+                np.array([get_revolution_number(line2) for line2 in tle_line_2], dtype=float),
             ),
             "right_ascension": (
                 "tle_index",
-                np.array(
-                    [get_right_ascension(line2) for line2 in tle_line_2], dtype=float
-                ),
+                np.array([get_right_ascension(line2) for line2 in tle_line_2], dtype=float),
             ),
             "second_derivative": (
                 "tle_index",
-                np.array(
-                    [get_second_derivative(line1) for line1 in tle_line_1], dtype=float
-                ),
+                np.array([get_second_derivative(line1) for line1 in tle_line_1], dtype=float),
             ),
         },
         coords={"tle_index": np.arange(len(tle_line_1))},

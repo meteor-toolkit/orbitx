@@ -2,7 +2,6 @@
 
 """___Third-Party Modules___"""
 import numpy as np
-import numpy.typing as npt
 import xarray as xr
 
 """___NPL Modules___"""
@@ -19,9 +18,7 @@ __status__ = "Development"
 __all__ = ["get_delay"]
 
 
-def get_delay(
-    existing_orbits: xr.Dataset, new_orbit: xr.Dataset
-) -> npt.NDArray[np.float64]:
+def get_delay(existing_orbits: xr.Dataset, new_orbit: xr.Dataset) -> xr.DataArray:
     """Calculate the delay in seconds
     between a collection of orbits and a new orbit at each time stamp
 
@@ -33,7 +30,5 @@ def get_delay(
         np.array: at each matchup, the delay between the new orbit and the existing orbits
     """
     # compute the lat and lon difference
-    delay: npt.NDArray[np.float64] = np.abs(
-        existing_orbits["time_datetime"] - new_orbit["time_datetime"]
-    )
+    delay: xr.DataArray = np.abs(existing_orbits["time_datetime"] - new_orbit["time_datetime"])  # type: ignore[assignment]
     return delay

@@ -31,7 +31,7 @@ Propagate satellite orbits to identify matchups.
 Acknowledgements
 ----------------
 
-orbitx has been developed by `Sajedeh Behnia <sajedeh.behnia@npl.co.uk>`_.
+orbitx has been developed by the `MetEOR Toolkit Team <team@comet-toolkit.org>`_.
 
 Project status
 --------------

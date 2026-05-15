@@ -22,7 +22,7 @@ __maintainer__ = [
     "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
 ]
 __status__ = "Development"
-__all__ = ["get_right_assention"]
+__all__ = ["get_right_ascension"]
 
 
 def get_right_ascension(line2: str) -> float:

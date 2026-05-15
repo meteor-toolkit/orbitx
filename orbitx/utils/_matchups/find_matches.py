@@ -5,7 +5,7 @@ from datetime import timedelta
 import numpy as np
 import numpy.typing as npt
 import xarray as xr
-from typing import SupportsFloat
+from typing import SupportsFloat, cast
 from math import pi
 
 """___NPL Modules___"""
@@ -15,7 +15,6 @@ from orbitx import Orbit
 from orbitx.utils._matchups.get_dist import get_dist
 from orbitx.utils._matchups.get_delay import get_delay
 from orbitx.utils._date_utils import datetime64_to_sec_since
-from orbitx import __version__
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -91,14 +90,11 @@ def find_matches(
     for i in range(num_sats - 1):
         satellite_pairs = np.append(
             satellite_pairs,
-            [
-                f"{satellite_shortnames[i]}_{satellite_shortnames[j]}"
-                for j in range(i + 1, num_sats)
-            ],
+            [f"{satellite_shortnames[i]}_{satellite_shortnames[j]}" for j in range(i + 1, num_sats)],
         )
     num_pairs = satellite_pairs.shape[0]
 
-    time_diff_threshold_timedelta: timedelta = time_diff_threshold.item()
+    time_diff_threshold_timedelta: timedelta = cast(timedelta, time_diff_threshold.item())
     time_diff_threshold_float: float = time_diff_threshold_timedelta.total_seconds()
 
     matchups_xr: xr.Dataset = xr.Dataset(
@@ -145,18 +141,10 @@ def find_matches(
         attrs={
             "satellite_shortname": orbit.satellite_shortname,
             "satellite_name": orbit.satellite_name,
-            "start_date": datetime64_to_sec_since(
-                orbit.start_date, reference_date=orbit.reference_date
-            ),
-            "end_date": datetime64_to_sec_since(
-                orbit.end_date, reference_date=orbit.reference_date
-            ),
-            "propagation_sampling_interval": orbit._orbits.attrs[
-                "propagation_sampling_interval"
-            ],
-            "interpolation_sampling_interval": orbit._orbits.attrs[
-                "interpolation_sampling_interval"
-            ],
+            "start_date": datetime64_to_sec_since(orbit.start_date, reference_date=orbit.reference_date),
+            "end_date": datetime64_to_sec_since(orbit.end_date, reference_date=orbit.reference_date),
+            "propagation_sampling_interval": orbit._orbits.attrs["propagation_sampling_interval"],
+            "interpolation_sampling_interval": orbit._orbits.attrs["interpolation_sampling_interval"],
             "time_diff_threshold": time_diff_threshold_float,
             "space_diff_threshold": space_diff_threshold,
             "check_before": int(check_before),
@@ -183,9 +171,7 @@ def find_matches(
     for new_sat_ind in range(1, len(satellite_shortnames)):
         new_sat = satellite_shortnames[new_sat_ind]
         # Among the remaining rows, rows which have a matchup found with the current other satellite
-        found_matchup_other_sat = np.array(
-            [False for _ in range(matchups_xr["matchup_index"].shape[0])]
-        )
+        found_matchup_other_sat = np.array([False for _ in range(matchups_xr["matchup_index"].shape[0])])
 
         # roll through the accepted time window through the lons and lats
         for bin_shift in acceptable_bin_shifts:
@@ -200,10 +186,7 @@ def find_matches(
                     np.where(
                         has_matchup
                         & np.logical_not(found_matchup_other_sat)
-                        & (
-                            matchups_xr["matchup_index"].values
-                            < (orbit_length + bin_shift)
-                        )
+                        & (matchups_xr["matchup_index"].values < (orbit_length + bin_shift))
                     )
                 ].values
             else:
@@ -216,49 +199,29 @@ def find_matches(
                 ].values
             # extract the coordinate of the other satellite with an appropriate lag
             new_sat_orbit_roll = (
-                matchups_xr.sel(satellite=new_sat)
-                .roll(matchup_index=bin_shift)
-                .sel(matchup_index=relevant_indeces)
+                matchups_xr.sel(satellite=new_sat).roll(matchup_index=bin_shift).sel(matchup_index=relevant_indeces)
             )
-            matchups_so_far_roll = matchups_xr.isel(
-                {"satellite": range(new_sat_ind)}
-            ).sel(matchup_index=relevant_indeces)
+            matchups_so_far_roll = matchups_xr.isel({"satellite": range(new_sat_ind)}).sel(
+                matchup_index=relevant_indeces
+            )
             distance = get_dist(matchups_so_far_roll, new_sat_orbit_roll)
             delay = get_delay(matchups_so_far_roll, new_sat_orbit_roll)
             distance_max = np.max(distance, axis=1)
             delay_max = np.max(delay, axis=1)
-            new_matchups = xr.ufuncs.logical_and(
-                distance_max <= space_diff_threshold, delay_max <= time_diff_threshold
-            )
+            new_matchups = xr.ufuncs.logical_and(distance_max <= space_diff_threshold, delay_max <= time_diff_threshold)
             new_matchup_indeces = relevant_indeces[new_matchups]
             if len(new_matchup_indeces) > 0:
-                matchups_xr["lat"].loc[
-                    dict(satellite=new_sat, matchup_index=new_matchup_indeces)
-                ] = (
-                    new_sat_orbit_roll["lat"]
-                    .loc[dict(matchup_index=new_matchup_indeces)]
-                    .values
+                matchups_xr["lat"].loc[dict(satellite=new_sat, matchup_index=new_matchup_indeces)] = (
+                    new_sat_orbit_roll["lat"].loc[dict(matchup_index=new_matchup_indeces)].values
                 )
-                matchups_xr["lon"].loc[
-                    dict(satellite=new_sat, matchup_index=new_matchup_indeces)
-                ] = (
-                    new_sat_orbit_roll["lon"]
-                    .loc[dict(matchup_index=new_matchup_indeces)]
-                    .values
+                matchups_xr["lon"].loc[dict(satellite=new_sat, matchup_index=new_matchup_indeces)] = (
+                    new_sat_orbit_roll["lon"].loc[dict(matchup_index=new_matchup_indeces)].values
                 )
-                matchups_xr["time"].loc[
-                    dict(satellite=new_sat, matchup_index=new_matchup_indeces)
-                ] = (
-                    new_sat_orbit_roll["time"]
-                    .loc[dict(matchup_index=new_matchup_indeces)]
-                    .values
+                matchups_xr["time"].loc[dict(satellite=new_sat, matchup_index=new_matchup_indeces)] = (
+                    new_sat_orbit_roll["time"].loc[dict(matchup_index=new_matchup_indeces)].values
                 )
-                matchups_xr["time_datetime"].loc[
-                    dict(satellite=new_sat, matchup_index=new_matchup_indeces)
-                ] = (
-                    new_sat_orbit_roll["time_datetime"]
-                    .loc[dict(matchup_index=new_matchup_indeces)]
-                    .values
+                matchups_xr["time_datetime"].loc[dict(satellite=new_sat, matchup_index=new_matchup_indeces)] = (
+                    new_sat_orbit_roll["time_datetime"].loc[dict(matchup_index=new_matchup_indeces)].values
                 )
 
                 for previous_sat_ind in range(new_sat_ind):
@@ -269,26 +232,20 @@ def find_matches(
                             satellite_pair=satellite_pair,
                             matchup_index=new_matchup_indeces,
                         )
-                    ] = distance.loc[
-                        dict(matchup_index=new_matchup_indeces, satellite=previous_sat)
-                    ]
+                    ] = distance.loc[dict(matchup_index=new_matchup_indeces, satellite=previous_sat)]
                     matchups_xr["delay"].loc[
                         dict(
                             satellite_pair=satellite_pair,
                             matchup_index=new_matchup_indeces,
                         )
-                    ] = delay.loc[
-                        dict(matchup_index=new_matchup_indeces, satellite=previous_sat)
-                    ]
+                    ] = delay.loc[dict(matchup_index=new_matchup_indeces, satellite=previous_sat)]
                 found_matchup_other_sat[new_matchup_indeces] = True
 
         has_matchup[np.logical_not(found_matchup_other_sat)] = False
         # remove all entries which do not have a matchup
     matchup_indeces = matchups_xr["matchup_index"][np.where(has_matchup)]
     matchups_xr = matchups_xr.loc[dict(matchup_index=matchup_indeces)]
-    matchups_xr = matchups_xr.assign_coords(
-        {"matchup_index": np.arange(matchups_xr["matchup_index"].values.shape[0])}
-    )
+    matchups_xr = matchups_xr.assign_coords({"matchup_index": np.arange(matchups_xr["matchup_index"].values.shape[0])})
 
     matchups_xr["lat"] = matchups_xr["lat"] / pi * 180
     matchups_xr["lon"] = matchups_xr["lon"] / pi * 180

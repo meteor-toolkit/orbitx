@@ -50,13 +50,9 @@ def get_second_derivative(line1: str) -> float:
 
     second_derivative_str = re.sub(" ", "", second_derivative_str)
 
-    positions_plus = [
-        i for i, letter in enumerate(second_derivative_str) if letter == "+"
-    ]
+    positions_plus = [i for i, letter in enumerate(second_derivative_str) if letter == "+"]
     number_plus = len(positions_plus)
-    positions_minus = [
-        i for i, letter in enumerate(second_derivative_str) if letter == "-"
-    ]
+    positions_minus = [i for i, letter in enumerate(second_derivative_str) if letter == "-"]
     number_minus = len(positions_minus)
     if number_minus + number_plus == 1:
         if number_minus == 1:
@@ -88,7 +84,5 @@ def get_second_derivative(line1: str) -> float:
             decimal_part = float(f"0.{split_string[1]}")
             order_magnitude = int(split_string[2])
     else:
-        raise ValueError(
-            f"Invalid string for second derivative: {second_derivative_str}"
-        )
+        raise ValueError(f"Invalid string for second derivative: {second_derivative_str}")
     return decimal_part * (10**order_magnitude)

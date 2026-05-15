@@ -74,39 +74,27 @@ result_0 = xr.Dataset(
 
 
 class TestCreateXarray(unittest.TestCase):
-    @mock.patch(
-        "orbitx.utils._tle.create_xarray.get_argument_perigee", return_value=0.1
-    )
-    @mock.patch(
-        "orbitx.utils._tle.create_xarray.get_ballistic_coefficient", return_value=0.2
-    )
+    @mock.patch("orbitx.utils._tle.create_xarray.get_argument_perigee", return_value=0.1)
+    @mock.patch("orbitx.utils._tle.create_xarray.get_ballistic_coefficient", return_value=0.2)
     @mock.patch("orbitx.utils._tle.create_xarray.get_catalog_number", return_value="1")
     @mock.patch("orbitx.utils._tle.create_xarray.get_classification", return_value="2")
     @mock.patch("orbitx.utils._tle.create_xarray.get_drag_term", return_value=0.3)
     @mock.patch("orbitx.utils._tle.create_xarray.get_eccentricity", return_value=0.4)
-    @mock.patch(
-        "orbitx.utils._tle.create_xarray.get_element_set_number", return_value=100
-    )
+    @mock.patch("orbitx.utils._tle.create_xarray.get_element_set_number", return_value=100)
     @mock.patch("orbitx.utils._tle.create_xarray.get_inclination", return_value=0.5)
     @mock.patch("orbitx.utils._tle.create_xarray.get_launch_number", return_value=101)
     @mock.patch("orbitx.utils._tle.create_xarray.get_launch_piece", return_value="3")
     @mock.patch("orbitx.utils._tle.create_xarray.get_launch_year", return_value=102)
     @mock.patch("orbitx.utils._tle.create_xarray.get_mean_anomaly", return_value=0.6)
     @mock.patch("orbitx.utils._tle.create_xarray.get_mean_motion", return_value=0.7)
-    @mock.patch(
-        "orbitx.utils._tle.create_xarray.get_revolution_number", return_value=103
-    )
+    @mock.patch("orbitx.utils._tle.create_xarray.get_revolution_number", return_value=103)
     @mock.patch("orbitx.utils._tle.create_xarray.get_right_ascension", return_value=0.8)
-    @mock.patch(
-        "orbitx.utils._tle.create_xarray.get_second_derivative", return_value=0.9
-    )
+    @mock.patch("orbitx.utils._tle.create_xarray.get_second_derivative", return_value=0.9)
     @mock.patch(
         "orbitx.utils._tle.create_xarray.get_tle_date",
         return_value=np.datetime64("1970-01-01T00:00:00"),
     )
-    @mock.patch(
-        "orbitx.utils._tle.create_xarray.datetime64_to_sec_since", return_value=104
-    )
+    @mock.patch("orbitx.utils._tle.create_xarray.datetime64_to_sec_since", return_value=104)
     @mock.patch(
         "orbitx.utils._tle.create_xarray.datetime64",
         return_value=np.datetime64("1980-01-01T00:00:00"),

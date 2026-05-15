@@ -44,10 +44,7 @@ class TestSimulateOrbit(unittest.TestCase):
         ds = nc.Dataset(S6_ORBIT_PATH[0], mode="r")
         exp_time = np.array(ds.groups["data_01"].variables["time"][:])
         reference_date = np.datetime64("2000-01-01T00:00:00")
-        exp_date = [
-            sec_since_to_datetime64(exp_sec_since, reference_date=reference_date)
-            for exp_sec_since in exp_time
-        ]
+        exp_date = [sec_since_to_datetime64(exp_sec_since, reference_date=reference_date) for exp_sec_since in exp_time]
         exp_lat = ds.groups["data_01"].variables["latitude"][:]
         exp_lon = ds.groups["data_01"].variables["longitude"][:]
         # Convert start-time and end-time of S6 track to datetime. Notice that altimetry satellites (in this case
@@ -72,8 +69,7 @@ class TestSimulateOrbit(unittest.TestCase):
         np.testing.assert_equal(sat_date, exp_date)
         # Calculate the Haversine distance between simulated and real orbit at 1 Hz sampling rate
         distance = [
-            cal_dist_d2m(sat_lat_sim[i], sat_lon_sim[i], exp_lat[i], exp_lon[i])
-            for i in range(len(sat_lat_sim))
+            cal_dist_d2m(sat_lat_sim[i], sat_lon_sim[i], exp_lat[i], exp_lon[i]) for i in range(len(sat_lat_sim))
         ]
 
         # Make sure that at all instances, the distance is less than 1 km (which is an acceptable deviation for S6)
@@ -87,9 +83,7 @@ class TestSimulateOrbit(unittest.TestCase):
         "orbitx.utils._orbit.simulate_orbit.get_matching_indices",
         return_value=([7], [0]),
     )
-    @mock.patch(
-        "orbitx.utils._orbit.simulate_orbit.form_sample_space", return_value=([], [9])
-    )
+    @mock.patch("orbitx.utils._orbit.simulate_orbit.form_sample_space", return_value=([], [9]))
     def test_simulate_orbit_1_tle_ref(self, mock_form_ss, mock_match_idx, mock_prop):
         start_date = np.datetime64("1970-01-01T00:00:00")
         end_date = np.datetime64("1970-01-01T00:00:05")
@@ -178,9 +172,7 @@ class TestSimulateOrbit(unittest.TestCase):
             [314],
         ),
     )
-    def test_simulate_orbit_2_tle_ref(
-        self, mock_form_smpl, mock_get_mtch_idx, mock_prop_orb
-    ):
+    def test_simulate_orbit_2_tle_ref(self, mock_form_smpl, mock_get_mtch_idx, mock_prop_orb):
         start_date = np.datetime64("1970-01-01T00:00:00")
         end_date = np.datetime64("1970-01-01T00:01:00")
         propagation_sampling_interval = np.array(30, dtype="timedelta64[s]")

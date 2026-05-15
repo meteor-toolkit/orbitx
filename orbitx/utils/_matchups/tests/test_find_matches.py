@@ -44,9 +44,7 @@ class TestFindMatches(unittest.TestCase):
                     ),
                     "lon": (
                         ["time", "satellite"],
-                        np.array([[3, 2, 0, 3], [-1, -2, -1, 0]]).transpose()
-                        * 180
-                        / pi,
+                        np.array([[3, 2, 0, 3], [-1, -2, -1, 0]]).transpose() * 180 / pi,
                     ),
                 },
                 coords={

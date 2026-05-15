@@ -20,9 +20,7 @@ __email__ = "xavier.loizeau@npl.co.uk"
 __status__ = "Development"
 
 
-def interp_circ(
-    x: np.ndarray, y: np.ndarray, period: float = 360.0
-) -> Callable[[npt.NDArray], npt.NDArray]:
+def interp_circ(x: np.ndarray, y: np.ndarray, period: float = 360.0) -> Callable[[npt.NDArray], npt.NDArray]:
     """interp_circ interpolation for periodic-valued data
 
     Creates a function to interpolate data valued on a circle (for period = 360, a datapoint with value 359 is at distance 2 of a datapoint with value 1)
@@ -42,9 +40,7 @@ def interp_circ(
     return partial(interp_circ_, x=x, y=complement_period, period=period)
 
 
-def interp_circ_(
-    x_new: np.ndarray, x: np.ndarray, y: np.ndarray, period: float = 360.0
-) -> np.ndarray:
+def interp_circ_(x_new: np.ndarray, x: np.ndarray, y: np.ndarray, period: float = 360.0) -> np.ndarray:
     """For a quantity Y that is circular and dependent on a quantity X that is not circular, interpolates the vactor of x, y pairs for X, Y to the new values of X x_new.
 
     Args:

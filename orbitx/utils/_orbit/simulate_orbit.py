@@ -49,9 +49,7 @@ def simulate_orbit(
     smpl_space, smpl_space_secs_since = form_sample_space(
         start_date, end_date, propagation_sampling_interval, reference_date
     )
-    sat_smpl_breakup_idx, tle_ref_lines = get_matching_indices(
-        smpl_space_secs_since, tle.tle_date_seconds_since
-    )
+    sat_smpl_breakup_idx, tle_ref_lines = get_matching_indices(smpl_space_secs_since, tle.tle_date_seconds_since)
     sat_lat_sim: npt.NDArray[np.float64] = np.empty((0,), dtype=np.float64)
     sat_lon_sim: npt.NDArray[np.float64] = np.empty((0,), dtype=np.float64)
     sat_sec_since: npt.NDArray[np.float64] = np.empty((0,), dtype=np.float64)

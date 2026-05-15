@@ -5,6 +5,7 @@ import xarray as xr
 import warnings
 import numpy as np
 import numpy.typing as npt
+from typing import cast
 
 """___NPL Modules___"""
 """__Built-In Modules__"""
@@ -25,7 +26,7 @@ __maintainer__ = [
     "Zhav (Xavier) Loizeau <xavier.loizeau@npl.co.uk>",
 ]
 __status__ = "Development"
-__all__ = ["filter xarray"]
+__all__ = ["filter_xarray"]
 
 
 def filter_xarray(tle_xarray: xr.Dataset) -> xr.Dataset:
@@ -50,11 +51,9 @@ def filter_xarray(tle_xarray: xr.Dataset) -> xr.Dataset:
 Oldest TLE file: {np.min(tle_xarray["start_date"].values)}
 Start time requested: {tle_xarray["start_date"].values}"""
         )
-        lower_bound_tle_time: npt.NDArray[np.datetime64] = tle_xarray[
-            "start_date"
-        ].values
+        lower_bound_tle_time: np.datetime64 = cast(np.datetime64, tle_xarray["start_date"].values)
     else:
-        lower_bound_tle_time = np.max(previous_tle_times)
+        lower_bound_tle_time = cast(np.datetime64, np.max(previous_tle_times))
 
     later_tle_times: npt.NDArray[np.datetime64] = tle_xarray.where(
         lambda x: x["tle_date"] >= tle_xarray["end_date"].values
@@ -68,9 +67,9 @@ Start time requested: {tle_xarray["start_date"].values}"""
 Oldest TLE file: {np.max(tle_xarray["tle_date"].values)}
 Start time requested: {tle_xarray["end_date"]}"""
         )
-        upper_bound_tle_time: npt.NDArray[np.datetime64] = tle_xarray["end_date"].values
+        upper_bound_tle_time: np.datetime64 = cast(np.datetime64, tle_xarray["end_date"].values)
     else:
-        upper_bound_tle_time = np.min(later_tle_times)
+        upper_bound_tle_time = cast(np.datetime64, np.min(later_tle_times))
     idx = [
         i
         for i, t_i in enumerate(tle_xarray["tle_date"])
@@ -79,9 +78,7 @@ Start time requested: {tle_xarray["end_date"]}"""
 
     if not idx:
         # If there is no TLE between start- and end-time, just get the one TLE which is closest to start_time
-        closest_tle = np.argmin(
-            np.abs(tle_xarray["tle_date"].values - tle_xarray["start_date"].values)
-        )
+        closest_tle = np.argmin(np.abs(tle_xarray["tle_date"].values - tle_xarray["start_date"].values))
         tle_xarray = tle_xarray.isel(tle_index=[closest_tle])
 
     else:

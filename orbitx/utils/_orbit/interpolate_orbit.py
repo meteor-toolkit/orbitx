@@ -68,11 +68,9 @@ def interpolate_orbit(
     Returns:
         Tuple[ npt.NDArray[np.float64], npt.NDArray[np.datetime64], npt.NDArray[np.float64], npt.NDArray[np.float64], ]: A tuple containing the times at which the interpolated values are obtained (in seconds since the reference date), and the times at which the interpolated values are obtained (in numpy datetime64 format), the interpolated latitude, the interpolated longitude
     """
-    f1_lat_linear: interp1d[npt.NDArray[np.float64], npt.NDArray[np.float64]] = (
-        interp1d(sat_sec_since, sat_lat_sim)
-    )
-    f1_lon_linear: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]] = (
-        interp_circ(sat_sec_since, sat_lon_sim)
+    f1_lat_linear: interp1d[npt.NDArray[np.float64], npt.NDArray[np.float64]] = interp1d(sat_sec_since, sat_lat_sim)
+    f1_lon_linear: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]] = interp_circ(
+        sat_sec_since, sat_lon_sim
     )
 
     end_date = end_date + interpolation_sampling_interval
@@ -80,10 +78,7 @@ def interpolate_orbit(
         start=start_date, stop=end_date, step=interpolation_sampling_interval
     )
     interpolate_time = np.array(
-        [
-            datetime64_to_sec_since(date, reference_date=reference_date)
-            for date in interpolate_date
-        ],
+        [datetime64_to_sec_since(date, reference_date=reference_date) for date in interpolate_date],
         dtype=np.float64,
     )
     return (

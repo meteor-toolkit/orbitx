@@ -29,7 +29,6 @@ def get_land_ocean_mask(matchups: xr.Dataset) -> xr.Dataset:
     """
     num_matchups = matchups["matchup_index"].shape[0]
     num_sat = matchups["satellite"].shape[0]
-    matchup_type = np.empty((num_matchups,), dtype=str)
     land_mask_sat = np.empty((num_matchups,), dtype=str)
 
     matchups = matchups.assign(
@@ -45,20 +44,15 @@ def get_land_ocean_mask(matchups: xr.Dataset) -> xr.Dataset:
         lattitudes = matchups["lat"].sel(satellite=sat)
         longitudes = matchups["lon"].sel(satellite=sat)
         for i in range(num_matchups):
-
             land_mask_sat[i] = land_mask(
                 lattitudes.values[i],
                 longitudes.values[i],
             )
         matchups["land_mask"].loc[dict(satellite=sat)] = land_mask_sat
     for matchup_index in matchups["matchup_index"]:
-        matchup_types = np.unique(
-            matchups["land_mask"].sel(matchup_index=matchup_index).values
-        )
+        matchup_types = np.unique(matchups["land_mask"].sel(matchup_index=matchup_index).values)
         if len(matchup_types) > 1:
             matchups["matchup_type"].loc[dict(matchup_index=matchup_index)] = "COAST"
         else:
-            matchups["matchup_type"].loc[dict(matchup_index=matchup_index)] = (
-                matchup_types[0]
-            )
+            matchups["matchup_type"].loc[dict(matchup_index=matchup_index)] = matchup_types[0]
     return matchups

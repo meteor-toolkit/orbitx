@@ -150,7 +150,14 @@ class TestMatchupsEvents(unittest.TestCase):
         t0 = np.datetime64("2020-01-01T00:00:00")
         t1 = t0 + np.timedelta64(2, "h")
         times_sat1 = np.array([t0, t0 + np.timedelta64(5, "m"), t1, t1 + np.timedelta64(5, "m")])
-        times_sat2 = np.array([t0 + np.timedelta64(3, "m"), t0 + np.timedelta64(8, "m"), t1 + np.timedelta64(3, "m"), t1 + np.timedelta64(8, "m")])
+        times_sat2 = np.array(
+            [
+                t0 + np.timedelta64(3, "m"),
+                t0 + np.timedelta64(8, "m"),
+                t1 + np.timedelta64(3, "m"),
+                t1 + np.timedelta64(8, "m"),
+            ]
+        )
         lats = np.array([[40.0, 41.0], [41.0, 42.0], [50.0, 51.0], [51.0, 52.0]])
         lons = np.array([[10.0, 11.0], [11.0, 12.0], [20.0, 21.0], [21.0, 22.0]])
         m = self._make_matchups(times_sat1, times_sat2, lats, lons)

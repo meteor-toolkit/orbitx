@@ -28,7 +28,7 @@ SATELLITE_DICT = {
     "S2B": "Sentinel-2B",
     "S3A": "Sentinel-3A",
     "S3B": "Sentinel-3B",
-    "EMIT": "EMIT"
+    "EMIT": "EMIT",
 }
 
 
@@ -124,8 +124,7 @@ def plot_matchups(ds: xr.Dataset, projection=ccrs.PlateCarree()) -> None:
         ax.scatter(
             ds[f"lon{i + 1}"],
             ds[f"lat{i + 1}"],
-            s=(ds.attrs["time_threshold"] - delay) ** 2
-            / (ds.attrs["time_threshold"] / 2) ** 2,
+            s=(ds.attrs["time_threshold"] - delay) ** 2 / (ds.attrs["time_threshold"] / 2) ** 2,
             label=SATELLITE_DICT[ds.attrs[f"sat{i + 1}"]],
             transform=ccrs.PlateCarree(),
         )

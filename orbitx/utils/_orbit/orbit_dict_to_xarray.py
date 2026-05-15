@@ -5,14 +5,13 @@ from datetime import timedelta
 import numpy as np
 import numpy.typing as npt
 from numpy import datetime64
-from typing import Dict
+from typing import Dict, cast
 import xarray as xr
 
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
 from orbitx.utils._date_utils import datetime64_to_sec_since
-from orbitx import __version__
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
@@ -92,18 +91,10 @@ def orbit_dict_to_xarray(
     satellite_shortname = list(orbit_dict.keys())
     satellite_name = [orbit_dict[key]["satellite_name"] for key in satellite_shortname]
 
-    propagation_sampling_interval_timedelta: timedelta = (
-        propagation_sampling_interval.item()
-    )
-    propagation_sampling_interval_int: int = int(
-        propagation_sampling_interval_timedelta.total_seconds()
-    )
-    interpolation_sampling_interval_timedelta: timedelta = (
-        interpolation_sampling_interval.item()
-    )
-    interpolation_sampling_interval_int: int = int(
-        interpolation_sampling_interval_timedelta.total_seconds()
-    )
+    propagation_sampling_interval_timedelta: timedelta = cast(timedelta, propagation_sampling_interval.item())
+    propagation_sampling_interval_int: int = int(propagation_sampling_interval_timedelta.total_seconds())
+    interpolation_sampling_interval_timedelta: timedelta = cast(timedelta, interpolation_sampling_interval.item())
+    interpolation_sampling_interval_int: int = int(interpolation_sampling_interval_timedelta.total_seconds())
     orbit_xarray = xr.Dataset(
         data_vars={
             "reference_date": (reference_date),
@@ -139,12 +130,8 @@ def orbit_dict_to_xarray(
         attrs={
             "satellite_shortname": satellite_shortname,
             "satellite_name": satellite_name,
-            "start_date": datetime64_to_sec_since(
-                start_date, reference_date=reference_date
-            ),
-            "end_date": datetime64_to_sec_since(
-                end_date, reference_date=reference_date
-            ),
+            "start_date": datetime64_to_sec_since(start_date, reference_date=reference_date),
+            "end_date": datetime64_to_sec_since(end_date, reference_date=reference_date),
             "propagation_sampling_interval": propagation_sampling_interval_int,
             "interpolation_sampling_interval": interpolation_sampling_interval_int,
             "version": __version__,

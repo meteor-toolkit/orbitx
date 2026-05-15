@@ -38,12 +38,11 @@ def land_mask(
     yc = yy.flatten()
 
     land_cover = is_land(yc, xc)
-    land_fraction = sum(np.where(land_cover == True, 1, 0)) / len(land_cover)
+    land_fraction = sum(np.where(land_cover, 1, 0)) / len(land_cover)
 
     if land_fraction == 0:
-        mask = "OCEAN"
+        return "OCEAN"
     elif land_fraction == 1:
-        mask = "LAND"
+        return "LAND"
     else:
-        mask = "COAST"
-    return mask
+        return "COAST"

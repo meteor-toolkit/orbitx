@@ -39,14 +39,10 @@ def get_tle_path(satellite_name: str) -> str:
     path = ""
     found: bool = False
     for tle_dir in TLE_PATH:
-        path = os.path.abspath(
-            os.path.join(tle_dir, "TLEset_" + satellite_name + ".txt")
-        )
+        path = os.path.abspath(os.path.join(tle_dir, "TLEset_" + satellite_name + ".txt"))
         if os.path.isfile(path):
             found = True
             break
     if not found:
-        raise FileNotFoundError(
-            "No TLE file for this satellite. Use a custom satellite argument with your own file."
-        )
+        raise FileNotFoundError("No TLE file for this satellite. Use a custom satellite argument with your own file.")
     return path

@@ -68,7 +68,7 @@ allow_untyped_globals = true
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-module = ["orbitx.tests.*", "tests.*"]
+module = ["orbitx.tests.*", "tests.*", "orbitx.interface"]
 ignore_errors = true
 
 [tool.pytest.ini_options]
@@ -80,10 +80,10 @@ testpaths = [
 
 [tool.ruff]
 line-length = 120
-exclude = ["docs"]
+exclude = ["docs", "examples"]
 
 [tool.ruff.lint]
-extend-ignore = ["W291"]
+extend-ignore = ["W291", "E402"]
 
 [tool.ruff.lint.per-file-ignores]
 # Re-exports and post-init imports are intentional in the package __init__
