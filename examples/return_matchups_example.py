@@ -15,7 +15,6 @@ faulthandler.enable()
 from orbitx import Matchups
 
 
-<<<<<<< HEAD
 """___Authorship___"""
 __author__ = "Zhav Loizeau"
 __created__ = "2025-09-11"
@@ -56,33 +55,15 @@ matchups = Matchups.find_matchups(
     check_after=check_after,
     has_land_ocean_mask=has_land_ocean_mask,
     reference_date=reference_date,
-=======
-ds = return_matchups(
-    sats=["LS8", "EMIT"],
-    start_time=datetime.datetime(2022, 1, 1, 0, 0, 0),
-    end_time=datetime.datetime(2022, 2, 1, 0, 0, 0),
-    propagation_sampling_interval=60,
-    interpolation_sampling_interval=5,
-    cntr2cntr_dist=290,
-    time_diff_threshold=900,
-    # output_path_sim_orbits=r"T:\ECO\EOServer\data\satellite_simulated_orbits",
-    # output_path_matchups=r"T:\ECO\EOServer\data\satellite_matchups",
->>>>>>> 4a0d65e6400d8d9507abec2521e4b77f12cb2b65
 )
 
 matchups.orbit.to_netcdf(output_path_sim_orbits)
 matchups.to_netcdf(output_path_matchups)
 
-<<<<<<< HEAD
 fig_matchup = matchups.plot()
 fig_matchup.savefig(f"{output_path_matchups}matchup_plot.png")
 fig_orbit = matchups.orbit.plot()
 fig_orbit.savefig(f"{output_path_matchups}orbit_plot.png")
-=======
-print(ds)
-
-ds.to_netcdf("/mnt/t/joe/misc/test.nc")
->>>>>>> 4a0d65e6400d8d9507abec2521e4b77f12cb2b65
 
 if __name__ == "__main__":
     pass

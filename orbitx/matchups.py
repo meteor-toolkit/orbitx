@@ -658,7 +658,13 @@ Number of matchups found: {len(self)}.
             return []
 
         if event_gap_threshold is None:
-            event_gap_threshold = self.orbit.propagation_sampling_interval * 10
+            try:
+                event_gap_threshold = self.orbit.propagation_sampling_interval * 10
+            except Exception:
+                # Fallback for synthetic or missing orbit data: use the
+                # matchup time-difference threshold when propagation
+                # sampling interval is unavailable.
+                event_gap_threshold = self.time_diff_threshold
 
         times = self.matchups["time_datetime"].values  # (matchup_index, satellite)
         # Representative time per matchup: whichever satellite arrived first
