@@ -1,5 +1,5 @@
-# Default image
-image: "python:3.13"
+# Default image, if not specified
+image: "condaforge/miniforge3"
 
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
@@ -24,10 +24,15 @@ cache:
   before_script:
     - echo -e "machine gitlab.npl.co.uk\nlogin gitlab-ci-token\npassword ${CI_JOB_TOKEN}" > ~/.netrc
     - python --version
-    - pip install virtualenv
-    - virtualenv venv
-    - source venv/bin/activate
+    - conda create -n test_env python=3.12
+    - conda init bash
+    - source ~/.bashrc
+    - source activate test_env
+    - conda config --show channels
+    - conda install Cartopy
+    - conda install orekit
     - pip install -e ".[dev]"
+
 
 ### Static Analysis ###
 
