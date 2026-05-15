@@ -1,7 +1,6 @@
 """orbitx.utils._tle.get_tle_path -"""
 
 """___Third-Party Modules___"""
-from typing import Optional
 import os
 
 """___NPL Modules___"""

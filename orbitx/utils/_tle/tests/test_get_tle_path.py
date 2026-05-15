@@ -2,7 +2,6 @@
 
 import unittest
 import os
-from pathlib import Path
 
 from orbitx.utils._tle import get_tle_path
 

@@ -1,7 +1,6 @@
 """orbitx.tests.test_matchup - tests for orbitx.matchup"""
 
 import unittest
-import unittest.mock as mock
 import os
 
 import numpy as np

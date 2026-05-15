@@ -106,7 +106,7 @@ Once you have implemented tests for your functions, just run them locally by run
 
 .. code-block:: bash
 
-    tox
+    pytest
 
 This will create a `test_report` folder with an `html` file detailing the tests restults.
 No merge request containing a failing test will be accepted.

@@ -2,8 +2,6 @@
 
 """___Third-Party Modules___"""
 import numpy as np
-from typing import Dict
-import numpy.typing as npt
 import xarray as xr
 
 """___NPL Modules___"""
@@ -44,8 +42,8 @@ def get_land_ocean_mask(matchups: xr.Dataset) -> xr.Dataset:
         }
     )
     for sat in matchups["satellite"]:
-        lattitudes = matchups[f"lat"].sel(satellite=sat)
-        longitudes = matchups[f"lon"].sel(satellite=sat)
+        lattitudes = matchups["lat"].sel(satellite=sat)
+        longitudes = matchups["lon"].sel(satellite=sat)
         for i in range(num_matchups):
 
             land_mask_sat[i] = land_mask(

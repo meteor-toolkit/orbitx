@@ -1,14 +1,11 @@
 """orbitx.tests.test_matchup - tests for orbitx.matchup"""
 
 import unittest
-import unittest.mock as mock
-import os
 
 import numpy as np
 import xarray as xr
 
 from orbitx import Matchups
-from orbitx.utils._matchups.get_dist import get_dist
 from orbitx import Orbit
 
 __author__ = "Mattea Goalen <mattea.goalen@npl.co.uk>"

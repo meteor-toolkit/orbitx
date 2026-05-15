@@ -1,7 +1,7 @@
 """A python function to simulate the orbit of a satellite from on a requested time frame using a collection of TLE's"""
 
 """___Third-Party Modules___"""
-from typing import List, Tuple
+from typing import Tuple
 import numpy as np
 import numpy.typing as npt
 

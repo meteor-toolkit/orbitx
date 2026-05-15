@@ -5,7 +5,6 @@ import xarray as xr
 import warnings
 import numpy as np
 import numpy.typing as npt
-from typing import Tuple, List
 
 """___NPL Modules___"""
 """__Built-In Modules__"""

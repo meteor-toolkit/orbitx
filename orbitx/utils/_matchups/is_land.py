@@ -1,7 +1,6 @@
 """A python function to compute the distance between two satellites"""
 
 """___Third-Party Modules___"""
-from numpy import bool_
 from shapely import contains_xy
 
 """___NPL Modules___"""

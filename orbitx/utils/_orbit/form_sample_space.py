@@ -3,12 +3,12 @@
 """___Third-Party Modules___"""
 import numpy as np
 import numpy.typing as npt
-from typing import Tuple, Union
+from typing import Tuple
 
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._date_utils import datetime64_to_sec_since, sec_since_to_datetime64
+from orbitx.utils._date_utils import datetime64_to_sec_since
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"

@@ -5,7 +5,6 @@ import datetime
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
-from typing import List
 
 """___NPL Modules___"""
 

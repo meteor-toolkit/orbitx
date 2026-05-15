@@ -1,12 +1,7 @@
-examples/DPAAR/SLURM
-examples/DPAAR/python
+# Scratch notebooks (local experiments, not committed)
+examples/scratch/
 
-test_report/
-**.out
-# Mypy cache
-.mypy_cache
-
-# Compiles docs for gitlab pages
+# Compiled docs for gitlab pages
 public
 latex
 
@@ -62,6 +57,7 @@ coverage.xml
 *.cover
 .hypothesis/
 .pytest_cache/
+test_report/
 
 # Translations
 *.mo
@@ -79,8 +75,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/sphinx/_build/
-docs/sphinx/content/api
+docs/_build/
 
 # PyBuilder
 target/
@@ -117,6 +112,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# ruff
+.ruff_cache/
 
 # IDE settings
 .vscode/.git.old

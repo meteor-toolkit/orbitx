@@ -1,3 +1,3 @@
-include versioneer.py
-include orbitx/_version.py
-inclue orbitx/data/land_mask/ne_50m_land.shp
+include README.md
+include LICENSE
+include orbitx/data/land_mask/ne_50m_land.shp

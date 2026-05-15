@@ -3,7 +3,7 @@
 """___Third-Party Modules___"""
 import numpy as np
 import numpy.typing as npt
-from typing import Tuple, Any, Callable
+from typing import Tuple, Callable
 from scipy.interpolate import interp1d
 
 """___NPL Modules___"""

@@ -1,6 +1,6 @@
 """orbitx - Propagate satellite orbits to identify matchups."""
 
-__author__ = "Sajedeh Behnia <sajedeh.behnia@npl.co.uk>"
+__author__ = "MetEOR Toolkit Team <team@comet-toolkit.org>"
 __all__ = [
     "LAND_GEOM",
     "TLE_PATH",
@@ -11,18 +11,19 @@ __all__ = [
     "TLE",
 ]
 import os
-import cartopy.io.shapereader as shpreader
-import shapely.geometry as sgeom
-import numpy as np
-
-from ._version import get_versions
-import os
+from importlib.metadata import PackageNotFoundError, version
 from typing import Optional
+
+import cartopy.io.shapereader as shpreader
+import numpy as np
+import shapely.geometry as sgeom
+
 from orbitx.deps import init_orekit
 
-
-__version__ = get_versions()["version"]
-del get_versions
+try:
+    __version__ = version("orbitx")
+except PackageNotFoundError:
+    __version__ = "0.0.0+unknown"
 
 
 this_directory = os.path.dirname(__file__)

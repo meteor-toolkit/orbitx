@@ -3,7 +3,6 @@
 import numpy as np
 import unittest
 import unittest.mock as mock
-import datetime
 from orbitx import TLE
 from orbitx import __version__
 from orbitx.utils._date_utils import sec_since_to_datetime64

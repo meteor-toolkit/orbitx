@@ -152,8 +152,8 @@ def orbit_dict_to_xarray(
         },
     )
 
-    orbit_xarray[f"lat"].attrs["units"] = "degrees"
-    orbit_xarray[f"lon"].attrs["units"] = "degrees"
+    orbit_xarray["lat"].attrs["units"] = "degrees"
+    orbit_xarray["lon"].attrs["units"] = "degrees"
     orbit_xarray["time"].attrs["units"] = f"seconds since {reference_date}"
 
     for sat_index, satellite in enumerate(satellite_shortname):

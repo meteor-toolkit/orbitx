@@ -8,7 +8,6 @@ from orbitx.deps import lazy_cartopy
 from typing import Optional, List, Dict
 import numpy.typing as npt
 import os
-import netCDF4 as nc
 from datetime import timedelta
 
 """___NPL Modules___"""
@@ -18,14 +17,12 @@ from orbitx import Orbit
 from typing import TypedDict, Tuple
 from orbitx.utils._matchups.find_matches import find_matches
 from orbitx.utils._matchups.get_land_ocean_mask import get_land_ocean_mask
-from orbitx.utils._constants import SATELLITE_DICT, CM
+from orbitx.utils._constants import CM
 from orbitx.utils._xarray_utils import ds_approx_equal
 from orbitx.utils._date_utils import (
     sec_since_to_datetime64,
     datetime64_to_sec_since,
-    datetime64_get_second,
 )
-
 __author__ = [
     "Mattea Goalen <mattea.goalen@npl.co.uk>",
 ]
@@ -389,8 +386,8 @@ class Matchups:
 
         for i_sat, sat in enumerate(self.matchups["satellite"]):
             ax.scatter(
-                self.matchups[f"lon"].sel(satellite=sat),
-                self.matchups[f"lat"].sel(satellite=sat),
+                self.matchups["lon"].sel(satellite=sat),
+                self.matchups["lat"].sel(satellite=sat),
                 s=(time_diff_threshold_seconds - mean_delay) ** 2
                 / (time_diff_threshold_seconds / 2) ** 2,
                 label=self.satellite_name[i_sat],
