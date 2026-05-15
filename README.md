@@ -5,6 +5,9 @@ Propagate satellite orbits to identify matchups.
 `orbitx` computes satellite ground-track positions from TLE data and identifies
 instances where two satellite swaths overlap in space and time.
 
+> **Warning:** This software is in beta. Results should be used with
+> caution. Please share any feedback via the issue tracker.
+
 ## Usage
 
 ### Virtual environment
