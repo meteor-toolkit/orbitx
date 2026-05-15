@@ -3,7 +3,6 @@
 """___Third-Party Modules___"""
 import numpy as np
 import numpy.typing as npt
-from typing import List
 import xarray as xr
 
 """___NPL Modules___"""
@@ -78,7 +77,7 @@ class TLE:
         Returns:
             TLE: A TLE Object
         """
-        if not satellite_shortname in SATELLITE_DICT.keys():
+        if satellite_shortname not in SATELLITE_DICT.keys():
             raise ValueError(
                 f"No TLE file found for '{satellite_shortname}'. Consider using the `from_filepath` method with your own TLE file."
             )

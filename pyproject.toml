@@ -1,65 +1,90 @@
 [build-system]
-requires = ["setuptools>=80", "wheel", "versioneer"]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
 build-backend = "setuptools.build_meta"
-
 
 [project]
 name = "orbitx"
 dynamic = ["version"]
 description = "Propagate satellite orbits to identify matchups."
 readme = "README.md"
-requires-python = ">=3.12"
-authors = [
-  {name = "Sajedeh Behnia", email = "sajedeh.behnia@npl.co.uk"}
-]
-license = "MIT AND (Apache-2.0 OR BSD-2-Clause)"
+license = {file = "LICENSE"}
+authors = [{name = "MetEOR Toolkit Team", email = "team@comet-toolkit.org"}]
+requires-python = ">=3.11"
 classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Operating System :: OS Independent",
-    "Natural Language :: English"
+    "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
-    "numpy==2.3.1",
-    "scipy==1.16.0",
-    "Cartopy==0.24.1",
-    "matplotlib==3.10.3",
-    "netCDF4==1.7.2",
-    "xarray==2025.7.1",
+    "numpy",
+    "scipy",
+    "cartopy",
+    "matplotlib",
+    "netCDF4",
+    "xarray",
+    "shapely",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "black",
-    "black[jupyter]",
-    "build",
-    "ipython",
+    "ruff",
     "mypy",
     "pre-commit",
     "pytest",
-    "pytest-cov",
     "pytest-html",
-    "setuptools",
+    "pytest-cov",
+    "ipython",
+]
+docs = [
     "sphinx",
+    "sphinx_rtd_theme",
     "sphinx_book_theme",
     "sphinx_design",
-    "tox",
-    "twine",
+    "sphinx_automodapi",
+    "myst_parser",
 ]
 
 [project.urls]
 Homepage = "https://gitlab.npl.co.uk/altimetry/orbitx"
 
-[tool.black]
-line-length = 88
-
-[tool.setuptools]
-py-modules = []
-packages = ["orbitx"]
-include-package-data = true
+[tool.setuptools.packages.find]
+include = ["orbitx*"]
 
 [tool.setuptools.package-data]
-orbitx = [    
+orbitx = [
     "data/orekit-data.zip",
     "data/tle/*",
     "data/land_mask/ne_50m_land.shp",
 ]
+
+[tool.setuptools_scm]
+# version inferred from git tags (e.g. v0.1.0); no extra config needed
+
+[tool.mypy]
+allow_untyped_globals = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["orbitx.tests.*", "tests.*"]
+ignore_errors = true
+
+[tool.pytest.ini_options]
+testpaths = [
+    "orbitx/tests",
+    "orbitx/utils",
+    "tests",
+]
+
+[tool.ruff]
+line-length = 120
+exclude = ["docs"]
+
+[tool.ruff.lint]
+extend-ignore = ["W291"]
+
+[tool.ruff.lint.per-file-ignores]
+# Re-exports and post-init imports are intentional in the package __init__
+"orbitx/__init__.py" = ["E402", "F401"]

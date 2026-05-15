@@ -2,14 +2,12 @@
 
 """___Third-Party Modules___"""
 import numpy as np
-from numpy._typing._array_like import NDArray
 import numpy.typing as npt
 import xarray as xr
 
 """___NPL Modules___"""
 
 """__Built-In Modules__"""
-from orbitx.utils._constants import EARTH_RADIUS
 
 """___Authorship___"""
 __author__ = "Zhav Loizeau"

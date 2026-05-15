@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from math import pi
-from typing import Tuple, List
+from typing import Tuple
 import warnings
 import numbers
 from datetime import timedelta, datetime
