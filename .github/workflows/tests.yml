@@ -36,7 +36,7 @@ jobs:
       - name: Install conda dependencies
         shell: bash -el {0}
         run: |
-          conda install -y -c conda-forge orekit cartopy
+          conda install -y -c conda-forge orekit cartopy pip
           conda run -n test-env python -c "import orekit" || (echo "orekit import failed after install" && exit 1)
 
       - name: Install package
