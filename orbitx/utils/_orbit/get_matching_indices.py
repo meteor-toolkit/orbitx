@@ -52,7 +52,7 @@ def get_matching_indices(
 
     # Delete redundant tle time references
     idx_tle = np.delete(idx_tle, idx_redundant)
-    idx_sim = np.delete(idx_sim, idx_redundant)
+    idx_sim = np.delete(idx_sim, idx_redundant)  # type: ignore[assignment]
 
     # Force the idx_sim to include the start_time and end_time stamps
     idx_sim[0] = 0

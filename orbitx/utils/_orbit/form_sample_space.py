@@ -35,9 +35,9 @@ def form_sample_space(
     """
     end_date = end_date + propagation_sampling_interval
     sample_space_date: npt.NDArray[np.datetime64] = np.arange(
-        start=start_date,
-        stop=end_date,
-        step=propagation_sampling_interval,
+        start_date,
+        end_date,
+        propagation_sampling_interval,
     )  # 'propagation_sampling_interval' has been added to the second element to make the 'smpl_space_secs_since_1970' vector
     # long enough to contain 'end_time'.
 

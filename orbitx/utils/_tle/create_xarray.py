@@ -3,7 +3,7 @@
 """___Third-Party Modules___"""
 import xarray as xr
 import numpy as np
-from typing import List
+import numpy.typing as npt
 from numpy import datetime64
 
 """___NPL Modules___"""
@@ -48,8 +48,8 @@ __all__ = ["create_xarray"]
 
 
 def create_xarray(
-    tle_line_1: List[str],
-    tle_line_2: List[str],
+    tle_line_1: npt.NDArray[np.str_],
+    tle_line_2: npt.NDArray[np.str_],
     reference_date: np.datetime64,
     start_date: np.datetime64,
     end_date: np.datetime64,

@@ -35,9 +35,7 @@ def get_dist(existing_orbits: xr.Dataset, new_orbit: xr.Dataset) -> xr.DataArray
     dlat: xr.DataArray = existing_orbits["lat"] - new_orbit["lat"]
     # haversine formula
 
-    a: xr.DataArray = (
-        np.sin(dlat / 2) ** 2 + np.cos(existing_orbits["lat"]) * np.cos(new_orbit["lat"]) * np.sin(dlon / 2) ** 2
-    )
-    c: xr.DataArray = 2 * np.asin(np.sqrt(a))
+    a = np.sin(dlat / 2) ** 2 + np.cos(existing_orbits["lat"]) * np.cos(new_orbit["lat"]) * np.sin(dlon / 2) ** 2
+    c = 2 * np.asin(np.sqrt(a))
     r: float = EARTH_RADIUS
     return c * r

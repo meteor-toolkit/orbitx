@@ -74,9 +74,7 @@ def interpolate_orbit(
     )
 
     end_date = end_date + interpolation_sampling_interval
-    interpolate_date: npt.NDArray[np.datetime64] = np.arange(
-        start=start_date, stop=end_date, step=interpolation_sampling_interval
-    )
+    interpolate_date: npt.NDArray[np.datetime64] = np.arange(start_date, end_date, interpolation_sampling_interval)
     interpolate_time = np.array(
         [datetime64_to_sec_since(date, reference_date=reference_date) for date in interpolate_date],
         dtype=np.float64,

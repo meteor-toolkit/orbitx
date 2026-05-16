@@ -1,8 +1,9 @@
 """orbitx.utils._tle.load_file - a function reading the TLEs and returning the list of first lines and the list of second lines"""
 
 """___Third-Party Modules___"""
-from typing import Tuple, List
+from typing import Tuple
 import numpy as np
+import numpy.typing as npt
 
 """___NPL Modules___"""
 """__Built-In Modules__"""
@@ -26,7 +27,7 @@ __status__ = "Development"
 __all__ = ["load_file"]
 
 
-def load_file(tle_filepath: str) -> Tuple[List[str], List[str]]:
+def load_file(tle_filepath: str) -> Tuple[npt.NDArray[np.str_], npt.NDArray[np.str_]]:
     """Getting the list of first lines and the list of second lines of all TLEs in the file.
 
     Args:
