@@ -32,12 +32,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: "3.13"
-          cache: pip
-      - run: pip install -e ".[dev]"
-      - run: pytest --cov=orbitx
+          activate-environment: test-env
+          channels: conda-forge,defaults
+          channel-priority: strict
+          auto-activate-base: false
+          cache-downloads: true
+
+      - name: Install conda dependencies
+        shell: bash -el {0}
+        run: conda install -y -c conda-forge orekit cartopy pip
+
+      - name: Install package
+        shell: bash -el {0}
+        run: conda run -n test-env python -m pip install -e ".[dev]"
+
+      - name: Run tests
+        shell: bash -el {0}
+        run: conda run -n test-env python -m pytest --cov=orbitx
 
   # -----------------------------------------------------------------------
   # Build source distribution and wheel.
