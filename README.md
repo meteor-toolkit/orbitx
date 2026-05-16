@@ -79,12 +79,12 @@ sphinx-build docs docs/_build -b html
 ```
 
 The documentation is also available online at the
-[GitLab pages site](https://orbitx-d7410b.gitlab-docs.npl.co.uk/).
+[GitHub pages site](https://meteor-toolkit.github.io/orbitx/).
 
 ### Change requests
 
 If you would like additional functionality or have spotted a bug, please open an
-[issue](https://gitlab.npl.co.uk/altimetry/orbitx/-/issues) in the GitLab
+[issue](https://github.com/meteor-toolkit/orbitx/issues) in the GitHub
 repository.
 
 ## Compatibility
@@ -95,7 +95,7 @@ and 3.13.
 ## Licence
 
 `orbitx` is released under the GNU Lesser General Public License v3 (LGPLv3).
-See the [LICENSE](LICENSE) file for the full licence text.
+See the [LICENSE](https://github.com/meteor-toolkit/orbitx/blob/main/LICENSE) file for the full licence text.
 
 ## Authors
 
