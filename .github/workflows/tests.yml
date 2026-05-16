@@ -32,11 +32,12 @@ jobs:
           channels: conda-forge,defaults
           channel-priority: strict
           auto-activate-base: false
-          cache-environment: true
 
       - name: Install conda dependencies
         shell: bash -el {0}
-        run: conda install -y orekit cartopy
+        run: |
+          conda install -y orekit cartopy
+          python -c "import orekit" || (echo "orekit import failed after install" && exit 1)
 
       - name: Install package
         shell: bash -el {0}
